@@ -8,5 +8,7 @@ public class BranchStore {
     private String address;
     private String phoneNum;
     private List<Employee> employees;
+    private int[][] openHours;
+    private DailyShift[][] shiftsHistory; // save 4 weeks back
 
 }

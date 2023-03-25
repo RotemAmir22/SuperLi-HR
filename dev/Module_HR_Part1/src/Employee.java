@@ -4,12 +4,15 @@ import java.util.List;
 
 public class Employee {
 
-    protected String firstName;
-    protected String lastName;
-    protected String id;
-    protected String bankAccount;
-    protected double salary;
-    protected File empTerms;
-    protected Date startDate;
-    protected List<AEmployeeDetails> details;
+    private String firstName;
+    private String lastName;
+    private String id;
+    private String bankAccount;
+    private double salary;
+    private File empTerms;
+    private Date startDate;
+    private List<AEmployeeDetails> details;
+    private boolean[][] constrains; // [0,0] sunday morning, [0,1] sunday eve...
+    private int shiftsLimit = 6;
+    private List<Role> qualifications;
 }
