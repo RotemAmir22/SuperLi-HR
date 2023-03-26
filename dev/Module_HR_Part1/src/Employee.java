@@ -8,6 +8,11 @@ public class Employee {
 
     private String firstName;
     private String lastName;
+
+    public String getId() {
+        return id;
+    }
+
     private String id;
     private String bankAccount;
     private double salary;
