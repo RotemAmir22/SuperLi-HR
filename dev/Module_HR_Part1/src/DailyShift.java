@@ -3,7 +3,6 @@ package Module_HR_Part1.src;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,6 +15,7 @@ public class DailyShift {
     private Map<Role, Employee> morningShift;
     private Map<Role, Employee> eveningShift;
 
+    //constructor
     public DailyShift() {
         LocalDate today = LocalDate.now();
         this.date = today.toString().chars().mapToObj(c -> String.valueOf((char)c)).collect(Collectors.joining(""));
@@ -147,8 +147,25 @@ public class DailyShift {
     public String getDate() {
         return date;
     }
+    public Map<Role, Employee> getMorningShift() {
+        return morningShift;
+    }
+    public Map<Role, Employee> getEveningShift() {
+        return eveningShift;
+    }
+    public File getEndOfDayReport() {
+        return endOfDayReport;
+    }
 
     //setters
-
+    public void setMorningShift(Map<Role, Employee> morningShift) {
+        this.morningShift = morningShift;
+    }
+    public void setEveningShift(Map<Role, Employee> eveningShift) {
+        this.eveningShift = eveningShift;
+    }
+    public void setEndOfDayReport(File endOfDayReport) {
+        this.endOfDayReport = endOfDayReport;
+    }
 
 }
