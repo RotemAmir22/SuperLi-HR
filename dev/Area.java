@@ -1,3 +1,3 @@
 public enum Area {
-    North,South,West,East
+    North,South,West,East,Center
 }
