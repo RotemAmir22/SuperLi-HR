@@ -12,6 +12,9 @@ public class Employee {
     public String getId() {
         return id;
     }
+    public String getName() {
+        return firstName+" "+lastName;
+    }
 
     private String id;
     private String bankAccount;
@@ -22,4 +25,11 @@ public class Employee {
     private boolean[][] constrains; // [0,0] sunday morning, [0,1] sunday eve...
     private int shiftsLimit = 6;
     private List<Role> qualifications;
+
+    public void setConstrains(int day, int shift,boolean limit)
+    {
+        if(limit){this.constrains[day][shift] = true;}
+        else {this.constrains[day][shift] = false;}
+
+    }
 }
