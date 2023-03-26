@@ -90,7 +90,8 @@ public class BranchStore {
         };
 
     }
-            //getters
+
+    //getters
     public int getBranchID() {
         return branchID;
     }
@@ -139,7 +140,6 @@ public class BranchStore {
     public void removeEmployee(Employee employee)
     {
         this.employees.remove(employee.getId(), employee); //returns bool
-
     }
 
     /**

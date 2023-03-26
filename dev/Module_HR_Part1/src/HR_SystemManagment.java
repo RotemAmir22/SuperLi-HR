@@ -8,6 +8,7 @@ public class HR_SystemManagment {
     public List<BranchStore> branches;
     public static void main(String[] args) {
 
+        //Create schedules
         Timer timer = new Timer();
         TimerTask dailyShift = new TimerTask() {
             @Override
@@ -21,4 +22,8 @@ public class HR_SystemManagment {
         timer.schedule(dailyShift, 0, 24 * 60 * 60 * 1000);
 
     }
+    /**
+     * save cancellations->save in shift manager the details and counter in daily shift
+     * save reports
+     */
 }
