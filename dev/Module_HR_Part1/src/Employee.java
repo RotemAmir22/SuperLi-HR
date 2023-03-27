@@ -33,6 +33,8 @@ public class Employee {
 
     }
 
+    public boolean[][] getConstraints() {return constrains;}
+
     public List<Role> getQualifications() {return qualifications;}
     public void addRole(Role newRole)
     {
