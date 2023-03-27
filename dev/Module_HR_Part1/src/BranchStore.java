@@ -25,76 +25,7 @@ public class BranchStore {
         this.branchID = serialNumCounter;
         this.employees = new Hashtable<String, Employee>();
         this.openHours = new int[2][7]; //default value is 0
-        this.shiftsHistory = new Map<LocalDate, DailyShift>() {
-            @Override
-            public int size() {
-                return 0;
-            }
-
-            @Override
-            public boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean containsKey(Object key) {
-                return false;
-            }
-
-            @Override
-            public boolean containsValue(Object value) {
-                return false;
-            }
-
-            @Override
-            public DailyShift get(Object key) {
-                return null;
-            }
-
-            @Override
-            public DailyShift put(LocalDate key, DailyShift value) {
-                return null;
-            }
-
-            @Override
-            public DailyShift remove(Object key) {
-                return null;
-            }
-
-            @Override
-            public void putAll(Map<? extends LocalDate, ? extends DailyShift> m) {
-
-            }
-            @Override
-            public void clear() {
-
-            }
-
-            @Override
-            public Set<LocalDate> keySet() {
-                return null;
-            }
-
-            @Override
-            public Collection<DailyShift> values() {
-                return null;
-            }
-
-            @Override
-            public Set<Entry<LocalDate, DailyShift>> entrySet() {
-                return null;
-            }
-
-            @Override
-            public boolean equals(Object o) {
-                return false;
-            }
-
-            @Override
-            public int hashCode() {
-                return 0;
-            }
-        };
+        this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
 
     }
 
