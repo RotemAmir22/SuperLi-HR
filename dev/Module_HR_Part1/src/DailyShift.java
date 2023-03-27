@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 
@@ -165,6 +166,32 @@ public class DailyShift {
     }
     public void setEndOfDayReport(File endOfDayReport) {
         this.endOfDayReport = endOfDayReport;
+    }
+
+    public void showMeSchedualing()
+    {
+        if(this.date.equals("Saturday"))
+        {
+            System.out.println("No shifts for Saturday");
+        }
+        System.out.println("Daily shift - "+this.date+"\nMORNING:\n");
+        Map<Role, Employee> sortedMap = new TreeMap<>(morningShift);
+        for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
+            Role key = entry.getKey();
+            Employee e = entry.getValue();
+            System.out.println("["+key.name()+": "+e.getName()+"]\n");
+        }
+        if(!(this.date.equals("Friday")))
+        {
+            System.out.println("EVENING:\n");
+            sortedMap = new TreeMap<>(eveningShift);
+            for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
+                Role key = entry.getKey();
+                Employee e = entry.getValue();
+                System.out.println("["+key.name()+": "+e.getName()+"]\n");
+            }
+        }
+
     }
 
 }

@@ -65,6 +65,9 @@ public class ShiftOrganizer {
         for(int d = 0; d < 7; d++){days.put(tmp[d], d);}
         Random random = new Random();
         int shiftChoice;
+        /*
+        This loop will put the employees at positions by role
+         */
         while (keys.hasMoreElements()) {
             if (listEmployees.get(role).getShiftsLimit() > 0 && rolesAmount.get(role) > 0){
                 constraints = listEmployees.get(role).getConstraints();
@@ -101,9 +104,11 @@ public class ShiftOrganizer {
                  */
                 else{continue;}
 
+
                 /*
                  * Set the limitation of the employee
                  * He can't work more than 6 shifts a week
+                 * Also set the needed roles to be -1
                  */
                 listEmployees.get(role).setShiftsLimit(listEmployees.get(role).getShiftsLimit() - 1);
                 key = rolesAmount.get(role);
@@ -113,6 +118,11 @@ public class ShiftOrganizer {
             }
             role = keys.nextElement();
         }
+        /*
+        Set the shifts
+         */
+        dailyShift.setMorningShift(morningShift);
+        dailyShift.setEveningShift(eveningShift);
 
         // Implement your DailyShifts function here
         // This function will be called every 24 hours

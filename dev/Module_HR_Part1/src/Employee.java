@@ -1,7 +1,5 @@
 package Module_HR_Part1.src;
 
-import java.io.File;
-import java.time.LocalDate;
 import java.util.*;
 
 public class Employee {
@@ -11,15 +9,15 @@ public class Employee {
     private String id;
     private String bankAccount;
     private double salary;
-    private File empTerms;
-    private LocalDate startDate;
+    private String empTerms;
+    private String startDate;
     private List<AEmployeeDetails> details;
     private boolean[][] constrains; // [0,0] sunday morning, [0,1] sunday eve...
     private int shiftsLimit;
     private List<Role> qualifications;
 
     //constructor
-    public Employee(String firstName, String lastName, String id, String bankAccount, double salary, File empTerms, LocalDate startDate) {
+    public Employee(String firstName, String lastName, String id, String bankAccount, double salary, String empTerms, String startDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
@@ -275,7 +273,7 @@ public class Employee {
     public int getShiftsLimit() {return shiftsLimit;}
     public String getBankAccount() {return bankAccount;}
     public double getSalary() {return salary;}
-    public File getEmpTerms() {return empTerms;}
+    public String getEmpTerms() {return empTerms;}
     public List<AEmployeeDetails> getDetails() {return details;}
     public boolean[][] getConstrains() {return constrains;}
 
@@ -289,7 +287,7 @@ public class Employee {
     public void setShiftsLimit(int shiftsLimit) {this.shiftsLimit = shiftsLimit;}
     public void setBankAccount(String bankAccount) {this.bankAccount = bankAccount;}
     public void setSalary(double salary) {this.salary = salary;}
-    public void setEmpTerms(File empTerms) {this.empTerms = empTerms;}
+    public void setEmpTerms(String empTerms) {this.empTerms = empTerms;}
 
     //adding/removing detail/qualifications from employee
 

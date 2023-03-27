@@ -1,6 +1,9 @@
 package Module_HR_Part1.src;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -43,8 +46,7 @@ public class HR_SystemManagement {
     /**
      * add a new employee to system
      */
-    public void newEmployeeDetails()
-    {
+    public void newEmployeeDetails() {
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new employee please enter the following details:");
         Scanner scanner = new Scanner(System.in);
@@ -58,10 +60,12 @@ public class HR_SystemManagement {
         String bankAccount = scanner.nextLine();
         System.out.println("Enter employee's salary: ");
         double salary = scanner.nextDouble();
-        System.out.println("Enter computer path of employee's terms of employment: ");
-        String filePath = scanner.nextLine();
-        System.out.println("Enter employee's start Date (enter as yyy-MM-dd): ");
-        LocalDate startDate = LocalDate.parse(scanner.nextLine());
+        //System.out.println("Enter computer path of employee's terms of employment:\n");
+        String filePath = "null";
+        System.out.println("Enter employee's start Date (enter as dd/MM/yyyy): ");
+        String startDate = scanner.nextLine();
+
+
 
         //create an employee generator
         EmployeeGenerator employeeGenerator = new EmployeeGenerator();
@@ -103,13 +107,9 @@ public class HR_SystemManagement {
         return branches;
     }
 
-    /**
-     * Main function
-     * @param args
-     */
-    public static void main(String[] args) {
+    public void schedualingFromEmployees()
+    {
         HR_SystemManagement system = new HR_SystemManagement();
-
         /**
          * First function ask all the employees in all branches to give constraints
          */
@@ -135,6 +135,12 @@ public class HR_SystemManagement {
         // Schedule the task to run every week
         timer.schedule(weeklyConstraints, 0,604800000);
 
+    }
+
+    public void setShift()
+    {
+        HR_SystemManagement system = new HR_SystemManagement();
+        Timer timer = new Timer();
         /*
          * Second function set all branches shifts for one day.
          */
@@ -155,6 +161,16 @@ public class HR_SystemManagement {
         };
         // Schedule the task to run every 24 hours
         timer.schedule(dailyShift, 0, 24 * 60 * 60 * 1000);
+    }
+
+    /**
+     * Main function
+     * @param args
+     */
+    public static void main(String[] args) throws ParseException {
+
+        HR_SystemManagement system = new HR_SystemManagement();
+        system.newEmployeeDetails();
 
     }
     /*
