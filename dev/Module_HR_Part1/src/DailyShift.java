@@ -10,15 +10,14 @@ import java.util.stream.Collectors;
 
 public class DailyShift {
 
-    private String date;//format of date: dd-MM-yyyy
+    private LocalDate date;
     private File endOfDayReport;
     private Map<Role, Employee> morningShift;
     private Map<Role, Employee> eveningShift;
 
     //constructor
-    public DailyShift() {
-        LocalDate today = LocalDate.now();
-        this.date = today.toString().chars().mapToObj(c -> String.valueOf((char)c)).collect(Collectors.joining(""));
+    public DailyShift(LocalDate date) {
+        this.date = date;
         this.morningShift = new Map<Role, Employee>() {
             @Override
             public int size() {
@@ -144,7 +143,7 @@ public class DailyShift {
     }
 
     //getters
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
     public Map<Role, Employee> getMorningShift() {

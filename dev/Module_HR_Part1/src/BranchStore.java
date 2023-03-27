@@ -14,7 +14,7 @@ public class BranchStore {
     private String phoneNum;
     private Hashtable<String, Employee> employees;
     private int[][] openHours;
-    private Map<String,DailyShift> shiftsHistory; // save 4 weeks back
+    private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
 
     //constructor
     public BranchStore(String name, String address, String phoneNum) {
@@ -25,9 +25,7 @@ public class BranchStore {
         this.branchID = serialNumCounter;
         this.employees = new Hashtable<String, Employee>();
         this.openHours = new int[2][7]; //default value is 0
-        this.shiftsHistory = new Map<String, DailyShift>() {
-
-
+        this.shiftsHistory = new Map<LocalDate, DailyShift>() {
             @Override
             public int size() {
                 return 0;
@@ -54,7 +52,7 @@ public class BranchStore {
             }
 
             @Override
-            public DailyShift put(String key, DailyShift value) {
+            public DailyShift put(LocalDate key, DailyShift value) {
                 return null;
             }
 
@@ -64,7 +62,7 @@ public class BranchStore {
             }
 
             @Override
-            public void putAll(Map<? extends String, ? extends DailyShift> m) {
+            public void putAll(Map<? extends LocalDate, ? extends DailyShift> m) {
 
             }
 
@@ -74,7 +72,7 @@ public class BranchStore {
             }
 
             @Override
-            public Set<String> keySet() {
+            public Set<LocalDate> keySet() {
                 return null;
             }
 
@@ -84,8 +82,18 @@ public class BranchStore {
             }
 
             @Override
-            public Set<Entry<String, DailyShift>> entrySet() {
+            public Set<Entry<LocalDate, DailyShift>> entrySet() {
                 return null;
+            }
+
+            @Override
+            public boolean equals(Object o) {
+                return false;
+            }
+
+            @Override
+            public int hashCode() {
+                return 0;
             }
         };
 
@@ -107,7 +115,7 @@ public class BranchStore {
     public int[][] getOpenHours() {
         return openHours;
     }
-    public Map<String, DailyShift> getShiftsHistory() {
+    public Map<LocalDate, DailyShift> getShiftsHistory() {
         return shiftsHistory;
     }
     public Hashtable<String, Employee> getEmployees() {return employees;}
@@ -171,10 +179,8 @@ public class BranchStore {
         for (int i = 1; i <= daysInPreviousMonth; i++) {
             //get the date of the previous month
             LocalDate date = LocalDate.of(today.getYear(), previousMonth, i);
-            //save the date as a string in format dd-MM-yy
-            String key = date.toString().chars().mapToObj(c -> String.valueOf((char)c)).collect(Collectors.joining(""));
             //remove date from history
-            this.shiftsHistory.remove(key);
+            this.shiftsHistory.remove(date);
         }
 
     }

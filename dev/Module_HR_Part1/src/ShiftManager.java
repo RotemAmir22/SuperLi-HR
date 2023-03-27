@@ -54,5 +54,4 @@ public class ShiftManager {
         this.permissions.remove(permission);
     }
 
-
 }

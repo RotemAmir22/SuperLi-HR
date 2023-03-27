@@ -1,6 +1,7 @@
 package Module_HR_Part1.src;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.*;
 
 public class Employee {
@@ -11,14 +12,14 @@ public class Employee {
     private String bankAccount;
     private double salary;
     private File empTerms;
-    private Date startDate;
+    private LocalDate startDate;
     private List<AEmployeeDetails> details;
     private boolean[][] constrains; // [0,0] sunday morning, [0,1] sunday eve...
     private int shiftsLimit;
     private List<Role> qualifications;
 
     //constructor
-    public Employee(String firstName, String lastName, String id, String bankAccount, double salary, File empTerms, Date startDate) {
+    public Employee(String firstName, String lastName, String id, String bankAccount, double salary, File empTerms, LocalDate startDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;

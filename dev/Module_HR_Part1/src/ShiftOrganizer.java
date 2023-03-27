@@ -1,10 +1,7 @@
 package Module_HR_Part1.src;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.*;
+import java.util.Hashtable;
+import java.util.List;
 
 public class ShiftOrganizer {
 
@@ -13,10 +10,16 @@ public class ShiftOrganizer {
      */
     public static DailyShift DailyShifts(Hashtable<String, Employee> listEmployees) {
 
+<<<<<<< HEAD
         LocalDate currentDate = LocalDate.now();
         LocalDate nextDate = currentDate.plusDays(1);
+
+        //create a new daily shift
+        DailyShift dailyShift = new DailyShift(nextDate);
+
+        //get information from manager
         System.out.println("Hello, Today's date: " + currentDate);
-        /**
+        /*
          * In this part we are asking info from HR manager about the specific shift
          */
         Map<String, Integer> rolesAmount = null;
@@ -38,7 +41,7 @@ public class ShiftOrganizer {
             }
 
         }
-        /**
+        /*
          * In this part we move on the employees and check who can fill which position
          * First, get tomorrow date
          */
@@ -46,7 +49,7 @@ public class ShiftOrganizer {
         Locale locale = Locale.ENGLISH;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE", locale);
         String tomorrowString = tomorrow.getDisplayName(TextStyle.FULL, locale);
-        /**
+        /*
          * We will insert those maps to the new DailyShift
          */
         Map<Role, Employee> morningShift = null;
@@ -63,7 +66,7 @@ public class ShiftOrganizer {
         while (keys.hasMoreElements()) {
             if (listEmployees.get(role).getShiftsLimit() > 0 && rolesAmount.get(role) > 0){
                 constraints = listEmployees.get(role).getConstraints();
-                /**
+                /*
                  * The employee can work both shifts
                  */
                 if(constraints[days.get(tomorrowString)][0] && constraints[days.get(tomorrowString)][1])
@@ -77,26 +80,26 @@ public class ShiftOrganizer {
                         eveningShift.put(Role.valueOf(role), listEmployees.get(role));
                     }
                 }
-                /**
+                /*
                  * The employee can work only morning shift
                  */
                 else if(constraints[days.get(tomorrowString)][0])
                 {
                     morningShift.put(Role.valueOf(role), listEmployees.get(role));
                 }
-                /**
+                /*
                  * The employee can work only evening shift
                  */
                 else if(constraints[days.get(tomorrowString)][1])
                 {
                     eveningShift.put(Role.valueOf(role), listEmployees.get(role));
                 }
-                /**
+                /*
                  * The employee can't work either
                  */
                 else{continue;}
 
-                /**
+                /*
                  * Set the limitation of the employee
                  * He can't work more than 6 shifts a week
                  */
@@ -108,6 +111,9 @@ public class ShiftOrganizer {
             }
             role = keys.nextElement();
         }
+=======
+        
+>>>>>>> parent of 270388e (Merge branch '318467941_319041208' of https://github.com/bguGroupH/ADSS_Group_H into 318467941_319041208)
         // Implement your DailyShifts function here
         // This function will be called every 24 hours
         // Ask the constraints from HR system
