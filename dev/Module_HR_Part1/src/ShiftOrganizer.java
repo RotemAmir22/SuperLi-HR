@@ -1,7 +1,10 @@
 package Module_HR_Part1.src;
 
-import java.util.Hashtable;
-import java.util.List;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.*;
 
 public class ShiftOrganizer {
 
@@ -10,7 +13,6 @@ public class ShiftOrganizer {
      */
     public static DailyShift DailyShifts(Hashtable<String, Employee> listEmployees) {
 
-<<<<<<< HEAD
         LocalDate currentDate = LocalDate.now();
         LocalDate nextDate = currentDate.plusDays(1);
 
@@ -111,9 +113,7 @@ public class ShiftOrganizer {
             }
             role = keys.nextElement();
         }
-=======
-        
->>>>>>> parent of 270388e (Merge branch '318467941_319041208' of https://github.com/bguGroupH/ADSS_Group_H into 318467941_319041208)
+
         // Implement your DailyShifts function here
         // This function will be called every 24 hours
         // Ask the constraints from HR system
