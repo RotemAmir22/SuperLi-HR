@@ -1,6 +1,7 @@
 package Module_HR_Part1.src;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class ShiftManager {
         this.shiftDate = shiftDate;
         this.shiftSlot = shiftSlot;
 
+        this.permissions = new ArrayList<ShiftM_Permissions>();
         //add permissions to shift manager - these are the basic permission that evey shift manager has
         ShiftM_Permissions cancellation = new ShiftM_Permissions("cancellations", "shift manager can cancel items");
         this.permissions.add(cancellation);

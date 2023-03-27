@@ -65,7 +65,6 @@ public class BranchStore {
             public void putAll(Map<? extends LocalDate, ? extends DailyShift> m) {
 
             }
-
             @Override
             public void clear() {
 

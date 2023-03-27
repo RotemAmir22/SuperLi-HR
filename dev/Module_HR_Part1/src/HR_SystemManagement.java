@@ -1,9 +1,6 @@
 package Module_HR_Part1.src;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -16,8 +13,13 @@ import java.util.*;
  */
 public class HR_SystemManagement {
     
-    private List<BranchStore> branches;
+    private List<BranchStore> networkBranches;
     private List<Employee> networkEmployees;
+
+    public HR_SystemManagement() {
+        this.networkBranches=new ArrayList<BranchStore>();
+        this.networkEmployees=new ArrayList<Employee>();
+    }
 
     /**
      * look for branch using given id
@@ -26,7 +28,7 @@ public class HR_SystemManagement {
      */
     public BranchStore findBranchByID(int ID) {
 
-        for (BranchStore branch : branches) {
+        for (BranchStore branch : networkBranches) {
             if (branch.getBranchID()==ID) {
                 return branch;
             }
@@ -38,18 +40,17 @@ public class HR_SystemManagement {
      *
      * @param e: add employee to list of all networks employees
      */
-    public void addEmployeeToNetwork(Employee e)
-    {
-        networkEmployees.add(e);
-    }
+    public void addEmployeeToList(Employee e){this.networkEmployees.add(e);}
 
     /**
      * add a new employee to system
      */
-    public void newEmployeeDetails() {
+    public void newEmployeeInNetwork() {
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new employee please enter the following details:");
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter employee's start Date (enter as yyyy-MM-dd): ");
+        String startDate = scanner.nextLine();
         System.out.println("Enter employee's First name: ");
         String first = scanner.nextLine();
         System.out.println("Enter employee's Last name: ");
@@ -60,19 +61,15 @@ public class HR_SystemManagement {
         String bankAccount = scanner.nextLine();
         System.out.println("Enter employee's salary: ");
         double salary = scanner.nextDouble();
-        //System.out.println("Enter computer path of employee's terms of employment:\n");
-        String filePath = "null";
-        System.out.println("Enter employee's start Date (enter as dd/MM/yyyy): ");
-        String startDate = scanner.nextLine();
-
-
+        System.out.println("Enter computer path of employee's terms of employment:\n");
+        String filePath = "";
 
         //create an employee generator
         EmployeeGenerator employeeGenerator = new EmployeeGenerator();
         //create new employee
         Employee employee = employeeGenerator.CreateEmployee(first,last,id,bankAccount,salary,filePath,startDate);
         //add employee to list of all employees in network
-        addEmployeeToNetwork(employee);
+        addEmployeeToList(employee);
 
 
         //add employee to branch
@@ -93,24 +90,40 @@ public class HR_SystemManagement {
         branchToAddTo.addEmployee(employee);
         System.out.println("Employee successfully added to system");
     }
+
+    public void newBranchInNetwork(){
+        //get from HR manager all the details to create a new employee in the system
+        System.out.println("Hello HR manager, to add a new branch please enter the following details:");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter branch's name: ");
+        String name = scanner.nextLine();
+        System.out.println("Enter branch's address: ");
+        String address = scanner.nextLine();
+        System.out.println("Enter branch's phone number: ");
+        String phone = scanner.nextLine();
+
+        BranchStore branchStore = new BranchStore(name,address,phone);
+        addBranchStoreToList(branchStore);
+        System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
+    }
     public List<Employee> getNetworkEmployees()
     {
         return networkEmployees;
     }
 
-    public void addBranchStore(BranchStore b)
+    public void addBranchStoreToList(BranchStore b)
     {
-        branches.add(b);
+        networkBranches.add(b);
     }
-    public List<BranchStore> getBranches()
+    public List<BranchStore> getNetworkBranches()
     {
-        return branches;
+        return networkBranches;
     }
 
     public void schedualingFromEmployees()
     {
         HR_SystemManagement system = new HR_SystemManagement();
-        /**
+        /*
          * First function ask all the employees in all branches to give constraints
          */
         Timer timer = new Timer();
@@ -150,10 +163,10 @@ public class HR_SystemManagement {
             public void run() {
                 Hashtable<String, Employee> listEmployees = null;
                 //for loop that run on the branch list and collect the employees list
-                for(int i=0; i<system.getBranches().size(); i++)
+                for(int i = 0; i<system.getNetworkBranches().size(); i++)
                 {
                     // get the employees from each branch and set them a new scheduling
-                    listEmployees = system.getBranches().get(i).getEmployees();
+                    listEmployees = system.getNetworkBranches().get(i).getEmployees();
                     ShiftOrganizer.DailyShifts(listEmployees); // Call the function to run every 24 hours
                 }
 
@@ -170,7 +183,8 @@ public class HR_SystemManagement {
     public static void main(String[] args) throws ParseException {
 
         HR_SystemManagement system = new HR_SystemManagement();
-        system.newEmployeeDetails();
+        system.newBranchInNetwork();
+        system.newEmployeeInNetwork();
 
     }
     /*
