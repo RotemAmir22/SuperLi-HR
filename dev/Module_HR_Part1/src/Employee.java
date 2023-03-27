@@ -32,4 +32,15 @@ public class Employee {
         else {this.constrains[day][shift] = false;}
 
     }
+
+    public List<Role> getQualifications() {return qualifications;}
+    public void addRole(Role newRole)
+    {
+        qualifications.add(newRole);
+    }
+
+    public void removeRole(Role oldRole)
+    {
+        qualifications.remove(oldRole);
+    }
 }

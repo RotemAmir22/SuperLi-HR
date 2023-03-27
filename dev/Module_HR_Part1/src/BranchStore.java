@@ -110,6 +110,7 @@ public class BranchStore {
     public Map<String, DailyShift> getShiftsHistory() {
         return shiftsHistory;
     }
+    public Hashtable<String, Employee> getEmployees() {return employees;}
 
 
     //setters

@@ -1,5 +1,6 @@
 package Module_HR_Part1.src;
 
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -74,9 +75,15 @@ public class HR_SystemManagment {
         TimerTask dailyShift = new TimerTask() {
             @Override
             public void run() {
-                List<Employee> listEmployees = null;
+                Hashtable<String, Employee> listEmployees = null;
                 //for loop that run on the branch list and collect the employees list
-                ShiftOrganizer.DailyShifts(listEmployees); // Call the function to run every 24 hours
+                for(int i=0; i<system.getBranches().size(); i++)
+                {
+                    // get the employees from each branch and set them a new scheduling
+                    listEmployees = system.getBranches().get(i).getEmployees();
+                    ShiftOrganizer.DailyShifts(listEmployees); // Call the function to run every 24 hours
+                }
+
             }
         };
         // Schedule the task to run every 24 hours
