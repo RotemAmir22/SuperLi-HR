@@ -71,26 +71,29 @@ public class HR_SystemManagement {
         //add employee to list of all employees in network
         addEmployeeToList(employee);
 
-
         //add employee to branch
-        BranchStore branchToAddTo = null;
-        while (true)
+        String answer = "y";
+        while (answer == "y")
         {
             System.out.println("Enter branch id of employee: ");
             int branchNum = scanner.nextInt();
 
             //find branch in network
-            branchToAddTo = findBranchByID(branchNum);
-            if(branchToAddTo == null){
-                System.out.println("Enter ID that does not exists, try again: ");
+            boolean addEm = addEmployeeToBranch(employee,branchNum);
+            if(!addEm){
+                System.out.println("ID entered does not exist, please try again: ");
             }
-            else break;
+            else {
+                System.out.println("Do you want to add the employee to another branch? (enter y/n)");
+                answer = scanner.nextLine();
+            }
         }
-        //add to branch
-        branchToAddTo.addEmployee(employee);
         System.out.println("Employee successfully added to system");
     }
 
+    /**
+     * create new branch in system
+     */
     public void newBranchInNetwork(){
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new branch please enter the following details:");
@@ -106,20 +109,52 @@ public class HR_SystemManagement {
         addBranchStoreToList(branchStore);
         System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
     }
+
+    /**
+     *
+     * @param employee: employee to add
+     * @param branchID: id of branch to add to
+     * @return return ture id successful
+     */
+    public boolean addEmployeeToBranch(Employee employee, int branchID)
+    {
+        BranchStore branch = findBranchByID(branchID);
+        if (branch == null)
+            return false;
+        branch.addEmployee(employee);
+        return true;
+    }
+
+    /**
+     *
+     * @return list of all employees in system
+     */
     public List<Employee> getNetworkEmployees()
     {
         return networkEmployees;
     }
 
+    /**
+     *
+     * @param b: adds this branch to the list of all the branches in the network
+     */
     public void addBranchStoreToList(BranchStore b)
     {
         networkBranches.add(b);
     }
+
+    /**
+     *
+     * @return list of all the branches in the network
+     */
     public List<BranchStore> getNetworkBranches()
     {
         return networkBranches;
     }
 
+    /**
+     * once a week the system asks all the network employees for their schedule constraints
+     */
     public void schedualingFromEmployees()
     {
         HR_SystemManagement system = new HR_SystemManagement();
@@ -150,6 +185,9 @@ public class HR_SystemManagement {
 
     }
 
+    /**
+     * daily the system build the shifts for the next day in each branch
+     */
     public void setShift()
     {
         HR_SystemManagement system = new HR_SystemManagement();
