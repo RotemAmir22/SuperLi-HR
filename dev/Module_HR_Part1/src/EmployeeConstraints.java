@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class EmployeeConstraints {
 
+    enum Days{SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY}
+
     /**
      * Ask every employee about his constraints and update
      */
