@@ -58,8 +58,8 @@ public class BranchStore {
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
-    public void setOpenHours(int[][] openHours) {
-        this.openHours = openHours;
+    public void setOpenHours(int day, int shift, int availability) {
+        this.openHours[day][shift] = availability;
     }
 
 
