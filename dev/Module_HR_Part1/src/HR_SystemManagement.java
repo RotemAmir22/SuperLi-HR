@@ -43,6 +43,29 @@ public class HR_SystemManagement {
     public void addEmployeeToList(Employee e){this.networkEmployees.add(e);}
 
     /**
+     *
+     * @param employee: gets employee and adds to the employee
+     */
+    public void addQualificationToEmployee(Employee employee)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String answer = "y";
+        System.out.println("Add qualification to new Employee: ");
+        //add qualification to employee - only one when it is a new employee
+        while (Objects.equals(answer, "y")) {
+            System.out.println("Choose from the following, please enter the number of the role");
+            Role[] roles = Role.values();
+            for (int i = 0; i < roles.length; i++) {
+                System.out.println(i + " - " + roles[i]);
+            }
+            int qualification = scanner.nextInt();
+            employee.addRole(roles[qualification]);
+            System.out.println("Would you like to change another days open hours? (enter y/n)");
+            answer = scanner.nextLine();
+
+        }
+    }
+    /**
      * add a new employee to system
      */
     public void newEmployeeInNetwork() {
@@ -72,24 +95,10 @@ public class HR_SystemManagement {
         addEmployeeToList(employee);
 
         //add employee to branch
-        String answer = "y";
-        while (Objects.equals(answer, "y"))
-        {
-            System.out.println("Enter branch id of employee: ");
-            int branchNum = scanner.nextInt();
+        addEmployeeToBranch(employee);
 
-            //find branch in network
-            boolean addEm = addEmployeeToBranch(employee,branchNum);
-            if(!addEm){
-                System.out.println("ID entered does not exist, please try again: ");
-            }
-            else {
-                System.out.println("Do you want to add the employee to another branch? (enter y/n)");
-                answer = scanner.nextLine();
-            }
-        }
-
-        //ask HR for employee qualifications
+        //add qualifications
+        addQualificationToEmployee(employee);
 
         System.out.println("Employee successfully added to system");
     }
@@ -146,18 +155,30 @@ public class HR_SystemManagement {
     }
 
     /**
-     *
+     * function asks the user what branch to add to
      * @param employee: employee to add
-     * @param branchID: id of branch to add to
-     * @return return ture id successful
      */
-    public boolean addEmployeeToBranch(Employee employee, int branchID)
+    public void addEmployeeToBranch(Employee employee)
     {
-        BranchStore branch = findBranchByID(branchID);
-        if (branch == null)
-            return false;
-        branch.addEmployee(employee);
-        return true;
+        //add employee to branch
+        String answer = "y";
+        Scanner scanner = new Scanner(System.in);
+        while (Objects.equals(answer, "y"))
+        {
+            System.out.println("Enter branch ID: ");
+            int branchNum = scanner.nextInt();
+
+            //find branch in network
+            BranchStore branch = findBranchByID(branchNum);
+            if(branch== null){
+                System.out.println("ID entered does not exist, please try again: ");
+            }
+            else {
+                branch.addEmployee(employee);
+                System.out.println("Do you want to add the employee to another branch? (enter y/n)");
+                answer = scanner.nextLine();
+            }
+        }
     }
 
     /**
