@@ -56,11 +56,59 @@ public class DailyShift {
     }
 
 
-    //change shift
+    /*change shift
+    * remove from shift
+    * remove from morning shift
+    */
+    public void removeEmployeeFromMorning(Employee employee, Role role)
+    {
+        this.morningShift.remove(role,employee);
+        //update limit
+        employee.setShiftsLimit(employee.getShiftsLimit()+1);
+    }
+
+    //remove from evening shift
+    public void removeEmployeeFromEvening(Employee employee, Role role)
+    {
+        this.eveningShift.remove(role,employee);
+        //update limit
+        employee.setShiftsLimit(employee.getShiftsLimit()+1);
+    }
+    //according to shift this function refers to the right helper
     public void removeEmployeeFromShift(Employee employee, Role role, int shift)
     {
-
+        if(shift == 0)
+            removeEmployeeFromMorning(employee,role);
+        else
+            removeEmployeeFromEvening(employee, role);
     }
+
+    /* add to shift
+    * remove from morning shift
+    */
+    public void addEmployeeFromMorning(Employee employee, Role role)
+    {
+        this.morningShift.put(role,employee);
+        //update limit
+        employee.setShiftsLimit(employee.getShiftsLimit()-1);
+    }
+
+    //remove from evening shift
+    public void addEmployeeFromEvening(Employee employee, Role role)
+    {
+        this.eveningShift.put(role,employee);
+        //update limit
+        employee.setShiftsLimit(employee.getShiftsLimit()-1);
+    }
+    //according to shift this function refers to the right helper
+    public void addEmployeeFromShift(Employee employee, Role role, int shift)
+    {
+        if(shift == 0)
+            addEmployeeFromMorning(employee,role);
+        else
+            addEmployeeFromEvening(employee, role);
+    }
+
     public void showMeSchedualing()
     {
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
