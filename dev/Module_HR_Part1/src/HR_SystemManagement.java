@@ -253,7 +253,6 @@ public class HR_SystemManagement {
      */
     public void setShift()
     {
-        HR_SystemManagement system = new HR_SystemManagement();
         Timer timer = new Timer();
         /*
          * Second function set all branches shifts for one day.
@@ -264,12 +263,12 @@ public class HR_SystemManagement {
             public void run() {
                 List<Employee> listEmployees = new ArrayList<>();
                 //for loop that run on the branch list and collect the employees list
-                for(int i = 0; i<system.getNetworkBranches().size(); i++)
+                for(int i = 0; i<getNetworkBranches().size(); i++)
                 {
                     // get the employees from each branch and set them a new scheduling
-                    listEmployees = system.getNetworkBranches().get(i).getEmployees();
+                    listEmployees = getNetworkBranches().get(i).getEmployees();
                     DailyShift newShift = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours()); // Call the function to run every 24 hours
-                    system.getNetworkBranches().get(i).addShiftToHistory(newShift); // add new shift to branch history
+                    getNetworkBranches().get(i).addShiftToHistory(newShift); // add new shift to branch history
                     assert newShift != null;
                     System.out.println("This shift is set for: "+newShift.getDate().toString());
                 }
