@@ -233,7 +233,7 @@ public class HR_SystemManagement {
         TimerTask dailyShift = new TimerTask() {
             @Override
             public void run() {
-                Hashtable<String, Employee> listEmployees = null;
+                List<Employee> listEmployees = new ArrayList<>();
                 //for loop that run on the branch list and collect the employees list
                 for(int i = 0; i<system.getNetworkBranches().size(); i++)
                 {

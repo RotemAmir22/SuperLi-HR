@@ -12,7 +12,7 @@ public class BranchStore {
     private String name;
     private String address; //cannot change the address once created
     private String phoneNum;
-    private Hashtable<String, Employee> employees;
+    private List<Employee> employees;
     private int[][] openHours;
     private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
 
@@ -23,7 +23,7 @@ public class BranchStore {
         this.phoneNum = phoneNum;
         serialNumCounter++;
         this.branchID = serialNumCounter;
-        this.employees = new Hashtable<String, Employee>();
+        this.employees = new ArrayList<Employee>();
         this.openHours = new int[7][2]; //default value is 0
         this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
 
@@ -48,7 +48,7 @@ public class BranchStore {
     public Map<LocalDate, DailyShift> getShiftsHistory() {
         return shiftsHistory;
     }
-    public Hashtable<String, Employee> getEmployees() {return employees;}
+    public List<Employee> getEmployees() {return employees;}
 
 
     //setters
@@ -69,7 +69,7 @@ public class BranchStore {
      */
     public void addEmployee(Employee employee)
     {
-        this.employees.put(employee.getId(),employee); //returns the value
+        this.employees.add(employee); //returns the value
     }
 
     /**
@@ -78,7 +78,7 @@ public class BranchStore {
      */
     public void removeEmployee(Employee employee)
     {
-        this.employees.remove(employee.getId(), employee); //returns bool
+        this.employees.remove(employee); //returns bool
     }
 
     /**

@@ -11,7 +11,7 @@ public class ShiftOrganizer {
     /**
      * This function organized the daily shift every 24 hours.
      */
-    public static DailyShift DailyShifts(Hashtable<String, Employee> listEmployees, int[][] openHours) {
+    public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours) {
 
         LocalDate currentDate = LocalDate.now();
         LocalDate nextDate = currentDate.plusDays(1);
