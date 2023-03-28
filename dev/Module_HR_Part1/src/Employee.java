@@ -99,14 +99,13 @@ public class Employee {
     }
 
     /**
-     * @param employee: employee to check if is qualified
      * @param role: role to see if employee is qualified
      * @return true if employee can perform this role
      */
-    public boolean canDoRole(Employee employee, Role role)
+    public boolean canDoRole(Role role)
     {
         //go over employees roles
-        for (Role qualification : qualifications) {
+        for (Role qualification : this.qualifications) {
             if (qualification.equals(role))
                 return true;
         }
