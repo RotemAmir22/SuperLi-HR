@@ -207,7 +207,7 @@ public class HR_SystemManagement {
                 {
                     // get the employees from each branch and set them a new scheduling
                     listEmployees = system.getNetworkBranches().get(i).getEmployees();
-                    ShiftOrganizer.DailyShifts(listEmployees); // Call the function to run every 24 hours
+                    ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours()); // Call the function to run every 24 hours
                 }
 
             }
