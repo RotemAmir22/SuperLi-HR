@@ -73,7 +73,7 @@ public class HR_SystemManagement {
 
         //add employee to branch
         String answer = "y";
-        while (answer == "y")
+        while (Objects.equals(answer, "y"))
         {
             System.out.println("Enter branch id of employee: ");
             int branchNum = scanner.nextInt();
@@ -92,6 +92,33 @@ public class HR_SystemManagement {
     }
 
     /**
+     * gets from user a branch that they want to change its open hours
+     * inside this function it calls a helper function that changes a specific day
+     * @param branchStore : store to update
+     */
+    public void updateBranchOpenHours(BranchStore branchStore)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String answer = "y";
+        while (Objects.equals(answer, "y"))
+        {
+            System.out.println("Enter day you want to update (e.g Saturday): ");
+            String day = scanner.nextLine();
+
+            System.out.println("Enter which shift you want to update (morning - 0, evening - 1): ");
+            int shift = scanner.nextInt();
+
+            System.out.println("Do you want the shift to be open or closed (open - 0, closed - 1): ");
+            int availability = scanner.nextInt();
+
+            branchStore.setOpenHours(Days.valueOf(day).ordinal(),shift,availability);
+
+            System.out.println("Would you like to change another days open hours? (enter y/n)");
+            answer = scanner.nextLine();
+
+        }
+    }
+    /**
      * create new branch in system
      */
     public void newBranchInNetwork(){
@@ -104,9 +131,14 @@ public class HR_SystemManagement {
         String address = scanner.nextLine();
         System.out.println("Enter branch's phone number: ");
         String phone = scanner.nextLine();
-
         BranchStore branchStore = new BranchStore(name,address,phone);
         addBranchStoreToList(branchStore);
+
+        System.out.println("Do you want to update the branch's open hours? Now it is 24/7 store (Enter y/n)");
+        String answer = scanner.nextLine();
+        if(answer.equals("y"))
+            updateBranchOpenHours(branchStore);
+
         System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
     }
 
