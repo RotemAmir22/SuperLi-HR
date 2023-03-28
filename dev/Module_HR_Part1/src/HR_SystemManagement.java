@@ -266,7 +266,8 @@ public class HR_SystemManagement {
                 {
                     // get the employees from each branch and set them a new scheduling
                     listEmployees = system.getNetworkBranches().get(i).getEmployees();
-                    ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours()); // Call the function to run every 24 hours
+                    DailyShift newShift = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours()); // Call the function to run every 24 hours
+                    system.getNetworkBranches().get(i).addShiftToHistory(newShift); // add new shift to branch history
                 }
 
             }
@@ -286,6 +287,7 @@ public class HR_SystemManagement {
         system.newEmployeeInNetwork();
         system.schedualingFromEmployees();
         system.setShift();
+        system.getNetworkBranches().get(0).showShiftByDate("2023-03-28");
 
     }
     /*
