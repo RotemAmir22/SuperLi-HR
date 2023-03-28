@@ -270,6 +270,8 @@ public class HR_SystemManagement {
                     listEmployees = system.getNetworkBranches().get(i).getEmployees();
                     DailyShift newShift = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours()); // Call the function to run every 24 hours
                     system.getNetworkBranches().get(i).addShiftToHistory(newShift); // add new shift to branch history
+                    assert newShift != null;
+                    System.out.println("This shift is set for: "+newShift.getDate().toString());
                 }
 
             }
@@ -289,7 +291,7 @@ public class HR_SystemManagement {
         system.newEmployeeInNetwork();
         system.schedualingFromEmployees();
         system.setShift();
-        system.getNetworkBranches().get(0).showShiftByDate("2023-03-28");
+        //system.getNetworkBranches().get(0).showShiftByDate("2023-03-28");
 
     }
     /*
