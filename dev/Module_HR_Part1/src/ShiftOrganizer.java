@@ -18,6 +18,17 @@ public class ShiftOrganizer {
 
         //create a new daily shift
         DailyShift dailyShift = new DailyShift(nextDate);
+        /* First, get tomorrow date */
+        DayOfWeek tomorrow = LocalDate.now().plusDays(1).getDayOfWeek();
+        Locale locale = Locale.ENGLISH;
+        String tomorrowString = tomorrow.getDisplayName(TextStyle.FULL, locale);
+
+        int day = Days.valueOf(tomorrowString).ordinal();
+        if(openHours[day][0] == 1 && openHours[day][1] == 1)
+        {
+            System.out.println("Tomorrow this branch is close.");
+            return null;
+        }
 
         //get information from manager
         System.out.println("Hello, Today's date: " + currentDate);
@@ -45,13 +56,6 @@ public class ShiftOrganizer {
         }
         /*
          * In this part we move on the employees and check who can fill which position
-         * First, get tomorrow date
-         */
-        DayOfWeek tomorrow = LocalDate.now().plusDays(1).getDayOfWeek();
-        Locale locale = Locale.ENGLISH;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE", locale);
-        String tomorrowString = tomorrow.getDisplayName(TextStyle.FULL, locale);
-        /*
          * We will insert those maps to the new DailyShift
          */
         Map<Role, Employee> morningShift = null;
@@ -74,7 +78,7 @@ public class ShiftOrganizer {
                 /*
                  * The employee can work both shifts
                  */
-                if(constraints[days.get(tomorrowString)][0] && constraints[days.get(tomorrowString)][1])
+                if(constraints[days.get(tomorrowString)][0] && constraints[days.get(tomorrowString)][1] && openHours[day][0] == 0 && openHours[day][1] == 0)
                 {
                     shiftChoice = random.nextInt(2);
                     if(shiftChoice == 0)
@@ -88,14 +92,14 @@ public class ShiftOrganizer {
                 /*
                  * The employee can work only morning shift
                  */
-                else if(constraints[days.get(tomorrowString)][0])
+                else if(constraints[days.get(tomorrowString)][0] && openHours[day][0] == 0)
                 {
                     morningShift.put(Role.valueOf(role), listEmployees.get(role));
                 }
                 /*
                  * The employee can work only evening shift
                  */
-                else if(constraints[days.get(tomorrowString)][1])
+                else if(constraints[days.get(tomorrowString)][1] && openHours[day][1] == 0)
                 {
                     eveningShift.put(Role.valueOf(role), listEmployees.get(role));
                 }
@@ -103,8 +107,6 @@ public class ShiftOrganizer {
                  * The employee can't work either
                  */
                 else{continue;}
-
-
                 /*
                  * Set the limitation of the employee
                  * He can't work more than 6 shifts a week
@@ -124,12 +126,6 @@ public class ShiftOrganizer {
         dailyShift.setMorningShift(morningShift);
         dailyShift.setEveningShift(eveningShift);
 
-        // Implement your DailyShifts function here
-        // This function will be called every 24 hours
-        // Ask the constraints from HR system
-        // Save the result in a list
-        // Run on list and fill the shifts (morning and evening)
-        // create new DailyShift and return it.
-        return null;
+        return dailyShift;
     }
 }
