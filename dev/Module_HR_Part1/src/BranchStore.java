@@ -125,5 +125,20 @@ public class BranchStore {
         LocalDate date = LocalDate.parse(dateString);
         this.shiftsHistory.get(date).showMeSchedualing();
     }
+
+    /**
+     * finds employee in branch by ID
+     * @param ID: id to search
+     * @return return the employee or returns null
+     */
+    public Employee findEmployeeInBranch(String ID)
+    {
+        for (Employee employee : employees) {
+            if (employee.getId()==ID) {
+                return employee;
+            }
+        }
+        return null;
+    }
 }
 

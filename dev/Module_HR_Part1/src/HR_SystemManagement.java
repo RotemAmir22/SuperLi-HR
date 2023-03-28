@@ -1,6 +1,7 @@
 package Module_HR_Part1.src;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -218,7 +219,7 @@ public class HR_SystemManagement {
     /**
      * once a week the system asks all the network employees for their schedule constraints
      */
-    public void schedualingFromEmployees()
+    public void schedulingFromEmployees()
     {
         /*
          * First function ask all the employees in all branches to give constraints
@@ -253,6 +254,69 @@ public class HR_SystemManagement {
         }
     }
 
+    /**
+     * HR manager can change a shift schedule.
+     * this function asks all the required information to do so
+     */
+    public void changeShiftSchedule()
+    {
+        String answer = "y";
+        while (Objects.equals(answer, "y"))
+        {
+            System.out.println("Hello, please answer the following questions to update a shift:");
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Enter Branch Store ID that you want to update? ");
+            int branchID = scanner.nextInt();
+
+            //find branch
+            BranchStore branch = findBranchByID(branchID);
+            while (branch == null)
+            {
+                System.out.println("Invalid Branch Store ID, please try again ");
+                branchID = scanner.nextInt();
+                branch = findBranchByID(branchID);
+            }
+
+            String dateString=scanner.nextLine();
+            System.out.println("What date? ");
+            dateString=scanner.nextLine();
+            LocalDate date = LocalDate.parse(dateString);
+
+            System.out.println("Morning (0) or Evening (1) shift? (enter number)");
+            int shift = scanner.nextInt();
+
+            System.out.println("Add (1) or Remove (1) employee? (enter number)");
+            int choice = scanner.nextInt();
+
+            String employeeID = scanner.nextLine();
+            System.out.println("Enter employees ID");
+            employeeID = scanner.nextLine();
+
+            //find employee
+            Employee employee = branch.findEmployeeInBranch(employeeID);
+            while (employee == null)
+            {
+                System.out.println("Invalid Employee ID, please try again ");
+                employeeID = scanner.nextLine();
+                employee = branch.findEmployeeInBranch(employeeID);
+            }
+
+            System.out.println("If you are: ");
+            System.out.println("- Adding an employee, enter role you want to change to. ");
+            System.out.println("- Removing an employee, enter current role. ");
+            System.out.println("Enter the number of the role from the following ");
+            Role[] roles = Role.values();
+            for (int i = 0; i < roles.length; i++) {
+                System.out.println(i + " - " + roles[i]);
+            }
+            int qualification = scanner.nextInt();
+            ShiftOrganizer.changeShift(branch,date , shift, choice, employee, roles[qualification]);
+            answer = scanner.nextLine();
+            System.out.println("SHIFT UPDATED\n\nDo you wish to update another shift? (enter y/n)");
+            answer = scanner.nextLine();
+        }
+
+    }
 
     /**
      * Main function
@@ -263,9 +327,10 @@ public class HR_SystemManagement {
         HR_SystemManagement system = new HR_SystemManagement();
         system.newBranchInNetwork();
         system.newEmployeeInNetwork();
-        system.schedualingFromEmployees();
+        system.schedulingFromEmployees();
         system.setShift();
-        system.getNetworkBranches().get(0).showShiftByDate("2023-03-29");
+        system.getNetworkBranches().get(0).showShiftByDate("2023-03-30");
+        system.changeShiftSchedule();
 
     }
     /*
