@@ -1,23 +1,22 @@
 package Module_HR_Part1.src;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ShiftManager {
 
-    private String firstName;
-    private String lastName;
+    private String fullName;
     private String id;
     private List<ShiftM_Permissions> permissions;
-    private Date shiftDate; //date of shift
+    private LocalDate shiftDate; //date of shift
     private int shiftSlot; //morning - 0  or evening shift - 1
 
     //constructor
-    public ShiftManager(String firstName, String lastName, String id, Date shiftDate, int shiftSlot) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public ShiftManager(String name, String id, LocalDate shiftDate, int shiftSlot) {
+        this.fullName = name;
         this.id = id;
         this.shiftDate = shiftDate;
         this.shiftSlot = shiftSlot;
@@ -31,11 +30,10 @@ public class ShiftManager {
     }
 
     //getters
-    public String getFirstName() {return firstName;}
-    public String getLastName() {return lastName;}
+    public String getFullName() {return fullName;}
     public String getId() {return id;}
     public List<ShiftM_Permissions> getPermissions() {return permissions;}
-    public Date getShiftDate() {return shiftDate;}
+    public LocalDate getShiftDate() {return shiftDate;}
     public int getShiftSlot() {return shiftSlot;}
 
     /**

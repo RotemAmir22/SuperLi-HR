@@ -2,7 +2,6 @@ package Module_HR_Part1.src;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 
@@ -10,14 +9,27 @@ public class ShiftOrganizer {
 
     public static void checkShiftValidation(Map<String, Integer> rolesAmount)
     {
-        for(Role role: Role.values())
+        /*
+        force the HR manager to choose shift manager
+         */
+        if(rolesAmount.get("SHIFTMANAGER") != 0)
         {
-            if(rolesAmount.get(role.toString()) > 0)
+            for(Role role: Role.values())
             {
-                System.out.println("Daily shift is INVALID !!!");
-                break;
+                if(rolesAmount.get(role.toString()) > 0)
+                {
+                    System.out.println("Daily shift is INVALID !!!");
+                    break;
+                }
             }
         }
+        else{System.out.println("Daily shift is invalid - Every shift required a shift-manager!");}
+
+    }
+    public static void createShiftManager(Employee e, LocalDate shiftDate, int shiftSlot)
+    {
+        ShiftManagerGeneratore tmp = new ShiftManagerGeneratore();
+        tmp.CreateShiftManager(e.getName(), e.getId(),shiftDate,shiftSlot);
     }
     /**
      * This function publish a suggestion for a daily shift every 24 hours.
@@ -111,12 +123,14 @@ public class ShiftOrganizer {
                      * The employee can work only morning shift
                      */
                     else if (constraints[days.get(tomorrowString)][0] && openHours[day][0] == 0) {
+                        shiftChoice =0;
                         morningShift.put(roleName, employee);
                     }
                     /*
                      * The employee can work only evening shift
                      */
                     else if (constraints[days.get(tomorrowString)][1] && openHours[day][1] == 0) {
+                        shiftChoice = 1;
                         eveningShift.put(roleName, employee);
                     }
                     /*
@@ -130,6 +144,10 @@ public class ShiftOrganizer {
                      * He can't work more than 6 shifts a week
                      * Also set the needed roles to be -1
                      */
+                    if(employee.canDoRole(Role.valueOf("SHIFTMANAGER")))
+                    {
+                        createShiftManager(employee, nextDate, shiftChoice);
+                    }
                     employee.setShiftsLimit(employee.getShiftsLimit() - 1);
                     key = rolesAmount.get(String.valueOf(roleName));
                     key--;
