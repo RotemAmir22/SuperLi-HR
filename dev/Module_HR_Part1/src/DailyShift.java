@@ -13,12 +13,14 @@ public class DailyShift {
     private File endOfDayReport;
     private Map<Role, Employee> morningShift;
     private Map<Role, Employee> eveningShift;
+    private List<ShiftManager> shiftManagers;
 
     //constructor
     public DailyShift(LocalDate date) {
         this.date = date;
         this.morningShift = new HashMap<Role,Employee>();
         this.eveningShift = new HashMap<Role,Employee>();
+        this.shiftManagers= new ArrayList<ShiftManager>();
     }
 
     //getters
@@ -34,6 +36,7 @@ public class DailyShift {
     public File getEndOfDayReport() {
         return endOfDayReport;
     }
+    public List<ShiftManager> getShiftManagers() {return shiftManagers;}
 
     //setters
     public void setMorningShift(Map<Role, Employee> morningShift) {
@@ -45,7 +48,19 @@ public class DailyShift {
     public void setEndOfDayReport(File endOfDayReport) {
         this.endOfDayReport = endOfDayReport;
     }
+    public void addShiftManager(ShiftManager shiftManager) {
+        this.shiftManagers.add(shiftManager);
+    }
+    public void removeShiftManager(ShiftManager shiftManager) {
+        this.shiftManagers.remove(shiftManager);
+    }
 
+
+    //change shift
+    public void removeEmployeeFromShift(Employee employee, Role role, int shift)
+    {
+
+    }
     public void showMeSchedualing()
     {
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
