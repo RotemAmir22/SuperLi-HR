@@ -15,11 +15,11 @@ public class EmployeeConstraints {
     {
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
-        int counter = 6; // 7 days a week, include 0
+        int counter = 0; // 7 days a week, include 0
         Days[] days = Days.values();
 
         System.out.println("Hello " + e.getName());
-        while(counter >= 0)
+        while(counter < 7)
         {
             System.out.println("Please set your choices for " + days[counter]);
             System.out.println("1. Morning shift");
@@ -48,10 +48,12 @@ public class EmployeeConstraints {
                 case 4:
                     e.setConstrains(counter,0, false);
                     e.setConstrains(counter,1, false);
+                    break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
+                    counter --;
             }
-            counter --;
+            counter ++;
         }
 
     }

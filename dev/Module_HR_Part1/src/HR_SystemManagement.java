@@ -134,6 +134,8 @@ public class HR_SystemManagement {
         return networkEmployees;
     }
 
+    public int getNumOfEmployee(){return networkEmployees.size();}
+
     /**
      *
      * @param b: adds this branch to the list of all the branches in the network
@@ -157,7 +159,6 @@ public class HR_SystemManagement {
      */
     public void schedualingFromEmployees()
     {
-        HR_SystemManagement system = new HR_SystemManagement();
         /*
          * First function ask all the employees in all branches to give constraints
          */
@@ -172,10 +173,11 @@ public class HR_SystemManagement {
                     cancel();
                 } else {
                     System.out.println("TIME TO SCHEDULE CONSTRAINTS \u231B");
-                    for(int i = 0; i< system.getNetworkEmployees().size(); i ++)
+                    for(int i = 0; i< getNumOfEmployee(); i ++)
                     {
-                        EmployeeConstraints.askForConstraints(system.getNetworkEmployees().get(i));
+                        EmployeeConstraints.askForConstraints(getNetworkEmployees().get(i));
                     }
+                    System.out.println("DONE.");
                 }
             }
 
@@ -223,6 +225,8 @@ public class HR_SystemManagement {
         HR_SystemManagement system = new HR_SystemManagement();
         system.newBranchInNetwork();
         system.newEmployeeInNetwork();
+        system.schedualingFromEmployees();
+        system.setShift();
 
     }
     /*
