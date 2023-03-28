@@ -60,9 +60,37 @@ public class HR_SystemManagement {
             }
             int qualification = scanner.nextInt();
             employee.addRole(roles[qualification]);
-            System.out.println("Would you like to change another days open hours? (enter y/n)");
+            System.out.println("Would you like to add more qualifications? (enter y/n)");
             answer = scanner.nextLine();
 
+        }
+    }
+
+    /**
+     * function asks the user what branch to add to
+     * @param employee: employee to add
+     */
+    public void addEmployeeToBranch(Employee employee)
+    {
+        //add employee to branch
+        String answer = "y";
+        Scanner scanner = new Scanner(System.in);
+        while (Objects.equals(answer, "y"))
+        {
+            System.out.println("Enter branch ID: ");
+            int branchNum = scanner.nextInt();
+
+            //find branch in network
+            BranchStore branch = findBranchByID(branchNum);
+            if(branch== null){
+                System.out.println("ID entered does not exist, please try again: ");
+            }
+            else {
+                branch.addEmployee(employee);
+                Scanner scanner1 = new Scanner(System.in);
+                System.out.println("Do you want to add the employee to another branch? (enter y/n)");
+                answer = scanner1.nextLine();
+            }
         }
     }
     /**
@@ -154,32 +182,7 @@ public class HR_SystemManagement {
         System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
     }
 
-    /**
-     * function asks the user what branch to add to
-     * @param employee: employee to add
-     */
-    public void addEmployeeToBranch(Employee employee)
-    {
-        //add employee to branch
-        String answer = "y";
-        Scanner scanner = new Scanner(System.in);
-        while (Objects.equals(answer, "y"))
-        {
-            System.out.println("Enter branch ID: ");
-            int branchNum = scanner.nextInt();
 
-            //find branch in network
-            BranchStore branch = findBranchByID(branchNum);
-            if(branch== null){
-                System.out.println("ID entered does not exist, please try again: ");
-            }
-            else {
-                branch.addEmployee(employee);
-                System.out.println("Do you want to add the employee to another branch? (enter y/n)");
-                answer = scanner.nextLine();
-            }
-        }
-    }
 
     /**
      *
