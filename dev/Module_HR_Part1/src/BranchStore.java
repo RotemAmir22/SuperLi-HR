@@ -24,7 +24,7 @@ public class BranchStore {
         serialNumCounter++;
         this.branchID = serialNumCounter;
         this.employees = new Hashtable<String, Employee>();
-        this.openHours = new int[2][7]; //default value is 0
+        this.openHours = new int[7][2]; //default value is 0
         this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
 
     }
