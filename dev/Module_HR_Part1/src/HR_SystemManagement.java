@@ -88,6 +88,9 @@ public class HR_SystemManagement {
                 answer = scanner.nextLine();
             }
         }
+
+        //ask HR for employee qualifications
+
         System.out.println("Employee successfully added to system");
     }
 
