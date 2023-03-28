@@ -60,7 +60,8 @@ public class HR_SystemManagement {
             }
             int qualification = scanner.nextInt();
             employee.addRole(roles[qualification]);
-            System.out.println("Would you like to add more qualifications? (enter y/n)");
+            answer=scanner.nextLine();
+            System.out.println("Would you like to add more qualifications? (Enter y/n): ");
             answer = scanner.nextLine();
 
         }
@@ -87,9 +88,9 @@ public class HR_SystemManagement {
             }
             else {
                 branch.addEmployee(employee);
-                Scanner scanner1 = new Scanner(System.in);
-                System.out.println("Do you want to add the employee to another branch? (enter y/n)");
-                answer = scanner1.nextLine();
+                answer=scanner.nextLine();
+                System.out.println("Do you want to add the employee to another branch? (enter y/n): ");
+                answer = scanner.nextLine();
             }
         }
     }
@@ -112,7 +113,7 @@ public class HR_SystemManagement {
         String bankAccount = scanner.nextLine();
         System.out.println("Enter employee's salary: ");
         double salary = scanner.nextDouble();
-        System.out.println("Enter computer path of employee's terms of employment:\n");
+        System.out.println("Enter computer path of employee's terms of employment: ");
         String filePath = "";
 
         //create an employee generator
@@ -153,6 +154,7 @@ public class HR_SystemManagement {
 
             branchStore.setOpenHours(Days.valueOf(day).ordinal(),shift,availability);
 
+            answer=scanner.nextLine();
             System.out.println("Would you like to change another days open hours? (enter y/n)");
             answer = scanner.nextLine();
 
