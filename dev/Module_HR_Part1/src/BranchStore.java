@@ -114,5 +114,16 @@ public class BranchStore {
         }
 
     }
+
+    /**
+     * print shift by given date
+     * @param dateString: date in string
+     */
+    public void showShiftByDate(String dateString)
+    {
+        //convert string to key type LocalDate
+        LocalDate date = LocalDate.parse(dateString);
+        this.shiftsHistory.get(date).showMeSchedualing();
+    }
 }
 
