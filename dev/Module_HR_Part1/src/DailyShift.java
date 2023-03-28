@@ -49,10 +49,6 @@ public class DailyShift {
     public void showMeSchedualing()
     {
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
-        if(dayOfWeek.toString().equals("SATURDAY"))
-        {
-            System.out.println("No shifts for Saturday");
-        }
         System.out.println("Daily shift - "+this.date+"\nMORNING:\n");
         Map<Role, Employee> sortedMap = new TreeMap<>(morningShift);
         for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
@@ -60,17 +56,12 @@ public class DailyShift {
             Employee e = entry.getValue();
             System.out.println("["+key.name()+": "+e.getName()+"]\n");
         }
-        if(!(dayOfWeek.toString().equals("Friday")))
-        {
-            System.out.println("EVENING:\n");
-            sortedMap = new TreeMap<>(eveningShift);
-            for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
-                Role key = entry.getKey();
-                Employee e = entry.getValue();
-                System.out.println("["+key.name()+": "+e.getName()+"]\n");
-            }
+        System.out.println("EVENING:\n");
+        sortedMap = new TreeMap<>(eveningShift);
+        for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
+            Role key = entry.getKey();
+            Employee e = entry.getValue();
+            System.out.println("["+key.name()+": "+e.getName()+"]\n");
         }
-
     }
-
 }

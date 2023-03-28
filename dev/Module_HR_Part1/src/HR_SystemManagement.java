@@ -223,28 +223,12 @@ public class HR_SystemManagement {
         /*
          * First function ask all the employees in all branches to give constraints
          */
-        Timer timer = new Timer();
-        TimerTask weeklyConstraints = new TimerTask() {
-            private long startTime = System.currentTimeMillis();
-            public void run() {
-                // This code will be executed every week until 3 days have passed
-                if (System.currentTimeMillis() - startTime > 259200000) {
-                    // Cancel the timer after 3 days
-                    System.out.println("TIME IS UP \u231B if you don't give anything, your shifts are open!");
-                    cancel();
-                } else {
-                    System.out.println("TIME TO SCHEDULE CONSTRAINTS \u231B");
-                    for(int i = 0; i< getNumOfEmployee(); i ++)
-                    {
-                        EmployeeConstraints.askForConstraints(getNetworkEmployees().get(i));
-                    }
-                    System.out.println("DONE.");
-                }
-            }
-
-        };
-        // Schedule the task to run every week
-        timer.schedule(weeklyConstraints, 0,604800000);
+        System.out.println("TIME TO SCHEDULE CONSTRAINTS \u231B");
+        for(int i = 0; i< getNumOfEmployee(); i ++)
+        {
+            EmployeeConstraints.askForConstraints(getNetworkEmployees().get(i));
+        }
+        System.out.println("DONE.");
 
     }
 
@@ -253,30 +237,20 @@ public class HR_SystemManagement {
      */
     public void setShift()
     {
-        Timer timer = new Timer();
         /*
          * Second function set all branches shifts for one day.
          */
-        timer = new Timer();
-        TimerTask dailyShift = new TimerTask() {
-            @Override
-            public void run() {
-                List<Employee> listEmployees = new ArrayList<>();
-                //for loop that run on the branch list and collect the employees list
-                for(int i = 0; i<getNetworkBranches().size(); i++)
-                {
-                    // get the employees from each branch and set them a new scheduling
-                    listEmployees = getNetworkBranches().get(i).getEmployees();
-                    DailyShift newShift = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours()); // Call the function to run every 24 hours
-                    getNetworkBranches().get(i).addShiftToHistory(newShift); // add new shift to branch history
-                    assert newShift != null;
-                    System.out.println("This shift is set for: "+newShift.getDate().toString());
-                }
-
-            }
-        };
-        // Schedule the task to run every 24 hours
-        timer.schedule(dailyShift, 0, 24 * 60 * 60 * 1000);
+        List<Employee> listEmployees = new ArrayList<>();
+        //for loop that run on the branch list and collect the employees list
+        for(int i = 0; i<getNetworkBranches().size(); i++)
+        {
+            // get the employees from each branch and set them a new scheduling
+            listEmployees = getNetworkBranches().get(i).getEmployees();
+            DailyShift newShift = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours()); // Call the function to run every 24 hours
+            getNetworkBranches().get(i).addShiftToHistory(newShift); // add new shift to branch history
+            assert newShift != null;
+            System.out.println("This shift is set for: "+newShift.getDate().toString());
+        }
     }
 
     /**
@@ -290,7 +264,7 @@ public class HR_SystemManagement {
         system.newEmployeeInNetwork();
         system.schedualingFromEmployees();
         system.setShift();
-        //system.getNetworkBranches().get(0).showShiftByDate("2023-03-28");
+        system.getNetworkBranches().get(0).showShiftByDate("2023-03-29");
 
     }
     /*

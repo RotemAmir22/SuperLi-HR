@@ -8,6 +8,17 @@ import java.util.*;
 
 public class ShiftOrganizer {
 
+    public static void checkShiftValidation(Map<String, Integer> rolesAmount)
+    {
+        for(Role role: Role.values())
+        {
+            if(rolesAmount.get(role.toString()) > 0)
+            {
+                System.out.println("Daily shift is INVALID !!!");
+                break;
+            }
+        }
+    }
     /**
      * This function publish a suggestion for a daily shift every 24 hours.
      */
@@ -82,57 +93,57 @@ public class ShiftOrganizer {
             /*
             Check if there is need for this role, if the employee can do it, and if he doesn't pass his weekly limitation
              */
-            if (amount > 0 && listEmployees.get(i).canDoRole(roleName) && listEmployees.get(i).getShiftsLimit() > 0 ){
-                constraints = listEmployees.get(i).getConstraints();
-                /*
-                 * The employee can work both shifts
-                 */
-                if(constraints[days.get(tomorrowString)][0] && constraints[days.get(tomorrowString)][1] && openHours[day][0] == 0 && openHours[day][1] == 0)
-                {
-                    shiftChoice = random.nextInt(2);
-                    if(shiftChoice == 0)
-                    {
-                        morningShift.put(roleName, listEmployees.get(i));
+            for (Employee employee : listEmployees) {
+                if (amount > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0) {
+                    constraints = employee.getConstraints();
+                    /*
+                     * The employee can work both shifts
+                     */
+                    if (constraints[days.get(tomorrowString)][0] && constraints[days.get(tomorrowString)][1] && openHours[day][0] == 0 && openHours[day][1] == 0) {
+                        shiftChoice = random.nextInt(2);
+                        if (shiftChoice == 0) {
+                            morningShift.put(roleName, employee);
+                        } else {
+                            eveningShift.put(roleName, employee);
+                        }
                     }
+                    /*
+                     * The employee can work only morning shift
+                     */
+                    else if (constraints[days.get(tomorrowString)][0] && openHours[day][0] == 0) {
+                        morningShift.put(roleName, employee);
+                    }
+                    /*
+                     * The employee can work only evening shift
+                     */
+                    else if (constraints[days.get(tomorrowString)][1] && openHours[day][1] == 0) {
+                        eveningShift.put(roleName, employee);
+                    }
+                    /*
+                     * The employee can't work either
+                     */
                     else {
-                        eveningShift.put(roleName, listEmployees.get(i));
+                        continue;
                     }
+                    /*
+                     * Set the limitation of the employee
+                     * He can't work more than 6 shifts a week
+                     * Also set the needed roles to be -1
+                     */
+                    employee.setShiftsLimit(employee.getShiftsLimit() - 1);
+                    key = rolesAmount.get(String.valueOf(roleName));
+                    key--;
+                    rolesAmount.put(String.valueOf(roleName), key);
                 }
-                /*
-                 * The employee can work only morning shift
-                 */
-                else if(constraints[days.get(tomorrowString)][0] && openHours[day][0] == 0)
-                {
-                    morningShift.put(roleName, listEmployees.get(i));
-                }
-                /*
-                 * The employee can work only evening shift
-                 */
-                else if(constraints[days.get(tomorrowString)][1] && openHours[day][1] == 0)
-                {
-                    eveningShift.put(roleName, listEmployees.get(i));
-                }
-                /*
-                 * The employee can't work either
-                 */
-                else{continue;}
-                /*
-                 * Set the limitation of the employee
-                 * He can't work more than 6 shifts a week
-                 * Also set the needed roles to be -1
-                 */
-                listEmployees.get(i).setShiftsLimit(listEmployees.get(i).getShiftsLimit() - 1);
-                key = rolesAmount.get(String.valueOf(roleName));
-                key--;
-                rolesAmount.put(String.valueOf(roleName), key);
             }
+
         }
         /*
         Set the shifts
          */
         dailyShift.setMorningShift(morningShift);
         dailyShift.setEveningShift(eveningShift);
-
+        checkShiftValidation(rolesAmount);
         return dailyShift;
     }
 }
