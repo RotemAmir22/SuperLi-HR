@@ -40,7 +40,13 @@ public class ShiftOrganizer {
          */
         LocalDate currentDate = LocalDate.now();
         LocalDate nextDate = currentDate.plusDays(1);
-
+        /*
+        Reset employee's limit of shifts if the week is over
+         */
+        if(currentDate.toString().equals("Saturday"))
+        {
+            for (Employee employee : listEmployees){employee.setShiftsLimit(6);}
+        }
         //create a new daily shift
         DailyShift dailyShift = new DailyShift(nextDate);
         /* First, get tomorrow date */
