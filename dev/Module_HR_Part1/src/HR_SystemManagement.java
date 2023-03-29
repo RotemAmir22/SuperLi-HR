@@ -38,6 +38,20 @@ public class HR_SystemManagement {
     }
 
     /**
+     * searches for employee in network
+     * @param ID: uses ID to identify employee
+     * @returnif found returns employee, null if not found
+     */
+    public Employee findEmployeeByID(String ID) {
+        for (Employee employee : networkEmployees) {
+            if (Objects.equals(employee.getId(), ID)) {
+                return employee;
+            }
+        }
+        return null;
+    }
+
+    /**
      *
      * @param e: add employee to list of all networks employees
      */
@@ -321,6 +335,17 @@ public class HR_SystemManagement {
             System.out.println("SHIFT UPDATED\n\nDo you wish to update another shift? (enter y/n)");
             answer = scanner.nextLine();
         }
+
+    }
+
+    public void updateEmployeeConstrainsByID()
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Hello, Enter your ID to update your shift constraints: ");
+        String employeeId = scanner.nextLine();
+        Employee employee = findEmployeeByID(employeeId);
+        EmployeeConstraints.updateConstraints(employee);
+        System.out.println("Constraints updated ");
 
     }
 

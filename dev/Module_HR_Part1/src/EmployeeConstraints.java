@@ -3,6 +3,7 @@ package Module_HR_Part1.src;
 import Module_HR_Part1.src.Employee;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class EmployeeConstraints {
@@ -56,5 +57,30 @@ public class EmployeeConstraints {
             counter ++;
         }
 
+    }
+
+    public static void updateConstraints(Employee employee)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String answer = "y";
+        System.out.println("Hello "+employee.getName()+" enter the following to update your constraints");
+        while (Objects.equals(answer, "y"))
+        {
+            System.out.println("Enter day you want to update (e.g Saturday): ");
+            String day = scanner.nextLine();
+
+            System.out.println("Enter which shift you want to update (morning - 0, evening - 1): ");
+            int shift = scanner.nextInt();
+
+            System.out.println("Enter availability (available - 0, unavailable - 1): ");
+            int availability = scanner.nextInt();
+
+            employee.setConstrains(Days.valueOf(day).ordinal(),shift,(availability == 0));
+
+            answer=scanner.nextLine();
+            System.out.println("Would you like to change another constraint? (enter y/n)");
+            answer = scanner.nextLine();
+
+        }
     }
 }
