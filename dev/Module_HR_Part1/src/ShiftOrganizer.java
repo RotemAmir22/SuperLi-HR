@@ -7,6 +7,9 @@ import java.util.*;
 
 public class ShiftOrganizer {
 
+    enum Shift{Morning, Evening}
+
+
     /**
      * update shift by HR manager
      * @param branchStore: from which store
@@ -26,12 +29,17 @@ public class ShiftOrganizer {
             branchStore.getShiftsHistory().get(date).removeEmployeeFromShift(employee, role, shift);
         }
     }
-    public static void checkShiftValidation(Map<String, Integer> rolesAmount)
+
+    /**
+     * check if the shift is legal
+     * @param rolesAmount: to check if all are update to 0
+     */
+    public static void checkShiftValidation(Map<String, Integer> rolesAmount, int numOfShiftmanagers)
     {
         /*
         force the HR manager to choose shift manager
          */
-        if(rolesAmount.get("SHIFTMANAGER") != 0)
+        if(numOfShiftmanagers != 0)
         {
             for(Role role: Role.values())
             {
@@ -45,29 +53,50 @@ public class ShiftOrganizer {
         else{System.out.println("Daily shift is invalid - Every shift required a shift-manager!");}
 
     }
+
+    /**
+     * create a new shift manager to a specific shift
+     * @param e: the employee for this role
+     * @param shiftDate: the current shift
+     * @param shiftSlot: morning/evening
+     */
     public static void createShiftManager(Employee e, LocalDate shiftDate, int shiftSlot)
     {
         ShiftManagerGeneratore tmp = new ShiftManagerGeneratore();
         tmp.CreateShiftManager(e.getName(), e.getId(),shiftDate,shiftSlot);
     }
+
+    public static void insertIntoMorning(DailyShift dailyShift, Map<Role, Employee> morningShift,Role role, Employee employee)
+    {
+        morningShift.put(role, employee);
+        employee.setShiftsLimit(employee.getShiftsLimit() - 1);
+        dailyShift.setMorningShift(morningShift);
+    }
+
+    public static void insertIntoEvening(DailyShift dailyShift, Map<Role, Employee> eveningShift,Role role, Employee employee)
+    {
+        eveningShift.put(role, employee);
+        employee.setShiftsLimit(employee.getShiftsLimit() - 1);
+        dailyShift.setEveningShift(eveningShift);
+    }
+
     /**
-     * This function publish a suggestion for a daily shift every 24 hours.
+     * The main function in this class. Made the scheduling itself
+     * @param listEmployees: the branches employees
+     * @param openHours: the branches open hours (in this part - day and shift (morning or evening))
+     * @return suggestion of a daily shift for tomorrow
      */
-    public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours) {
-        /*
-        Get the current day, and pull the next for the scheduling
-         */
+    public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours, int shift, DailyShift dailyShift) {
+        /* Shift means Morning/Evening */
+        if(shift !=0 && shift != 1){return null;}
+        /* Get the current day, and pull the next for the scheduling */
         LocalDate currentDate = LocalDate.now();
         LocalDate nextDate = currentDate.plusDays(1);
-        /*
-        Reset employee's limit of shifts if the week is over
-         */
+        /* Reset employee's limit of shifts if the week is over */
         if(currentDate.toString().equals("Saturday"))
         {
             for (Employee employee : listEmployees){employee.setShiftsLimit(6);}
         }
-        //create a new daily shift
-        DailyShift dailyShift = new DailyShift(nextDate);
         /* First, get tomorrow date */
         DayOfWeek tomorrow = LocalDate.now().plusDays(1).getDayOfWeek();
         Locale locale = Locale.ENGLISH;
@@ -89,13 +118,15 @@ public class ShiftOrganizer {
         Map<String, Integer> rolesAmount = new HashMap<String,Integer>();
         Role[] roles = Role.values();
         Scanner scanner = new Scanner(System.in);
+        int numOfShiftmanagers = 0;
         int c;
         int i = 0;
         while(i < roles.length)
         {
             try{
-                System.out.println("How much "+ roles[i] + " do you need for " + nextDate + " shift");
+                System.out.println("How much "+ roles[i] + " do you need for " + nextDate + " "+Shift.values()[shift].toString()+" shift?");
                 c = scanner.nextInt();
+                if(Objects.equals(roles[i].toString(), "SHIFTMANAGER")) {numOfShiftmanagers = c;}
                 rolesAmount.put(String.valueOf(roles[i]), c);
                 i++;
             }
@@ -109,8 +140,7 @@ public class ShiftOrganizer {
          * In this part we move on the employees and check who can fill which position
          * We will insert those maps to the new DailyShift
          */
-        Map<Role, Employee> morningShift = new HashMap<>();
-        Map<Role, Employee> eveningShift = new HashMap<>();
+        Map<Role, Employee> currentShift = new HashMap<>();
         int key;
         boolean[][] constraints;
         Map<String, Integer> days = new HashMap<>();
@@ -118,8 +148,6 @@ public class ShiftOrganizer {
         for(int d = 0; d < 7; d++){days.put(String.valueOf(tmp[d]), d);}
         Role roleName;
         int amount;
-        Random random = new Random();
-        int shiftChoice;
         /*
         This loop will put the employees at positions by role
          */
@@ -127,66 +155,45 @@ public class ShiftOrganizer {
         {
             roleName = Role.valueOf(entry.getKey());
             amount = entry.getValue();
-            /*
-            Check if there is need for this role, if the employee can do it, and if he doesn't pass his weekly limitation
-             */
+            if(roleName == Role.SHIFTMANAGER)
+                numOfShiftmanagers = amount;
+            /* Check if there is need for this role:
+               If the employee can do it, and if he doesn't pass his weekly limitation. */
             for (Employee employee : listEmployees) {
-                if (amount > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0) {
-                    constraints = employee.getConstraints();
-                    /*
-                     * The employee can work both shifts
-                     */
-                    if (constraints[days.get(tomorrowString)][0] && constraints[days.get(tomorrowString)][1] && openHours[day][0] == 0 && openHours[day][1] == 0) {
-                        shiftChoice = random.nextInt(2);
-                        if (shiftChoice == 0) {
-                            morningShift.put(roleName, employee);
-                        } else {
-                            eveningShift.put(roleName, employee);
-                        }
-                    }
-                    /*
-                     * The employee can work only morning shift
-                     */
-                    else if (constraints[days.get(tomorrowString)][0] && openHours[day][0] == 0) {
-                        shiftChoice =0;
-                        morningShift.put(roleName, employee);
-                    }
-                    /*
-                     * The employee can work only evening shift
-                     */
-                    else if (constraints[days.get(tomorrowString)][1] && openHours[day][1] == 0) {
-                        shiftChoice = 1;
-                        eveningShift.put(roleName, employee);
-                    }
-                    /*
-                     * The employee can't work either
-                     */
-                    else {
-                        continue;
-                    }
-                    /*
-                     * Set the limitation of the employee
-                     * He can't work more than 6 shifts a week
-                     * Also set the needed roles to be -1
-                     */
-                    if(employee.canDoRole(Role.valueOf("SHIFTMANAGER")))
+                /* get the employees constraints */
+                constraints = employee.getConstraints();
+                if (amount > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[days.get(tomorrowString)][shift]) {
+                    /* check where the employee can be and update */
+                    if(shift == 0 && !dailyShift.isExistEvening(employee))
                     {
-                        createShiftManager(employee, nextDate, shiftChoice);
+                        key = rolesAmount.get(String.valueOf(roleName));
+                        key--;
+                        rolesAmount.put(String.valueOf(roleName), key);
+                        insertIntoMorning(dailyShift, currentShift, roleName, employee);
+                        dailyShift.setMorningShift(currentShift);
                     }
-                    employee.setShiftsLimit(employee.getShiftsLimit() - 1);
-                    key = rolesAmount.get(String.valueOf(roleName));
-                    key--;
-                    rolesAmount.put(String.valueOf(roleName), key);
+                    else if(shift == 1 && !dailyShift.isExistMorning(employee))
+                    {
+                        key = rolesAmount.get(String.valueOf(roleName));
+                        key--;
+                        rolesAmount.put(String.valueOf(roleName), key);
+                        insertIntoEvening(dailyShift, currentShift,roleName, employee);
+                        dailyShift.setEveningShift(currentShift);
+                    }
+                    else // he can't to either
+                        continue;
+                    /* check if the current added is a shift-manager */
+                    if(currentShift.get(Role.SHIFTMANAGER).getName().equals(employee.getName())) // the last adding
+                    {
+                        createShiftManager(employee, nextDate, shift);
+                    }
+
                 }
             }
 
         }
-        /*
-        Set the shifts
-         */
-        dailyShift.setMorningShift(morningShift);
-        dailyShift.setEveningShift(eveningShift);
-        checkShiftValidation(rolesAmount);
-        return dailyShift;
+        /* Create and set a new shift */
+        checkShiftValidation(rolesAmount, numOfShiftmanagers); // check if there is a problem
+        return dailyShift; //return a new daily shift
     }
 }

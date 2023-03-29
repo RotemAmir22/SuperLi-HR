@@ -238,19 +238,25 @@ public class HR_SystemManagement {
      */
     public void setShift()
     {
+        DailyShift[] newShift = new DailyShift[getNetworkBranches().size()];
         /*
          * Second function set all branches shifts for one day.
          */
         List<Employee> listEmployees = new ArrayList<>();
         //for loop that run on the branch list and collect the employees list
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please choose the required shift to schedule -\n0. Morning\n1. Evening");
+        int c = scanner.nextInt();
         for(int i = 0; i<getNetworkBranches().size(); i++)
         {
+            newShift[i] = new DailyShift(LocalDate.now().plusDays(1));
             // get the employees from each branch and set them a new scheduling
             listEmployees = getNetworkBranches().get(i).getEmployees();
-            DailyShift newShift = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours()); // Call the function to run every 24 hours
-            getNetworkBranches().get(i).addShiftToHistory(newShift); // add new shift to branch history
-            assert newShift != null;
-            System.out.println("This shift is set for: "+newShift.getDate().toString());
+            newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours(), c, newShift[i]);
+            getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
+            assert newShift[i] != null;
+            System.out.println("This shift is set for: "+newShift[i].getDate().toString());
+
         }
     }
 
@@ -322,9 +328,16 @@ public class HR_SystemManagement {
      * Main function
      * @param args
      */
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args){
 
         HR_SystemManagement system = new HR_SystemManagement();
+        LocalDate currentDate = LocalDate.now();
+        /* Reset employee's limit of shifts if the week is over */
+        if(currentDate.toString().equals("Saturday"))
+        {
+            for (Employee employee : system.networkEmployees){employee.setShiftsLimit(6);}
+        }
+
         system.newBranchInNetwork();
         system.newEmployeeInNetwork();
         system.schedulingFromEmployees();

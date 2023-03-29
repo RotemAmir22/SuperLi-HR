@@ -127,4 +127,14 @@ public class DailyShift {
             System.out.println("["+key.name()+": "+e.getName()+"]\n");
         }
     }
+
+    public boolean isExistMorning(Employee e)
+    {
+        return this.morningShift.containsValue(e);
+    }
+
+    public boolean isExistEvening(Employee e)
+    {
+        return this.eveningShift.containsValue(e);
+    }
 }
