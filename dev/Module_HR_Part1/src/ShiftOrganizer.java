@@ -7,6 +7,25 @@ import java.util.*;
 
 public class ShiftOrganizer {
 
+    /**
+     * update shift by HR manager
+     * @param branchStore: from which store
+     * @param date: what date
+     * @param shift: morning -0 evening -1
+     * @param choice: add -1 remove-2
+     * @param employee: employee to update
+     * @param role: what role he is doing
+     */
+    public static void changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role)
+    {
+        if(choice == 1)// add employee
+            branchStore.getShiftsHistory().get(date).addEmployeeFromShift(employee, role, shift);
+
+        else //remove employee
+        {
+            branchStore.getShiftsHistory().get(date).removeEmployeeFromShift(employee, role, shift);
+        }
+    }
     public static void checkShiftValidation(Map<String, Integer> rolesAmount)
     {
         /*
