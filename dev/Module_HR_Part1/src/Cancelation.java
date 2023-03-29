@@ -8,10 +8,10 @@ public class Cancelation {
     private int cancelID;
     private static int serialNumCounter=0;
 
-    public Cancelation(String itemName, int aamount)
+    public Cancelation(String itemName, int amount)
     {
         this.item = itemName;
-        this.amount = aamount;
+        this.amount = amount;
         serialNumCounter++;
         this.cancelID = serialNumCounter;
     }

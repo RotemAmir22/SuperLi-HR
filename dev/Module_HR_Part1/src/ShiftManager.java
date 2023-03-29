@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class ShiftManager {
 
@@ -13,6 +14,7 @@ public class ShiftManager {
     private List<ShiftM_Permissions> permissions;
     private LocalDate shiftDate; //date of shift
     private int shiftSlot; //morning - 0  or evening shift - 1
+    private List<Cancelation> cancelations;
 
     //constructor
     public ShiftManager(String name, String id, LocalDate shiftDate, int shiftSlot) {
@@ -27,6 +29,8 @@ public class ShiftManager {
         this.permissions.add(cancellation);
         ShiftM_Permissions manageStaff = new ShiftM_Permissions("manage staff", "shift manager can manage shift staff");
         this.permissions.add(manageStaff);
+
+        this.cancelations=new ArrayList<Cancelation>();
     }
 
     //getters
@@ -35,6 +39,7 @@ public class ShiftManager {
     public List<ShiftM_Permissions> getPermissions() {return permissions;}
     public LocalDate getShiftDate() {return shiftDate;}
     public int getShiftSlot() {return shiftSlot;}
+    public List<Cancelation> getCancelations() {return cancelations;}
 
     /**
      *
@@ -52,6 +57,24 @@ public class ShiftManager {
     public void removePermission(ShiftM_Permissions permission)
     {
         this.permissions.remove(permission);
+    }
+
+    /**
+     * only Shift manager can cancel items
+     * saves item name and amount that are canceled
+     */
+    public void cancelItem()
+    {
+        System.out.println("CANCELLATION SYSTEM");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter item name: ");
+        String itemName = scanner.nextLine();
+        System.out.println("Enter item amount: ");
+        int amount = scanner.nextInt();
+        Cancelation cancelation = new Cancelation(itemName,amount);
+        this.cancelations.add(cancelation);
+        System.out.println("ITEM CANCELLED !!!");
+
     }
 
 }
