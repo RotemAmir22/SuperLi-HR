@@ -596,6 +596,7 @@ public class HR_SystemManagement {
             try{
                 choice = scanner.nextInt();
                 int c = 0;
+                String temp = scanner.nextLine();
                 switch (choice) {
                     case 1:
                         System.out.println("You chose Option 1.");
@@ -658,6 +659,7 @@ public class HR_SystemManagement {
             try{
                 choice = scanner.nextInt();
                 int c = 0;
+                String temp = scanner.nextLine();
                 switch (choice) {
                     case 1:
                         System.out.println("You chose Option 1.");
@@ -714,6 +716,7 @@ public class HR_SystemManagement {
 
                 choice = scanner.nextInt();
                 int c = 0;
+                String temp = scanner.nextLine();
                 switch (choice) {
                     case 1:
                         System.out.println("You chose Option 1.");

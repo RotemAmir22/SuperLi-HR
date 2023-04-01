@@ -15,6 +15,8 @@ public class Employee {
     private boolean[][] constrains; // [0,0] sunday morning, [0,1] sunday eve...
     private int shiftsLimit;
     private List<Role> qualifications;
+    private double cumulativeSalary;
+
 
     //constructor
     public Employee(String firstName, String lastName, String id, String bankAccount, double salary, String empTerms, String startDate) {
@@ -23,6 +25,7 @@ public class Employee {
         this.id = id;
         this.bankAccount = bankAccount;
         this.salary = salary;
+        this.cumulativeSalary =0;
         this.empTerms = empTerms;
         this.startDate = startDate;
         this.shiftsLimit = 6; // worker can only work 6 shifts a week
@@ -46,7 +49,7 @@ public class Employee {
     public String getEmpTerms() {return empTerms;}
     public List<AEmployeeDetails> getDetails() {return details;}
     public boolean[][] getConstrains() {return constrains;}
-
+    public double getCumulativeSalary() {return cumulativeSalary;}
 
     //setters
     public void setConstrains(int day, int shift,boolean limit)
@@ -54,11 +57,11 @@ public class Employee {
         if(limit){this.constrains[day][shift] = true;}
         else {this.constrains[day][shift] = false;}
     }
-
     public void setShiftsLimit(int shiftsLimit) {this.shiftsLimit = shiftsLimit;}
     public void setBankAccount(String bankAccount) {this.bankAccount = bankAccount;}
     public void setSalary(double salary) {this.salary = salary;}
     public void setEmpTerms(String empTerms) {this.empTerms = empTerms;}
+    public void setCumulativeSalary(double cumulativeSalary) {this.cumulativeSalary = cumulativeSalary;}
 
     //adding/removing detail/qualifications from employee
 
