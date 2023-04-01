@@ -26,6 +26,7 @@ public class EmployeeTest {
     @Test
     public void setSalary() {
 
+        assertEquals(500, e.getSalary(), 0);
         e.setSalary(560);
         assertEquals(560, e.getSalary(), 0);
     }
