@@ -544,7 +544,7 @@ public class HR_SystemManagement {
     {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 4) {
+        while (choice != 6) {
             System.out.println("-Update Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
@@ -600,7 +600,7 @@ public class HR_SystemManagement {
     {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 4) {
+        while (choice != 6) {
             System.out.println("-Get Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");

@@ -88,7 +88,7 @@ public class Main {
                             system.getEmployeesDetails(searchAnEmployee(system));
                             break;
                         case 4:
-                            system.calculateSalary(searchAnEmployee(system));
+                            //system.calculateSalary(searchAnEmployee(system));
                             break;
                         case 5:
                             continue;
