@@ -570,7 +570,7 @@ public class HR_SystemManagement {
                     employee.setSalary(salary);
                     break;
                 case 3:
-                    System.out.println("You chose Option 3");
+                    System.out.println("You chose Option 3.");
                     System.out.println("Enter new employment terms");
                     String empTerms = scanner.nextLine();
                     employee.setEmpTerms(empTerms);
@@ -622,7 +622,7 @@ public class HR_SystemManagement {
                     System.out.println(employee.getName()+" salary is: "+employee.getSalary());
                     break;
                 case 3:
-                    System.out.println("You chose Option 3");
+                    System.out.println("You chose Option 3.");
                     System.out.println(employee.getName()+" employment terms are:\n "+employee.getSalary());
                     break;
                 case 4:
@@ -641,4 +641,50 @@ public class HR_SystemManagement {
             }
         }
     }
+
+    /**
+     * update branch information
+     * @param branch : branch to get details from
+     */
+    public void updateBranchDetails(BranchStore branch)
+    {
+        int choice = 0;
+        Scanner scanner = new Scanner(System.in);
+        while (choice != 4) {
+            System.out.println("-Update Branch details-");
+            System.out.println("1. Name");
+            System.out.println("2. Phone number");
+            System.out.println("3. Open Hours");
+            System.out.println("4. Exit");
+
+            choice = scanner.nextInt();
+            int c = 0;
+            switch (choice) {
+                case 1:
+                    System.out.println("You chose Option 1.");
+                    System.out.println("Enter new branch name");
+                    String name = scanner.nextLine();
+                    branch.setName(name);
+                    break;
+
+                case 2:
+                    System.out.println("You chose Option 2.");
+                    System.out.println("Enter new phone number");
+                    String phoneNum = scanner.nextLine();
+                    branch.setPhoneNum(phoneNum);
+                    break;
+                case 3:
+                    System.out.println("You chose Option 3.");
+                    updateBranchOpenHours(branch);
+                    break;
+                case 4:
+                    System.out.println("Existing menu....");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+
 }
