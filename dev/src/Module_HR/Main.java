@@ -8,7 +8,11 @@ import java.util.Scanner;
 public class Main {
 
 
-
+    /**
+     * Search an employee by id
+     * @param system user
+     * @return the required employee
+     */
     public static Employee searchAnEmployee(HR_SystemManagement system)
     {
         Scanner scanner = new Scanner(System.in);
@@ -24,6 +28,11 @@ public class Main {
         }
     }
 
+    /**
+     * Search a branch by id
+     * @param system user
+     * @return the required branch
+     */
     public static BranchStore searchABranchStore(HR_SystemManagement system)
     {
         Scanner scanner = new Scanner(System.in);
@@ -60,7 +69,7 @@ public class Main {
             int id;
             switch (choice) {
                 case 1:
-                    System.out.println("You choose Employees\nPickup a choice:\n");
+                    System.out.println("You chose Employees\nPickup a choice:\n");
                     System.out.println("1. Add new employee");
                     System.out.println("2. Update an existing employee");
                     System.out.println("3. Get employees information");
@@ -89,7 +98,7 @@ public class Main {
                     }
                     break;
                 case 2:
-                    System.out.println("You choose Branches\nPickup a choice:\n");
+                    System.out.println("You chose Branches\nPickup a choice:\n");
                     System.out.println("1. Add new branch");
                     System.out.println("2. Update an existing branch");
                     System.out.println("3. Add employee to branch");
@@ -102,7 +111,7 @@ public class Main {
                             system.newBranchInNetwork();
                             break;
                         case 2:
-                            //system.setBranchByID
+                            system.updateBranchsDetails(searchABranchStore(system));
                         case 3:
                             system.addEmployeeToBranch(searchAnEmployee(system));
                             break;
@@ -118,7 +127,7 @@ public class Main {
 
                     break;
                 case 3:
-                    System.out.println("You choose Constraints\nPickup a choice:");
+                    System.out.println("You chose Constraints\nPickup a choice:");
                     System.out.println("1. Ask constraints from all employees");
                     System.out.println("2. Update constraints to an employee");
                     System.out.println("3. Go Back");
@@ -192,17 +201,6 @@ public class Main {
                     break;
             }
         }
-
-        // 1.2 UPDATE (employees)
-        // - add more info about an employee
-        // - update terms of employee
-        // - ask employees bank account
-        // - add qualification to an employee
-        // - change employee salary (bonus)
-
-
-
-
 
     }
 
