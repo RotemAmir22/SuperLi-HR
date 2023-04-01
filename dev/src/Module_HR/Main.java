@@ -188,6 +188,7 @@ public class Main {
 
                         case 1:
                             BranchStore b = searchABranchStore(system);
+                            scanner.nextLine();
                             System.out.println("Enter the required date:");
                             String ans = scanner.nextLine();
                             b.getShiftByDate(ans).showMeSchedualing();
