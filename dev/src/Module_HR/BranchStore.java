@@ -156,7 +156,7 @@ public class BranchStore {
     public Employee findEmployeeInBranch(String ID)
     {
         for (Employee employee : employees) {
-            if (employee.getId()==ID) {
+            if (Objects.equals(employee.getId(), ID)) {
                 return employee;
             }
         }
