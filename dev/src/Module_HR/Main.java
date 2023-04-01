@@ -1,5 +1,6 @@
 package Module_HR;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,14 @@ import java.util.Scanner;
 
 public class Main {
 
+    /**
+     * TODO add 20 employees and 3 branches to system
+     * @param system upload data
+     */
+    public static void uploadData(HR_SystemManagement system)
+    {
+
+    }
 
     /**
      * Search an employee by id
@@ -52,9 +61,15 @@ public class Main {
 
         /* The main object "HR" control */
         HR_SystemManagement system = new HR_SystemManagement();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("HELLO. Do you wish to upload the system with/without data? enter (0/1)");
+        int data = scanner.nextInt();
+        if(data == 0)
+        {
+            uploadData(system);
+        }
 
         int choice = 0;
-        Scanner scanner = new Scanner(System.in);
         while (choice != 7) {
             System.out.println("Hello HR manager. Welcome to Super-li system:");
             System.out.println("1. Employees");
@@ -215,6 +230,7 @@ public class Main {
                     System.out.println("Choose an option:");
                     System.out.println("1. Cancel an item");
                     System.out.println("2. Upload end-of-day report");
+                    System.out.println("3. Get end-of-day report");
                     c = scanner.nextInt();
                     switch (c) {
                         case 1:
@@ -222,6 +238,10 @@ public class Main {
                             break;
                         case 2:
                             manageShift.uploadEndofDayReport();
+                            break;
+                        case 3:
+                            File file = s.getEndOfDayReport();
+                            System.out.println(file);
                             break;
                         default:
                             System.out.println("Invalid choice. Please try again.");
