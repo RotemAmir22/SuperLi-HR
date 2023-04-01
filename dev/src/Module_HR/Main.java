@@ -13,7 +13,7 @@ public class Main {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
         while (choice != 4) {
-            System.out.println("Hello HR manage. Welcome to Super-li system. Pickup a choice:\n");
+            System.out.println("Hello HR manager. Welcome to Super-li system. Pickup a choice:\n");
             System.out.println("1. Employees");
             System.out.println("2. Branches");
             System.out.println("3. Constraints");
@@ -23,9 +23,10 @@ public class Main {
 
             choice = scanner.nextInt();
             int c = 0;
+            String id;
             switch (choice) {
                 case 1:
-                    System.out.println("You chose Employees\nPickup a choice:\n");
+                    System.out.println("You choose Employees\nPickup a choice:\n");
                     System.out.println("1. Add new employee");
                     System.out.println("2. Update an existing employee");
                     System.out.println("3. Get employees information");
@@ -38,18 +39,132 @@ public class Main {
                             system.newEmployeeInNetwork();
                             break;
                         case 2:
-                            system.
+                            while(true)
+                            {
+                                System.out.println("Enter the employees ID please");
+                                id = scanner.nextLine();
+                                Employee e = system.findEmployeeByID(id);
+                                if(e == null)
+                                    System.out.println("Invalid ID. Please try again");
+                                else{
+                                    system.updateEmployeeDetails(e);
+                                    break;
+                                }
+                            }
+                            break;
+                        case 3:
+                            //
+                            break;
+                        case 4:
+                            while(true)
+                            {
+                                System.out.println("Enter the employees ID please");
+                                id = scanner.nextLine();
+                                Employee e = system.findEmployeeByID(id);
+                                if(e == null)
+                                    System.out.println("Invalid ID. Please try again");
+                                else{
+                                    system.calculateSalary(e);
+                                    break;
+                                }
+                            }
+                            break;
+                        case 5:
+                            continue;
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                            break;
+                    }
+                    break;
+                case 2:
+                    System.out.println("You choose Branches\nPickup a choice:\n");
+                    System.out.println("1. Add new branch");
+                    System.out.println("2. Update an existing branch");
+                    System.out.println("3. Add employee to branch");
+                    System.out.println("4. Remove employee from branch");
+                    System.out.println("5. Go Back");
+                    c = scanner.nextInt();
+                    switch (c)
+                    {
+                        case 1:
+                            system.newBranchInNetwork();
+                            break;
+                        case 2:
+                            //system.setBranchByID
+                        case 3:
+                            while(true)
+                            {
+                                System.out.println("Enter the employees ID please");
+                                id = scanner.nextLine();
+                                Employee e = system.findEmployeeByID(id);
+                                if(e == null)
+                                    System.out.println("Invalid ID. Please try again");
+                                else{
+                                    system.addEmployeeToBranch(e);
+                                    break;
+                                }
+                            }
+                            break;
+                        case 4:
+                            while(true)
+                            {
+                                System.out.println("Enter the employees ID please");
+                                id = scanner.nextLine();
+                                Employee e = system.findEmployeeByID(id);
+                                if(e == null)
+                                    System.out.println("Invalid ID. Please try again");
+                                else{
+                                    system.removeEmployeeFromBranch(e);
+                                    break;
+                                }
+                            }
+                            break;
+                        case 5:
+                            continue;
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                            break;
                     }
 
                     break;
-                case 2:
-                    System.out.println("You chose Option 2.");
-                    break;
                 case 3:
-                    System.out.println("You chose Option 3.");
+                    System.out.println("You choose Constraints\nPickup a choice:");
+                    System.out.println("1. Ask constraints from all employees");
+                    System.out.println("2. Update constraints to an employee");
+                    System.out.println("3. Go Back");
+                    c = scanner.nextInt();
+                    switch (c)
+                    {
+                        case 1:
+                            system.schedulingFromEmployees();
+                            break;
+                        case 2:
+                            system.updateEmployeeConstrainsByID();
+                            break;
+                        case 3:
+                            continue;
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                            break;
+                    }
                     break;
                 case 4:
-                    System.out.println("Exiting menu...");
+                    System.out.println("You chose Shifts\nPickup a choice:\n");
+                    System.out.println("1. Plan shifts for tomorrow");
+                    System.out.println("2. Change shift");
+                    System.out.println("3. Set (add/remove) shift managers permissions");
+                    c = scanner.nextInt();
+                    switch (c) {
+                        case 1:
+                            system.setShift();
+                            break;
+                        case 2:
+                            system.changeShiftSchedule();
+                            break;
+                        case 3:
+                            system.addPermissionToShiftManagerForDailyShiftToday();
+
+                    }
                     break;
                 case 5:
                     System.out.println("Exiting menu...");
@@ -66,20 +181,6 @@ public class Main {
 
         // - get shift history by a date
         // - clear last moth history
-
-        // - do shifts
-        // - change shift
-        // - set shift roles requirements
-        // - set (add/remove) shift managers permissions
-
-        // - ask constraints
-        // - change constraints`
-        // - add role
-
-        // - add new branch
-        // - add employee to branch
-        // - remove employee from branch
-
 
 
         // 1.2 UPDATE (employees)
