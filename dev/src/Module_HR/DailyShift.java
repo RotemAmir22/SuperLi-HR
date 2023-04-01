@@ -76,6 +76,13 @@ public class DailyShift {
     //according to shift this function refers to the right helper
     public void removeEmployeeFromShift(Employee employee, Role role, int shift)
     {
+        if(role == Role.SHIFTMANAGER)
+        {
+            ShiftManager shiftManager = findEmployeeInShiftManager(employee.getId());
+            if(shiftManager != null)
+                removeShiftManager(shiftManager);
+        }
+
         if(shift == 0)
             removeEmployeeFromMorning(employee,role);
         else
@@ -85,7 +92,7 @@ public class DailyShift {
     /* add to shift
     * remove from morning shift
     */
-    public void addEmployeeFromMorning(Employee employee, Role role)
+    public void addEmployeeToMorning(Employee employee, Role role)
     {
         this.morningShift.put(role,employee);
         //update limit
@@ -93,19 +100,29 @@ public class DailyShift {
     }
 
     //remove from evening shift
-    public void addEmployeeFromEvening(Employee employee, Role role)
+    public void addEmployeeToEvening(Employee employee, Role role)
     {
         this.eveningShift.put(role,employee);
         //update limit
         employee.setShiftsLimit(employee.getShiftsLimit()-1);
     }
     //according to shift this function refers to the right helper
-    public void addEmployeeFromShift(Employee employee, Role role, int shift)
+    public void addEmployeeToShift(Employee employee, Role role, int shift)
     {
         if(shift == 0)
-            addEmployeeFromMorning(employee,role);
+            addEmployeeToMorning(employee,role);
         else
-            addEmployeeFromEvening(employee, role);
+            addEmployeeToEvening(employee, role);
+    }
+
+    public ShiftManager findEmployeeInShiftManager(String ID)
+    {
+        for (ShiftManager shiftManager : shiftManagers) {
+            if (shiftManager.getId()==ID) {
+                return shiftManager;
+            }
+        }
+        return null;
     }
 
     public void showMeSchedualing()
