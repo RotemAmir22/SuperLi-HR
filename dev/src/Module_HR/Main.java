@@ -218,16 +218,10 @@ public class Main {
                     c = scanner.nextInt();
                     switch (c) {
                         case 1:
-                            BranchStore b = searchABranchStore(system);
-                            scanner.nextLine();
-                            System.out.println("Enter the required date:");
-                            String a = scanner.nextLine();
-                            b.getShiftByDate(a).showMeSchedualing();
+                            manageShift.cancelItem();
                             break;
                         case 2:
-                            for( BranchStore branch: system.getNetworkBranches()){branch.deleteHistory();}
-                            for( Employee e: system.getNetworkEmployees()){e.setCumulativeSalary(0);}
-                            System.out.println("All history is reset.\nAll employees cumulative salary is reset to 0");
+                            manageShift.uploadEndofDayReport();
                             break;
                         default:
                             System.out.println("Invalid choice. Please try again.");
