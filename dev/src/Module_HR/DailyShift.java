@@ -62,20 +62,17 @@ public class DailyShift {
     public void removeEmployeeFromMorning(Employee employee, Role role)
     {
         this.morningShift.remove(role,employee);
-        //update limit
-        employee.setShiftsLimit(employee.getShiftsLimit()+1);
     }
 
     //remove from evening shift
     public void removeEmployeeFromEvening(Employee employee, Role role)
     {
         this.eveningShift.remove(role,employee);
-        //update limit
-        employee.setShiftsLimit(employee.getShiftsLimit()+1);
     }
     //according to shift this function refers to the right helper
     public void removeEmployeeFromShift(Employee employee, Role role, int shift)
     {
+        //if the employee is a shift manager
         if(role == Role.SHIFTMANAGER)
         {
             ShiftManager shiftManager = findEmployeeInShiftManager(employee.getId());
@@ -87,6 +84,11 @@ public class DailyShift {
             removeEmployeeFromMorning(employee,role);
         else
             removeEmployeeFromEvening(employee, role);
+
+        //update limit
+        employee.setShiftsLimit(employee.getShiftsLimit()+1);
+        //update salary
+        employee.setCumulativeSalary(employee.getCumulativeSalary() - employee.getSalary());
     }
 
     /* add to shift
@@ -95,24 +97,40 @@ public class DailyShift {
     public void addEmployeeToMorning(Employee employee, Role role)
     {
         this.morningShift.put(role,employee);
-        //update limit
-        employee.setShiftsLimit(employee.getShiftsLimit()-1);
     }
 
     //remove from evening shift
     public void addEmployeeToEvening(Employee employee, Role role)
     {
         this.eveningShift.put(role,employee);
-        //update limit
-        employee.setShiftsLimit(employee.getShiftsLimit()-1);
     }
+
     //according to shift this function refers to the right helper
     public void addEmployeeToShift(Employee employee, Role role, int shift)
     {
-        if(shift == 0)
-            addEmployeeToMorning(employee,role);
-        else
-            addEmployeeToEvening(employee, role);
+        if(employee.canDoRole(role))
+        {
+            //if the employee is a shift manager
+            if(role == Role.SHIFTMANAGER)
+            {
+                ShiftManager shiftManager = findEmployeeInShiftManager(employee.getId());
+                if(shiftManager == null)
+                {
+                    shiftManager = new ShiftManager(employee.getName(), employee.getId(), LocalDate.now(),shift);
+                    addShiftManager(shiftManager);
+                }
+            }
+
+            if(shift == 0)
+                addEmployeeToMorning(employee,role);
+            else
+                addEmployeeToEvening(employee, role);
+
+            //update limit
+            employee.setShiftsLimit(employee.getShiftsLimit()-1);
+            //update salary
+            employee.setCumulativeSalary(employee.getCumulativeSalary() + employee.getSalary());
+        }
     }
 
     public ShiftManager findEmployeeInShiftManager(String ID)
