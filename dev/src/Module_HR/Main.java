@@ -55,8 +55,8 @@ public class Main {
 
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 4) {
-            System.out.println("Hello HR manager. Welcome to Super-li system. Pickup a choice:\n");
+        while (choice != 6) {
+            System.out.println("Hello HR manager. Welcome to Super-li system:");
             System.out.println("1. Employees");
             System.out.println("2. Branches");
             System.out.println("3. Constraints");
@@ -69,7 +69,7 @@ public class Main {
             int id;
             switch (choice) {
                 case 1:
-                    System.out.println("You chose Employees\nPickup a choice:\n");
+                    System.out.println("You chose Employees:");
                     System.out.println("1. Add new employee");
                     System.out.println("2. Update an existing employee");
                     System.out.println("3. Get employees information");
@@ -98,7 +98,7 @@ public class Main {
                     }
                     break;
                 case 2:
-                    System.out.println("You chose Branches\nPickup a choice:\n");
+                    System.out.println("You chose Branches:");
                     System.out.println("1. Add new branch");
                     System.out.println("2. Update an existing branch");
                     System.out.println("3. Add employee to branch");
@@ -127,7 +127,7 @@ public class Main {
 
                     break;
                 case 3:
-                    System.out.println("You chose Constraints\nPickup a choice:");
+                    System.out.println("You chose Constraints:");
                     System.out.println("1. Ask constraints from all employees");
                     System.out.println("2. Update constraints to an employee");
                     System.out.println("3. Go Back");
@@ -148,12 +148,13 @@ public class Main {
                     }
                     break;
                 case 4:
-                    System.out.println("You chose Shifts\nPickup a choice:\n");
+                    System.out.println("You chose Shifts:");
                     System.out.println("1. Plan shifts for tomorrow");
                     System.out.println("2. Change shift");
                     System.out.println("3. Add shift managers permissions");
                     System.out.println("4. Remove shift managers permissions");
-                    System.out.println("5. Go Back");
+                    System.out.println("5. Reset employees limit for next week");
+                    System.out.println("6. Go Back");
                     c = scanner.nextInt();
                     switch (c) {
                         case 1:
@@ -169,6 +170,9 @@ public class Main {
                             system.removePermissionToShiftManagerForDailyShiftToday();
                             break;
                         case 5:
+                            system.resetEmployeesLimits();
+                            break;
+                        case 6:
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");
@@ -176,16 +180,18 @@ public class Main {
                     }
                     break;
                 case 5:
-                    System.out.println("You chose History\nPickup a choice:\n");
+                    System.out.println("You chose History:");
                     System.out.println("1. Get shift by a date");
                     System.out.println("2. Clear last moth history");
                     c = scanner.nextInt();
                     switch (c) {
 
                         case 1:
-                            System.out.println("Enter the Branch ID please");
+                            BranchStore b = searchABranchStore(system);
+                            scanner.nextLine();
+                            System.out.println("Enter the required date:");
                             String ans = scanner.nextLine();
-                            searchABranchStore(system).getShiftByDate(ans).showMeSchedualing();
+                            b.getShiftByDate(ans).showMeSchedualing();
                             break;
                         case 2:
                             searchABranchStore(system).deleteHistory();
