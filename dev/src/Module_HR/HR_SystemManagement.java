@@ -385,50 +385,18 @@ public class HR_SystemManagement {
     }
 
     /**
-     * Main function
-     * @param args
+     * this function reset the employees limits to 6
      */
-    public static void main(String[] args){
-
-        HR_SystemManagement system = new HR_SystemManagement();
+    public void resetEmployeesLimits()
+    {
         LocalDate currentDate = LocalDate.now();
         /* Reset employee's limit of shifts if the week is over */
         if(currentDate.toString().equals("Saturday"))
         {
-            for (Employee employee : system.networkEmployees){employee.setShiftsLimit(6);}
+            for (Employee employee : getNetworkEmployees()){employee.setShiftsLimit(6);}
         }
-
-        system.newBranchInNetwork();
-        system.newEmployeeInNetwork();
-        system.schedulingFromEmployees();
-        system.setShift();
-        system.getNetworkBranches().get(0).showShiftByDate("2023-03-30");
-        system.changeShiftSchedule();
-
-        // MAIN:
-        // - update terms of employee
-        // - do shifts
-        // - change shift
-        // - add more info about an employee
-        // - ask constraints
-        // - change constraints`
-        // - add role
-        // - add qualification to an employee
-        // - get shift history by a date
-        // - calculate salary (optional)
-        // - change employee salary (bonus)
-        // - clear last moth history
-        // - set shift roles requirements
-        // - ask employees bank account
-        // - set (add/remove) shift managers permissions
-        // - add new employee
-        // - update employee (employee generator)
-        // - add new branch
-        // - add employee to branch
-        // - remove employee from branch
-        // -
-
     }
+
     /*
      * save cancellations->save in shift manager the details and counter in daily shift
      * save reports
