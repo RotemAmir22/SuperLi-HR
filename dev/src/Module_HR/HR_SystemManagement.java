@@ -585,14 +585,15 @@ public class HR_SystemManagement {
     {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 6) {
+        while (choice != 7) {
             System.out.println("-Update Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
             System.out.println("3. Employment Terms");
             System.out.println("4. Add Employee detail");
             System.out.println("5. Add qualification");
-            System.out.println("6. Exit");
+            System.out.println("6. Add Bonus");
+            System.out.println("7. Exit");
             try{
                 choice = scanner.nextInt();
                 int c = 0;
@@ -625,6 +626,13 @@ public class HR_SystemManagement {
                         addQualificationToEmployee(employee);
                         break;
                     case 6:
+                        System.out.println("You chose Option 6.");
+                        System.out.println("How much do you wish to add as a bonus?");
+                        double bonus = scanner.nextDouble();
+                        employee.setCumulativeSalary(employee.getCumulativeSalary() + bonus);
+                        System.out.println("Employees cumulative salary now is: "+ employee.getCumulativeSalary());
+                        break;
+                    case 7:
                         System.out.println("Existing menu....");
                         break;
                     default:
@@ -648,14 +656,15 @@ public class HR_SystemManagement {
     {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 6) {
+        while (choice != 7) {
             System.out.println("-Get Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
             System.out.println("3. Employment Terms");
             System.out.println("4. Employee detail");
             System.out.println("5. Qualifications");
-            System.out.println("6. Exit");
+            System.out.println("6. Add Bonus");
+            System.out.println("7. Exit");
             try{
                 choice = scanner.nextInt();
                 int c = 0;
@@ -682,6 +691,10 @@ public class HR_SystemManagement {
                         System.out.println(employee.getName()+" qualifications are:\n "+employee.getQualifications().toString());
                         break;
                     case 6:
+                        System.out.println("You chose Option 6.");
+                        System.out.println(employee.getName()+" cumulative salary is:\n "+employee.getCumulativeSalary());
+                        break;
+                    case 7:
                         System.out.println("Existing menu....");
                         break;
                     default:
