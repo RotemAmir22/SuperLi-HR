@@ -98,17 +98,24 @@ public class HR_SystemManagement {
         String answer = "y";
         System.out.println("-Add qualification to new Employee-");
         //add qualification to employee - only one when it is a new employee
-        while (Objects.equals(answer, "y")) {
-            System.out.println("Choose from the following, please enter the number of the role");
-            Role[] roles = Role.values();
-            for (int i = 0; i < roles.length; i++) {
-                System.out.println(i + " - " + roles[i]);
+        while (Objects.equals(answer, "y"))
+        {
+            try{
+                System.out.println("Choose from the following, please enter the number of the role");
+                Role[] roles = Role.values();
+                for (int i = 0; i < roles.length; i++) {
+                    System.out.println(i + " - " + roles[i]);
+                }
+                int qualification = scanner.nextInt();
+                employee.addRole(roles[qualification]);
+                answer=scanner.nextLine();
+                System.out.println("Would you like to add more qualifications? (Enter y/n): ");
+                answer = scanner.nextLine();
             }
-            int qualification = scanner.nextInt();
-            employee.addRole(roles[qualification]);
-            answer=scanner.nextLine();
-            System.out.println("Would you like to add more qualifications? (Enter y/n): ");
-            answer = scanner.nextLine();
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
+            }
 
         }
     }
@@ -125,20 +132,27 @@ public class HR_SystemManagement {
         Scanner scanner = new Scanner(System.in);
         while (Objects.equals(answer, "y"))
         {
-            System.out.println("Enter branch ID: ");
-            int branchNum = scanner.nextInt();
+            try{
+                System.out.println("Enter branch ID: ");
+                int branchNum = scanner.nextInt();
 
-            //find branch in network
-            BranchStore branch = findBranchByID(branchNum);
-            if(branch== null){
-                System.out.println("ID entered does not exist, please try again: ");
+                //find branch in network
+                BranchStore branch = findBranchByID(branchNum);
+                if(branch== null){
+                    System.out.println("ID entered does not exist, please try again: ");
+                }
+                else {
+                    branch.addEmployee(employee);
+                    answer=scanner.nextLine();
+                    System.out.println("Do you want to add the employee to another branch? (enter y/n): ");
+                    answer = scanner.nextLine();
+                }
             }
-            else {
-                branch.addEmployee(employee);
-                answer=scanner.nextLine();
-                System.out.println("Do you want to add the employee to another branch? (enter y/n): ");
-                answer = scanner.nextLine();
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
             }
+
         }
     }
 
@@ -154,20 +168,28 @@ public class HR_SystemManagement {
         Scanner scanner = new Scanner(System.in);
         while (Objects.equals(answer, "y"))
         {
-            System.out.println("Enter branch ID: ");
-            int branchNum = scanner.nextInt();
+            try
+            {
+                System.out.println("Enter branch ID: ");
+                int branchNum = scanner.nextInt();
 
-            //find branch in network
-            BranchStore branch = findBranchByID(branchNum);
-            if(branch== null){
-                System.out.println("ID entered does not exist, please try again: ");
+                //find branch in network
+                BranchStore branch = findBranchByID(branchNum);
+                if(branch== null){
+                    System.out.println("ID entered does not exist, please try again: ");
+                }
+                else {
+                    branch.removeEmployee(employee);
+                    answer=scanner.nextLine();
+                    System.out.println("Do you want to remove the employee from another branch? (enter y/n): ");
+                    answer = scanner.nextLine();
+                }
             }
-            else {
-                branch.removeEmployee(employee);
-                answer=scanner.nextLine();
-                System.out.println("Do you want to remove the employee from another branch? (enter y/n): ");
-                answer = scanner.nextLine();
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
             }
+
         }
     }
 
@@ -332,57 +354,64 @@ public class HR_SystemManagement {
         String answer = "y";
         while (Objects.equals(answer, "y"))
         {
-            System.out.println("Hello, please answer the following questions to update a shift:");
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter Branch Store ID that you want to update ");
-            int branchID = scanner.nextInt();
+            try{
+                System.out.println("Hello, please answer the following questions to update a shift:");
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Enter Branch Store ID that you want to update ");
+                int branchID = scanner.nextInt();
 
-            //find branch
-            BranchStore branch = findBranchByID(branchID);
-            while (branch == null)
-            {
-                System.out.println("Invalid Branch Store ID, please try again ");
-                branchID = scanner.nextInt();
-                branch = findBranchByID(branchID);
-            }
+                //find branch
+                BranchStore branch = findBranchByID(branchID);
+                while (branch == null)
+                {
+                    System.out.println("Invalid Branch Store ID, please try again ");
+                    branchID = scanner.nextInt();
+                    branch = findBranchByID(branchID);
+                }
 
-            String dateString=scanner.nextLine();
-            System.out.println("What date? ");
-            dateString=scanner.nextLine();
-            LocalDate date = LocalDate.parse(dateString);
+                String dateString=scanner.nextLine();
+                System.out.println("What date? ");
+                dateString=scanner.nextLine();
+                LocalDate date = LocalDate.parse(dateString);
 
-            System.out.println("Morning (0) or Evening (1) shift? (enter number)");
-            int shift = scanner.nextInt();
+                System.out.println("Morning (0) or Evening (1) shift? (enter number)");
+                int shift = scanner.nextInt();
 
-            System.out.println("Add (0) or Remove (1) employee? (enter number)");
-            int choice = scanner.nextInt();
+                System.out.println("Add (0) or Remove (1) employee? (enter number)");
+                int choice = scanner.nextInt();
 
-            String employeeID = scanner.nextLine();
-            System.out.println("Enter employees ID");
-            employeeID = scanner.nextLine();
-
-            //find employee
-            Employee employee = branch.findEmployeeInBranch(employeeID);
-            while (employee == null)
-            {
-                System.out.println("Invalid Employee ID, please try again ");
+                String employeeID = scanner.nextLine();
+                System.out.println("Enter employees ID");
                 employeeID = scanner.nextLine();
-                employee = branch.findEmployeeInBranch(employeeID);
+
+                //find employee
+                Employee employee = branch.findEmployeeInBranch(employeeID);
+                while (employee == null)
+                {
+                    System.out.println("Invalid Employee ID, please try again ");
+                    employeeID = scanner.nextLine();
+                    employee = branch.findEmployeeInBranch(employeeID);
+                }
+
+                System.out.println("If you are: ");
+                System.out.println("- Adding an employee, enter role you want to change to. ");
+                System.out.println("- Removing an employee, enter current role. ");
+                System.out.println("Enter the number of the role from the following ");
+                Role[] roles = Role.values();
+                for (int i = 0; i < roles.length; i++) {
+                    System.out.println(i + " - " + roles[i]);
+                }
+                int qualification = scanner.nextInt();
+                ShiftOrganizer.changeShift(branch,date , shift, choice, employee, roles[qualification]);
+                answer = scanner.nextLine();
+                System.out.println("SHIFT UPDATED\n\nDo you wish to update another shift? (enter y/n)");
+                answer = scanner.nextLine();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
             }
 
-            System.out.println("If you are: ");
-            System.out.println("- Adding an employee, enter role you want to change to. ");
-            System.out.println("- Removing an employee, enter current role. ");
-            System.out.println("Enter the number of the role from the following ");
-            Role[] roles = Role.values();
-            for (int i = 0; i < roles.length; i++) {
-                System.out.println(i + " - " + roles[i]);
-            }
-            int qualification = scanner.nextInt();
-            ShiftOrganizer.changeShift(branch,date , shift, choice, employee, roles[qualification]);
-            answer = scanner.nextLine();
-            System.out.println("SHIFT UPDATED\n\nDo you wish to update another shift? (enter y/n)");
-            answer = scanner.nextLine();
         }
 
     }
@@ -426,53 +455,59 @@ public class HR_SystemManagement {
 
         while (Objects.equals(answer, "y"))
         {
-            System.out.println("Enter permission name: ");
-            String name =scanner.nextLine();
-            System.out.println("Enter permission description");
-            String description = scanner.nextLine();
+            try{
+                System.out.println("Enter permission name: ");
+                String name =scanner.nextLine();
+                System.out.println("Enter permission description");
+                String description = scanner.nextLine();
 
-            //create new permission to add to shift manager
-            ShiftM_Permissions permission = new ShiftM_Permissions(name,description);
+                //create new permission to add to shift manager
+                ShiftM_Permissions permission = new ShiftM_Permissions(name,description);
 
-            System.out.println("Enter branch ID: ");
-            int branchNum = scanner.nextInt();
+                System.out.println("Enter branch ID: ");
+                int branchNum = scanner.nextInt();
 
-            //find branch in network
-            BranchStore branch = findBranchByID(branchNum);
-            if(branch== null)
-            {
-                System.out.println("ID entered does not exist, please try again: ");
-            }
-            else
-            {
-                answer=scanner.nextLine();
-                System.out.println("Enter shift managers ID: ");
-                String ID = scanner.nextLine();
-                Employee employee = branch.findEmployeeInBranch(ID);
-                if(employee != null)
+                //find branch in network
+                BranchStore branch = findBranchByID(branchNum);
+                if(branch== null)
                 {
-                   DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().toString());
-                   if(dailyShift == null)
-                       System.out.println("NO SHIFT YET");
-                   else {
-                       ShiftManager shiftManager= dailyShift.findEmployeeInShiftManager(ID);
-                       if(shiftManager == null)
-                       {
-                           System.out.println("Shift Manager not found, maybe wrong branch, please try again");
-                           continue;
-                       }
-                       else {
-                           shiftManager.addPermission(permission);
-                       }
-                   }
+                    System.out.println("ID entered does not exist, please try again: ");
                 }
-                else {
-                    System.out.println("ID not found, maybe wrong branch, please try again");
-                    continue;
-                }
+                else
+                {
+                    answer=scanner.nextLine();
+                    System.out.println("Enter shift managers ID: ");
+                    String ID = scanner.nextLine();
+                    Employee employee = branch.findEmployeeInBranch(ID);
+                    if(employee != null)
+                    {
+                        DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().toString());
+                        if(dailyShift == null)
+                            System.out.println("NO SHIFT YET");
+                        else {
+                            ShiftManager shiftManager= dailyShift.findEmployeeInShiftManager(ID);
+                            if(shiftManager == null)
+                            {
+                                System.out.println("Shift Manager not found, maybe wrong branch, please try again");
+                                continue;
+                            }
+                            else {
+                                shiftManager.addPermission(permission);
+                            }
+                        }
+                    }
+                    else {
+                        System.out.println("ID not found, maybe wrong branch, please try again");
+                        continue;
+                    }
 
-                System.out.println("Do you want to add another permission to a shift manager? (enter y/n): ");
-                answer = scanner.nextLine();
+                    System.out.println("Do you want to add another permission to a shift manager? (enter y/n): ");
+                    answer = scanner.nextLine();
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
             }
 
         }
@@ -489,48 +524,54 @@ public class HR_SystemManagement {
 
         while (Objects.equals(answer, "y"))
         {
-            System.out.println("Enter permission name");
-            String name = scanner.nextLine();
+            try{
+                System.out.println("Enter permission name");
+                String name = scanner.nextLine();
 
-            System.out.println("Enter branch ID: ");
-            int branchNum = scanner.nextInt();
+                System.out.println("Enter branch ID: ");
+                int branchNum = scanner.nextInt();
 
-            //find branch in network
-            BranchStore branch = findBranchByID(branchNum);
-            if(branch== null)
-            {
-                System.out.println("ID entered does not exist, please try again: ");
-            }
-            else
-            {
-                answer=scanner.nextLine();
-                System.out.println("Enter shift managers ID: ");
-                String ID = scanner.nextLine();
-                Employee employee = branch.findEmployeeInBranch(ID);
-                if(employee != null)
+                //find branch in network
+                BranchStore branch = findBranchByID(branchNum);
+                if(branch== null)
                 {
-                    DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().toString());
-                    if(dailyShift == null)
-                        System.out.println("NO SHIFT YET");
-                    else {
-                        ShiftManager shiftManager= dailyShift.findEmployeeInShiftManager(ID);
-                        if(shiftManager == null)
-                        {
-                            System.out.println("Shift Manager not found, maybe wrong branch, please try again");
-                            continue;
-                        }
+                    System.out.println("ID entered does not exist, please try again: ");
+                }
+                else
+                {
+                    answer=scanner.nextLine();
+                    System.out.println("Enter shift managers ID: ");
+                    String ID = scanner.nextLine();
+                    Employee employee = branch.findEmployeeInBranch(ID);
+                    if(employee != null)
+                    {
+                        DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().toString());
+                        if(dailyShift == null)
+                            System.out.println("NO SHIFT YET");
                         else {
-                            shiftManager.removePermission(shiftManager.findPermission(name));
+                            ShiftManager shiftManager= dailyShift.findEmployeeInShiftManager(ID);
+                            if(shiftManager == null)
+                            {
+                                System.out.println("Shift Manager not found, maybe wrong branch, please try again");
+                                continue;
+                            }
+                            else {
+                                shiftManager.removePermission(shiftManager.findPermission(name));
+                            }
                         }
                     }
-                }
-                else {
-                    System.out.println("ID not found, maybe wrong branch, please try again");
-                    continue;
-                }
+                    else {
+                        System.out.println("ID not found, maybe wrong branch, please try again");
+                        continue;
+                    }
 
-                System.out.println("Do you want to remove another permission from a shift manager? (enter y/n): ");
-                answer = scanner.nextLine();
+                    System.out.println("Do you want to remove another permission from a shift manager? (enter y/n): ");
+                    answer = scanner.nextLine();
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
             }
 
         }
@@ -552,43 +593,49 @@ public class HR_SystemManagement {
             System.out.println("4. Add Employee detail");
             System.out.println("5. Add qualification");
             System.out.println("6. Exit");
+            try{
+                choice = scanner.nextInt();
+                int c = 0;
+                switch (choice) {
+                    case 1:
+                        System.out.println("You chose Option 1.");
+                        System.out.println("Enter new bank account number");
+                        String bank = scanner.nextLine();
+                        employee.setBankAccount(bank);
+                        break;
 
-            choice = scanner.nextInt();
-            int c = 0;
-            switch (choice) {
-                case 1:
-                    System.out.println("You chose Option 1.");
-                    System.out.println("Enter new bank account number");
-                    String bank = scanner.nextLine();
-                    employee.setBankAccount(bank);
-                    break;
-
-                case 2:
-                    System.out.println("You chose Option 2.");
-                    System.out.println("Enter new salary");
-                    double salary = scanner.nextDouble();
-                    employee.setSalary(salary);
-                    break;
-                case 3:
-                    System.out.println("You chose Option 3.");
-                    System.out.println("Enter new employment terms");
-                    String empTerms = scanner.nextLine();
-                    employee.setEmpTerms(empTerms);
-                    break;
-                case 4:
-                    System.out.println("You chose Option 4.\n This option is in the works");
-                    break;
-                case 5:
-                    System.out.println("You chose Option 5.");
-                    addQualificationToEmployee(employee);
-                    break;
-                case 6:
-                    System.out.println("Existing menu....");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                    case 2:
+                        System.out.println("You chose Option 2.");
+                        System.out.println("Enter new salary");
+                        double salary = scanner.nextDouble();
+                        employee.setSalary(salary);
+                        break;
+                    case 3:
+                        System.out.println("You chose Option 3.");
+                        System.out.println("Enter new employment terms");
+                        String empTerms = scanner.nextLine();
+                        employee.setEmpTerms(empTerms);
+                        break;
+                    case 4:
+                        System.out.println("You chose Option 4.\n This option is in the works");
+                        break;
+                    case 5:
+                        System.out.println("You chose Option 5.");
+                        addQualificationToEmployee(employee);
+                        break;
+                    case 6:
+                        System.out.println("Existing menu....");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
             }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
+            }
+
         }
     }
 
@@ -608,37 +655,44 @@ public class HR_SystemManagement {
             System.out.println("4. Employee detail");
             System.out.println("5. Qualifications");
             System.out.println("6. Exit");
+            try{
+                choice = scanner.nextInt();
+                int c = 0;
+                switch (choice) {
+                    case 1:
+                        System.out.println("You chose Option 1.");
+                        System.out.println(employee.getName()+" bank account is: "+employee.getBankAccount());
+                        break;
 
-            choice = scanner.nextInt();
-            int c = 0;
-            switch (choice) {
-                case 1:
-                    System.out.println("You chose Option 1.");
-                    System.out.println(employee.getName()+" bank account is: "+employee.getBankAccount());
-                    break;
+                    case 2:
+                        System.out.println("You chose Option 2.");
+                        System.out.println(employee.getName()+" salary is: "+employee.getSalary());
+                        break;
+                    case 3:
+                        System.out.println("You chose Option 3.");
+                        System.out.println(employee.getName()+" employment terms are:\n "+employee.getSalary());
+                        break;
+                    case 4:
+                        System.out.println("You chose Option 4.\n This option is in the works");
+                        break;
+                    case 5:
+                        System.out.println("You chose Option 5.");
+                        System.out.println(employee.getName()+" qualifications are:\n "+employee.getQualifications().toString());
+                        break;
+                    case 6:
+                        System.out.println("Existing menu....");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
 
-                case 2:
-                    System.out.println("You chose Option 2.");
-                    System.out.println(employee.getName()+" salary is: "+employee.getSalary());
-                    break;
-                case 3:
-                    System.out.println("You chose Option 3.");
-                    System.out.println(employee.getName()+" employment terms are:\n "+employee.getSalary());
-                    break;
-                case 4:
-                    System.out.println("You chose Option 4.\n This option is in the works");
-                    break;
-                case 5:
-                    System.out.println("You chose Option 5.");
-                    System.out.println(employee.getName()+" qualifications are:\n "+employee.getQualifications().toString());
-                    break;
-                case 6:
-                    System.out.println("Existing menu....");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
             }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
+            }
+
         }
     }
 
@@ -651,38 +705,44 @@ public class HR_SystemManagement {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
         while (choice != 4) {
-            System.out.println("-Update Branch details-");
-            System.out.println("1. Name");
-            System.out.println("2. Phone number");
-            System.out.println("3. Open Hours");
-            System.out.println("4. Exit");
+            try{
+                System.out.println("-Update Branch details-");
+                System.out.println("1. Name");
+                System.out.println("2. Phone number");
+                System.out.println("3. Open Hours");
+                System.out.println("4. Exit");
 
-            choice = scanner.nextInt();
-            int c = 0;
-            switch (choice) {
-                case 1:
-                    System.out.println("You chose Option 1.");
-                    System.out.println("Enter new branch name");
-                    String name = scanner.nextLine();
-                    branch.setName(name);
-                    break;
+                choice = scanner.nextInt();
+                int c = 0;
+                switch (choice) {
+                    case 1:
+                        System.out.println("You chose Option 1.");
+                        System.out.println("Enter new branch name");
+                        String name = scanner.nextLine();
+                        branch.setName(name);
+                        break;
 
-                case 2:
-                    System.out.println("You chose Option 2.");
-                    System.out.println("Enter new phone number");
-                    String phoneNum = scanner.nextLine();
-                    branch.setPhoneNum(phoneNum);
-                    break;
-                case 3:
-                    System.out.println("You chose Option 3.");
-                    updateBranchOpenHours(branch);
-                    break;
-                case 4:
-                    System.out.println("Existing menu....");
-                    break;
-                default:
-                    System.out.println("Invalid choice. Please try again.");
-                    break;
+                    case 2:
+                        System.out.println("You chose Option 2.");
+                        System.out.println("Enter new phone number");
+                        String phoneNum = scanner.nextLine();
+                        branch.setPhoneNum(phoneNum);
+                        break;
+                    case 3:
+                        System.out.println("You chose Option 3.");
+                        updateBranchOpenHours(branch);
+                        break;
+                    case 4:
+                        System.out.println("Existing menu....");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
             }
         }
     }
