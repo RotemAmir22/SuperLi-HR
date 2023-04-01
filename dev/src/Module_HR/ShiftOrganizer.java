@@ -21,7 +21,7 @@ public class ShiftOrganizer {
      */
     public static void changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role)
     {
-        if(choice == 1)// add employee
+        if(choice == 0)// add employee
             branchStore.getShiftsHistory().get(date).addEmployeeToShift(employee, role, shift);
 
         else //remove employee
