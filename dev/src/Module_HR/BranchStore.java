@@ -131,6 +131,18 @@ public class BranchStore {
         this.shiftsHistory.get(date).showMeSchedualing();
     }
 
+    /**
+     *
+     * @param dateString: gets a date
+     * @return: returns the daily shift of this date
+     */
+    public DailyShift getShiftByDate(String dateString)
+    {
+        //convert string to key type LocalDate
+        LocalDate date = LocalDate.parse(dateString);
+        return this.shiftsHistory.get(date);
+    }
+
     public void printOpenHours()
     {
         System.out.println("Branch no. "+this.branchID+" open hours are "+this.openingTime);
@@ -144,7 +156,7 @@ public class BranchStore {
     public Employee findEmployeeInBranch(String ID)
     {
         for (Employee employee : employees) {
-            if (employee.getId()==ID) {
+            if (Objects.equals(employee.getId(), ID)) {
                 return employee;
             }
         }

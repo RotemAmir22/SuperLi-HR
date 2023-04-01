@@ -3,6 +3,7 @@ package Module_HR;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ShiftManager {
 
@@ -58,6 +59,22 @@ public class ShiftManager {
     public void removePermission(ShiftM_Permissions permission)
     {
         this.permissions.remove(permission);
+    }
+
+    /**
+     * find permission in shift managers list
+     * @param name : permissions name
+     * @return if found return the permission, if not then null is returned
+     */
+    public ShiftM_Permissions findPermission(String name){
+        for (ShiftM_Permissions permission : permissions)
+        {
+            if (Objects.equals(permission.getName(), name))
+            {
+                return permission;
+            }
+        }
+        return null;
     }
 
 
