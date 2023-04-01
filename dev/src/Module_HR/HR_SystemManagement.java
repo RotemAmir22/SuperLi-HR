@@ -17,8 +17,8 @@ public class HR_SystemManagement {
     private List<Employee> networkEmployees;
 
     public HR_SystemManagement() {
-        this.networkBranches=new ArrayList<BranchStore>();
-        this.networkEmployees=new ArrayList<Employee>();
+        this.networkBranches= new ArrayList<>();
+        this.networkEmployees= new ArrayList<>();
     }
 
     /**
@@ -39,7 +39,7 @@ public class HR_SystemManagement {
     /**
      * searches for employee in network
      * @param ID: uses ID to identify employee
-     * @returnif found returns employee, null if not found
+     * @return if found returns employee, null if not found
      */
     public Employee findEmployeeByID(String ID) {
         for (Employee employee : networkEmployees) {
@@ -109,7 +109,7 @@ public class HR_SystemManagement {
         }
     }
 
-    // set
+
     public void removeEmployeeFromBranch(Employee employee)
     {
         //add employee to branch
@@ -291,7 +291,7 @@ public class HR_SystemManagement {
         /*
          * Second function set all branches shifts for one day.
          */
-        List<Employee> listEmployees = new ArrayList<>();
+        List<Employee> listEmployees;
         //for loop that run on the branch list and collect the employees list
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please choose the required shift to schedule -\n0. Morning\n1. Evening");
@@ -397,9 +397,66 @@ public class HR_SystemManagement {
         }
     }
 
+    public void addPermissionToShiftManagerForDailyShiftToday()
+    {
+        System.out.println("-Add permission to Shift Manager-");
+        String answer = "y";
+        Scanner scanner = new Scanner(System.in);
+
+        while (Objects.equals(answer, "y"))
+        {
+            System.out.println("Enter branch ID: ");
+            String name =scanner.nextLine();
+            System.out.println("Enter permission description");
+            String description = scanner.nextLine();
+
+            //create new permission to add to shift manager
+            ShiftM_Permissions permission = new ShiftM_Permissions(name,description);
+
+            System.out.println("Enter branch ID: ");
+            int branchNum = scanner.nextInt();
+
+            //find branch in network
+            BranchStore branch = findBranchByID(branchNum);
+            if(branch== null){
+                System.out.println("ID entered does not exist, please try again: ");
+            }
+            else {
+                answer=scanner.nextLine();
+                System.out.println("Enter shift managers ID: ");
+                String ID = scanner.nextLine();
+                Employee employee = branch.findEmployeeInBranch(ID);
+                if(employee != null)
+                {
+                   DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().toString());
+                   if(dailyShift == null)
+                       System.out.println("NO SHIFT YET");
+                   else {
+                       ShiftManager shiftManager= dailyShift.findEmployeeInShiftManager(ID);
+                       if(shiftManager == null)
+                       {
+                           System.out.println("Shift Manager not found, maybe wrong branch, please try again");
+                           continue;
+                       }
+                       else {
+                           shiftManager.addPermission(permission);
+                       }
+                   }
+                }
+                else {
+                    System.out.println("ID not found, maybe wrong branch, please try again");
+                    continue;
+                }
+
+                System.out.println("Do you want to add another permission to a shift manager? (enter y/n): ");
+                answer = scanner.nextLine();
+    }
+
     /*
      * save cancellations->save in shift manager the details and counter in daily shift
      * save reports
      */
 
+}
+    }
 }
