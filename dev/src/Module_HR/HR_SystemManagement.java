@@ -328,13 +328,13 @@ public class HR_SystemManagement {
      */
     public void changeShiftSchedule()
     {
+        System.out.println("-Update Shift Schedule-");
         String answer = "y";
         while (Objects.equals(answer, "y"))
         {
-            System.out.println("-Update Shift Schedule-");
             System.out.println("Hello, please answer the following questions to update a shift:");
             Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter Branch Store ID that you want to update? ");
+            System.out.println("Enter Branch Store ID that you want to update ");
             int branchID = scanner.nextInt();
 
             //find branch
@@ -354,7 +354,7 @@ public class HR_SystemManagement {
             System.out.println("Morning (0) or Evening (1) shift? (enter number)");
             int shift = scanner.nextInt();
 
-            System.out.println("Add (1) or Remove (1) employee? (enter number)");
+            System.out.println("Add (0) or Remove (1) employee? (enter number)");
             int choice = scanner.nextInt();
 
             String employeeID = scanner.nextLine();

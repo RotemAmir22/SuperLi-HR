@@ -111,7 +111,7 @@ public class Main {
                             system.newBranchInNetwork();
                             break;
                         case 2:
-                            system.updateBranchsDetails(searchABranchStore(system));
+                            system.updateBranchDetails(searchABranchStore(system));
                         case 3:
                             system.addEmployeeToBranch(searchAnEmployee(system));
                             break;
