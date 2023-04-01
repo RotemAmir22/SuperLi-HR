@@ -55,14 +55,15 @@ public class Main {
 
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 6) {
+        while (choice != 7) {
             System.out.println("Hello HR manager. Welcome to Super-li system:");
             System.out.println("1. Employees");
             System.out.println("2. Branches");
             System.out.println("3. Constraints");
             System.out.println("4. Shifts");
             System.out.println("5. History");
-            System.out.println("6. Exit");
+            System.out.println("6. ManageShift - TEMPORARY MAIN");
+            System.out.println("7. Exit");
 
             choice = scanner.nextInt();
             int c = 0;
@@ -88,7 +89,7 @@ public class Main {
                             system.getEmployeesDetails(searchAnEmployee(system));
                             break;
                         case 4:
-                            //system.calculateSalary(searchAnEmployee(system));
+                            System.out.println(searchAnEmployee(system).getCumulativeSalary());
                             break;
                         case 5:
                             continue;
@@ -194,12 +195,40 @@ public class Main {
                             b.getShiftByDate(ans).showMeSchedualing();
                             break;
                         case 2:
-                            searchABranchStore(system).deleteHistory();
+                            for( BranchStore branch: system.getNetworkBranches()){branch.deleteHistory();}
+                            for( Employee e: system.getNetworkEmployees()){e.setCumulativeSalary(0);}
+                            System.out.println("All history is reset.\nAll employees cumulative salary is reset to 0");
+                            break;
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
                             break;
                     }
 
                     break;
                 case 6:
+                    BranchStore branch_ = searchABranchStore(system);
+                    DailyShift s = branch_.getShiftByDate(LocalDate.now().toString());
+                    System.out.println("Enter an employee ID");
+                    String ans = scanner.nextLine();
+                    ShiftManager shiftm = s.findEmployeeInShiftManager(ans);
+                    ManageShift manageShift = new ManageShift(shiftm, s, LocalDate.now());
+                    System.out.println("Choose an option:");
+                    System.out.println("1. Cancel an item");
+                    System.out.println("2. Upload end-of-day report");
+                    c = scanner.nextInt();
+                    switch (c) {
+                        case 1:
+                            manageShift.cancelItem();
+                            break;
+                        case 2:
+                            manageShift.uploadEndofDayReport();
+                            break;
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                            break;
+                    }
+
+                        case 7:
                     System.out.println("Exiting menu...");
                     break;
                 default:
