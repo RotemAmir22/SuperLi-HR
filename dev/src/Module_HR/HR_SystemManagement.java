@@ -1,6 +1,5 @@
-package Module_HR_Part1.src;
+package Module_HR;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -109,6 +108,32 @@ public class HR_SystemManagement {
             }
         }
     }
+
+    // set
+    public void removeEmployeeFromBranch(Employee employee)
+    {
+        //add employee to branch
+        String answer = "y";
+        Scanner scanner = new Scanner(System.in);
+        while (Objects.equals(answer, "y"))
+        {
+            System.out.println("Enter branch ID: ");
+            int branchNum = scanner.nextInt();
+
+            //find branch in network
+            BranchStore branch = findBranchByID(branchNum);
+            if(branch== null){
+                System.out.println("ID entered does not exist, please try again: ");
+            }
+            else {
+                branch.removeEmployee(employee);
+                answer=scanner.nextLine();
+                System.out.println("Do you want to remove the employee from another branch? (enter y/n): ");
+                answer = scanner.nextLine();
+            }
+        }
+    }
+
     /**
      * add a new employee to system
      */
@@ -174,6 +199,10 @@ public class HR_SystemManagement {
             answer = scanner.nextLine();
 
         }
+        System.out.println("Enter a summery for this branch's opening time");
+        answer = scanner.nextLine();
+        branchStore.setOpeningTime(answer);
+
     }
     /**
      * create new branch in system
@@ -188,7 +217,9 @@ public class HR_SystemManagement {
         String address = scanner.nextLine();
         System.out.println("Enter branch's phone number: ");
         String phone = scanner.nextLine();
-        BranchStore branchStore = new BranchStore(name,address,phone);
+        System.out.println("Enter branch's opening time: ");
+        String openingtime = scanner.nextLine();
+        BranchStore branchStore = new BranchStore(name,address,phone, openingtime);
         addBranchStoreToList(branchStore);
 
         System.out.println("Do you want to update the branch's open hours? Now it is 24/7 store (Enter y/n)");
@@ -239,6 +270,10 @@ public class HR_SystemManagement {
          * First function ask all the employees in all branches to give constraints
          */
         System.out.println("TIME TO SCHEDULE CONSTRAINTS \u231B");
+        for(int j = 0; j<getNetworkBranches().size(); j ++)
+        {
+            getNetworkBranches().get(j).printOpenHours();
+        }
         for(int i = 0; i< getNumOfEmployee(); i ++)
         {
             EmployeeConstraints.askForConstraints(getNetworkEmployees().get(i));
@@ -369,6 +404,29 @@ public class HR_SystemManagement {
         system.setShift();
         system.getNetworkBranches().get(0).showShiftByDate("2023-03-30");
         system.changeShiftSchedule();
+
+        // MAIN:
+        // - update terms of employee
+        // - do shifts
+        // - change shift
+        // - add more info about an employee
+        // - ask constraints
+        // - change constraints`
+        // - add role
+        // - add qualification to an employee
+        // - get shift history by a date
+        // - calculate salary (optional)
+        // - change employee salary (bonus)
+        // - clear last moth history
+        // - set shift roles requirements
+        // - ask employees bank account
+        // - set (add/remove) shift managers permissions
+        // - add new employee
+        // - update employee (employee generator)
+        // - add new branch
+        // - add employee to branch
+        // - remove employee from branch
+        // -
 
     }
     /*

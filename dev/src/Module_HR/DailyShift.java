@@ -1,10 +1,9 @@
-package Module_HR_Part1.src;
+package Module_HR;
 
 import java.io.File;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class DailyShift {

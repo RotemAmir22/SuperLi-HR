@@ -1,4 +1,4 @@
-package Module_HR_Part1.src;
+package Module_HR;
 
 public class Cancelation {
 

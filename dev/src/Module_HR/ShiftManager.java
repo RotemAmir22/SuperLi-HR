@@ -1,11 +1,8 @@
-package Module_HR_Part1.src;
+package Module_HR;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Scanner;
 
 public class ShiftManager {
 
@@ -40,6 +37,10 @@ public class ShiftManager {
     public LocalDate getShiftDate() {return shiftDate;}
     public int getShiftSlot() {return shiftSlot;}
     public List<Cancelation> getCancelations() {return cancelations;}
+    public void addToCancelations(Cancelation cancelation)
+    {
+        this.cancelations.add(cancelation);
+    }
 
     /**
      *
@@ -59,22 +60,5 @@ public class ShiftManager {
         this.permissions.remove(permission);
     }
 
-    /**
-     * only Shift manager can cancel items
-     * saves item name and amount that are canceled
-     */
-    public void cancelItem()
-    {
-        System.out.println("CANCELLATION SYSTEM");
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter item name: ");
-        String itemName = scanner.nextLine();
-        System.out.println("Enter item amount: ");
-        int amount = scanner.nextInt();
-        Cancelation cancelation = new Cancelation(itemName,amount);
-        this.cancelations.add(cancelation);
-        System.out.println("ITEM CANCELLED !!!");
-
-    }
 
 }

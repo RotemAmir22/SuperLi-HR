@@ -1,9 +1,8 @@
-package Module_HR_Part1.src;
+package Module_HR;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class BranchStore {
 
@@ -14,10 +13,13 @@ public class BranchStore {
     private String phoneNum;
     private List<Employee> employees;
     private int[][] openHours;
+    private String openingTime;
     private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
 
+
+
     //constructor
-    public BranchStore(String name, String address, String phoneNum) {
+    public BranchStore(String name, String address, String phoneNum, String openingtime) {
         this.name = name;
         this.address = address;
         this.phoneNum = phoneNum;
@@ -26,10 +28,12 @@ public class BranchStore {
         this.employees = new ArrayList<Employee>();
         this.openHours = new int[7][2]; //default value is 0
         this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
+        this.openingTime = openingtime;
 
     }
 
     //getters
+    public String getOpeningTime() { return openingTime; }
     public int getBranchID() {
         return branchID;
     }
@@ -61,6 +65,7 @@ public class BranchStore {
     public void setOpenHours(int day, int shift, int availability) {
         this.openHours[day][shift] = availability;
     }
+    public String setOpeningTime(String openingTime) { return this.openingTime = openingTime; }
 
 
     /**
@@ -124,6 +129,11 @@ public class BranchStore {
         //convert string to key type LocalDate
         LocalDate date = LocalDate.parse(dateString);
         this.shiftsHistory.get(date).showMeSchedualing();
+    }
+
+    public void printOpenHours()
+    {
+        System.out.println("Branch no. "+this.branchID+" open hours are "+this.openingTime);
     }
 
     /**

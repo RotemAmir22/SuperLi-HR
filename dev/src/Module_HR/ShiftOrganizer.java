@@ -1,4 +1,4 @@
-package Module_HR_Part1.src;
+package Module_HR;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -36,6 +36,7 @@ public class ShiftOrganizer {
      */
     public static void checkShiftValidation(Map<String, Integer> rolesAmount, int numOfShiftmanagers)
     {
+        Scanner scanner = new Scanner(System.in);
         /*
         force the HR manager to choose shift manager
          */
@@ -45,7 +46,11 @@ public class ShiftOrganizer {
             {
                 if(rolesAmount.get(role.toString()) > 0)
                 {
-                    System.out.println("Daily shift is INVALID !!!");
+                    System.out.println("Daily shift is INVALID !!!\n Ask backup from another branch? (y/n)");
+                    String replay = scanner.nextLine();
+                    if(Objects.equals(replay, "y")) {
+                        System.out.println("ALL BRANCHES: please contact HR manager");
+                    }
                     break;
                 }
             }
@@ -60,10 +65,10 @@ public class ShiftOrganizer {
      * @param shiftDate: the current shift
      * @param shiftSlot: morning/evening
      */
-    public static void createShiftManager(Employee e, LocalDate shiftDate, int shiftSlot)
+    public static void createShiftManager(Employee e, LocalDate shiftDate, int shiftSlot, DailyShift currentShift)
     {
         ShiftManagerGeneratore tmp = new ShiftManagerGeneratore();
-        tmp.CreateShiftManager(e.getName(), e.getId(),shiftDate,shiftSlot);
+        currentShift.addShiftManager(tmp.CreateShiftManager(e.getName(), e.getId(),shiftDate,shiftSlot));
     }
 
     public static void insertIntoMorning(DailyShift dailyShift, Map<Role, Employee> morningShift,Role role, Employee employee)
@@ -185,7 +190,7 @@ public class ShiftOrganizer {
                     /* check if the current added is a shift-manager */
                     if(currentShift.get(Role.SHIFTMANAGER).getName().equals(employee.getName())) // the last adding
                     {
-                        createShiftManager(employee, nextDate, shift);
+                        createShiftManager(employee, nextDate, shift, dailyShift);
                     }
 
                 }
