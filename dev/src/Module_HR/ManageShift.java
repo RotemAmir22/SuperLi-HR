@@ -34,7 +34,7 @@ public class ManageShift {
 
     }
 
-    public File uploadEndofDayReoport()
+    public File uploadEndofDayReport()
     {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter a file path: ");
