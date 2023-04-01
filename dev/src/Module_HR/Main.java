@@ -1,9 +1,43 @@
 package Module_HR;
 
 import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+
+
+    public static Employee searchAnEmployee(HR_SystemManagement system)
+    {
+        Scanner scanner = new Scanner(System.in);
+        while(true)
+        {
+            System.out.println("Enter the employees ID please");
+            String id = scanner.nextLine();
+            Employee e = system.findEmployeeByID(id);
+            if(e == null)
+                System.out.println("Invalid ID. Please try again");
+            else
+                return e;
+        }
+    }
+
+    public static BranchStore searchABranchStore(HR_SystemManagement system)
+    {
+        Scanner scanner = new Scanner(System.in);
+        while(true) {
+            System.out.println("Enter the Branch ID please");
+            int id = scanner.nextInt();
+            BranchStore b = system.findBranchByID(id);
+            if (b == null)
+                System.out.println("Invalid ID. Please try again");
+            else
+                return b;
+        }
+    }
+
 
     public static void main(String[] args){
 
@@ -23,7 +57,7 @@ public class Main {
 
             choice = scanner.nextInt();
             int c = 0;
-            String id;
+            int id;
             switch (choice) {
                 case 1:
                     System.out.println("You choose Employees\nPickup a choice:\n");
@@ -39,35 +73,13 @@ public class Main {
                             system.newEmployeeInNetwork();
                             break;
                         case 2:
-                            while(true)
-                            {
-                                System.out.println("Enter the employees ID please");
-                                id = scanner.nextLine();
-                                Employee e = system.findEmployeeByID(id);
-                                if(e == null)
-                                    System.out.println("Invalid ID. Please try again");
-                                else{
-                                    system.updateEmployeeDetails(e);
-                                    break;
-                                }
-                            }
+                            system.updateEmployeesDetails(searchAnEmployee(system));
                             break;
                         case 3:
-                            //
+                            system.getEmployeesDetails(searchAnEmployee(system));
                             break;
                         case 4:
-                            while(true)
-                            {
-                                System.out.println("Enter the employees ID please");
-                                id = scanner.nextLine();
-                                Employee e = system.findEmployeeByID(id);
-                                if(e == null)
-                                    System.out.println("Invalid ID. Please try again");
-                                else{
-                                    system.calculateSalary(e);
-                                    break;
-                                }
-                            }
+                            system.calculateSalary(searchAnEmployee(system));
                             break;
                         case 5:
                             continue;
@@ -92,32 +104,10 @@ public class Main {
                         case 2:
                             //system.setBranchByID
                         case 3:
-                            while(true)
-                            {
-                                System.out.println("Enter the employees ID please");
-                                id = scanner.nextLine();
-                                Employee e = system.findEmployeeByID(id);
-                                if(e == null)
-                                    System.out.println("Invalid ID. Please try again");
-                                else{
-                                    system.addEmployeeToBranch(e);
-                                    break;
-                                }
-                            }
+                            system.addEmployeeToBranch(searchAnEmployee(system));
                             break;
                         case 4:
-                            while(true)
-                            {
-                                System.out.println("Enter the employees ID please");
-                                id = scanner.nextLine();
-                                Employee e = system.findEmployeeByID(id);
-                                if(e == null)
-                                    System.out.println("Invalid ID. Please try again");
-                                else{
-                                    system.removeEmployeeFromBranch(e);
-                                    break;
-                                }
-                            }
+                            system.removeEmployeeFromBranch(searchAnEmployee(system));
                             break;
                         case 5:
                             continue;
@@ -152,7 +142,9 @@ public class Main {
                     System.out.println("You chose Shifts\nPickup a choice:\n");
                     System.out.println("1. Plan shifts for tomorrow");
                     System.out.println("2. Change shift");
-                    System.out.println("3. Set (add/remove) shift managers permissions");
+                    System.out.println("3. Add shift managers permissions");
+                    System.out.println("4. Remove shift managers permissions");
+                    System.out.println("5. Go Back");
                     c = scanner.nextInt();
                     switch (c) {
                         case 1:
@@ -163,11 +155,34 @@ public class Main {
                             break;
                         case 3:
                             system.addPermissionToShiftManagerForDailyShiftToday();
-
+                            break;
+                        case 4:
+                            system.removePermissionToShiftManagerForDailyShiftToday();
+                            break;
+                        case 5:
+                            continue;
+                        default:
+                            System.out.println("Invalid choice. Please try again.");
+                            break;
                     }
                     break;
                 case 5:
-                    System.out.println("Exiting menu...");
+                    System.out.println("You chose History\nPickup a choice:\n");
+                    System.out.println("1. Get shift by a date");
+                    System.out.println("2. Clear last moth history");
+                    c = scanner.nextInt();
+                    switch (c) {
+
+                        case 1:
+                            System.out.println("Enter the Branch ID please");
+                            String ans = scanner.nextLine();
+                            searchABranchStore(system).getShiftByDate(ans).showMeSchedualing();
+                            break;
+                        case 2:
+                            searchABranchStore(system).deleteHistory();
+                            break;
+                    }
+
                     break;
                 case 6:
                     System.out.println("Exiting menu...");
@@ -177,11 +192,6 @@ public class Main {
                     break;
             }
         }
-
-
-        // - get shift history by a date
-        // - clear last moth history
-
 
         // 1.2 UPDATE (employees)
         // - add more info about an employee
@@ -195,4 +205,5 @@ public class Main {
 
 
     }
+
 }
