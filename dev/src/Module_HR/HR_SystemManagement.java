@@ -16,9 +16,41 @@ public class HR_SystemManagement {
     private List<BranchStore> networkBranches;
     private List<Employee> networkEmployees;
 
+    //constructor
     public HR_SystemManagement() {
         this.networkBranches= new ArrayList<>();
         this.networkEmployees= new ArrayList<>();
+    }
+
+    /**
+     * @return list of all employees in system
+     */
+    public List<Employee> getNetworkEmployees()
+    {
+        return networkEmployees;
+    }
+
+    /**
+     * get number of employees in system
+     * @return int
+     */
+    public int getNumOfEmployee(){return networkEmployees.size();}
+
+    /**
+     * @param b: adds this branch to the list of all the branches in the network
+     */
+    public void addBranchStoreToList(BranchStore b)
+    {
+        networkBranches.add(b);
+    }
+
+    /**
+     *
+     * @return list of all the branches in the network
+     */
+    public List<BranchStore> getNetworkBranches()
+    {
+        return networkBranches;
     }
 
     /**
@@ -64,7 +96,7 @@ public class HR_SystemManagement {
     {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
-        System.out.println("Add qualification to new Employee: ");
+        System.out.println("-Add qualification to new Employee-");
         //add qualification to employee - only one when it is a new employee
         while (Objects.equals(answer, "y")) {
             System.out.println("Choose from the following, please enter the number of the role");
@@ -87,6 +119,7 @@ public class HR_SystemManagement {
      */
     public void addEmployeeToBranch(Employee employee)
     {
+        System.out.println("-Add Employee to Branch-");
         //add employee to branch
         String answer = "y";
         Scanner scanner = new Scanner(System.in);
@@ -109,10 +142,14 @@ public class HR_SystemManagement {
         }
     }
 
-
+    /**
+     * remove employee form branch
+     * @param employee: employee to remove
+     */
     public void removeEmployeeFromBranch(Employee employee)
     {
-        //add employee to branch
+        System.out.println("-Remove Employee from Branch-");
+        //remove employee to branch
         String answer = "y";
         Scanner scanner = new Scanner(System.in);
         while (Objects.equals(answer, "y"))
@@ -138,6 +175,7 @@ public class HR_SystemManagement {
      * add a new employee to system
      */
     public void newEmployeeInNetwork() {
+        System.out.println("-Add Employee to Network-");
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new employee please enter the following details:");
         Scanner scanner = new Scanner(System.in);
@@ -179,6 +217,7 @@ public class HR_SystemManagement {
      */
     public void updateBranchOpenHours(BranchStore branchStore)
     {
+        System.out.println("-Update Branch opening hours-");
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         while (Objects.equals(answer, "y"))
@@ -208,6 +247,7 @@ public class HR_SystemManagement {
      * create new branch in system
      */
     public void newBranchInNetwork(){
+        System.out.println("-Add Branch to Network-");
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new branch please enter the following details:");
         Scanner scanner = new Scanner(System.in);
@@ -232,34 +272,6 @@ public class HR_SystemManagement {
 
 
 
-    /**
-     *
-     * @return list of all employees in system
-     */
-    public List<Employee> getNetworkEmployees()
-    {
-        return networkEmployees;
-    }
-
-    public int getNumOfEmployee(){return networkEmployees.size();}
-
-    /**
-     *
-     * @param b: adds this branch to the list of all the branches in the network
-     */
-    public void addBranchStoreToList(BranchStore b)
-    {
-        networkBranches.add(b);
-    }
-
-    /**
-     *
-     * @return list of all the branches in the network
-     */
-    public List<BranchStore> getNetworkBranches()
-    {
-        return networkBranches;
-    }
 
     /**
      * once a week the system asks all the network employees for their schedule constraints
@@ -287,6 +299,7 @@ public class HR_SystemManagement {
      */
     public void setShift()
     {
+        System.out.println("-Set Shift Schedule-");
         DailyShift[] newShift = new DailyShift[getNetworkBranches().size()];
         /*
          * Second function set all branches shifts for one day.
@@ -318,6 +331,7 @@ public class HR_SystemManagement {
         String answer = "y";
         while (Objects.equals(answer, "y"))
         {
+            System.out.println("-Update Shift Schedule-");
             System.out.println("Hello, please answer the following questions to update a shift:");
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter Branch Store ID that you want to update? ");
@@ -373,9 +387,13 @@ public class HR_SystemManagement {
 
     }
 
+    /**
+     * updates employees constrains by id
+     */
     public void updateEmployeeConstrainsByID()
     {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("-Update Employee Constraints-");
         System.out.println("Hello, Enter your ID to update your shift constraints: ");
         String employeeId = scanner.nextLine();
         Employee employee = findEmployeeByID(employeeId);
@@ -527,7 +545,7 @@ public class HR_SystemManagement {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
         while (choice != 4) {
-            System.out.println("-Update Employees details:");
+            System.out.println("-Update Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
             System.out.println("3. Employment Terms");
@@ -552,7 +570,7 @@ public class HR_SystemManagement {
                     employee.setSalary(salary);
                     break;
                 case 3:
-                    System.out.println("You chose Option 4");
+                    System.out.println("You chose Option 3");
                     System.out.println("Enter new employment terms");
                     String empTerms = scanner.nextLine();
                     employee.setEmpTerms(empTerms);
@@ -563,6 +581,56 @@ public class HR_SystemManagement {
                 case 5:
                     System.out.println("You chose Option 5.");
                     addQualificationToEmployee(employee);
+                    break;
+                case 6:
+                    System.out.println("Existing menu....");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+
+    /**
+     * gets an employee and asks HR manger what details to update
+     * @param employee: employee to present
+     */
+    public void getEmployeesDetails(Employee employee)
+    {
+        int choice = 0;
+        Scanner scanner = new Scanner(System.in);
+        while (choice != 4) {
+            System.out.println("-Get Employees details-");
+            System.out.println("1. Bank Account");
+            System.out.println("2. Salary");
+            System.out.println("3. Employment Terms");
+            System.out.println("4. Employee detail");
+            System.out.println("5. Qualifications");
+            System.out.println("6. Exit");
+
+            choice = scanner.nextInt();
+            int c = 0;
+            switch (choice) {
+                case 1:
+                    System.out.println("You chose Option 1.");
+                    System.out.println(employee.getName()+" bank account is: "+employee.getBankAccount());
+                    break;
+
+                case 2:
+                    System.out.println("You chose Option 2.");
+                    System.out.println(employee.getName()+" salary is: "+employee.getSalary());
+                    break;
+                case 3:
+                    System.out.println("You chose Option 3");
+                    System.out.println(employee.getName()+" employment terms are:\n "+employee.getSalary());
+                    break;
+                case 4:
+                    System.out.println("You chose Option 4.\n This option is in the works");
+                    break;
+                case 5:
+                    System.out.println("You chose Option 5.");
+                    System.out.println(employee.getName()+" qualifications are:\n "+employee.getQualifications().toString());
                     break;
                 case 6:
                     System.out.println("Existing menu....");
