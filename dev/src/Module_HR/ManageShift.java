@@ -34,13 +34,15 @@ public class ManageShift {
 
     }
 
-    public File uploadEndofDayReport()
+    /**
+     * upload an end of day file
+     */
+    public void uploadEndofDayReport()
     {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter a file path: ");
         File file = new File(scanner.nextLine());
         currentShift.setEndOfDayReport(file);
         System.out.println("Done.");
-        return file;
     }
 }
