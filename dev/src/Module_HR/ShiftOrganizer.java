@@ -176,6 +176,7 @@ public class ShiftOrganizer {
                         rolesAmount.put(String.valueOf(roleName), key);
                         insertIntoMorning(dailyShift, currentShift, roleName, employee);
                         dailyShift.setMorningShift(currentShift);
+                        employee.setCumulativeSalary(employee.getCumulativeSalary() + employee.getSalary());
                     }
                     else if(shift == 1 && !dailyShift.isExistMorning(employee))
                     {
@@ -184,6 +185,7 @@ public class ShiftOrganizer {
                         rolesAmount.put(String.valueOf(roleName), key);
                         insertIntoEvening(dailyShift, currentShift,roleName, employee);
                         dailyShift.setEveningShift(currentShift);
+                        employee.setCumulativeSalary(employee.getCumulativeSalary() + employee.getSalary());
                     }
                     else // he can't to either
                         continue;
