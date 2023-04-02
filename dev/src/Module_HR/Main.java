@@ -28,7 +28,7 @@ public class Main {
         Employee e12 = new Employee("Rotem","Sela","777777","098-456523",530,"Salary per shift - 530","2022-11-13");
         Employee e13 = new Employee("Noa","Kirel","222333","146-723120",760,"Salary per shift - 760","2022-11-13");
         Employee e14 = new Employee("David","Bowie","666555","763-452120",430,"Salary per shift - 430","2022-11-13");
-        Employee e15 = new Employee("Joni","Dep","121212","910-454120",700,"Salary per shift - 700","2022-11-13");
+        Employee e15 = new Employee("Joni","Depp","121212","910-454120",700,"Salary per shift - 700","2022-11-13");
 
         BranchStore b1 = new BranchStore("Super-Li","Tel-Aviv","08-6543210","24/7");
         b1.addEmployee(e1);
@@ -175,7 +175,8 @@ public class Main {
                     System.out.println("2. Update an existing employee");
                     System.out.println("3. Get employees information");
                     System.out.println("4. Calculate salary for last month");
-                    System.out.println("5. Go Back");
+                    System.out.println("5. Print all network Employees");
+                    System.out.println("6. Go Back");
                     c = scanner.nextInt();
                     switch (c)
                     {
@@ -192,6 +193,13 @@ public class Main {
                             System.out.println(searchAnEmployee(system).getCumulativeSalary());
                             break;
                         case 5:
+                            for (Employee employee : system.getNetworkEmployees())
+                            {
+                                employee.printEmployeeDetails();
+                                System.out.println("");
+                            }
+
+                        case 6:
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");
@@ -231,7 +239,8 @@ public class Main {
                     System.out.println("You chose Constraints:");
                     System.out.println("1. Ask constraints from all employees");
                     System.out.println("2. Update constraints to an employee");
-                    System.out.println("3. Go Back");
+                    System.out.println("3. Get Employees constraints");
+                    System.out.println("4. Go Back");
                     c = scanner.nextInt();
                     switch (c)
                     {
@@ -242,6 +251,10 @@ public class Main {
                             system.updateEmployeeConstrainsByID();
                             break;
                         case 3:
+                            Employee employee = searchAnEmployee(system);
+                            System.out.println(employee.getName()+ "constraints are: ");
+                            employee.printEmployeesConstraints();
+                        case 4:
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");

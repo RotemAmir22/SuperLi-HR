@@ -89,14 +89,13 @@ public class HR_SystemManagement {
     public void addEmployeeToList(Employee e){this.networkEmployees.add(e);}
 
     /**
-     *
-     * @param employee: gets employee and adds to the employee
+     * @param employee: gets employee and adds a qualification to the employee
      */
     public void addQualificationToEmployee(Employee employee)
     {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
-        System.out.println("-Add qualification to new Employee-");
+        System.out.println("-Add qualification to Employee-");
         //add qualification to employee - only one when it is a new employee
         while (Objects.equals(answer, "y"))
         {
@@ -110,6 +109,37 @@ public class HR_SystemManagement {
                 employee.addRole(roles[qualification]);
                 answer=scanner.nextLine();
                 System.out.println("Would you like to add more qualifications? (Enter y/n): ");
+                answer = scanner.nextLine();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
+            }
+
+        }
+    }
+
+    /**
+     * @param employee: gets employee and removes a role qualification
+     */
+    public void removeQualificationToEmployee(Employee employee)
+    {
+        Scanner scanner = new Scanner(System.in);
+        String answer = "y";
+        System.out.println("-Remove qualification from Employee-");
+        //add qualification to employee - only one when it is a new employee
+        while (Objects.equals(answer, "y"))
+        {
+            try{
+                System.out.println("Choose from the following, please enter the number of the role");
+                Role[] roles = Role.values();
+                for (int i = 0; i < roles.length; i++) {
+                    System.out.println(i + " - " + roles[i]);
+                }
+                int qualification = scanner.nextInt();
+                employee.removeRole(roles[qualification]);
+                answer=scanner.nextLine();
+                System.out.println("Would you like to remove another qualification? (Enter y/n): ");
                 answer = scanner.nextLine();
             }
             catch (Exception e)
@@ -585,59 +615,57 @@ public class HR_SystemManagement {
     {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 7) {
+        while (choice != 8) {
             System.out.println("-Update Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
             System.out.println("3. Employment Terms");
             System.out.println("4. Add Employee detail");
             System.out.println("5. Add qualification");
-            System.out.println("6. Add Bonus");
-            System.out.println("7. Exit");
+            System.out.println("6. Remove qualification");
+            System.out.println("7. Add Bonus");
+            System.out.println("8. Exit");
             try{
                 choice = scanner.nextInt();
                 int c = 0;
                 String temp = scanner.nextLine();
                 switch (choice) {
-                    case 1:
+                    case 1 -> {
                         System.out.println("You chose Option 1.");
                         System.out.println("Enter new bank account number");
                         String bank = scanner.nextLine();
                         employee.setBankAccount(bank);
-                        break;
-
-                    case 2:
+                    }
+                    case 2 -> {
                         System.out.println("You chose Option 2.");
                         System.out.println("Enter new salary");
                         double salary = scanner.nextDouble();
                         employee.setSalary(salary);
-                        break;
-                    case 3:
+                    }
+                    case 3 -> {
                         System.out.println("You chose Option 3.");
                         System.out.println("Enter new employment terms");
                         String empTerms = scanner.nextLine();
                         employee.setEmpTerms(empTerms);
-                        break;
-                    case 4:
-                        System.out.println("You chose Option 4.\n This option is in the works");
-                        break;
-                    case 5:
+                    }
+                    case 4 -> System.out.println("You chose Option 4.\n This option is in the works");
+                    case 5 -> {
                         System.out.println("You chose Option 5.");
                         addQualificationToEmployee(employee);
-                        break;
-                    case 6:
+                    }
+                    case 6 -> {
                         System.out.println("You chose Option 6.");
+                        removeQualificationToEmployee(employee);
+                    }
+                    case 7 -> {
+                        System.out.println("You chose Option 7.");
                         System.out.println("How much do you wish to add as a bonus?");
                         double bonus = scanner.nextDouble();
                         employee.setCumulativeSalary(employee.getCumulativeSalary() + bonus);
-                        System.out.println("Employees cumulative salary now is: "+ employee.getCumulativeSalary());
-                        break;
-                    case 7:
-                        System.out.println("Existing menu....");
-                        break;
-                    default:
-                        System.out.println("Invalid choice. Please try again.");
-                        break;
+                        System.out.println("Employees cumulative salary now is: " + employee.getCumulativeSalary());
+                    }
+                    case 8 -> System.out.println("Existing menu....");
+                    default -> System.out.println("Invalid choice. Please try again.");
                 }
             }
             catch (Exception e)
@@ -656,7 +684,7 @@ public class HR_SystemManagement {
     {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 7) {
+        while (choice != 8) {
             System.out.println("-Get Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
@@ -664,7 +692,8 @@ public class HR_SystemManagement {
             System.out.println("4. Employee detail");
             System.out.println("5. Qualifications");
             System.out.println("6. Add Bonus");
-            System.out.println("7. Exit");
+            System.out.println("7. Start Date");
+            System.out.println("8. Exit");
             try{
                 choice = scanner.nextInt();
                 int c = 0;
@@ -695,6 +724,10 @@ public class HR_SystemManagement {
                         System.out.println(employee.getName()+" cumulative salary is:\n "+employee.getCumulativeSalary());
                         break;
                     case 7:
+                        System.out.println("You chose Option 7.");
+                        System.out.println(employee.getName()+" start date was:\n "+employee.getStartDate());
+                        break;
+                    case 8:
                         System.out.println("Existing menu....");
                         break;
                     default:

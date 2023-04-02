@@ -50,6 +50,7 @@ public class Employee {
     public List<AEmployeeDetails> getDetails() {return details;}
     public boolean[][] getConstrains() {return constrains;}
     public double getCumulativeSalary() {return cumulativeSalary;}
+    public String getStartDate() {return startDate;}
 
     //setters
     public void setConstrains(int day, int shift,boolean limit)
@@ -114,5 +115,21 @@ public class Employee {
                 return true;
         }
         return false;
+    }
+
+    public void printEmployeeDetails()
+    {
+        System.out.println("- "+getName()+" -\nID: "+getId()+"\nStart Date: "+getStartDate()+
+                "\nCumulative Salary: "+getCumulativeSalary()+ "\nShift Salary: "+getSalary()+"\nBank account: "+getBankAccount()+"\nQualifications: "+getQualifications().toString());
+    }
+
+    public void printEmployeesConstraints()
+    {
+        for(Days days : Days.values())
+        {
+            System.out.println("- "+days.toString()+" -");
+            System.out.println("Morning: "+constrains[days.ordinal()][0]+" Evening: "+constrains[days.ordinal()][1]);
+        }
+
     }
 }
