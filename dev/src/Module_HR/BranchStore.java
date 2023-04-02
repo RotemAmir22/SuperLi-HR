@@ -134,7 +134,7 @@ public class BranchStore {
     /**
      *
      * @param dateString: gets a date
-     * @return: returns the daily shift of this date
+     * @return daily shift of this date
      */
     public DailyShift getShiftByDate(String dateString)
     {

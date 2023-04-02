@@ -316,7 +316,7 @@ public class Main {
                             scanner.nextLine();
                             System.out.println("Enter the required date:");
                             String ans = scanner.nextLine();
-                            b.getShiftByDate(ans).showMeSchedualing();
+                            b.showShiftByDate(ans);
                             break;
                         case 2:
                             for( BranchStore branch: system.getNetworkBranches()){branch.deleteHistory();}
