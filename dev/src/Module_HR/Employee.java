@@ -117,12 +117,18 @@ public class Employee {
         return false;
     }
 
+    /**
+     * prints all employees details without constraints
+     */
     public void printEmployeeDetails()
     {
         System.out.println("- "+getName()+" -\nID: "+getId()+"\nStart Date: "+getStartDate()+
                 "\nCumulative Salary: "+getCumulativeSalary()+ "\nShift Salary: "+getSalary()+"\nBank account: "+getBankAccount()+"\nQualifications: "+getQualifications().toString());
     }
 
+    /**
+     * prints employees constraints
+     */
     public void printEmployeesConstraints()
     {
         for(Days days : Days.values())

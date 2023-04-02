@@ -627,7 +627,6 @@ public class HR_SystemManagement {
             System.out.println("8. Exit");
             try{
                 choice = scanner.nextInt();
-                int c = 0;
                 String temp = scanner.nextLine();
                 switch (choice) {
                     case 1 -> {
@@ -696,7 +695,6 @@ public class HR_SystemManagement {
             System.out.println("8. Exit");
             try{
                 choice = scanner.nextInt();
-                int c = 0;
                 String temp = scanner.nextLine();
                 switch (choice) {
                     case 1:
@@ -761,7 +759,6 @@ public class HR_SystemManagement {
                 System.out.println("4. Exit");
 
                 choice = scanner.nextInt();
-                int c = 0;
                 String temp = scanner.nextLine();
                 switch (choice) {
                     case 1:

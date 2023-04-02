@@ -152,6 +152,11 @@ public class Main {
         if(data == 0)
         {
             uploadData(system);
+            for (BranchStore branchStore : system.getNetworkBranches())
+            {
+                branchStore.printBranchDetails();
+                System.out.println("");
+            }
         }
 
         int choice = 0;
@@ -198,7 +203,6 @@ public class Main {
                                 employee.printEmployeeDetails();
                                 System.out.println("");
                             }
-
                         case 6:
                             continue;
                         default:
@@ -212,7 +216,8 @@ public class Main {
                     System.out.println("2. Update an existing branch");
                     System.out.println("3. Add employee to branch");
                     System.out.println("4. Remove employee from branch");
-                    System.out.println("5. Go Back");
+                    System.out.println("5. Print all Branches");
+                    System.out.println("6. Go Back");
                     c = scanner.nextInt();
                     switch (c)
                     {
@@ -228,6 +233,12 @@ public class Main {
                             system.removeEmployeeFromBranch(searchAnEmployee(system));
                             break;
                         case 5:
+                            for (BranchStore branchStore : system.getNetworkBranches())
+                            {
+                                branchStore.printBranchDetails();
+                                System.out.println("");
+                            }
+                        case 6:
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");

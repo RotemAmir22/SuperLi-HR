@@ -162,5 +162,20 @@ public class BranchStore {
         }
         return null;
     }
+
+    /**
+     * prints all branches details
+     */
+    public void printBranchDetails()
+    {
+        System.out.println("- "+getName()+", ID: "+getBranchID()+" -\nAddress: "+getAddress()+"\nPhone number: "+getPhoneNum()+"\nOpen Hours: "+getOpeningTime());
+        System.out.println("Employees in this Branch:");
+        int counter = 1;
+        for (Employee employee : getEmployees())
+        {
+            System.out.println(counter+++". "+employee.getName());
+        }
+
+    }
 }
 
