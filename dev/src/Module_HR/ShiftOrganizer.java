@@ -34,19 +34,19 @@ public class ShiftOrganizer {
      * check if the shift is legal
      * @param rolesAmount: to check if all are update to 0
      */
-    public static void checkShiftValidation(Map<String, Integer> rolesAmount, int numOfShiftmanagers)
+    public static void checkShiftValidation(Map<String, Integer> rolesAmount, int numOfShiftManagers)
     {
         Scanner scanner = new Scanner(System.in);
         /*
         force the HR manager to choose shift manager
          */
-        if(numOfShiftmanagers != 0)
+        if(numOfShiftManagers != 0)
         {
             for(Role role: Role.values())
             {
                 if(rolesAmount.get(role.toString()) > 0)
                 {
-                    System.out.println("Daily shift is INVALID !!!\n Ask backup from another branch? (y/n)");
+                    System.out.println("Daily shift is INVALID !!!\nAsk backup from another branch? (y/n)");
                     String replay = scanner.nextLine();
                     if(Objects.equals(replay, "y")) {
                         System.out.println("ALL BRANCHES: please contact HR manager");
@@ -91,23 +91,19 @@ public class ShiftOrganizer {
      * @param openHours: the branches open hours (in this part - day and shift (morning or evening))
      * @return suggestion of a daily shift for tomorrow
      */
-    public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours, int shift, DailyShift dailyShift) {
+    public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours, int shift, DailyShift dailyShift,Days weekDay) {
         /* Shift means Morning/Evening */
         if(shift !=0 && shift != 1){return null;}
         /* Get the current day, and pull the next for the scheduling */
         LocalDate currentDate = LocalDate.now();
-        LocalDate nextDate = currentDate.plusDays(1);
+        LocalDate nextDate = currentDate.plusDays(weekDay.ordinal()+2);
         /* Reset employee's limit of shifts if the week is over */
         if(currentDate.toString().equals("Saturday"))
         {
             for (Employee employee : listEmployees){employee.setShiftsLimit(6);}
         }
-        /* First, get tomorrow date */
-        DayOfWeek tomorrow = LocalDate.now().plusDays(1).getDayOfWeek();
-        Locale locale = Locale.ENGLISH;
-        String tomorrowString = tomorrow.getDisplayName(TextStyle.FULL, locale);
         /* Get the day by index (0-6) */
-        int day = Days.valueOf(tomorrowString).ordinal();
+        int day = nextDate.plusDays(1).getDayOfWeek().ordinal();
         /* Check if the branch is open this day */
         if(openHours[day][0] == 1 && openHours[day][1] == 1)
         {
@@ -116,14 +112,14 @@ public class ShiftOrganizer {
         }
 
         //get information from manager
-        System.out.println("Hello, Today's date: " + currentDate);
+        System.out.println("REMINDER, Today's date: " + currentDate);
         /*
          * In this part we are asking info from HR manager about the specific shift
          */
-        Map<String, Integer> rolesAmount = new HashMap<String,Integer>();
+        Map<String, Integer> rolesAmount = new HashMap<>();
         Role[] roles = Role.values();
         Scanner scanner = new Scanner(System.in);
-        int numOfShiftmanagers = 0;
+        int numOfShiftManagers = 0;
         int c;
         int i = 0;
         while(i < roles.length)
@@ -131,7 +127,7 @@ public class ShiftOrganizer {
             try{
                 System.out.println("How much "+ roles[i] + " do you need for " + nextDate + " "+Shift.values()[shift].toString()+" shift?");
                 c = scanner.nextInt();
-                if(Objects.equals(roles[i].toString(), "SHIFTMANAGER")) {numOfShiftmanagers = c;}
+                if(Objects.equals(roles[i].toString(), "SHIFTMANAGER")) {numOfShiftManagers = c;}
                 rolesAmount.put(String.valueOf(roles[i]), c);
                 i++;
             }
@@ -148,9 +144,7 @@ public class ShiftOrganizer {
         Map<Role, Employee> currentShift = new HashMap<>();
         int key;
         boolean[][] constraints;
-        Map<String, Integer> days = new HashMap<>();
-        Days[] tmp = Days.values();
-        for(int d = 0; d < 7; d++){days.put(String.valueOf(tmp[d]), d);}
+
         Role roleName;
         int amount;
         /*
@@ -161,13 +155,13 @@ public class ShiftOrganizer {
             roleName = Role.valueOf(entry.getKey());
             amount = entry.getValue();
             if(roleName == Role.SHIFTMANAGER)
-                numOfShiftmanagers = amount;
+                numOfShiftManagers = amount;
             /* Check if there is need for this role:
                If the employee can do it, and if he doesn't pass his weekly limitation. */
             for (Employee employee : listEmployees) {
                 /* get the employees constraints */
                 constraints = employee.getConstraints();
-                if (amount > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[days.get(tomorrowString)][shift]) {
+                if (amount > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[nextDate.getDayOfWeek().ordinal()][shift]) {
                     /* check where the employee can be and update */
                     if(shift == 0 && !dailyShift.isExistEvening(employee))
                     {
@@ -200,7 +194,7 @@ public class ShiftOrganizer {
 
         }
         /* Create and set a new shift */
-        checkShiftValidation(rolesAmount, numOfShiftmanagers); // check if there is a problem
+        checkShiftValidation(rolesAmount, numOfShiftManagers); // check if there is a problem
         return dailyShift; //return a new daily shift
     }
 }

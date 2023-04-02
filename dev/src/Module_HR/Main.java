@@ -274,7 +274,7 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("You chose Shifts:");
-                    System.out.println("1. Plan shifts for tomorrow");
+                    System.out.println("1. Plan shifts for the week to come");
                     System.out.println("2. Change shift");
                     System.out.println("3. Add shift managers permissions");
                     System.out.println("4. Remove shift managers permissions");

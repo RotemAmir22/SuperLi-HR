@@ -347,31 +347,40 @@ public class HR_SystemManagement {
     }
 
     /**
-     * daily the system build the shifts for the next day in each branch
+     * daily the system build the shifts for the next week in each branch
      */
     public void setShift()
     {
-        System.out.println("-Set Shift Schedule-");
-        DailyShift[] newShift = new DailyShift[getNetworkBranches().size()];
-        /*
-         * Second function set all branches shifts for one day.
-         */
-        List<Employee> listEmployees;
-        //for loop that run on the branch list and collect the employees list
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please choose the required shift to schedule -\n0. Morning\n1. Evening");
-        int c = scanner.nextInt();
-        for(int i = 0; i<getNetworkBranches().size(); i++)
+
+        for(Days day : Days.values())
         {
-            newShift[i] = new DailyShift(LocalDate.now().plusDays(1));
-            // get the employees from each branch and set them a new scheduling
-            listEmployees = getNetworkBranches().get(i).getEmployees();
-            newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours(), c, newShift[i]);
-            getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
-            assert newShift[i] != null;
-            System.out.println("This shift is set for: "+newShift[i].getDate().toString());
+            System.out.println("-Set Shift Schedule for "+ LocalDate.now().plusDays(day.ordinal()+2)+" -");
+            DailyShift[] newShift = new DailyShift[getNetworkBranches().size()];
+            /*
+             * Second function set all branches shifts for one day.
+             */
+            List<Employee> listEmployees;
+            for(int i = 0; i<getNetworkBranches().size(); i++)
+            {
+                System.out.println("Setting shift for Branch No. "+getNetworkBranches().get(i).getBranchID());
+                newShift[i] = new DailyShift(LocalDate.now().plusDays(day.ordinal()+2));
+                // get the employees from each branch and set them a new scheduling
+                listEmployees = getNetworkBranches().get(i).getEmployees();
+
+                //schedule morning shift
+                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours(), 0, newShift[i],day);
+                assert newShift[i] != null;
+                System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Morning);
+
+                //schedule evening shift
+                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours(), 1, newShift[i],day);
+                getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
+                assert newShift[i] != null;
+                System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
+            }
 
         }
+
     }
 
     /**
