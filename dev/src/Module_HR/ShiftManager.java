@@ -12,7 +12,7 @@ public class ShiftManager {
     private List<ShiftM_Permissions> permissions;
     private LocalDate shiftDate; //date of shift
     private int shiftSlot; //morning - 0  or evening shift - 1
-    private List<Cancelation> cancelations;
+    private List<Cancellation> cancelations;
 
     //constructor
     public ShiftManager(String name, String id, LocalDate shiftDate, int shiftSlot) {
@@ -28,7 +28,7 @@ public class ShiftManager {
         ShiftM_Permissions manageStaff = new ShiftM_Permissions("manage staff", "shift manager can manage shift staff");
         this.permissions.add(manageStaff);
 
-        this.cancelations=new ArrayList<Cancelation>();
+        this.cancelations=new ArrayList<Cancellation>();
     }
 
     //getters
@@ -37,8 +37,8 @@ public class ShiftManager {
     public List<ShiftM_Permissions> getPermissions() {return permissions;}
     public LocalDate getShiftDate() {return shiftDate;}
     public int getShiftSlot() {return shiftSlot;}
-    public List<Cancelation> getCancelations() {return cancelations;}
-    public void addToCancelations(Cancelation cancelation)
+    public List<Cancellation> getCancelations() {return cancelations;}
+    public void addToCancelations(Cancellation cancelation)
     {
         this.cancelations.add(cancelation);
     }
@@ -77,5 +77,14 @@ public class ShiftManager {
         return null;
     }
 
+    public Cancellation findCancellationInList(int ID)
+    {
+        for(Cancellation cancelation : cancelations)
+        {
+            if(cancelation.getCancelID() == ID)
+                return cancelation;
+        }
+        return  null;
+    }
 
 }

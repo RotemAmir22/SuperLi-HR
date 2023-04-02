@@ -28,9 +28,9 @@ public class ManageShift {
         String itemName = scanner.nextLine();
         System.out.println("Enter item amount: ");
         int amount = scanner.nextInt();
-        Cancelation cancelation = new Cancelation(itemName,amount);
+        Cancellation cancelation = new Cancellation(itemName,amount);
         shiftManager.addToCancelations(cancelation);
-        System.out.println("ITEM CANCELLED !!!");
+        System.out.println("ITEM CANCELLED !!!\n Cancellation ID: "+cancelation.getCancelID());
 
     }
 
@@ -44,5 +44,21 @@ public class ManageShift {
         File file = new File(scanner.nextLine());
         currentShift.setEndOfDayReport(file);
         System.out.println("Done.");
+    }
+
+    /**
+     * prints Cancellation information
+     */
+    public void getCancellation()
+    {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter Cancellation ID: ");
+        int id = scanner.nextInt();
+        Cancellation cancelation = shiftManager.findCancellationInList(id);
+        if(cancelation == null)
+            System.out.println("Cancellation not found");
+        else {
+            System.out.println("Cancellation Details:\n Item: "+cancelation.getItem()+" x"+cancelation.getAmount());
+        }
     }
 }
