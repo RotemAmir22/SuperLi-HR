@@ -136,7 +136,7 @@ public class ShiftOrganizer {
         /*
          * In this part we are asking info from HR manager about the specific shift
          */
-        Map<String, Integer> rolesAmount = new LinkedHashMap<>();
+        Map<String, Integer> rolesAmount = new HashMap<>();
         Role[] roles = Role.values();
         Scanner scanner = new Scanner(System.in);
         int numOfShiftManagers = 0;
