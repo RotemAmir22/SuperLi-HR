@@ -188,7 +188,7 @@ public class ShiftOrganizer {
             for (Employee employee : listEmployees) {
                 /* get the employees constraints */
                 constraints = employee.getConstraints();
-                if (amount > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[nextDate.getDayOfWeek().ordinal()][shift]) {
+                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[nextDate.getDayOfWeek().ordinal()][shift]) {
                     /* check where the employee can be and update */
                     if(shift == 0 && !dailyShift.isExistEvening(employee))
                     {
@@ -211,12 +211,14 @@ public class ShiftOrganizer {
                     else // he can't to either
                         continue;
                     /* check if the current added is a shift-manager */
-                    if(currentShift.get(Role.SHIFTMANAGER).getName().equals(employee.getName())) // the last adding
+                    if((currentShift.get(Role.SHIFTMANAGER)!= null))
                     {
-                        createShiftManager(employee, nextDate, shift, dailyShift);
+                        if(currentShift.get(Role.SHIFTMANAGER).getName().equals(employee.getName())) // the last adding
+                        {
+                            createShiftManager(employee, nextDate, shift, dailyShift);
+                        }
                     }
-
-                }
+                 }
             }
 
         }

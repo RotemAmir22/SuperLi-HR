@@ -370,6 +370,7 @@ public class HR_SystemManagement {
                 getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
                 assert newShift[i] != null;
                 System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
+                newShift[i].showMeSchedualing();
             }
 
         }
