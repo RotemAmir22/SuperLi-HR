@@ -4,12 +4,18 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * this class is made to manage a shift and keep track of all the cancellations
+ * has user interactions
+ */
 public class ManageShift {
 
+    //variables
     private ShiftManager shiftManager;
     private DailyShift currentShift;
     private LocalDate date;
 
+    //constructor
     public ManageShift(ShiftManager shiftManager, DailyShift currentShift, LocalDate date) {
         this.shiftManager = shiftManager;
         this.currentShift = currentShift;
@@ -28,9 +34,9 @@ public class ManageShift {
         String itemName = scanner.nextLine();
         System.out.println("Enter item amount: ");
         int amount = scanner.nextInt();
-        Cancellation cancelation = new Cancellation(itemName,amount);
-        shiftManager.addToCancelations(cancelation);
-        System.out.println("ITEM CANCELLED !!!\n Cancellation ID: "+cancelation.getCancelID());
+        Cancellation cancellation = new Cancellation(itemName,amount);
+        shiftManager.addToCancelations(cancellation);
+        System.out.println("ITEM CANCELLED !!!\n Cancellation ID: "+cancellation.getCancelID());
 
     }
 
@@ -47,18 +53,18 @@ public class ManageShift {
     }
 
     /**
-     * prints Cancellation information
+     * prints Cancellation information from id given
      */
     public void getCancellation()
     {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter Cancellation ID: ");
         int id = scanner.nextInt();
-        Cancellation cancelation = shiftManager.findCancellationInList(id);
-        if(cancelation == null)
+        Cancellation cancellation = shiftManager.findCancellationInList(id);
+        if(cancellation == null)
             System.out.println("Cancellation not found");
         else {
-            System.out.println("Cancellation Details:\n Item: "+cancelation.getItem()+" x"+cancelation.getAmount());
+            System.out.println("Cancellation Details:\n Item: "+cancellation.getItem()+" x"+cancellation.getAmount());
         }
     }
 }
