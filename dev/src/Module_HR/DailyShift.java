@@ -17,8 +17,8 @@ public class DailyShift {
     //constructor
     public DailyShift(LocalDate date) {
         this.date = date;
-        this.morningShift = new HashMap<Role,Employee>();
-        this.eveningShift = new HashMap<Role,Employee>();
+        this.morningShift = new LinkedHashMap<Role,Employee>();
+        this.eveningShift = new LinkedHashMap<Role,Employee>();
         this.shiftManagers= new ArrayList<ShiftManager>();
     }
 
@@ -146,15 +146,15 @@ public class DailyShift {
     public void showMeSchedualing()
     {
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
-        System.out.println("Daily shift - "+this.date+"\nMORNING:\n");
-        Map<Role, Employee> sortedMap = new TreeMap<>(morningShift);
+        System.out.println("Daily shift - "+ dayOfWeek + this.date+"\nMORNING:\n");
+        Map<Role, Employee> sortedMap = new LinkedHashMap<>(morningShift);
         for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
             Employee e = entry.getValue();
             System.out.println("["+key.name()+": "+e.getName()+"]\n");
         }
         System.out.println("EVENING:\n");
-        sortedMap = new TreeMap<>(eveningShift);
+        sortedMap = new LinkedHashMap<>(eveningShift);
         for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
             Employee e = entry.getValue();
