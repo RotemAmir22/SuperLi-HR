@@ -628,42 +628,42 @@ public class HR_SystemManagement {
                 choice = scanner.nextInt();
                 String temp = scanner.nextLine();
                 switch (choice) {
-                    case 1 -> {
+                    case 1:
                         System.out.println("You chose Option 1.");
                         System.out.println("Enter new bank account number");
                         String bank = scanner.nextLine();
                         employee.setBankAccount(bank);
-                    }
-                    case 2 -> {
+
+                    case 2:
                         System.out.println("You chose Option 2.");
                         System.out.println("Enter new salary");
                         double salary = scanner.nextDouble();
                         employee.setSalary(salary);
-                    }
-                    case 3 -> {
+
+                    case 3:
                         System.out.println("You chose Option 3.");
                         System.out.println("Enter new employment terms");
                         String empTerms = scanner.nextLine();
                         employee.setEmpTerms(empTerms);
-                    }
-                    case 4 -> System.out.println("You chose Option 4.\n This option is in the works");
-                    case 5 -> {
+
+                    case 4: System.out.println("You chose Option 4.\n This option is in the works");
+                    case 5:
                         System.out.println("You chose Option 5.");
                         addQualificationToEmployee(employee);
-                    }
-                    case 6 -> {
+
+                    case 6:
                         System.out.println("You chose Option 6.");
                         removeQualificationToEmployee(employee);
-                    }
-                    case 7 -> {
+
+                    case 7 :
                         System.out.println("You chose Option 7.");
                         System.out.println("How much do you wish to add as a bonus?");
                         double bonus = scanner.nextDouble();
                         employee.setCumulativeSalary(employee.getCumulativeSalary() + bonus);
                         System.out.println("Employees cumulative salary now is: " + employee.getCumulativeSalary());
-                    }
-                    case 8 -> System.out.println("Existing menu....");
-                    default -> System.out.println("Invalid choice. Please try again.");
+
+                    case 8: System.out.println("Existing menu....");
+                    default: System.out.println("Invalid choice. Please try again.");
                 }
             }
             catch (Exception e)
