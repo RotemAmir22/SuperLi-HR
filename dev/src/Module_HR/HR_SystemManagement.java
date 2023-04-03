@@ -8,11 +8,11 @@ import java.util.*;
  * This class will help HR user to manage the system:
  * - schedule shifts by the ShiftOrganizer class
  * - ask for employees' constraints by the EmployeeConstraints class
- * - manage a menu with options for user's system.
  * We assume there is one user at this point.
  */
 public class HR_SystemManagement {
-    
+
+    //variables
     private List<BranchStore> networkBranches;
     private List<Employee> networkEmployees;
 
@@ -60,11 +60,9 @@ public class HR_SystemManagement {
      */
     public BranchStore findBranchByID(int ID) {
 
-        for (BranchStore branch : networkBranches) {
-            if (branch.getBranchID()==ID) {
+        for (BranchStore branch : networkBranches)
+            if (branch.getBranchID()==ID)
                 return branch;
-            }
-        }
         return null;
     }
 
@@ -74,11 +72,9 @@ public class HR_SystemManagement {
      * @return if found returns employee, null if not found
      */
     public Employee findEmployeeByID(String ID) {
-        for (Employee employee : networkEmployees) {
-            if (Objects.equals(employee.getId(), ID)) {
+        for (Employee employee : networkEmployees)
+            if (Objects.equals(employee.getId(), ID))
                 return employee;
-            }
-        }
         return null;
     }
 
@@ -322,9 +318,6 @@ public class HR_SystemManagement {
         System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
     }
 
-
-
-
     /**
      * once a week the system asks all the network employees for their schedule constraints
      */
@@ -467,7 +460,6 @@ public class HR_SystemManagement {
         Employee employee = findEmployeeByID(employeeId);
         EmployeeConstraints.updateConstraints(employee);
         System.out.println("Constraints updated ");
-
     }
 
     /**
@@ -478,9 +470,8 @@ public class HR_SystemManagement {
         LocalDate currentDate = LocalDate.now();
         /* Reset employee's limit of shifts if the week is over */
         if(currentDate.toString().equals("Saturday"))
-        {
             for (Employee employee : getNetworkEmployees()){employee.setShiftsLimit(6);}
-        }
+
     }
 
     /**
