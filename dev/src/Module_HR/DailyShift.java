@@ -96,19 +96,18 @@ public class DailyShift {
     */
     public void addEmployeeToMorning(Employee employee, Role role)
     {
-        if(this.morningShift.containsKey(role))
-            this.morningShift.get(role).add(employee);
-        else
-            this.morningShift.put(role, new ArrayList<>()).add(employee);
+        if(!this.morningShift.containsKey(role))
+            this.morningShift.put(role, new ArrayList<>());
+        this.morningShift.get(role).add(employee);
+
     }
 
     //remove from evening shift
     public void addEmployeeToEvening(Employee employee, Role role)
     {
-        if(this.eveningShift.containsKey(role))
-            this.eveningShift.get(role).add(employee);
-        else
-            this.eveningShift.put(role, new ArrayList<>()).add(employee);
+        if(!this.eveningShift.containsKey(role))
+            this.eveningShift.put(role, new ArrayList<>());
+        this.eveningShift.get(role).add(employee);
     }
 
     //according to shift this function refers to the right helper

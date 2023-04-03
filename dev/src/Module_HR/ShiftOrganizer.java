@@ -129,7 +129,6 @@ public class ShiftOrganizer {
          * In this part we go over the employees and check who can fill which position
          * We will insert those maps to the new DailyShift
          */
-        Map<Role, ArrayList<Employee>> currentShift = new LinkedHashMap<>();
         int key;
         boolean[][] constraints;
 
