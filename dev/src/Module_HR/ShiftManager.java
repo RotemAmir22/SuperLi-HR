@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * this class hold all information regarding the shift manager
+ */
 public class ShiftManager {
 
+    //variables
     private String fullName;
     private String id;
     private List<ShiftM_Permissions> permissions;
@@ -22,6 +26,7 @@ public class ShiftManager {
         this.shiftSlot = shiftSlot;
 
         this.permissions = new ArrayList<ShiftM_Permissions>();
+
         //add permissions to shift manager - these are the basic permission that evey shift manager has
         ShiftM_Permissions cancellation = new ShiftM_Permissions("cancellations", "shift manager can cancel items");
         this.permissions.add(cancellation);
@@ -44,7 +49,6 @@ public class ShiftManager {
     }
 
     /**
-     *
      * @param permission: add this permission the list of permission of specific shift manager
      */
     public void addPermission(ShiftM_Permissions permission)
@@ -53,7 +57,6 @@ public class ShiftManager {
     }
 
     /**
-     *
      * @param permission: remove this permission from specific shift manager
      */
     public void removePermission(ShiftM_Permissions permission)
@@ -68,22 +71,21 @@ public class ShiftManager {
      */
     public ShiftM_Permissions findPermission(String name){
         for (ShiftM_Permissions permission : permissions)
-        {
             if (Objects.equals(permission.getName(), name))
-            {
                 return permission;
-            }
-        }
         return null;
     }
 
+    /**
+     * serches for cancellation of this shift manager
+     * @param ID : cancellation ID
+     * @return : cancellation in list
+     */
     public Cancellation findCancellationInList(int ID)
     {
-        for(Cancellation cancelation : cancelations)
-        {
-            if(cancelation.getCancelID() == ID)
-                return cancelation;
-        }
+        for(Cancellation cancellation : cancelations)
+            if(cancellation.getCancelID() == ID)
+                return cancellation;
         return  null;
     }
 
