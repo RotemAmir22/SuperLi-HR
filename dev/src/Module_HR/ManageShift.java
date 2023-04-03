@@ -59,13 +59,21 @@ public class ManageShift {
     public void getCancellation()
     {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Please enter Cancellation ID: ");
-        int id = scanner.nextInt();
-        Cancellation cancellation = shiftManager.findCancellationInList(id);
-        if(cancellation == null)
-            System.out.println("Cancellation not found");
-        else {
-            System.out.println("Cancellation Details:\nItem: "+cancellation.getItem()+" x"+cancellation.getAmount());
+        try {
+            System.out.println("Please enter Cancellation ID: ");
+            String id = scanner.nextLine();
+            Cancellation cancellation = shiftManager.findCancellationInList(Integer.parseInt(id));
+            if(cancellation == null)
+                System.out.println("Cancellation not found");
+            else {
+                System.out.println("Cancellation Details:\nItem: "+cancellation.getItem()+" x"+cancellation.getAmount());
+            }
         }
+        catch (Exception e)
+        {
+            System.out.println("Sorry, invalid input");
+        }
+
+
     }
 }
