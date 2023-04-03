@@ -175,13 +175,35 @@ public class DailyShift {
         }
     }
 
+    /**
+     * checks if employee is in morning shift
+     * @param e : employee to search for
+     * @return true of in shift
+     */
     public boolean isExistMorning(Employee e)
     {
-        return this.morningShift.containsValue(e);
+        for(Map.Entry<Role,ArrayList<Employee>> employees : morningShift.entrySet())
+            for (Employee employee : employees.getValue())
+            {
+                if(employee == e)
+                    return true;
+            }
+        return false;
     }
 
+    /**
+     * checks if employee is in evening shift
+     * @param e : employee to search for
+     * @return true of in shift
+     */
     public boolean isExistEvening(Employee e)
     {
-        return this.eveningShift.containsValue(e);
+        for(Map.Entry<Role,ArrayList<Employee>> employees : eveningShift.entrySet())
+            for (Employee employee : employees.getValue())
+            {
+                if(employee == e)
+                    return true;
+            }
+        return false;
     }
 }

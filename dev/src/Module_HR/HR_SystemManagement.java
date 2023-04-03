@@ -305,15 +305,11 @@ public class HR_SystemManagement {
         String address = scanner.nextLine();
         System.out.println("Enter branch's phone number: ");
         String phone = scanner.nextLine();
-        System.out.println("Enter branch's opening time: ");
-        String openingtime = scanner.nextLine();
-        BranchStore branchStore = new BranchStore(name,address,phone, openingtime);
+        BranchStore branchStore = new BranchStore(name,address,phone, "24/7");
         addBranchStoreToList(branchStore);
 
-        System.out.println("Do you want to update the branch's open hours? Now it is 24/7 store (Enter y/n)");
-        String answer = scanner.nextLine();
-        if(answer.equals("y"))
-            updateBranchOpenHours(branchStore);
+        System.out.println("Please update the open hours in according to the opening time for scheduling purposes\nthe default is that the branch store is open 24/7");
+        updateBranchOpenHours(branchStore);
 
         System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
     }
@@ -514,7 +510,7 @@ public class HR_SystemManagement {
                     Employee employee = branch.findEmployeeInBranch(ID);
                     if(employee != null)
                     {
-                        DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().toString());
+                        DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().plusDays(2).toString());
                         if(dailyShift == null)
                             System.out.println("NO SHIFT YET");
                         else {
@@ -578,7 +574,7 @@ public class HR_SystemManagement {
                     Employee employee = branch.findEmployeeInBranch(ID);
                     if(employee != null)
                     {
-                        DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().toString());
+                        DailyShift dailyShift = branch.getShiftByDate(LocalDate.now().plusDays(2).toString());
                         if(dailyShift == null)
                             System.out.println("NO SHIFT YET");
                         else {
