@@ -1,6 +1,6 @@
-public class Site {
-    private String address;
-    private Area areaCode;
-    private String contactName;
-    private String ContactNumber;
+public abstract class Site {
+    protected String address;
+    protected Area areaCode;
+    protected String contactName;
+    protected String ContactNumber;
 }

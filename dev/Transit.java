@@ -1,12 +1,14 @@
 import java.util.Date;
+import java.util.Set;
 
 public class Transit {
     private int TransitId;
     private Date TransitDate;
-    private String TruckPlateNumber;
-    private String DriverName;
-    private String DriverId;
-    private TransitDocument DeliveryDoc;
+    private Truck truck;
+    private Driver driver; // String driverName??
+    private Site source;
+    private Set<Site> destinations;
+    private Set<OrderDocument> ordersDocs;
 
 
 }
