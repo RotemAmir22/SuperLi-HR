@@ -147,14 +147,14 @@ public class DailyShift {
     {
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
         System.out.println("Daily shift - "+ dayOfWeek + this.date+"\nMORNING:\n");
-        Map<Role, Employee> sortedMap = new LinkedHashMap<>(morningShift);
+        Map<Role, Employee> sortedMap = new TreeMap<>(morningShift);
         for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
             Employee e = entry.getValue();
             System.out.println("["+key.name()+": "+e.getName()+"]\n");
         }
         System.out.println("EVENING:\n");
-        sortedMap = new LinkedHashMap<>(eveningShift);
+        sortedMap = new TreeMap<>(eveningShift);
         for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
             Employee e = entry.getValue();
