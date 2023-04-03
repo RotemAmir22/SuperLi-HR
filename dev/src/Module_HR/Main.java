@@ -93,21 +93,21 @@ public class Main {
         system.addEmployeeToList(e2);
         system.addEmployeeToList(e3);
         system.addEmployeeToList(e4);
-        system.addEmployeeToList(e5);
-        system.addEmployeeToList(e6);
+//        system.addEmployeeToList(e5);
+//        system.addEmployeeToList(e6);
         system.addEmployeeToList(e7);
         system.addEmployeeToList(e8);
         system.addEmployeeToList(e9);
         system.addEmployeeToList(e10);
-        system.addEmployeeToList(e11);
-        system.addEmployeeToList(e12);
-        system.addEmployeeToList(e13);
-        system.addEmployeeToList(e14);
-        system.addEmployeeToList(e15);
+//        system.addEmployeeToList(e11);
+//        system.addEmployeeToList(e12);
+//        system.addEmployeeToList(e13);
+//        system.addEmployeeToList(e14);
+//        system.addEmployeeToList(e15);
 
         system.addBranchStoreToList(b1);
-        system.addBranchStoreToList(b2);
-        system.addBranchStoreToList(b3);
+//        system.addBranchStoreToList(b2);
+//        system.addBranchStoreToList(b3);
 
 
     }
@@ -346,7 +346,7 @@ public class Main {
                     System.out.println("Enter an employee ID");
                     String ans = scanner.nextLine();
                     ShiftManager shiftm = s.findEmployeeInShiftManager(ans);
-                    ManageShift manageShift = new ManageShift(shiftm, s, LocalDate.now());
+                    ManageShift manageShift = new ManageShift(shiftm, s, LocalDate.now().plusDays(2));
                     System.out.println("Choose an option:");
                     System.out.println("1. Cancel an item");
                     System.out.println("2. Get Cancellation details");

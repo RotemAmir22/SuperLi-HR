@@ -35,8 +35,9 @@ public class ManageShift {
         System.out.println("Enter item amount: ");
         int amount = scanner.nextInt();
         Cancellation cancellation = new Cancellation(itemName,amount);
-        shiftManager.addToCancelations(cancellation);
-        System.out.println("ITEM CANCELLED !!!\n Cancellation ID: "+cancellation.getCancelID());
+        this.shiftManager.addToCancelations(cancellation);
+        System.out.println("ITEM CANCELLED !!!\nCancellation ID: "+cancellation.getCancelID());
+        String temp = scanner.nextLine();
 
     }
 

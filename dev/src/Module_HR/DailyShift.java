@@ -136,7 +136,7 @@ public class DailyShift {
     public ShiftManager findEmployeeInShiftManager(String ID)
     {
         for (ShiftManager shiftManager : shiftManagers) {
-            if (shiftManager.getId()==ID) {
+            if (Objects.equals(shiftManager.getId(), ID)) {
                 return shiftManager;
             }
         }
