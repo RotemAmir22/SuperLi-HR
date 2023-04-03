@@ -32,6 +32,11 @@ public class Employee {
         this.constrains = new boolean[7][2]; //if worker can work in the morning or evening shift of each day
         this.details= new ArrayList<AEmployeeDetails>(); //additional details about worker
         this.qualifications=new ArrayList<Role>(); //employees qualifications to perform a role, description can be saved in details if required
+        for(int i=0; i<7; i++)
+        {
+            for(int j=0; j<2; j++)
+                this.constrains[i][j] = true;
+        }
     }
 
     //getters
