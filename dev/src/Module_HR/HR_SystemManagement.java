@@ -239,7 +239,7 @@ public class HR_SystemManagement {
         String bankAccount = scanner.nextLine();
         System.out.println("Enter employee's salary: ");
         double salary = scanner.nextDouble();
-        System.out.println("Enter computer path of employee's terms of employment: ");
+        System.out.println("Enter employee's terms of employment: ");
         String filePath = "";
 
         //create an employee generator
@@ -693,7 +693,7 @@ public class HR_SystemManagement {
             System.out.println("3. Employment Terms");
             System.out.println("4. Employee detail");
             System.out.println("5. Qualifications");
-            System.out.println("6. Add Bonus");
+            System.out.println("6. Cumulative Salary");
             System.out.println("7. Start Date");
             System.out.println("8. Exit");
             try{
@@ -794,6 +794,26 @@ public class HR_SystemManagement {
                 System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
+
+    /**
+     * print all employees cumulative salary
+     */
+    public void calculateSalary()
+    {
+        System.out.println("- Cumulative Salary -");
+
+        for (Employee employee: networkEmployees)
+            System.out.println(employee.getName()+ ": "+ employee.getCumulativeSalary());
+
+        System.out.println("Do you want to nullify employees cumulative salary? (y/n)");
+        Scanner scanner = new Scanner(System.in);
+        String ans = scanner.nextLine();
+        if(Objects.equals(ans, "y"))
+            for (Employee employee: networkEmployees)
+                employee.setCumulativeSalary(0);
+
+        System.out.println("Complete");
     }
 
 }

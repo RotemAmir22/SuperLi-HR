@@ -189,7 +189,7 @@ public class Main {
                     System.out.println("1. Add new employee");
                     System.out.println("2. Update an existing employee");
                     System.out.println("3. Get employees information");
-                    System.out.println("4. Calculate salary for last month");
+                    System.out.println("4. Calculate salary");
                     System.out.println("5. Print all network Employees");
                     System.out.println("6. Go Back");
                     c = scanner.nextInt();
@@ -205,7 +205,7 @@ public class Main {
                             system.getEmployeesDetails(searchAnEmployee(system));
                             break;
                         case 4:
-                            System.out.println(searchAnEmployee(system).getCumulativeSalary());
+                            system.calculateSalary();
                             break;
                         case 5:
                             for (Employee employee : system.getNetworkEmployees())
