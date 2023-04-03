@@ -36,7 +36,7 @@ public class ManageShift {
         int amount = scanner.nextInt();
         Cancellation cancellation = new Cancellation(itemName,amount);
         this.shiftManager.addToCancelations(cancellation);
-        System.out.println("ITEM CANCELLED !!!\nCancellation ID: "+cancellation.getCancelID());
+        System.out.println("ITEM CANCELLED !!!\nCancellation ID: "+cancellation.getCancelID()+"Cancellation Details:\nItem: "+cancellation.getItem()+" x"+cancellation.getAmount());
         String temp = scanner.nextLine();
 
     }
@@ -65,7 +65,7 @@ public class ManageShift {
         if(cancellation == null)
             System.out.println("Cancellation not found");
         else {
-            System.out.println("Cancellation Details:\n Item: "+cancellation.getItem()+" x"+cancellation.getAmount());
+            System.out.println("Cancellation Details:\nItem: "+cancellation.getItem()+" x"+cancellation.getAmount());
         }
     }
 }

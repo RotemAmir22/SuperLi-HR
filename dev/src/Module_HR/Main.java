@@ -371,6 +371,7 @@ public class Main {
                         switch (c) {
                             case 1:
                                 manageShift.cancelItem();
+                                break;
                             case 2:
                                 manageShift.getCancellation();
                                 break;
