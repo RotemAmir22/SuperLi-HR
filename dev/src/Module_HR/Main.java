@@ -2,18 +2,20 @@ package Module_HR;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
+/**
+ * this class is the main user interface
+ */
 public class Main {
 
     /**
-     * TODO add 20 employees and 3 branches to system
+     * upload data of network into system
      * @param system upload data
      */
     public static void uploadData(HR_SystemManagement system)
     {
+        //employees
         Employee e1 = new Employee("Yoni","Cohen","111111","923-456120",600,"Salary per shift - 600","2022-11-13");
         Employee e2 = new Employee("Efrat","Gosh","111112","908-257197",750,"Salary per shift - 750","2022-12-13");
         Employee e3 = new Employee("Ninet","Tayeb","111113","786-352124",700,"Salary per shift - 700","2022-11-22");
@@ -30,7 +32,9 @@ public class Main {
         Employee e14 = new Employee("David","Bowie","666555","763-452120",430,"Salary per shift - 430","2022-11-13");
         Employee e15 = new Employee("Joni","Depp","121212","910-454120",700,"Salary per shift - 700","2022-11-13");
 
+        //branches
         BranchStore b1 = new BranchStore("Super-Li","Tel-Aviv","08-6543210","24/7");
+        //add employees to branch
         b1.addEmployee(e1);
         b1.addEmployee(e2);
         b1.addEmployee(e3);
@@ -39,18 +43,23 @@ public class Main {
         b1.addEmployee(e8);
         b1.addEmployee(e9);
         b1.addEmployee(e10);
+
         BranchStore b2 = new BranchStore("Super-Li","Jaffa","08-6442280","All week 10:00-22:00 except Saturday");
+        //add employees to branch
         b2.addEmployee(e2);
         b2.addEmployee(e4);
         b2.addEmployee(e5);
         b2.addEmployee(e6);
+
         BranchStore b3 = new BranchStore("Super-Li","Haifa","08-6573452","Sunday, Tuesday and Thursday 10:00-16:00");
+        //add employees to branch
         b3.addEmployee(e11);
         b3.addEmployee(e12);
         b3.addEmployee(e13);
         b3.addEmployee(e14);
         b3.addEmployee(e15);
 
+        //add roles to employees
         e1.addRole(Role.SHIFTMANAGER);
         e1.addRole(Role.CASHIER);
         e2.addRole(Role.GENERAL);
@@ -79,6 +88,7 @@ public class Main {
         e14.addRole(Role.MAID);
         e15.addRole(Role.GENERAL);
 
+        //add to system
         system.addEmployeeToList(e1);
         system.addEmployeeToList(e2);
         system.addEmployeeToList(e3);
@@ -141,7 +151,6 @@ public class Main {
         }
     }
 
-
     public static void main(String[] args){
 
         /* The main object "HR" control */
@@ -159,6 +168,7 @@ public class Main {
             }
         }
 
+        //MENU
         int choice = 0;
         while (choice != 7) {
             System.out.println("Hello HR manager. Welcome to Super-li system:");
