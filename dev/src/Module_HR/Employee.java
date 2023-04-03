@@ -134,7 +134,7 @@ public class Employee {
         for(Days days : Days.values())
         {
             System.out.println("- "+days.toString()+" -");
-            System.out.println("Morning: "+constrains[days.ordinal()][0]+" Evening: "+constrains[days.ordinal()][1]);
+            System.out.println("Morning: "+constrains[days.ordinal()][0]+", Evening: "+constrains[days.ordinal()][1]);
         }
 
     }
