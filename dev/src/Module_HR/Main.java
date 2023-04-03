@@ -93,21 +93,21 @@ public class Main {
         system.addEmployeeToList(e2);
         system.addEmployeeToList(e3);
         system.addEmployeeToList(e4);
-//        system.addEmployeeToList(e5);
-//        system.addEmployeeToList(e6);
+        system.addEmployeeToList(e5);
+        system.addEmployeeToList(e6);
         system.addEmployeeToList(e7);
         system.addEmployeeToList(e8);
         system.addEmployeeToList(e9);
         system.addEmployeeToList(e10);
-//        system.addEmployeeToList(e11);
-//        system.addEmployeeToList(e12);
-//        system.addEmployeeToList(e13);
-//        system.addEmployeeToList(e14);
-//        system.addEmployeeToList(e15);
+        system.addEmployeeToList(e11);
+        system.addEmployeeToList(e12);
+        system.addEmployeeToList(e13);
+        system.addEmployeeToList(e14);
+        system.addEmployeeToList(e15);
 
         system.addBranchStoreToList(b1);
-//        system.addBranchStoreToList(b2);
-//        system.addBranchStoreToList(b3);
+        system.addBranchStoreToList(b2);
+        system.addBranchStoreToList(b3);
 
 
     }
