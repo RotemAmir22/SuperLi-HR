@@ -1,14 +1,16 @@
 package Module_HR;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.TextStyle;
 import java.util.*;
 
+/**
+ * This class is in charge of all the shift organization, has user interactions
+ * - creating a daily shift
+ * - shift changes
+ */
 public class ShiftOrganizer {
 
     enum Shift{Morning, Evening}
-
 
     /**
      * update shift by HR manager
@@ -31,7 +33,8 @@ public class ShiftOrganizer {
     }
 
     /**
-     * check if the shift is legal
+     * check if the shift is valid
+     * if invalid, sends an alert
      * @param rolesAmount: to check if all are update to 0
      */
     public static void checkShiftValidation(Map<String, Integer> rolesAmount, int numOfShiftManagers)
@@ -42,6 +45,7 @@ public class ShiftOrganizer {
          */
         if(numOfShiftManagers != 0)
         {
+            //go over the roles and check if all of them are fulfilled
             for(Role role: Role.values())
             {
                 if(rolesAmount.get(role.toString()) > 0)
@@ -55,7 +59,7 @@ public class ShiftOrganizer {
                 }
             }
         }
-        else{System.out.println("Daily shift is invalid - Every shift required a shift-manager!");}
+        else{System.out.println("Daily shift is INVALID - Every shift requires a shift-manager!");}
 
     }
 
@@ -71,6 +75,13 @@ public class ShiftOrganizer {
         currentShift.addShiftManager(tmp.CreateShiftManager(e.getName(), e.getId(),shiftDate,shiftSlot));
     }
 
+    /**
+     * add employee to morning daily shift
+     * @param dailyShift : shift to add to
+     * @param morningShift: gets the map needed
+     * @param role : what role the employee needs to do
+     * @param employee : employee to add to morning shift
+     */
     public static void insertIntoMorning(DailyShift dailyShift, Map<Role, Employee> morningShift,Role role, Employee employee)
     {
         morningShift.put(role, employee);
@@ -78,6 +89,13 @@ public class ShiftOrganizer {
         dailyShift.setMorningShift(morningShift);
     }
 
+    /**
+     * add employee to evening daily shift
+     * @param dailyShift : shift to add to
+     * @param eveningShift: gets the map needed
+     * @param role : what role the employee needs to do
+     * @param employee : employee to add to morning shift
+     */
     public static void insertIntoEvening(DailyShift dailyShift, Map<Role, Employee> eveningShift,Role role, Employee employee)
     {
         eveningShift.put(role, employee);
@@ -89,12 +107,15 @@ public class ShiftOrganizer {
      * The main function in this class. Made the scheduling itself
      * @param listEmployees: the branches employees
      * @param openHours: the branches open hours (in this part - day and shift (morning or evening))
-     * @return suggestion of a daily shift for tomorrow
+     * @param shift : morning - 0 or evening - 1shift
+     * @param dailyShift : daily shift to update the inner shifts
+     * @param weekDay : what day to schedule the shift
+     * @return suggestion of a daily shift for the date requested
      */
     public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours, int shift, DailyShift dailyShift,Days weekDay) {
-        /* Shift means Morning/Evening */
-        if(shift !=0 && shift != 1){return null;}
-        /* Get the current day, and pull the next for the scheduling */
+       //check if morning or evening shift
+       if(shift !=0 && shift != 1){return null;}
+       /* Get the current date, and pull the vent date for scheduling */
         LocalDate currentDate = LocalDate.now();
         LocalDate nextDate = currentDate.plusDays(weekDay.ordinal()+2);
         /* Reset employee's limit of shifts if the week is over */
@@ -110,7 +131,6 @@ public class ShiftOrganizer {
             System.out.println("Tomorrow this branch is close.");
             return null;
         }
-
         //get information from manager
         System.out.println("REMINDER, Today's date: " + currentDate);
         /*
@@ -127,7 +147,14 @@ public class ShiftOrganizer {
             try{
                 System.out.println("How much "+ roles[i] + " do you need for " + nextDate + " "+Shift.values()[shift].toString()+" shift?");
                 c = scanner.nextInt();
-                if(Objects.equals(roles[i].toString(), "SHIFTMANAGER")) {numOfShiftManagers = c;}
+
+                //check how many shift managers are in the shift
+                if(Objects.equals(roles[i].toString(), "SHIFTMANAGER"))
+                {
+                    numOfShiftManagers = c;
+                }
+
+                //update role amount
                 rolesAmount.put(String.valueOf(roles[i]), c);
                 i++;
             }
@@ -138,7 +165,7 @@ public class ShiftOrganizer {
 
         }
         /*
-         * In this part we move on the employees and check who can fill which position
+         * In this part we go over the employees and check who can fill which position
          * We will insert those maps to the new DailyShift
          */
         Map<Role, Employee> currentShift = new HashMap<>();
