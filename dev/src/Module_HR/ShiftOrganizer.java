@@ -108,7 +108,6 @@ public class ShiftOrganizer {
             try{
                 System.out.println("How much "+ roles[i] + " do you need for " + shiftDate + " "+Shift.values()[shift].toString()+" shift?");
                 c = scanner.nextInt();
-
                 //check how many shift managers are in the shift
                 if(Objects.equals(roles[i].toString(), "SHIFTMANAGER"))
                 {
@@ -118,6 +117,7 @@ public class ShiftOrganizer {
                 //update role amount
                 rolesAmount.put(String.valueOf(roles[i]), c);
                 i++;
+                break;
             }
             catch (Exception e)
             {

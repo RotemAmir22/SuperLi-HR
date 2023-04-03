@@ -344,32 +344,37 @@ public class Main {
                     BranchStore branch_ = searchABranchStore(system);
                     DailyShift s = branch_.getShiftByDate(LocalDate.now().plusDays(2).toString());
                     scanner.nextLine();
-                    System.out.println("Enter an employee ID");
-                    String ans = scanner.nextLine();
-                    ShiftManager shiftm = s.findEmployeeInShiftManager(ans);
-                    ManageShift manageShift = new ManageShift(shiftm, s, LocalDate.now().plusDays(2));
-                    System.out.println("Choose an option:");
-                    System.out.println("1. Cancel an item");
-                    System.out.println("2. Get Cancellation details");
-                    System.out.println("3. Upload end-of-day report");
-                    System.out.println("4. Get end-of-day report");
-                    c = scanner.nextInt();
-                    switch (c) {
-                        case 1:
-                            manageShift.cancelItem();
-                        case 2:
-                            manageShift.getCancellation();
-                            break;
-                        case 3:
-                            manageShift.uploadEndofDayReport();
-                            break;
-                        case 4:
-                            File file = s.getEndOfDayReport();
-                            System.out.println(file);
-                            break;
-                        default:
-                            System.out.println("Invalid choice. Please try again.");
-                            break;
+                    if(s == null)
+                        System.out.println("NO SHIFT YET");
+                    else
+                    {
+                        System.out.println("Enter an employee ID");
+                        String ans = scanner.nextLine();
+                        ShiftManager shiftm = s.findEmployeeInShiftManager(ans);
+                        ManageShift manageShift = new ManageShift(shiftm, s, LocalDate.now().plusDays(2));
+                        System.out.println("Choose an option:");
+                        System.out.println("1. Cancel an item");
+                        System.out.println("2. Get Cancellation details");
+                        System.out.println("3. Upload end-of-day report");
+                        System.out.println("4. Get end-of-day report");
+                        c = scanner.nextInt();
+                        switch (c) {
+                            case 1:
+                                manageShift.cancelItem();
+                            case 2:
+                                manageShift.getCancellation();
+                                break;
+                            case 3:
+                                manageShift.uploadEndofDayReport();
+                                break;
+                            case 4:
+                                File file = s.getEndOfDayReport();
+                                System.out.println(file);
+                                break;
+                            default:
+                                System.out.println("Invalid choice. Please try again.");
+                                break;
+                        }
                     }
 
                         case 7:

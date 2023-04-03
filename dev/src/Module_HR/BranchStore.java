@@ -128,7 +128,9 @@ public class BranchStore {
     {
         //convert string to key type LocalDate
         LocalDate date = LocalDate.parse(dateString);
-        this.shiftsHistory.get(date).showMeSchedualing();
+        if(this.shiftsHistory.get(date)== null)
+            System.out.println("NO SHIFT YET");
+        else this.shiftsHistory.get(date).showMeSchedualing();
     }
 
     /**
