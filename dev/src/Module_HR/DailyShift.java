@@ -150,23 +150,24 @@ public class DailyShift {
 
     public void showMeSchedualing()
     {
-        int count = 1;
+        int count;
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
-        System.out.println("Daily shift - "+ dayOfWeek + this.date+"\nMORNING:\n");
+        System.out.println("Daily shift - "+ dayOfWeek + " " + this.date+"\nMORNING:");
         Map<Role, ArrayList<Employee>> sortedMap = new TreeMap<>(morningShift);
         for (Map.Entry<Role, ArrayList<Employee>> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
+            count = 1;
             System.out.println(key.name()+":");
             for (Employee employee : sortedMap.get(key))
             {
                 System.out.println(count+++". "+employee.getName());
             }
         }
-        count = 1;
-        System.out.println("EVENING:\n");
+        System.out.println("\nEVENING:");
         sortedMap = eveningShift;
         for (Map.Entry<Role, ArrayList<Employee>> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
+            count = 1;
             System.out.println(key.name()+":");
             for (Employee employee : sortedMap.get(key))
             {

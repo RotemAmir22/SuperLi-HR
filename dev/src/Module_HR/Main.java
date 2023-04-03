@@ -325,14 +325,24 @@ public class Main {
                         case 1:
                             BranchStore b = searchABranchStore(system);
                             scanner.nextLine();
-                            System.out.println("Enter the required date:");
-                            String ans = scanner.nextLine();
-                            b.showShiftByDate(ans);
+                            while (true)
+                            {
+                                try
+                                {
+                                    System.out.println("Enter the required date (YYYY-MM-DD):");
+                                    String ans = scanner.nextLine();
+                                    b.showShiftByDate(ans);
+                                    break;
+                                }
+                                catch (Exception e)
+                                {
+                                    System.out.println("Wrong format or date");
+                                }
+                            }
                             break;
                         case 2:
                             for( BranchStore branch: system.getNetworkBranches()){branch.deleteHistory();}
-                            for( Employee e: system.getNetworkEmployees()){e.setCumulativeSalary(0);}
-                            System.out.println("All history is reset.\nAll employees cumulative salary is reset to 0");
+                            System.out.println("All history is reset.");
                             break;
                         default:
                             System.out.println("Invalid choice. Please try again.");
