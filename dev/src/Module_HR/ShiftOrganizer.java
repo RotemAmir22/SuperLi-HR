@@ -30,6 +30,7 @@ public class ShiftOrganizer {
         {
             branchStore.getShiftsHistory().get(date).removeEmployeeFromShift(employee, role, shift);
         }
+        branchStore.getShiftsHistory().get(date).showMeSchedualing();
     }
 
     /**
@@ -61,46 +62,6 @@ public class ShiftOrganizer {
         }
         else{System.out.println("Daily shift is INVALID - Every shift requires a shift-manager!");}
 
-    }
-
-    /**
-     * create a new shift manager to a specific shift
-     * @param e: the employee for this role
-     * @param shiftDate: the current shift
-     * @param shiftSlot: morning/evening
-     */
-    public static void createShiftManager(Employee e, LocalDate shiftDate, int shiftSlot, DailyShift currentShift)
-    {
-        ShiftManagerGenerator tmp = new ShiftManagerGenerator();
-        currentShift.addShiftManager(tmp.CreateShiftManager(e.getName(), e.getId(),shiftDate,shiftSlot));
-    }
-
-    /**
-     * add employee to morning daily shift
-     * @param dailyShift : shift to add to
-     * @param morningShift: gets the map needed
-     * @param role : what role the employee needs to do
-     * @param employee : employee to add to morning shift
-     */
-    public static void insertIntoMorning(DailyShift dailyShift, Map<Role, Employee> morningShift,Role role, Employee employee)
-    {
-        morningShift.put(role, employee);
-        employee.setShiftsLimit(employee.getShiftsLimit() - 1);
-        dailyShift.setMorningShift(morningShift);
-    }
-
-    /**
-     * add employee to evening daily shift
-     * @param dailyShift : shift to add to
-     * @param eveningShift: gets the map needed
-     * @param role : what role the employee needs to do
-     * @param employee : employee to add to morning shift
-     */
-    public static void insertIntoEvening(DailyShift dailyShift, Map<Role, Employee> eveningShift,Role role, Employee employee)
-    {
-        eveningShift.put(role, employee);
-        employee.setShiftsLimit(employee.getShiftsLimit() - 1);
-        dailyShift.setEveningShift(eveningShift);
     }
 
     /**
@@ -168,7 +129,7 @@ public class ShiftOrganizer {
          * In this part we go over the employees and check who can fill which position
          * We will insert those maps to the new DailyShift
          */
-        Map<Role, Employee> currentShift = new LinkedHashMap<>();
+        Map<Role, ArrayList<Employee>> currentShift = new LinkedHashMap<>();
         int key;
         boolean[][] constraints;
 
@@ -188,37 +149,14 @@ public class ShiftOrganizer {
             for (Employee employee : listEmployees) {
                 /* get the employees constraints */
                 constraints = employee.getConstraints();
-                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift]) {
+                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift])
+                {
                     /* check where the employee can be and update */
-                    if(shift == 0 && !dailyShift.isExistEvening(employee))
-                    {
-                        key = rolesAmount.get(String.valueOf(roleName));
-                        key--;
-                        rolesAmount.put(String.valueOf(roleName), key);
-                        insertIntoMorning(dailyShift, currentShift, roleName, employee);
-                        dailyShift.setMorningShift(currentShift);
-                        employee.setCumulativeSalary(employee.getCumulativeSalary() + employee.getSalary());
-                    }
-                    else if(shift == 1 && !dailyShift.isExistMorning(employee))
-                    {
-                        key = rolesAmount.get(String.valueOf(roleName));
-                        key--;
-                        rolesAmount.put(String.valueOf(roleName), key);
-                        insertIntoEvening(dailyShift, currentShift,roleName, employee);
-                        dailyShift.setEveningShift(currentShift);
-                        employee.setCumulativeSalary(employee.getCumulativeSalary() + employee.getSalary());
-                    }
-                    else // he can't to either
-                        continue;
-                    /* check if the current added is a shift-manager */
-                    if((currentShift.get(Role.SHIFTMANAGER)!= null))
-                    {
-                        if(currentShift.get(Role.SHIFTMANAGER).getName().equals(employee.getName())) // the last adding
-                        {
-                            createShiftManager(employee, shiftDate, shift, dailyShift);
-                        }
-                    }
-                 }
+                    key = rolesAmount.get(String.valueOf(roleName));
+                    key--;
+                    rolesAmount.put(String.valueOf(roleName), key);
+                    dailyShift.addEmployeeToShift(employee, roleName, shift);
+                }
             }
 
         }

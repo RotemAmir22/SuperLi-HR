@@ -10,15 +10,15 @@ public class DailyShift {
 
     private LocalDate date;
     private File endOfDayReport;
-    private Map<Role, Employee> morningShift;
-    private Map<Role, Employee> eveningShift;
+    private Map<Role, ArrayList<Employee>> morningShift;
+    private Map<Role, ArrayList<Employee>> eveningShift;
     private List<ShiftManager> shiftManagers;
 
     //constructor
     public DailyShift(LocalDate date) {
         this.date = date;
-        this.morningShift = new LinkedHashMap<Role,Employee>();
-        this.eveningShift = new LinkedHashMap<Role,Employee>();
+        this.morningShift = new HashMap<Role,ArrayList<Employee>>();
+        this.eveningShift = new HashMap<Role,ArrayList<Employee>>();
         this.shiftManagers= new ArrayList<ShiftManager>();
     }
 
@@ -26,10 +26,10 @@ public class DailyShift {
     public LocalDate getDate() {
         return date;
     }
-    public Map<Role, Employee> getMorningShift() {
+    public Map<Role, ArrayList<Employee>> getMorningShift() {
         return morningShift;
     }
-    public Map<Role, Employee> getEveningShift() {
+    public Map<Role, ArrayList<Employee>> getEveningShift() {
         return eveningShift;
     }
     public File getEndOfDayReport() {
@@ -38,10 +38,10 @@ public class DailyShift {
     public List<ShiftManager> getShiftManagers() {return shiftManagers;}
 
     //setters
-    public void setMorningShift(Map<Role, Employee> morningShift) {
+    public void setMorningShift(Map<Role, ArrayList<Employee>> morningShift) {
         this.morningShift = morningShift;
     }
-    public void setEveningShift(Map<Role, Employee> eveningShift) {
+    public void setEveningShift(Map<Role, ArrayList<Employee>> eveningShift) {
         this.eveningShift = eveningShift;
     }
     public void setEndOfDayReport(File endOfDayReport) {
@@ -96,19 +96,25 @@ public class DailyShift {
     */
     public void addEmployeeToMorning(Employee employee, Role role)
     {
-        this.morningShift.put(role,employee);
+        if(this.morningShift.containsKey(role))
+            this.morningShift.get(role).add(employee);
+        else
+            this.morningShift.put(role, new ArrayList<>()).add(employee);
     }
 
     //remove from evening shift
     public void addEmployeeToEvening(Employee employee, Role role)
     {
-        this.eveningShift.put(role,employee);
+        if(this.eveningShift.containsKey(role))
+            this.eveningShift.get(role).add(employee);
+        else
+            this.eveningShift.put(role, new ArrayList<>()).add(employee);
     }
 
     //according to shift this function refers to the right helper
     public void addEmployeeToShift(Employee employee, Role role, int shift)
     {
-        if(employee.canDoRole(role))
+        if(employee.canDoRole(role) && !isExistEvening(employee) && !isExistMorning(employee))
         {
             //if the employee is a shift manager
             if(role == Role.SHIFTMANAGER)
@@ -145,20 +151,28 @@ public class DailyShift {
 
     public void showMeSchedualing()
     {
+        int count = 1;
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
         System.out.println("Daily shift - "+ dayOfWeek + this.date+"\nMORNING:\n");
-        Map<Role, Employee> sortedMap = new TreeMap<>(morningShift);
-        for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
+        Map<Role, ArrayList<Employee>> sortedMap = new TreeMap<>(morningShift);
+        for (Map.Entry<Role, ArrayList<Employee>> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
-            Employee e = entry.getValue();
-            System.out.println("["+key.name()+": "+e.getName()+"]\n");
+            System.out.println(key.name()+":");
+            for (Employee employee : sortedMap.get(key))
+            {
+                System.out.println(count+++". "+employee.getName());
+            }
         }
+        count = 1;
         System.out.println("EVENING:\n");
-        sortedMap = new TreeMap<>(eveningShift);
-        for (Map.Entry<Role, Employee> entry : sortedMap.entrySet()) {
+        sortedMap = eveningShift;
+        for (Map.Entry<Role, ArrayList<Employee>> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
-            Employee e = entry.getValue();
-            System.out.println("["+key.name()+": "+e.getName()+"]\n");
+            System.out.println(key.name()+":");
+            for (Employee employee : sortedMap.get(key))
+            {
+                System.out.println(count+++". "+employee.getName());
+            }
         }
     }
 
