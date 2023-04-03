@@ -179,7 +179,7 @@ public class DailyShift {
     /**
      * checks if employee is in morning shift
      * @param e : employee to search for
-     * @return true of in shift
+     * @return true if in shift
      */
     public boolean isExistMorning(Employee e)
     {
@@ -195,7 +195,7 @@ public class DailyShift {
     /**
      * checks if employee is in evening shift
      * @param e : employee to search for
-     * @return true of in shift
+     * @return true if in shift
      */
     public boolean isExistEvening(Employee e)
     {

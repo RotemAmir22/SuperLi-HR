@@ -101,22 +101,21 @@ public class ShiftOrganizer {
         Role[] roles = Role.values();
         Scanner scanner = new Scanner(System.in);
         int numOfShiftManagers = 0;
-        int c;
+        String c;
         int i = 0;
         while(i < roles.length)
         {
             try{
                 System.out.println("How much "+ roles[i] + " do you need for " + shiftDate + " "+Shift.values()[shift].toString()+" shift?");
-                c = scanner.nextInt();
-
+                c = scanner.nextLine();
                 //check how many shift managers are in the shift
                 if(Objects.equals(roles[i].toString(), "SHIFTMANAGER"))
                 {
-                    numOfShiftManagers = c;
+                    numOfShiftManagers = Integer.parseInt(c);
                 }
 
                 //update role amount
-                rolesAmount.put(String.valueOf(roles[i]), c);
+                rolesAmount.put(String.valueOf(roles[i]), Integer.parseInt(c));
                 i++;
             }
             catch (Exception e)
