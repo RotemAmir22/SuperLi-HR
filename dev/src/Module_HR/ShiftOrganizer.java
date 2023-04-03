@@ -71,7 +71,7 @@ public class ShiftOrganizer {
      */
     public static void createShiftManager(Employee e, LocalDate shiftDate, int shiftSlot, DailyShift currentShift)
     {
-        ShiftManagerGeneratore tmp = new ShiftManagerGeneratore();
+        ShiftManagerGenerator tmp = new ShiftManagerGenerator();
         currentShift.addShiftManager(tmp.CreateShiftManager(e.getName(), e.getId(),shiftDate,shiftSlot));
     }
 
