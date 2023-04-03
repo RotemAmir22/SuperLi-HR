@@ -12,7 +12,7 @@ public class EmployeeConstraints {
     public static void askForConstraints(Employee e)
     {
         Scanner scanner = new Scanner(System.in);
-        int choice = 0;
+        String choice = "0";
         int counter = 0; // 7 days a week, include 0
         Days[] days = Days.values();
 
@@ -27,23 +27,23 @@ public class EmployeeConstraints {
 
             // Get user input
             System.out.print("Enter your choice: ");
-            choice = scanner.nextInt();
+            choice = scanner.nextLine();
 
             // Process the user's choice
             switch (choice) {
-                case 1:
+                case "1":
                     e.setConstrains(counter,0, true); // 0 means morning
                     e.setConstrains(counter,1, false);
                     break;
-                case 2:
+                case "2":
                     e.setConstrains(counter,1, true); // 1 means evening
                     e.setConstrains(counter,0, false);
                     break;
-                case 3:
+                case "3":
                     e.setConstrains(counter,0, true); // both OK
                     e.setConstrains(counter,1, true);
                     break;
-                case 4:
+                case "4":
                     e.setConstrains(counter,0, false);
                     e.setConstrains(counter,1, false);
                     break;
@@ -63,20 +63,26 @@ public class EmployeeConstraints {
         System.out.println("Hello "+employee.getName()+" enter the following to update your constraints");
         while (Objects.equals(answer, "y"))
         {
-            System.out.println("Enter day you want to update (e.g Saturday): ");
-            String day = scanner.nextLine();
+            try{
+                System.out.println("Enter day you want to update (e.g Saturday): ");
+                String day = scanner.nextLine();
 
-            System.out.println("Enter which shift you want to update (morning - 0, evening - 1): ");
-            int shift = scanner.nextInt();
+                System.out.println("Enter which shift you want to update (morning - 0, evening - 1): ");
+                String shift = scanner.nextLine();
 
-            System.out.println("Enter availability (available - 0, unavailable - 1): ");
-            int availability = scanner.nextInt();
+                System.out.println("Enter availability (available - 0, unavailable - 1): ");
+                String availability = scanner.nextLine();
 
-            employee.setConstrains(Days.valueOf(day).ordinal(),shift,(availability == 0));
+                employee.setConstrains(Days.valueOf(day).ordinal(),Integer.parseInt(shift),(Integer.parseInt(availability) == 0));
 
-            answer=scanner.nextLine();
-            System.out.println("Would you like to change another constraint? (enter y/n)");
-            answer = scanner.nextLine();
+                answer=scanner.nextLine();
+                System.out.println("Would you like to change another constraint? (enter y/n)");
+                answer = scanner.nextLine();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid input, please try again");
+            }
 
         }
     }
