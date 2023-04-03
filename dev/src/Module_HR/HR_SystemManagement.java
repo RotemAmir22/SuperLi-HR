@@ -345,8 +345,9 @@ public class HR_SystemManagement {
     public void setShift()
     {
 
-        for(Days day : Days.values())
+        for(int j=0; j<2 ; j++)
         {
+            Days day = Days.values()[j];
             System.out.println("-Set Shift Schedule for "+ LocalDate.now().plusDays(day.ordinal()+2)+" -");
             DailyShift[] newShift = new DailyShift[getNetworkBranches().size()];
             /*
@@ -369,7 +370,8 @@ public class HR_SystemManagement {
                 newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours(), 1, newShift[i],day);
                 getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
                 assert newShift[i] != null;
-                System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
+                System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n\n");
+
                 newShift[i].showMeSchedualing();
             }
 
