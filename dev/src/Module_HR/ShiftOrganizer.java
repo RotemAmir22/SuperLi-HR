@@ -117,18 +117,18 @@ public class ShiftOrganizer {
        if(shift !=0 && shift != 1){return null;}
        /* Get the current date, and pull the vent date for scheduling */
         LocalDate currentDate = LocalDate.now();
-        LocalDate nextDate = currentDate.plusDays(weekDay.ordinal()+2);
+        LocalDate shiftDate = currentDate.plusDays(weekDay.ordinal()+2);
         /* Reset employee's limit of shifts if the week is over */
         if(currentDate.toString().equals("Saturday"))
         {
             for (Employee employee : listEmployees){employee.setShiftsLimit(6);}
         }
         /* Get the day by index (0-6) */
-        int day = nextDate.plusDays(1).getDayOfWeek().ordinal();
+        int day = shiftDate.getDayOfWeek().ordinal();
         /* Check if the branch is open this day */
         if(openHours[day][0] == 1 && openHours[day][1] == 1)
         {
-            System.out.println("Tomorrow this branch is close.");
+            System.out.println("On "+ shiftDate.plusDays(1).getDayOfWeek().toString() +" this branch is close.");
             return null;
         }
         //get information from manager
@@ -145,7 +145,7 @@ public class ShiftOrganizer {
         while(i < roles.length)
         {
             try{
-                System.out.println("How much "+ roles[i] + " do you need for " + nextDate + " "+Shift.values()[shift].toString()+" shift?");
+                System.out.println("How much "+ roles[i] + " do you need for " + shiftDate + " "+Shift.values()[shift].toString()+" shift?");
                 c = scanner.nextInt();
 
                 //check how many shift managers are in the shift
@@ -188,7 +188,7 @@ public class ShiftOrganizer {
             for (Employee employee : listEmployees) {
                 /* get the employees constraints */
                 constraints = employee.getConstraints();
-                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[nextDate.getDayOfWeek().ordinal()][shift]) {
+                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift]) {
                     /* check where the employee can be and update */
                     if(shift == 0 && !dailyShift.isExistEvening(employee))
                     {
@@ -215,7 +215,7 @@ public class ShiftOrganizer {
                     {
                         if(currentShift.get(Role.SHIFTMANAGER).getName().equals(employee.getName())) // the last adding
                         {
-                            createShiftManager(employee, nextDate, shift, dailyShift);
+                            createShiftManager(employee, shiftDate, shift, dailyShift);
                         }
                     }
                  }
