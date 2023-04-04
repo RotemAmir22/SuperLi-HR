@@ -5,14 +5,17 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
-
+/**
+ * Daily Shift class
+ * creates to set shifts for the system
+ */
 public class DailyShift {
 
-    private LocalDate date;
-    private File endOfDayReport;
-    private Map<Role, ArrayList<Employee>> morningShift;
-    private Map<Role, ArrayList<Employee>> eveningShift;
-    private List<ShiftManager> shiftManagers;
+    private LocalDate date; // date of the shift
+    private File endOfDayReport; // file of "end-of-day-report" for the shift manager's ability to create/update/get
+    private Map<Role, ArrayList<Employee>> morningShift; // list of employees which work at morning shift
+    private Map<Role, ArrayList<Employee>> eveningShift; // list of employees which work at evening shift
+    private List<ShiftManager> shiftManagers; // list of shift managers of a specific shift
 
     //constructor
     public DailyShift(LocalDate date) {
@@ -70,6 +73,13 @@ public class DailyShift {
         this.eveningShift.remove(role,employee);
     }
     //according to shift this function refers to the right helper
+
+    /**
+     * Remove employee from shift - a specific shift
+     * @param employee to remove
+     * @param role he acts
+     * @param shift he presents
+     */
     public void removeEmployeeFromShift(Employee employee, Role role, int shift)
     {
         //if the employee is a shift manager
@@ -79,7 +89,7 @@ public class DailyShift {
             if(shiftManager != null)
                 removeShiftManager(shiftManager);
         }
-
+        // means the employee is in morning shift
         if(shift == 0)
             removeEmployeeFromMorning(employee,role);
         else
@@ -138,6 +148,11 @@ public class DailyShift {
         }
     }
 
+    /**
+     * Search a shift manager in a specific shift
+     * @param ID of the employee (who is shift manager)
+     * @return the shift manager if existed, else just null
+     */
     public ShiftManager findEmployeeInShiftManager(String ID)
     {
         for (ShiftManager shiftManager : shiftManagers) {
@@ -148,6 +163,9 @@ public class DailyShift {
         return null;
     }
 
+    /**
+     * Print the shift by slots (morning/evening) and roles with employees
+     */
     public void showMeSchedualing()
     {
         int count;
