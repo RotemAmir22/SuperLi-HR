@@ -1,9 +1,14 @@
-package src.Module_HR;
+package Module_HR;
 
+/**
+ * Cancellation class
+ * every shift-manager is allowed to use this class.
+ * He can cancel item, get the item that already cancelled, and it's amount.
+ */
 public class Cancellation {
 
 
-    private static int serialNumCounter=0;
+    private static int serialNumCounter=0; // every item gets a unique id
     private int cancelID;
     private String item;
     private int amount;

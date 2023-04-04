@@ -104,7 +104,7 @@ public class BranchStore {
 
     /**
      * clears all shift history of the past month
-     * this function is called by the main once a month- after the salary has been paid
+     * this function is called once a month (by the user)
      * the deletion is this way so that if more dates have been added to the map, they won't be deleted.
      */
     public void deleteHistory()
@@ -123,7 +123,8 @@ public class BranchStore {
             //get the date of the previous month
             LocalDate date = LocalDate.of(today.getYear(), previousMonth, i);
             //remove date from history
-            this.shiftsHistory.remove(date);
+            if(this.shiftsHistory.get(date) != null)
+                this.shiftsHistory.remove(date);
         }
 
     }
