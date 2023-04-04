@@ -2,8 +2,12 @@ package Module_HR;
 
 import java.util.*;
 
+/**
+ * this class holds everything regarding the employee
+ */
 public class Employee {
 
+    //variables
     private String firstName;
     private String lastName;
     private String id;
@@ -16,7 +20,6 @@ public class Employee {
     private int shiftsLimit;
     private List<Role> qualifications;
     private double cumulativeSalary;
-
 
     //constructor
     public Employee(String firstName, String lastName, String id, String bankAccount, double salary, String empTerms, String startDate) {
@@ -40,12 +43,8 @@ public class Employee {
     }
 
     //getters
-    public String getId() {
-        return id;
-    }
-    public String getName() {
-        return firstName+" "+lastName;
-    }
+    public String getId() {return id;}
+    public String getName() {return firstName+" "+lastName;}
     public boolean[][] getConstraints() {return constrains;}
     public List<Role> getQualifications() {return qualifications;}
     public int getShiftsLimit() {return shiftsLimit;}
@@ -69,11 +68,8 @@ public class Employee {
     public void setEmpTerms(String empTerms) {this.empTerms = empTerms;}
     public void setCumulativeSalary(double cumulativeSalary) {this.cumulativeSalary = cumulativeSalary;}
 
-    //adding/removing detail/qualifications from employee
-
-    //Employee Details
+    //Employee Details - not in use, abstract for now
     /**
-     *
      * @param detail: add detail to employee
      */
     public void addEmployeeDetails(AEmployeeDetails detail) {
@@ -81,32 +77,22 @@ public class Employee {
     }
 
     /**
-     *
-     * @param detail: removes this detail from employee
+     * @param detail: removes detail from employee
      */
-    public void removeEmployeeDetail(AEmployeeDetails detail)
-    {
-        this.details.remove(detail);
-    }
+    public void removeEmployeeDetail(AEmployeeDetails detail){this.details.remove(detail);}
 
     //Employee Qualifications
     /**
      * add qualifications to this employee
      * @param newRole: new role that this employee can do in a shift
      */
-    public void addRole(Role newRole)
-    {
-        qualifications.add(newRole);
-    }
+    public void addRole(Role newRole){qualifications.add(newRole);}
 
     /**
      * as a result from removing the qualification, the employee cannot do this role in a shift
      * @param oldRole: remove this qualification from employee
      */
-    public void removeRole(Role oldRole)
-    {
-        qualifications.remove(oldRole);
-    }
+    public void removeRole(Role oldRole){qualifications.remove(oldRole);}
 
     /**
      * @param role: role to see if employee is qualified
@@ -115,10 +101,9 @@ public class Employee {
     public boolean canDoRole(Role role)
     {
         //go over employees roles
-        for (Role qualification : this.qualifications) {
+        for (Role qualification : this.qualifications)
             if (qualification.equals(role))
                 return true;
-        }
         return false;
     }
 
