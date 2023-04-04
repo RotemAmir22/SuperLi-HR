@@ -1,4 +1,4 @@
-package src.Module_HR;
+package Module_HR;
 
 public enum Days {
 

@@ -1,4 +1,4 @@
-package src.Module_HR;
+package Module_HR;
 
 /**
  * An abstract class for the option to add other details of an employee

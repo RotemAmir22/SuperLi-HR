@@ -1,4 +1,4 @@
-package src.Module_HR;
+package Module_HR;
 
 /**
  * roles that can be scheduled in every branch store
