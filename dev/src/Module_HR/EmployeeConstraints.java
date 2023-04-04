@@ -3,11 +3,16 @@ package Module_HR;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * this class is in charge of all things regarding employee constraints
+ * gets their constraints and can update them
+ * this class is used as an interface between the system and the employee
+ */
 public class EmployeeConstraints {
 
-
     /**
-     * Ask every employee about his constraints and update
+     * Ask every employee about their constraints and updates them
+     * if they are available, updates to true and if not then false
      */
     public static void askForConstraints(Employee e)
     {
@@ -56,6 +61,10 @@ public class EmployeeConstraints {
 
     }
 
+    /**
+     * gets an employee and asks them how to update their constraints
+     * @param employee : employee to update
+     */
     public static void updateConstraints(Employee employee)
     {
         Scanner scanner = new Scanner(System.in);
