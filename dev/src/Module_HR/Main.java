@@ -1,4 +1,4 @@
-package src.Module_HR;
+package Module_HR;
 
 import java.io.File;
 import java.time.LocalDate;

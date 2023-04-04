@@ -1,4 +1,4 @@
-package src.Module_HR;
+package Module_HR;
 
 /**
  * This class creates the shift managers permissions.
