@@ -1,5 +1,5 @@
-package Module_HR;
-
+import Module_HR.Employee;
+import Module_HR.Role;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

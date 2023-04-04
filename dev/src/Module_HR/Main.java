@@ -172,8 +172,8 @@ public class Main {
         }
 
         //MENU
-        int choice = 0;
-        while (choice != 7) {
+        String choice = "";
+        while (choice != "7") {
             System.out.println("Hello HR manager. Welcome to Super-li system:");
             System.out.println("1. Employees");
             System.out.println("2. Branches");
@@ -183,11 +183,11 @@ public class Main {
             System.out.println("6. ManageShift - TEMPORARY MAIN");
             System.out.println("7. Exit");
 
-            choice = scanner.nextInt();
-            int c = 0;
+            choice = scanner.nextLine();
+            String c = "";
             int id;
             switch (choice) {
-                case 1:
+                case "1":
                     System.out.println("You chose Employees:");
                     System.out.println("1. Add new employee");
                     System.out.println("2. Update an existing employee");
@@ -195,35 +195,35 @@ public class Main {
                     System.out.println("4. Calculate salary");
                     System.out.println("5. Print all network Employees");
                     System.out.println("6. Go Back");
-                    c = scanner.nextInt();
+                    c = scanner.nextLine();
                     switch (c)
                     {
-                        case 1:
+                        case "1":
                             system.newEmployeeInNetwork();
                             break;
-                        case 2:
+                        case "2":
                             system.updateEmployeesDetails(searchAnEmployee(system));
                             break;
-                        case 3:
+                        case "3":
                             system.getEmployeesDetails(searchAnEmployee(system));
                             break;
-                        case 4:
+                        case "4":
                             system.calculateSalary();
                             break;
-                        case 5:
+                        case "5":
                             for (Employee employee : system.getNetworkEmployees())
                             {
                                 employee.printEmployeeDetails();
                                 System.out.println("");
                             }
-                        case 6:
+                        case "6":
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");
                             break;
                     }
                     break;
-                case 2:
+                case "2":
                     System.out.println("You chose Branches:");
                     System.out.println("1. Add new branch");
                     System.out.println("2. Update an existing branch");
@@ -231,27 +231,27 @@ public class Main {
                     System.out.println("4. Remove employee from branch");
                     System.out.println("5. Print all Branches");
                     System.out.println("6. Go Back");
-                    c = scanner.nextInt();
+                    c = scanner.nextLine();
                     switch (c)
                     {
-                        case 1:
+                        case "1":
                             system.newBranchInNetwork();
                             break;
-                        case 2:
+                        case "2":
                             system.updateBranchDetails(searchABranchStore(system));
-                        case 3:
+                        case "3":
                             system.addEmployeeToBranch(searchAnEmployee(system));
                             break;
-                        case 4:
+                        case "4":
                             system.removeEmployeeFromBranch(searchAnEmployee(system));
                             break;
-                        case 5:
+                        case "5":
                             for (BranchStore branchStore : system.getNetworkBranches())
                             {
                                 branchStore.printBranchDetails();
                                 System.out.println("");
                             }
-                        case 6:
+                        case "6":
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");
@@ -259,34 +259,34 @@ public class Main {
                     }
 
                     break;
-                case 3:
+                case "3":
                     System.out.println("You chose Constraints:");
                     System.out.println("1. Ask constraints from all employees");
                     System.out.println("2. Update constraints to an employee");
                     System.out.println("3. Get Employees constraints");
                     System.out.println("4. Go Back");
-                    c = scanner.nextInt();
+                    c = scanner.nextLine();
                     switch (c)
                     {
-                        case 1:
+                        case "1":
                             system.schedulingFromEmployees();
                             break;
-                        case 2:
+                        case "2":
                             system.updateEmployeeConstrainsByID();
                             break;
-                        case 3:
+                        case "3":
                             Employee employee = searchAnEmployee(system);
                             System.out.println(employee.getName()+ "constraints are: ");
                             employee.printEmployeesConstraints();
 
-                        case 4:
+                        case "4":
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");
                             break;
                     }
                     break;
-                case 4:
+                case "4":
                     System.out.println("You chose Shifts:");
                     System.out.println("1. Plan shifts for the day after tomorrow (Two day schedule)");
                     System.out.println("2. Change shift");
@@ -294,38 +294,38 @@ public class Main {
                     System.out.println("4. Remove shift managers permissions");
                     System.out.println("5. Reset employees limit for next week");
                     System.out.println("6. Go Back");
-                    c = scanner.nextInt();
+                    c = scanner.nextLine();
                     switch (c) {
-                        case 1:
+                        case "1":
                             system.setShift();
                             break;
-                        case 2:
+                        case "2":
                             system.changeShiftSchedule();
                             break;
-                        case 3:
+                        case "3":
                             system.addPermissionToShiftManagerForDailyShiftToday();
                             break;
-                        case 4:
+                        case "4":
                             system.removePermissionToShiftManagerForDailyShiftToday();
                             break;
-                        case 5:
+                        case "5":
                             system.resetEmployeesLimits();
                             break;
-                        case 6:
+                        case "6":
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");
                             break;
                     }
                     break;
-                case 5:
+                case "5":
                     System.out.println("You chose History:");
                     System.out.println("1. Get shift by a date");
                     System.out.println("2. Clear last moth history");
-                    c = scanner.nextInt();
+                    c = scanner.nextLine();
                     switch (c) {
 
-                        case 1:
+                        case "1":
                             BranchStore b = searchABranchStore(system);
                             scanner.nextLine();
                             while (true)
@@ -343,7 +343,7 @@ public class Main {
                                 }
                             }
                             break;
-                        case 2:
+                        case "2":
                             for( BranchStore branch: system.getNetworkBranches()){branch.deleteHistory();}
                             System.out.println("All history is reset.");
                             break;
@@ -353,7 +353,7 @@ public class Main {
                     }
 
                     break;
-                case 6:
+                case "6":
                     BranchStore branch_ = searchABranchStore(system);
                     DailyShift s = branch_.getShiftByDate(LocalDate.now().plusDays(2).toString());
                     scanner.nextLine();
@@ -370,18 +370,18 @@ public class Main {
                         System.out.println("2. Get Cancellation details");
                         System.out.println("3. Upload end-of-day report");
                         System.out.println("4. Get end-of-day report");
-                        c = scanner.nextInt();
+                        c = scanner.nextLine();
                         switch (c) {
-                            case 1:
+                            case "1":
                                 manageShift.cancelItem();
                                 break;
-                            case 2:
+                            case "2":
                                 manageShift.getCancellation();
                                 break;
-                            case 3:
+                            case "3":
                                 manageShift.uploadEndofDayReport();
                                 break;
-                            case 4:
+                            case "4":
                                 File file = s.getEndOfDayReport();
                                 System.out.println(file);
                                 break;
@@ -391,9 +391,9 @@ public class Main {
                         }
                     }
 
-                        case 7:
-                    System.out.println("Exiting menu...");
-                    break;
+                    case "7":
+                        System.out.println("Exiting menu...");
+                        break;
                 default:
                     System.out.println("Invalid choice. Please try again.");
                     break;

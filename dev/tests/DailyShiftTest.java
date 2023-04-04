@@ -1,5 +1,7 @@
-package Module_HR;
-
+import Module_HR.DailyShift;
+import Module_HR.Employee;
+import Module_HR.Role;
+import Module_HR.ShiftManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,7 +42,7 @@ public class DailyShiftTest {
 
     @Test
     public void removeEmployeeFromShift() {
-        dailyShift.addEmployeeToShift(employee1,Role.CASHIER,1);
+        dailyShift.addEmployeeToShift(employee1, Role.CASHIER,1);
         dailyShift.addEmployeeToShift(employee2, Role.GENERAL, 0);
         dailyShift.removeEmployeeFromShift(employee1,Role.CASHIER,1);
         assertEquals(0,dailyShift.getEveningShift().size());

@@ -1,4 +1,3 @@
-package Module_HR;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
