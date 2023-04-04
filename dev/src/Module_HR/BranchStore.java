@@ -1,9 +1,15 @@
-package Module_HR;
+package src.Module_HR;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
 
+/**
+ * BranchStore class
+ * Include details about a specific branch
+ * Every branch get a unique ID
+ * The shifts history saved at a specific branch for later use
+ */
 public class BranchStore {
 
     private static int serialNumCounter=0;
@@ -12,13 +18,15 @@ public class BranchStore {
     private String address; //cannot change the address once created
     private String phoneNum;
     private List<Employee> employees;
-    private int[][] openHours;
-    private String openingTime;
+    private int[][] openHours; // days (0 - Sunday, 1- Monday, etc.) and hours ([0][0] - Sunday morning, [0][1] - Sunday evening)
+    private String openingTime; // a summery for employees to know when the branch is open
     private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
 
 
-
-    //constructor
+    /**
+     * Constructor
+     * @param openingtime: description
+     */
     public BranchStore(String name, String address, String phoneNum, String openingtime) {
         this.name = name;
         this.address = address;
@@ -26,7 +34,7 @@ public class BranchStore {
         serialNumCounter++;
         this.branchID = serialNumCounter;
         this.employees = new ArrayList<Employee>();
-        this.openHours = new int[7][2]; //default value is 0
+        this.openHours = new int[7][2]; //default value is 0 means open 24/7
         this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
         this.openingTime = openingtime;
 
@@ -69,12 +77,12 @@ public class BranchStore {
 
 
     /**
-     * saves branches new employee in hash table -> id is the key
+     * saves branches new employee in list
      * @param employee: new employee to add to branch
      */
     public void addEmployee(Employee employee)
     {
-        this.employees.add(employee); //returns the value
+        this.employees.add(employee);
     }
 
     /**
