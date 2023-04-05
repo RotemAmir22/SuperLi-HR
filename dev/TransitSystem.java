@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 import java.util.*;
+=======
+import java.util.Scanner;
+import java.util.Set;
+>>>>>>> Stashed changes
 
 
 /**
@@ -7,13 +12,12 @@ import java.util.*;
 public class TransitSystem {
 
 
-    public void DetailsTruck(){
+    public void addNewTruck(){
         String plateNumber;
         TruckModel model;
-        Set<Qualification> qSet;
         double truckWeight;
         double maxWeight;
-
+        Set<Qualification> qSet;
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("-----Create new Truck-----");
