@@ -1,3 +1,3 @@
 public enum Qualification {
-    COOLER
+    cooler
 }

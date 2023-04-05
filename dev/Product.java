@@ -1,6 +1,6 @@
 public class Product {
     private int productId;
-    private String productName;
+    public String productName;
     private double productWeight;
 
     public Product(int productId, String productName, double productWeight) {
