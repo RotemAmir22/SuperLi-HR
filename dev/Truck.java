@@ -38,5 +38,18 @@ public class Truck {
         this.qSet.add(qQual);
     }
 
+    public String getPlateNumber() {
+        return plateNumber;
+    }
 
+    public void printTruck(){
+        System.out.println("plate number: " + this.plateNumber);
+        System.out.println("model: " + this.model);
+        System.out.println("truck weight: " + this.truckWeight);
+        System.out.println("max carry weight: " + this.maxWeight);
+        System.out.println("Qualifications: ");
+        for (Qualification q : qSet){
+            System.out.println(q);
+        }
+    }
 }

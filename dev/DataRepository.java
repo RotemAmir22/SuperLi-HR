@@ -10,6 +10,8 @@ public interface DataRepository {
     void saveTransit (Transit transit);
     Set<Transit> findAllTransits();
 
+    Set<Supplier> findAllSuppliers();
+    Set<Store> findAllStores();
     Set<Driver> findAllDrivers();
     Set<Product> findAllProducts();
 }

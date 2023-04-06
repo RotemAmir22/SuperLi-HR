@@ -42,6 +42,12 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
+    public Set<Supplier> findAllSuppliers() { return suppliers; }
+
+    @Override
+    public Set<Store> findAllStores() { return stores; }
+
+    @Override
     public Set<Driver> findAllDrivers() {
         return drivers;
     }
