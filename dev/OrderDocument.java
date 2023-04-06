@@ -10,12 +10,12 @@ public class OrderDocument {
     private double totalWeight; //detailed weight ??
     public Map<String, Double> ProductsList;
 
-    public OrderDocument(Site source, Site destination, double totalWeight) {
+    public OrderDocument(Site source, Site destination) {
         this.documentId = documentNextId;
         documentNextId++;
         this.source = source;
         this.destination = destination;
-        this.totalWeight = totalWeight;
+        this.totalWeight=0;
     }
 
     public int getDocumentId() {
