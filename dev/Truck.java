@@ -1,3 +1,4 @@
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -12,12 +13,12 @@ public class Truck {
     double truckWeight;
     final double maxWeight;
 
-    public Truck(String plateNumber, TruckModel model, double truckWeight, double maxWeight, Set<Qualification> qSet) {
+    public Truck(String plateNumber, TruckModel model, double truckWeight, double maxWeight) {
         this.plateNumber = plateNumber;
         this.model = model;
-        this.qSet = qSet;
         this.truckWeight = truckWeight;
         this.maxWeight = maxWeight;
+        this.qSet = new HashSet<Qualification>();
     }
 
     public double getMaxWeight() {
@@ -29,6 +30,13 @@ public class Truck {
     }
 
     public void loadTruck(){};
+
+    public Set<Qualification> getTruckQualification(){
+        return this.qSet;
+    }
+    public void addToQSet(Qualification qQual){
+        this.qSet.add(qQual);
+    }
 
 
 }

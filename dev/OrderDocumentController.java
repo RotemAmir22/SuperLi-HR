@@ -4,9 +4,13 @@ import java.util.Scanner;
 
 public class OrderDocumentController {
 
-    public OrderDocument CreateOrderDoc(Site store, Site dest,double weight){
-        OrderDocument orderdoc = new OrderDocument(store,dest,weight);
-        return orderdoc;
+    /**
+     * q: what is the logic behind creating orderDoc with weight passed to the constructor
+     *    of order - there are no product yet, so hoe can i know what the weight is ??
+     */
+    public OrderDocument CreateOrderDoc(Site store, Site dest, double weight){
+        OrderDocument orderDoc = new OrderDocument(store,dest,weight);
+        return orderDoc;
 
     }
 public void orderdoc(){
