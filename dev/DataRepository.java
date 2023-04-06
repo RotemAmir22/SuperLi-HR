@@ -14,4 +14,6 @@ public interface DataRepository {
     Set<Store> findAllStores();
     Set<Driver> findAllDrivers();
     Set<Product> findAllProducts();
+    Set<Store> findAllStores();
+    Set<Supplier> findAllSuppliers();
 }

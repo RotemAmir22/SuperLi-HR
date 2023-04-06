@@ -56,4 +56,12 @@ public class DataRepositoryImpl implements DataRepository {
     public Set<Product> findAllProducts() {
         return products;
     }
+
+    public Set<Supplier> findAllSuppliers() {
+        return suppliers;
+    }
+
+    public Set<Store> findAllStores() {
+        return stores;
+    }
 }
