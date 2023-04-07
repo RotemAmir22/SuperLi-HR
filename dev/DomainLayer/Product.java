@@ -22,4 +22,8 @@ public class Product {
     public double getProductWeight() {
         return productWeight;
     }
+    public void printProduct()
+    {
+        System.out.println(this.productId + ": " + this.productName);
+    }
 }
