@@ -7,18 +7,20 @@ import java.util.Map;
 import java.util.Set;
 
 public interface OrderDocumentService {
-    public OrderDocument createOrderDoc(int sourceId, int destinationId);
+     OrderDocument createOrderDoc(int sourceId, int destinationId);
 
-    public Set<OrderDocument> getAllOrderDocuments();
+     Set<OrderDocument> getOrderDocumentsSet();
 
-    public OrderDocumentRepository getOrderDocRepo();
+     OrderDocumentRepository getOrderDocRepo();
 
-    public void updateWeight(OrderDocument orderDocument,double weight);
+     void updateWeight(OrderDocument orderDocument,double weight);
 
-    public void updateProductList(OrderDocument orderDocument,Map<String, Double> productsList);
+     void updateProductList(OrderDocument orderDocument,Map<String, Double> productsList);
 
-    public void showAllProductsInDoc(int orderId);
-    public void updateAmount(int orderId,String productName, double amount);
-
+     // TODO why this split prints ??
+     void showAllProductsInDoc(int orderId);
+     void updateAmount(int orderId,String productName, double amount);
     void removeProduct(int orderDocumentId, String productName);
+    OrderDocument findOrderDocById(int orderId);
+    boolean showOrderDocById(int orderId);
 }

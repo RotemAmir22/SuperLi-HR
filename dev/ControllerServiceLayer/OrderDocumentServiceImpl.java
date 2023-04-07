@@ -35,7 +35,7 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     public OrderDocument createOrderDoc(int sourceId, int destinationId) {
         Supplier supplier = supplierService.findSupplierById(sourceId) ;
         Store store = storeService.findStoreById(destinationId) ;
-        if (store ==null || supplier ==null){return null;}
+        if (store == null || supplier == null) return null;
         OrderDocument orderDoc = new OrderDocument(supplier,store);
         return orderDoc;
     }
@@ -47,14 +47,16 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     //get order document
     //
     @Override
-    public Set<OrderDocument> getAllOrderDocuments() {
+    public Set<OrderDocument> getOrderDocumentsSet() {
         return orderDocRepo.getOrderDocsSet();
     }
 
+
+    //TODO - i don't like that the print is happening here
     @Override
     public void showAllProductsInDoc(int orderId) {
-        OrderDocument orderDoc = this.orderDocRepo.findOrderDocById(orderId);
-        Map<String, Double> productsList = orderDoc.ProductsList;
+        OrderDocument orderDoc = findOrderDocById(orderId);
+        Map<String, Double> productsList = orderDoc.getProductsList();
         for (Map.Entry<String, Double> entry : productsList.entrySet()){
             String productName = entry.getKey();
             Double amount = entry.getValue();
@@ -65,12 +67,25 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     @Override
     public void updateAmount(int orderId, String productName, double amount) {
         OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderId);
-        orderDocument.ProductsList.replace(productName,amount);
+        orderDocument.getProductsList().replace(productName,amount);
     }
 
     @Override
     public void removeProduct(int orderDocumentId, String productName) {
         OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderDocumentId);
-        orderDocument.ProductsList.remove(productName);
+        orderDocument.getProductsList().remove(productName);
+    }
+
+    @Override
+    public OrderDocument findOrderDocById(int orderId) {
+        return this.orderDocRepo.findOrderDocById(orderId);
+    }
+
+    @Override
+    public boolean showOrderDocById(int orderId) {
+        OrderDocument orderDocument = orderDocRepo.findOrderDocById(orderId);
+        if (orderDocument == null) return false;
+        orderDocument.printOrder();
+        return true;
     }
 }

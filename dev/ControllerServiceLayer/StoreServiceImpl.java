@@ -13,7 +13,7 @@ public class StoreServiceImpl implements StoreService{
     }
 
     @Override
-    public Set<Store> getAllStores() {
+    public Set<Store> getStoresSet() {
         return storeRepo.findAllStores();
     }
 

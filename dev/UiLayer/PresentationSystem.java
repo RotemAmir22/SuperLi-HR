@@ -100,7 +100,7 @@ public class PresentationSystem {
                                 orderDocC.createNewOrderDocument(scanner);
                                 break;
                             case 2:
-                                orderDocC.showAllOrderDocs(scanner);
+                                orderDocC.showAllOrderDocs();
                                 break;
                             case 3:
                                 int ch53;

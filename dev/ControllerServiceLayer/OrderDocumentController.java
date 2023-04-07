@@ -52,6 +52,7 @@ public class OrderDocumentController {
      * order needs the products
      **/
     public void addProductToOrder(int orderDocId,Scanner scanner) {
+        if (scanner.hasNext()) scanner.nextLine();
         Map<String, Double> productsList = new HashMap<>();
         double weight = 0;
         boolean flag = false;
@@ -79,7 +80,7 @@ public class OrderDocumentController {
         orderDocService.updateWeight(orderDocument,weight);
     }
     public void updateProductAmount(int orderDocumentId,Scanner scanner){
-
+        if (scanner.hasNext()) scanner.nextLine();
         this.orderDocService.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to change the Amount: ");
         String productName = scanner.nextLine();
@@ -93,7 +94,7 @@ public class OrderDocumentController {
         System.out.println("Amount has changed to: "+ amount);
     }
     public void removeProductFromOrder(int orderDocumentId,Scanner scanner){
-
+        if (scanner.hasNext()) scanner.nextLine();
         this.orderDocService.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to remove: ");
         String productName = scanner.nextLine();
@@ -103,18 +104,16 @@ public class OrderDocumentController {
         System.out.println("product "+ productName + "has been removed");
     };
 
-    public void showAllOrderDocs(Scanner scanner) {
+    public void showAllOrderDocs() {
         Set<OrderDocument> allOrders = orderDocService.getOrderDocRepo().getOrderDocsSet();
         for (OrderDocument orderDoc :allOrders){
             showSpecificOrderDoc(orderDoc.getDocumentId());
         }
     }
     public void showSpecificOrderDoc(int orderId){
-        OrderDocument orderDoc = orderDocService.getOrderDocRepo().findOrderDocById(orderId);
-        orderDoc.printOrderId();
-        orderDoc.printOrderSource();
-        orderDoc.printOrderDestination();
-        orderDoc.printOrderProductList();
-    }
+        boolean flag = orderDocService.showOrderDocById(orderId);
+        if (!flag)
+            System.out.printf("Order's id: %s not found!%n", orderId);
 
+    }
 }

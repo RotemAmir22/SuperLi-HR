@@ -14,7 +14,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Set<Product> getAllProducts() {
+    public Set<Product> getProductsSet() {
         return productRepo.getProductsSet();
     }
 
@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findProductByname(String productName) {
+    public Product findProductByName(String productName) {
         return null;
     }
 
