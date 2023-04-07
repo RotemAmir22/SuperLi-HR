@@ -88,43 +88,6 @@ public class PresentationSystem {
         scanner.close();
     }
 
-    /**
-    * responsible on adding products to an existing orderDocument
-     * @param orderDoc that the user inputs to know which
-     * order needs the products
-     **/
-    public void addProductToOrder(OrderDocument orderDoc) {
-        Map<String, Double> productsList = new HashMap<>();
-        double weight = 0;
-        Scanner scanner = new Scanner(System.in);
-        boolean flag = false;
-        while (!flag) {
-            System.out.println("Please choose which products you want from the supplier: ");
-            //function that prints all products instead of what there is now
-
-            System.out.println("1. Banana");
-            System.out.println("2. Apple");
-            System.out.println("3. Avocado");
-            System.out.println("4. Basil");
-            String input = scanner.nextLine();
-
-            System.out.println("Please choose what amount of the product you would like: ");
-            Double inAmount = scanner.nextDouble();
-            scanner.nextLine();
-            weight += inAmount;
-            productsList.put(input, inAmount);
-            System.out.println("Would you like to add more products? ");
-            System.out.println(("Y/N "));
-            input = scanner.nextLine();
-
-            if (input.equalsIgnoreCase("N")) {
-                flag = true;
-            }
-        }
-        orderDoc.setProductsList(productsList); // need to change the string here to products
-        orderDoc.setWeight(weight);
-
-    }
     public void removeProductFromOrder(){};
     public void updateProductAmount(int productId){};
     public void submitOrder(){};
