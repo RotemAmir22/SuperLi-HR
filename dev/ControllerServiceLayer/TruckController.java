@@ -68,7 +68,7 @@ public class TruckController {
         Truck newTruck = this.truckService.createTruck(plateNumber, iModel, iQArr, truckWeight, maxWeight);
         // TODO figure out the correct way of doing this v.
         this.truckService.getTruckRepo().saveTruck(newTruck);
-        System.out.println("DomainLayer.Truck added successfully!");
+        System.out.println("Truck added successfully!");
         //TODO also print the truck info ?
     }
 

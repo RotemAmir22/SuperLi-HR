@@ -10,10 +10,9 @@ public interface TruckService {
                       double truckWeight, double maxWeight);
     boolean removeTruckByPlateNumber(String tPlateNumber);
     Truck findTruckByPlate(String tPlateNumber);
-    Set<Truck> getAllTrucks();
+    Set<Truck> getTrucksSet();
     TruckRepository getTruckRepo();
     void showAllTrucks();
-
     boolean showTruckByPlate(String tPlateNumber);
 
 
