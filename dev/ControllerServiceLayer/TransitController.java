@@ -12,6 +12,7 @@ public class TransitController {
     }
 
     public void createNewTransit(Scanner scanner) {
+        scanner.nextLine();
         System.out.println("-----Create new transit-----");
         System.out.println("Enter transit Date: (dd/mm/yyyy) ");
         String sTransitDate = scanner.nextLine();

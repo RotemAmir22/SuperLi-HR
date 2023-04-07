@@ -1,15 +1,8 @@
 package UiLayer;
-
 import ControllerServiceLayer.*;
 import DataAccessLayer.*;
-import DomainLayer.OrderDocument;
-
-import java.util.*;
 import java.util.Scanner;
 
-/**
- * UI
- */
 public class PresentationSystem {
     public static void main(String[] args) {
         PresentationSystem ps = new PresentationSystem();
@@ -33,10 +26,14 @@ public class PresentationSystem {
         OrderDocumentController orderDocumentController = new OrderDocumentController(primeOrderDocService,
                 primeProductService);
 
-        ps.switchMenu(truckController,orderDocumentController);
+        TransitRepository primeTransitRepo = new TransitRepositoryImpl();
+        TransitService primeTransitService = new TransitServiceImpl(primeTransitRepo);
+        TransitController transitController = new TransitController(primeTransitService);
+
+        ps.switchMenu(truckController,orderDocumentController, transitController);
     }
 
-    public void switchMenu(TruckController truckC,OrderDocumentController orderDocC){
+    public void switchMenu(TruckController truckC,OrderDocumentController orderDocC, TransitController transitC){
         Scanner scanner = new Scanner(System.in);
         int choice;
 
@@ -54,7 +51,7 @@ public class PresentationSystem {
 
             switch (choice) {
                 case 1:
-                    System.out.println("You selected Option 1.");
+                    transitC.createNewTransit(scanner);
                     break;
                 case 2:
                     System.out.println("You selected Option 2.");
@@ -62,7 +59,7 @@ public class PresentationSystem {
                 case 3:
                     int ch3;
                 do {
-                    System.out.println("-----DomainLayer.Truck Manager-----:");
+                    System.out.println("-----Truck Manager-----");
                     System.out.println("1. Add a new truck ");
                     System.out.println("2. Remove a truck ");
                     System.out.println("3. Show all trucks ");
@@ -92,7 +89,7 @@ public class PresentationSystem {
                 case 5:
                     int ch5;
                     do {
-                        System.out.println("-----Manage Orders-----:");
+                        System.out.println("-----Manage Orders-----");
                         System.out.println("1. Create a new Order ");
                         System.out.println("2. Show all orders ");
                         System.out.println("3. manage specific order ");

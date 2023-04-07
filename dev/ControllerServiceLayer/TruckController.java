@@ -24,21 +24,20 @@ public class TruckController {
         double truckWeight;
         double maxWeight;
         int iModel;
-
         System.out.println("-----Add new truck-----");
         System.out.println("Enter truck plate number: "); //assuming valid plate number
+        scanner.nextLine();
         plateNumber = scanner.nextLine();
-
         try {
             iModel = truckModelHandler(scanner); // Handler for getting truck model information
         } catch (UiException e) {
             System.out.println(e.getMessage());
             return;
         }
-        System.out.println("Enter truck weight: "); //assuming valid truck weight
+        System.out.println("Enter truck weight: (kg) "); //assuming valid truck weight
         truckWeight = scanner.nextDouble();
         scanner.nextLine();
-        System.out.println("Enter truck max carry weight: "); //assuming valid max carry weight
+        System.out.println("Enter truck max carry weight: (kg) "); //assuming valid max carry weight
         maxWeight = scanner.nextDouble();
         scanner.nextLine();
 
@@ -76,6 +75,7 @@ public class TruckController {
         String tPlateNumber;
         System.out.println("-----Remove truck-----");
         System.out.println("Enter truck's plate number: ");
+        scanner.nextLine();
         tPlateNumber = scanner.nextLine();
         boolean flag = this.truckService.removeTruckByPlateNumber(tPlateNumber);
         if (flag) System.out.printf("DomainLayer.Truck with plate number: %s deleted successfully!%n", tPlateNumber);
@@ -104,12 +104,12 @@ public class TruckController {
     public int truckModelHandler(Scanner scanner) throws UiException {
         System.out.println("Choose truck model: "); //assuming valid model and weight
         for (TruckModel tm : TruckModel.values()){
-            System.out.printf(tm.ordinal()+1 + ". " + tm);
+            System.out.println(tm.ordinal()+1 + ". " + tm);
         }
         System.out.println("0. exit");
         int ModelOrdinal = scanner.nextInt();
         scanner.nextLine();
-        if (!(0<ModelOrdinal && ModelOrdinal<TruckModel.values().length))
+        if (0>=ModelOrdinal || ModelOrdinal>TruckModel.values().length)
             throw new UiException("Failed to choose truck model");
         return ModelOrdinal-1;
     }
