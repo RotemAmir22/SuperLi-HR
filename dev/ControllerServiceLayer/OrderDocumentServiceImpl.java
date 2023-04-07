@@ -9,23 +9,24 @@ import java.util.Map;
 import java.util.Set;
 
 public class OrderDocumentServiceImpl implements OrderDocumentService {
-    private final OrderDocumentRepository orderdocRepo;
-
-    public OrderDocumentServiceImpl(OrderDocumentRepository orderdocRepo) {
-        this.orderdocRepo = orderdocRepo;
+    private final OrderDocumentRepository orderDocRepo;
+    private final SupplierService supplierService;
+    private final StoreService storeService;
+    public OrderDocumentServiceImpl(OrderDocumentRepository orderDocRepo, SupplierService supplierService,
+                                    StoreService storeService) {
+        this.orderDocRepo = orderDocRepo;
+        this.supplierService = supplierService;
+        this.storeService = storeService;
     }
 
-    public OrderDocumentRepository getOrderdocRepo() { return orderdocRepo;}
+    public OrderDocumentRepository getOrderDocRepo() { return orderDocRepo;}
 
     @Override
     public OrderDocument createOrderDoc(int sourceId, int destinationId) {
-        Store store = ;
-        Supplier supplier = ;
-
+        Supplier supplier = supplierService.findSupplierById(sourceId) ;
+        Store store = storeService.findStoreById(destinationId) ;
         if (store ==null || supplier ==null){return null;}
-
         OrderDocument orderDoc = new OrderDocument(supplier,store);
-        //save in repos what has returned to the controller
         return orderDoc;
     }
 
@@ -37,12 +38,7 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     //
     @Override
     public Set<OrderDocument> getAllOrderDocuments() {
-        return orderdocRepo.findAllOrderDocs();
-    }
-
-    @Override
-    public OrderDocumentRepository getOrderDocRepo() {
-        return this.orderdocRepo;
+        return orderDocRepo.getOrderDocsSet();
     }
 
 }

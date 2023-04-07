@@ -17,7 +17,6 @@ public class OrderDocumentController {
     public void createNewOrderDocument(Scanner scanner){
         int storeId;
         int supplierId;
-        //Scanner scanner = new Scanner(System.in);
 
         System.out.println("-----Create new Order-----");
         System.out.println("Enter source (supplier id) of the order: "); // assuming valid supplier id
@@ -28,14 +27,16 @@ public class OrderDocumentController {
         storeId = scanner.nextInt();
         scanner.nextLine();
 
-        //if we want this last, need to change the constructor
+        //TODO if we want this last, need to change the constructor
         System.out.println("This order id is: "+ OrderDocument.documentNextId);
 
 
         OrderDocument newOrderDoc = this.orderDocService.createOrderDoc(supplierId,storeId);
-        // TODO figure out the correct way of doing this v.
+        //TODO figure out the correct way of doing this v.
         this.orderDocService.getOrderDocRepo().saveOrderDocument(newOrderDoc);
         //TODO also print the docs info ?
+
     }
+
 
 }

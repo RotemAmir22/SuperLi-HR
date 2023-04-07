@@ -91,7 +91,7 @@ public class TruckController {
         }
     }
 
-    void printAllTrucks(){
+    public void printAllTrucks(){
         this.truckService.showAllTrucks();
     }
 

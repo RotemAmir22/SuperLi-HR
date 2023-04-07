@@ -14,7 +14,7 @@ public class OrderDocumentRepositoryImpl implements OrderDocumentRepository{
 
 
     @Override
-    public Set<OrderDocument> findAllOrderDocs() {
+    public Set<OrderDocument> getOrderDocsSet() {
         return orderDocuments;
     }
 
