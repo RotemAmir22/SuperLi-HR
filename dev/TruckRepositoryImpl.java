@@ -14,7 +14,7 @@ public class TruckRepositoryImpl implements TruckRepository{
     }
 
     @Override
-    public Set<Truck> findAllTrucks() {
+    public Set<Truck> getTrucksSet() {
         return trucks;
     }
 

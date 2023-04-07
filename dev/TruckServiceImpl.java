@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Set;
 
 public class TruckServiceImpl implements TruckService {
@@ -36,11 +35,32 @@ public class TruckServiceImpl implements TruckService {
 
     @Override
     public Set<Truck> getAllTrucks() {
-        return this.truckRepo.findAllTrucks();
+        return this.truckRepo.getTrucksSet();
     }
 
     @Override
     public TruckRepository getTruckRepo() {
         return this.truckRepo;
+    }
+
+    @Override
+    public void showAllTrucks() {
+        Set<Truck> trucks = this.truckRepo.getTrucksSet();
+        for (Truck t : trucks){
+            t.printTruck();
+        }
+    }
+
+    @Override
+    public boolean showTruckByPlate(String tPlateNumber) {
+        Truck truckToShow = findTruckByPlate(tPlateNumber);
+        if (truckToShow != null){
+            truckToShow.printTruck();
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 }

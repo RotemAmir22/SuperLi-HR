@@ -77,6 +77,17 @@ public class TruckController {
         }
     }
 
+    void printTruckByPlate(String tPLateNumber){
+        boolean flag = this.truckService.showTruckByPlate(tPLateNumber);
+        if (!flag){
+            System.out.printf("Truck's plate number: %s not found!%n", tPLateNumber);
+        }
+    }
+
+    void printAllTrucks(){
+        this.truckService.showAllTrucks();
+    }
+
     /**
      * Handles the user input for choosing a truck model from the available options.
      * @param scanner the Scanner object used to read user input

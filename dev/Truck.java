@@ -49,7 +49,8 @@ public class Truck {
         System.out.println("max carry weight: " + this.maxWeight);
         System.out.println("Qualifications: ");
         for (Qualification q : qSet){
-            System.out.println(q);
+            System.out.println("\t" + q);
         }
+        System.out.println();
     }
 }
