@@ -2,47 +2,40 @@ import java.util.Map;
 import java.util.Set;
 
 public class OrderDocumentServiceImpl implements OrderDocumentService {
-    static DataRepository dataRep = new DataRepositoryImpl();
+    private final OrderDocumentRepository orderdocRepo;
+
+    public OrderDocumentServiceImpl(OrderDocumentRepository orderdocRepo) {
+        this.orderdocRepo = orderdocRepo;
+    }
+
+    public OrderDocumentRepository getOrderdocRepo() { return orderdocRepo;}
 
     @Override
     public OrderDocument createOrderDoc(int sourceId, int destinationId) {
-        Store store = searchStore(destinationId);
-        Supplier supplier = searchSupllier(sourceId);
+        Store store = ;
+        Supplier supplier = ;
 
         if (store ==null || supplier ==null){return null;}
 
         OrderDocument orderDoc = new OrderDocument(supplier,store);
+        //save in repos what has returned to the controller
         return orderDoc;
     }
 
-    public void AddProductsToOrder(int orderId, Map<String,Double> productList){} //needed?
+    public void AddProductsToOrder(int orderId, Map<String,Double> productList)
+    {
 
+    } //needed?
+    //get order document
+    //
     @Override
     public Set<OrderDocument> getAllOrderDocuments() {
-        return dataRep.findAllOrdersDocs();
+        return orderdocRepo.findAllOrderDocs();
     }
 
-    /**
-     *
-     * @param supplierId
-     * search function for specific suppliers and stores
-     * not sure if suppose to be here !!!
-     * @return supplier
-     */
-    public Supplier searchSupllier(int supplierId) {
-        for (Supplier supplier : dataRep.findAllSuppliers()) {
-            if (supplier.getSupplierID() == supplierId) {
-                return supplier;
-            }
-        }
-        return null;
+    @Override
+    public OrderDocumentRepository getOrderDocRepo() {
+        return this.orderdocRepo;
     }
-    public Store searchStore(int storeId) {
-        for (Store store : dataRep.findAllStores()) {
-            if (store.getStoreId() == storeId) {
-                return store;
-            }
-        }
-        return null;
-    }
+
 }
