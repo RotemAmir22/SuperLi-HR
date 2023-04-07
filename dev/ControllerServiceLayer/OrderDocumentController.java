@@ -5,6 +5,7 @@ import DomainLayer.OrderDocument;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class OrderDocumentController {
     private final OrderDocumentService orderDocService;
@@ -41,18 +42,18 @@ public class OrderDocumentController {
         //TODO figure out the correct way of doing this v.
         this.orderDocService.getOrderDocRepo().saveOrderDocument(newOrderDoc);
         //TODO also print the docs info ?
+        addProductToOrder(newOrderDoc.getDocumentId(),scanner);
 
     }
 
     /**
      * responsible on adding products to an existing orderDocument
-     * @param orderDoc that the user inputs to know which
+     * @param orderDocId that the user inputs to know which
      * order needs the products
      **/
-    public void addProductToOrder(OrderDocument orderDoc) {
+    public void addProductToOrder(int orderDocId,Scanner scanner) {
         Map<String, Double> productsList = new HashMap<>();
         double weight = 0;
-        Scanner scanner = new Scanner(System.in);
         boolean flag = false;
         while (!flag) {
             System.out.println("Please choose which products you want from the supplier: ");
@@ -73,10 +74,47 @@ public class OrderDocumentController {
                 flag = true;
             }
         }
-        orderDoc.setProductsList(productsList); // need to change the string here to products
-        orderDoc.setWeight(weight);
-
+        OrderDocument orderDocument = this.orderDocService.getOrderDocRepo().findOrderDocById(orderDocId);
+        orderDocService.updateProductList(orderDocument,productsList);
+        orderDocService.updateWeight(orderDocument,weight);
     }
+    public void updateProductAmount(int orderDocumentId,Scanner scanner){
 
+        this.orderDocService.showAllProductsInDoc(orderDocumentId);
+        System.out.println("Please enter which product you would like to change the Amount: ");
+        String productName = scanner.nextLine();
+
+        System.out.println("Please enter the new amount: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+
+        OrderDocument orderDoc= this.orderDocService.getOrderDocRepo().findOrderDocById(orderDocumentId);
+        this.orderDocService.updateAmount(orderDocumentId,productName,amount);
+        System.out.println("Amount has changed to: "+ amount);
+    }
+    public void removeProductFromOrder(int orderDocumentId,Scanner scanner){
+
+        this.orderDocService.showAllProductsInDoc(orderDocumentId);
+        System.out.println("Please enter which product you would like to remove: ");
+        String productName = scanner.nextLine();
+
+        OrderDocument orderDoc= this.orderDocService.getOrderDocRepo().findOrderDocById(orderDocumentId);
+        this.orderDocService.removeProduct(orderDocumentId,productName);
+        System.out.println("product "+ productName + "has been removed");
+    };
+
+    public void showAllOrderDocs(Scanner scanner) {
+        Set<OrderDocument> allOrders = orderDocService.getOrderDocRepo().getOrderDocsSet();
+        for (OrderDocument orderDoc :allOrders){
+            showSpecificOrderDoc(orderDoc.getDocumentId());
+        }
+    }
+    public void showSpecificOrderDoc(int orderId){
+        OrderDocument orderDoc = orderDocService.getOrderDocRepo().findOrderDocById(orderId);
+        orderDoc.printOrderId();
+        orderDoc.printOrderSource();
+        orderDoc.printOrderDestination();
+        orderDoc.printOrderProductList();
+    }
 
 }

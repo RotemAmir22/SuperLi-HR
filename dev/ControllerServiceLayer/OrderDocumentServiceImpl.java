@@ -12,14 +12,24 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     private final OrderDocumentRepository orderDocRepo;
     private final SupplierService supplierService;
     private final StoreService storeService;
-    public OrderDocumentServiceImpl(OrderDocumentRepository orderDocRepo, SupplierService supplierService,
-                                    StoreService storeService) {
+    public OrderDocumentServiceImpl(OrderDocumentRepository orderDocRepo,
+                                    SupplierService supplierService, StoreService storeService) {
         this.orderDocRepo = orderDocRepo;
         this.supplierService = supplierService;
         this.storeService = storeService;
     }
 
     public OrderDocumentRepository getOrderDocRepo() { return orderDocRepo;}
+
+    @Override
+    public void updateWeight(OrderDocument orderDocument, double weight) {
+        orderDocument.setWeight(weight);
+    }
+
+    @Override
+    public void updateProductList(OrderDocument orderDocument, Map<String, Double> productsList) {
+        orderDocument.setProductsList(productsList);
+    }
 
     @Override
     public OrderDocument createOrderDoc(int sourceId, int destinationId) {
@@ -41,4 +51,26 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
         return orderDocRepo.getOrderDocsSet();
     }
 
+    @Override
+    public void showAllProductsInDoc(int orderId) {
+        OrderDocument orderDoc = this.orderDocRepo.findOrderDocById(orderId);
+        Map<String, Double> productsList = orderDoc.ProductsList;
+        for (Map.Entry<String, Double> entry : productsList.entrySet()){
+            String productName = entry.getKey();
+            Double amount = entry.getValue();
+            System.out.println("Product Name: "+ productName + " amount: " +amount);
+        }
+    }
+
+    @Override
+    public void updateAmount(int orderId, String productName, double amount) {
+        OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderId);
+        orderDocument.ProductsList.replace(productName,amount);
+    }
+
+    @Override
+    public void removeProduct(int orderDocumentId, String productName) {
+        OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderDocumentId);
+        orderDocument.ProductsList.remove(productName);
+    }
 }

@@ -45,4 +45,21 @@ public class OrderDocument {
     public void setWeight(double weight) {
         totalWeight=weight;
     }
+    public void printOrderProductList() {
+        for (Map.Entry<String, Double> entry : this.ProductsList.entrySet()) {
+            String product = entry.getKey();
+            Double amount = entry.getValue();
+            System.out.println(product + " : " + amount);
+        }
+    }
+    public void printOrderDestination() {
+        System.out.println("Destination is: " +this.destination.address);
+    }
+    public void printOrderSource(){
+        System.out.println("Source is: " + this.source.address);
+    }
+
+    public void printOrderId() {
+        System.out.println("Order Id is: " + this.documentId);
+    }
 }
