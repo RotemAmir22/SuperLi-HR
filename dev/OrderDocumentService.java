@@ -6,4 +6,5 @@ public interface OrderDocumentService {
     public Set<OrderDocument> getAllOrderDocuments();
 
 
+    public OrderDocumentRepository getOrderDocRepo();
 }
