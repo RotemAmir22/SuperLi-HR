@@ -390,10 +390,10 @@ public class Main {
                                 break;
                         }
                     }
-
-                    case "7":
-                        System.out.println("Exiting menu...");
-                        break;
+                    break;
+                case "7":
+                    System.out.println("Exiting menu...");
+                    return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
                     break;
