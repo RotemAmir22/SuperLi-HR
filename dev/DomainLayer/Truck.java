@@ -33,8 +33,13 @@ public class Truck {
         return truckWeight;
     }
 
-    public void loadTruck(){};
-
+    public void loadTruck(double weight){
+        currentLoadWeight += weight;
+    }; // will be inside truck service
+    public void unloadTruck (double weight)
+    {
+        currentLoadWeight-=weight;
+    }
     public Set<Qualification> getTruckQualification(){
         return this.qSet;
     }

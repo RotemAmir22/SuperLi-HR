@@ -1,8 +1,12 @@
 package ControllerServiceLayer;
 
+import DomainLayer.OrderDocument;
 import DomainLayer.Transit;
+import DomainLayer.Truck;
 import ExceptionsPackage.UiException;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class TransitController {
@@ -79,5 +83,57 @@ public class TransitController {
         String truckPlateNumber = scanner.nextLine();
         return truckPlateNumber;
     }
-
+    public void beginTransit(Scanner scanner){
+        int transitId = getTransitIdHandler(scanner);
+        Transit transit = findTransitById(transitId);
+        //check if date is today
+        if (!transit.getTransitDate().equals(LocalDate.now()))
+        {
+            System.out.println("Warning, the date of transaction is not today ");
+            System.out.println("Back to main menu ");
+            return;
+        }
+        transit.setDepartureTime(LocalTime.now());
+        // load?
+        double weight = 0;
+        Truck truck = transit.getTruck();
+        for (OrderDocument orderDocument: transit.getOrdersDocs())
+        {
+            weight += orderDocument.getTotalWeight();
+            truck.loadTruck(weight); // truck service ?
+            //if overweight - need to add to TransitDocument that there was a problem
+            if (truck.getMaxCarryWeight()<truck.getCurrentWeight()) {overWeight(scanner);}
+            /**
+             * all good, can go unload in store
+             *  or do i need to continue to all destinations and only
+             * then go back to stores?
+            **/
+            transit.getTruck().unloadTruck(weight);
+            //create in repository a set of orders that are finished and add the current order there
+            //
+        }
+        //create in repository a set of transits that are finished and add this transit there
+    }
+    public void overWeight(Scanner scanner)
+    {
+        int ans;
+        //scanner.nextLine();
+        System.out.println("Overweighted truck - what would you wish to do? ");
+        System.out.println("1. switch truck ");
+        System.out.println("2. delete order from transit ");
+        System.out.println("3. remove products from order ");
+        ans = scanner.nextInt();
+        switch (ans)
+        {
+            case 1:// switch truck
+                break;
+            case 2: // delete order
+                break;
+            case 3: //delete products from order
+                break;
+            default:
+                System.out.println("The defult choice is to delete order from transit");
+                //case 2
+        }
+    }
 }

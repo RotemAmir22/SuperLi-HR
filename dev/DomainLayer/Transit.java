@@ -1,5 +1,6 @@
 package DomainLayer;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,6 +9,7 @@ public class Transit {
     public static int nextId=1;
     private int transitId;
     private Date transitDate;
+    private LocalTime departureTime;
     private Truck truck;
     private Driver driver; // String driverName??
     private Site source;
@@ -27,6 +29,14 @@ public class Transit {
 
     public int getTransitId() {
         return transitId;
+    }
+
+    public LocalTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(LocalTime departureTime) {
+        this.departureTime = departureTime;
     }
 
     public Date getTransitDate() {
