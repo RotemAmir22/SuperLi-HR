@@ -47,11 +47,11 @@ public class Truck {
     }
 
     public void printTruck(){
-        System.out.println("plate number: " + this.plateNumber);
-        System.out.println("model: " + this.model);
-        System.out.println("truck weight: " + this.truckWeight);
-        System.out.println("current load weight: " + this.currentLoadWeight);
-        System.out.println("max carry weight: " + this.maxCarryWeight);
+        System.out.println("Plate number: " + this.plateNumber);
+        System.out.println("Model: " + this.model);
+        System.out.println("Truck's weight: " + this.truckWeight);
+        System.out.println("Current load weight: " + this.currentLoadWeight);
+        System.out.println("Max carry weight: " + this.maxCarryWeight);
         if (!qSet.isEmpty()) {
             System.out.println("Qualifications: ");
             for (Qualification q : qSet) {
@@ -59,5 +59,13 @@ public class Truck {
             }
         }
         System.out.println();
+    }
+
+    public TruckModel getModel() {
+        return model;
+    }
+
+    public Set<Qualification> getqSet() {
+        return qSet;
     }
 }

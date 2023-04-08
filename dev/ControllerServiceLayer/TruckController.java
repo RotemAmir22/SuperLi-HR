@@ -20,7 +20,6 @@ public class TruckController {
      * interfaces to create and save a new truck object to a database.
      */
     public void createNewTruck(Scanner scanner){
-        if (scanner.hasNext()) scanner.nextLine();
         String plateNumber;
         double truckWeight;
         double maxWeight;
@@ -72,7 +71,6 @@ public class TruckController {
     }
 
     public void removeTruckByPlate(Scanner scanner){
-        if (scanner.hasNext()) scanner.nextLine();
         String tPlateNumber;
         System.out.println("-----Remove truck-----");
         System.out.println("Enter truck's plate number: ");
@@ -86,9 +84,8 @@ public class TruckController {
 
     void printTruckByPlate(String tPLateNumber){
         boolean flag = this.truckService.showTruckByPlate(tPLateNumber);
-        if (!flag){
+        if (!flag)
             System.out.printf("Truck's plate number: %s not found!%n", tPLateNumber);
-        }
     }
 
     public void printAllTrucks(){
@@ -102,7 +99,6 @@ public class TruckController {
      * @throws UiException if the user input is invalid
      */
     public int truckModelHandler(Scanner scanner) throws UiException {
-        if (scanner.hasNext()) scanner.nextLine();
         System.out.println("Choose truck model: "); //assuming valid model and weight
         for (TruckModel tm : TruckModel.values()){
             System.out.println(tm.ordinal()+1 + ". " + tm);
@@ -124,7 +120,6 @@ public class TruckController {
      * @throws UiException if there is an error with the input or the selected qualification numbers are invalid
      */
     public int[] truckQualificationsHandler(Scanner scanner) throws UiException {
-        if (scanner.hasNext()) scanner.nextLine();
         System.out.println("Choose truck qualification (comma-separated, e.g. 1,3,5): ");
         for (Qualification ql : Qualification.values()){
             System.out.println(ql.ordinal()+1 + ". " + ql);

@@ -12,7 +12,6 @@ public class TransitController {
     }
 
     public void createNewTransit(Scanner scanner) {
-        if (scanner.hasNext()) scanner.nextLine();
         System.out.println("-----Create new transit-----");
         System.out.println("Enter transit Date: (dd/mm/yyyy) ");
         String sTransitDate = scanner.nextLine();
@@ -30,8 +29,55 @@ public class TransitController {
         }
         // TODO figure out the correct way of doing this v.
         this.transitService.getTransitRepo().saveTransit(newTransit);
+        newTransit.printTransit();
         System.out.println("Transit added successfully!");
-        //TODO also print the truck info ?
+
+    }
+
+    public Transit findTransitById(int transitId){
+        Transit transitFound = transitService.findTransitByID(transitId);
+        if (transitFound!=null)return transitFound;
+        System.out.printf("Transit id: %d not found %n",transitId);
+        return null;
+    }
+
+    public void printTransitDetails(Scanner scanner){
+        int transitId = getTransitIdHandler(scanner);
+        printTransitById(transitId);
+    }
+
+    public void replaceTransitTruck(Scanner scanner){
+        int transitId = getTransitIdHandler(scanner);
+        Transit transitToReplace = findTransitById(transitId);
+        if (transitToReplace == null) return;
+        String truckPlateNumber = getTruckPlateHandler(scanner);
+        boolean flag = transitService.setTransitTruck(transitToReplace, truckPlateNumber);
+        if(!flag) {
+            System.out.printf("Truck's plate number %s not found!%n", truckPlateNumber);
+            return;
+        }
+
+        System.out.println("Transit's truck updated successfully");
+    }
+
+    public void printTransitById(int transitId){
+        boolean flag = transitService.showTransitByID(transitId);
+        if(!flag)
+            System.out.printf("Transit's id: %d not found!%n", transitId);
+    }
+
+    public int getTransitIdHandler(Scanner scanner)
+    {
+        System.out.println("Enter transit id: ");
+        int transitId = scanner.nextInt();
+        return transitId;
+    }
+
+    public String getTruckPlateHandler(Scanner scanner)
+    {
+        System.out.println("Enter truck plate number: ");
+        String truckPlateNumber = scanner.nextLine();
+        return truckPlateNumber;
     }
 
 }

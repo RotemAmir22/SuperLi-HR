@@ -1,33 +1,36 @@
 package DomainLayer;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Transit {
     public static int nextId=1;
-    private int TransitId;
-    private Date TransitDate;
+    private int transitId;
+    private Date transitDate;
     private Truck truck;
     private Driver driver; // String driverName??
-    public static Site source = new Parking("ParkingStreet", Area.Center, null, null);
+    private Site source;
     private Set<Site> destinations;
     private Set<OrderDocument> ordersDocs;
 
 
     public Transit(Date transitDate, Truck truck, Driver driver) {
-        TransitId = nextId;
+        transitId = nextId;
         nextId++;
-        TransitDate = transitDate;
+        this.transitDate = transitDate;
         this.truck = truck;
         this.driver = driver;
+        destinations = new HashSet<>();
+        ordersDocs = new HashSet<>();
     }
 
     public int getTransitId() {
-        return TransitId;
+        return transitId;
     }
 
     public Date getTransitDate() {
-        return TransitDate;
+        return transitDate;
     }
 
     public Truck getTruck() {
@@ -51,11 +54,26 @@ public class Transit {
     }
 
     public void printTransit(){
-        System.out.println("Transit id: " + this.TransitId);
-        System.out.println("Date: " + this.TransitDate);
+        System.out.println("Transit id: " + transitId);
+        System.out.println("Date: " + transitDate);
         System.out.println("Truck Details: ");
         getTruck().printTruck();
         System.out.println("Driver Details: ");
         getDriver().printDriver();
+    }
+
+    public void addDestination(Site dest){
+        destinations.add(dest);
+    };
+    public void addOrderDoc(OrderDocument orderDocument){
+        ordersDocs.add(orderDocument);
+    };
+
+    public void setTruck(Truck truck) {
+        this.truck = truck;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 }
