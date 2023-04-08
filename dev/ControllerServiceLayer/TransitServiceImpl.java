@@ -2,9 +2,7 @@ package ControllerServiceLayer;
 
 import DataAccessLayer.TransitRepository;
 import DataAccessLayer.TruckRepository;
-import DomainLayer.Driver;
-import DomainLayer.Transit;
-import DomainLayer.Truck;
+import DomainLayer.*;
 import ExceptionsPackage.UiException;
 
 import java.text.ParseException;
@@ -80,9 +78,23 @@ public class TransitServiceImpl implements TransitService{
         return true;
     }
 
+    @Override
+    public boolean setTransitTruck(Transit transit, String truckPlate) {
+        Truck foundTruck = truckService.findTruckByPlate(truckPlate);
+        if (foundTruck == null)return false;
+        transit.setTruck(foundTruck);
+
+        return true;
+    }
+
     private Date createDateObj(String dateString) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateString);
         Date transitDate = dateFormat.parse(dateString);
         return transitDate;
+    }
+
+    public void verifyDriverForTruck(Truck truck){
+        TruckModel truckModel = truck.getModel();
+        Set<Qualification> truckQualiSet = truck.getTruckQualification();
     }
 }

@@ -16,4 +16,5 @@ public interface TransitService {
     TransitRepository getTransitRepo();
     void showAllTransits();
     boolean showTransitByID(int transitId);
+    boolean setTransitTruck(Transit transit, String truckPlate);
 }

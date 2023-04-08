@@ -26,7 +26,6 @@ public class TruckController {
         int iModel;
         System.out.println("-----Add new truck-----");
         System.out.println("Enter truck plate number: "); //assuming valid plate number
-        scanner.nextLine();
         plateNumber = scanner.nextLine();
         try {
             iModel = truckModelHandler(scanner); // Handler for getting truck model information
@@ -75,10 +74,9 @@ public class TruckController {
         String tPlateNumber;
         System.out.println("-----Remove truck-----");
         System.out.println("Enter truck's plate number: ");
-        scanner.nextLine();
         tPlateNumber = scanner.nextLine();
         boolean flag = this.truckService.removeTruckByPlateNumber(tPlateNumber);
-        if (flag) System.out.printf("DomainLayer.Truck with plate number: %s deleted successfully!%n", tPlateNumber);
+        if (flag) System.out.printf("Truck with plate number: %s deleted successfully!%n", tPlateNumber);
         else {
             System.out.println("There is no truck with given plate number: " + tPlateNumber);
         }
@@ -86,9 +84,8 @@ public class TruckController {
 
     void printTruckByPlate(String tPLateNumber){
         boolean flag = this.truckService.showTruckByPlate(tPLateNumber);
-        if (!flag){
-            System.out.printf("DomainLayer.Truck's plate number: %s not found!%n", tPLateNumber);
-        }
+        if (!flag)
+            System.out.printf("Truck's plate number: %s not found!%n", tPLateNumber);
     }
 
     public void printAllTrucks(){

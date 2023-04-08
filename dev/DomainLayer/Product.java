@@ -24,6 +24,6 @@ public class Product {
     }
     public void printProduct()
     {
-        System.out.println(this.productId + ": " + this.productName);
+        System.out.println(productName + ": " + productId );
     }
 }

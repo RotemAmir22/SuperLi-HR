@@ -62,4 +62,14 @@ public class TruckServiceImpl implements TruckService {
         truckToShow.printTruck();
         return true;
         }
+
+    @Override
+    public TruckModel getTruckModel(Truck truck) {
+        return truck.getModel();
+    }
+
+    @Override
+    public Set<Qualification> getTruckQualiSet(Truck truck) {
+        return null;
+    }
 }
