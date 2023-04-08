@@ -51,8 +51,15 @@ public class OrderDocumentController {
      * @param orderDocId that the user inputs to know which
      * order needs the products
      **/
-    public void addProductToOrder(int orderDocId,Scanner scanner) {
+    public void addProductToOrder(Scanner scanner) {
+        int orderDocId;
         scanner.nextLine();
+        orderDocId = orderDocChoice(scanner);
+        if (orderDocId ==-1)
+        {
+            System.out.println("The order id does not exist! ");
+            return;
+        }
         Map<String, Double> productsList = new HashMap<>();
         double weight = 0;
         boolean flag = false;
@@ -79,8 +86,15 @@ public class OrderDocumentController {
         orderDocService.updateProductList(orderDocument,productsList);
         orderDocService.updateWeight(orderDocument,weight);
     }
-    public void updateProductAmount(int orderDocumentId,Scanner scanner){
+    public void updateProductAmount(Scanner scanner){
+        int orderDocumentId;
         scanner.nextLine();
+        orderDocumentId = orderDocChoice(scanner);
+        if (orderDocumentId ==-1)
+        {
+            System.out.println("The order id does not exist! ");
+            return;
+        }
         this.orderDocService.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to change the Amount: ");
         String productName = scanner.nextLine();
@@ -93,8 +107,16 @@ public class OrderDocumentController {
         this.orderDocService.updateAmount(orderDocumentId,productName,amount);
         System.out.println("Amount has changed to: "+ amount);
     }
-    public void removeProductFromOrder(int orderDocumentId,Scanner scanner){
+    public void removeProductFromOrder(Scanner scanner){
         scanner.nextLine();
+        int orderDocumentId;
+        scanner.nextLine();
+        orderDocumentId = orderDocChoice(scanner);
+        if (orderDocumentId ==-1)
+        {
+            System.out.println("The order id does not exist! ");
+            return;
+        }
         this.orderDocService.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to remove: ");
         String productName = scanner.nextLine();
@@ -117,5 +139,14 @@ public class OrderDocumentController {
         orderDoc.printOrderDestination();
         orderDoc.printOrderProductList();
     }
-
+    public int orderDocChoice(Scanner scanner)
+    {
+        int orderId;
+//        scanner.nextLine();
+        System.out.println("What Order would you like to manage? ");
+        orderId = scanner.nextInt();
+        if(orderDocService.orderDocumentChooser(orderId)){
+            return orderId;}
+        return -1;
+    }
 }

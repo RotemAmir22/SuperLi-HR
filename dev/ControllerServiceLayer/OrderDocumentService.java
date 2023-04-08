@@ -21,4 +21,5 @@ public interface OrderDocumentService {
     public void updateAmount(int orderId,String productName, double amount);
 
     void removeProduct(int orderDocumentId, String productName);
-}
+    public boolean orderDocumentChooser(int orderId);
+    }

@@ -73,4 +73,8 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
         OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderDocumentId);
         orderDocument.ProductsList.remove(productName);
     }
+    public boolean orderDocumentChooser(int orderId){
+        if(orderDocRepo.findOrderDocById(orderId)==null) {return false;}
+        return true;
+    }
 }

@@ -104,25 +104,22 @@ public class PresentationSystem {
                                 break;
                             case 3:
                                 int ch53;
-                                int orderId;
                                 do {
-                                    System.out.println("What Order would you like to manage? ");
-                                    orderId = scanner.nextInt();
                                     System.out.println("\nhow would you like to manage this order? ");
                                     System.out.println("1. Add products to an order ");
                                     System.out.println("2. Change the amount of a product in order ");
-                                    System.out.println("3. Remove an Order ");
+                                    System.out.println("3. Remove an order ");
                                     System.out.println("0. Back to main menu");
                                     ch53 = scanner.nextInt();
                                     switch (ch53) {
                                         case 1:
-                                            orderDocC.addProductToOrder(orderId, scanner);
+                                            orderDocC.addProductToOrder(scanner);
                                             break;
                                         case 2:
-                                            orderDocC.updateProductAmount(orderId, scanner);
+                                            orderDocC.updateProductAmount(scanner);
                                             break;
                                         case 3:
-                                            orderDocC.removeProductFromOrder(orderId, scanner);
+                                            orderDocC.removeProductFromOrder(scanner);
                                             break;
                                         case 0:
                                             System.out.println("\nGoing back...");
