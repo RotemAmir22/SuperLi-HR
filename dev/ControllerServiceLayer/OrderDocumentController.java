@@ -52,6 +52,7 @@ public class OrderDocumentController {
      * order needs the products
      **/
     public void addProductToOrder(int orderDocId,Scanner scanner) {
+        scanner.nextLine();
         Map<String, Double> productsList = new HashMap<>();
         double weight = 0;
         boolean flag = false;
@@ -79,7 +80,7 @@ public class OrderDocumentController {
         orderDocService.updateWeight(orderDocument,weight);
     }
     public void updateProductAmount(int orderDocumentId,Scanner scanner){
-
+        scanner.nextLine();
         this.orderDocService.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to change the Amount: ");
         String productName = scanner.nextLine();
@@ -93,7 +94,7 @@ public class OrderDocumentController {
         System.out.println("Amount has changed to: "+ amount);
     }
     public void removeProductFromOrder(int orderDocumentId,Scanner scanner){
-
+        scanner.nextLine();
         this.orderDocService.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to remove: ");
         String productName = scanner.nextLine();

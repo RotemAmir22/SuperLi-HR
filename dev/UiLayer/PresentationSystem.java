@@ -108,7 +108,7 @@ public class PresentationSystem {
                                 do {
                                     System.out.println("What Order would you like to manage? ");
                                     orderId = scanner.nextInt();
-
+                                    System.out.println("\nhow would you like to manage this order? ");
                                     System.out.println("1. Add products to an order ");
                                     System.out.println("2. Change the amount of a product in order ");
                                     System.out.println("3. Remove an Order ");
