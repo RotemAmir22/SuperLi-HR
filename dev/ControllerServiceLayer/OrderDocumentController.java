@@ -42,14 +42,11 @@ public class OrderDocumentController {
         //TODO figure out the correct way of doing this v.
         this.orderDocService.getOrderDocRepo().saveOrderDocument(newOrderDoc);
         //TODO also print the docs info ?
-        addProductToOrder(newOrderDoc.getDocumentId(),scanner);
-
+        addProductToOrder(scanner);
     }
 
     /**
      * responsible on adding products to an existing orderDocument
-     * @param orderDocId that the user inputs to know which
-     * order needs the products
      **/
     public void addProductToOrder(Scanner scanner) {
         int orderDocId;
