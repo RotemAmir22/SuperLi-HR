@@ -123,7 +123,7 @@ public class OrderDocumentController {
         System.out.println("product "+ productName + "has been removed");
     };
 
-    public void showAllOrderDocs(Scanner scanner) {
+    public void showAllOrderDocs() {
         Set<OrderDocument> allOrders = orderDocService.getOrderDocRepo().getOrderDocsSet();
         for (OrderDocument orderDoc :allOrders){
             showSpecificOrderDoc(orderDoc.getDocumentId());

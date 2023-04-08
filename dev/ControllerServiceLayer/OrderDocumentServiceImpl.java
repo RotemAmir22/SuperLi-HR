@@ -40,12 +40,6 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
         return orderDoc;
     }
 
-    public void AddProductsToOrder(int orderId, Map<String,Double> productList)
-    {
-
-    } //needed?
-    //get order document
-    //
     @Override
     public Set<OrderDocument> getOrderDocumentsSet() {
         return orderDocRepo.getOrderDocsSet();

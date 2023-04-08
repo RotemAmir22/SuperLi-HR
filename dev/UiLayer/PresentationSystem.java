@@ -105,13 +105,13 @@ public class PresentationSystem {
                                     ch53 = scanner.nextInt();
                                     switch (ch53) {
                                         case 1:
-                                            orderDocC.addProductToOrder(orderId, scanner);
+                                            orderDocC.addProductToOrder(scanner);
                                             break;
                                         case 2:
-                                            orderDocC.updateProductAmount(orderId, scanner);
+                                            orderDocC.updateProductAmount(scanner);
                                             break;
                                         case 3:
-                                            orderDocC.removeProductFromOrder(orderId, scanner);
+                                            orderDocC.removeProductFromOrder(scanner);
                                             break;
                                         case 0:
                                             System.out.println("\nGoing back...");
