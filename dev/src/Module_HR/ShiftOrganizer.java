@@ -149,7 +149,7 @@ public class ShiftOrganizer {
             for (Employee employee : listEmployees) {
                 /* get the employees constraints */
                 constraints = employee.getConstraints();
-                if (amount > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift])
+                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift])
                 {
                     /* check where the employee can be and update */
                     boolean addToShift = dailyShift.addEmployeeToShift(employee, roleName, shift);
