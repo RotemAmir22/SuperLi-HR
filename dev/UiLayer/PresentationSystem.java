@@ -91,47 +91,25 @@ public class PresentationSystem {
             choice = scanner.nextInt();
             if (scanner.hasNextLine()) scanner.nextLine();
             switch (choice) {
-                case 1:
+                case 1: // create new transit
                     transitC.createNewTransit(scanner);
                     break;
-                case 2:
+                case 2: // open update transit menu
                     int ch2;
                     do{
                         displayUpdateTransitMenu();
                         ch2 = scanner.nextInt();
                         if (scanner.hasNextLine()) scanner.nextLine();
-                        switch (ch2){
-                            case 1:
-                                transitC.printTransitDetails(scanner);
-                                break;
-                            case 2:
-                                orderDocC.showAllOrderDocs();
-                                break;
-                            case 3: transitC.addOrderToTransit(scanner);
-                                break;
-                            case 4:
-                                transitC.removeOrderFromTransit(scanner);
-                                break;
-                            case 5:
-                                transitC.replaceTransitTruck(scanner);
-                                break;
-                            case 6:
-                                System.out.println("Not implemented Yest");
-                                break;
-                            case 0:
-                                System.out.println("Back to main menu");
-                                break;
-                        }
-                    } while (ch2<0 || ch2>4);
-
+                        handleUpdateTransitMenu(ch2, scanner, transitC, orderDocC);
+                    } while (ch2<0 || ch2>6);
                     break;
-                case 3:
+                case 3: // open manage truck menu
                     int ch3;
                 do {
                     displayTruckManagerMenu();
                     ch3 = scanner.nextInt();
                     if (scanner.hasNextLine()) scanner.nextLine();
-                    handleTruckManager(ch3, scanner, truckC);
+                    handleTruckManagerMenu(ch3, scanner, truckC);
                 } while (ch3<0 || ch3>3);
                     break;
                 case 4: //manage documents
@@ -143,21 +121,16 @@ public class PresentationSystem {
                         ch5 = scanner.nextInt();
                         if (scanner.hasNextLine()) scanner.nextLine();
                         switch (ch5) {
-                            case 1:
+                            case 1: // create new order
                                 orderDocC.createNewOrderDocument(scanner);
                                 break;
-                            case 2:
+                            case 2: //prints all orders
                                 orderDocC.showAllOrderDocs();
                                 break;
-                            case 3:
+                            case 3: //open edit order menu
                                 int ch53;
-                                int orderId;
                                 do {
-                                    System.out.println("-----Manage Order-----");
-                                    System.out.println("1. Add products to an order ");
-                                    System.out.println("2. Change the amount of a product ");
-                                    System.out.println("3. Remove products ");
-                                    System.out.println("0. Back to main menu");
+                                    displayEditOrderMenu();
                                     ch53 = scanner.nextInt();
                                     if (scanner.hasNextLine()) scanner.nextLine();
                                     switch (ch53) {
@@ -185,29 +158,16 @@ public class PresentationSystem {
                         }
                     } while (ch5<0 || ch5>3);
                     break;
-
                 case 0:
                     System.out.println("Exiting...");
                     break;
                 default:
-                    System.out.println("Invalid choice. Please try again.");
+                    System.out.println("Invalid input");
                     break;
             }
-
         } while (choice != 0);
         scanner.close();
     }
-
-    public void removeProductFromOrder(){};
-    public void updateProductAmount(int productId){};
-    public void submitOrder(){};
-    public void addTransit(){};
-    public void updateTransit(){}; //switchCase
-    public void addOrderToTransit(){};
-    public void printPendingOrders(){};
-    public void printByAreaPendingOrders(){};
-    public void startTransit(){};
-    public void removeOrderFromTransit(){};
 
     public void displayMainMenu(){
         System.out.println("-----Main Menu-----");
@@ -217,7 +177,6 @@ public class PresentationSystem {
         System.out.println("3. Manage trucks ");
         System.out.println("4. Manage documents ");
         System.out.println("5. Manage orders ");
-        System.out.println("6. Non functional yet ");
         System.out.println("0. Exit");
     }
     public void displayTruckManagerMenu(){
@@ -231,12 +190,31 @@ public class PresentationSystem {
     public void displayOrderManagerMenu(){
         System.out.println("-----Manage Orders-----");
         System.out.println("1. Create a new Order ");
-        System.out.println("2. Show all orders ");
-        System.out.println("3. Manage specific order ");
+        System.out.println("2. print all orders ");
+        System.out.println("3. Edit order ");
         System.out.println("0. Back to main menu");
     }
 
-    public void handleTruckManager(int ch3, Scanner scanner, TruckController truckC){
+    public void displayUpdateTransitMenu(){
+        System.out.println("-----Update Transit-----");
+        System.out.println("1. print transit details ");
+        System.out.println("2. print pending orders ");
+        System.out.println("3. Add order to transit ");
+        System.out.println("4. Remove order from transit ");
+        System.out.println("5. Replace truck ");
+        System.out.println("6. Start transit ");
+        System.out.println("0. Back to main menu ");
+    }
+
+    public void displayEditOrderMenu(){
+        System.out.println("-----Edit Order-----");
+        System.out.println("1. Add products to an order ");
+        System.out.println("2. Change the amount of a product ");
+        System.out.println("3. Remove products ");
+        System.out.println("0. Back to main menu");
+    }
+
+    public void handleTruckManagerMenu(int ch3, Scanner scanner, TruckController truckC){
         switch (ch3) {
             case 1:
                 truckC.createNewTruck(scanner);
@@ -255,16 +233,29 @@ public class PresentationSystem {
                 break;
         }
     }
-
-    public void displayUpdateTransitMenu(){
-        System.out.println("-----Update Transit-----");
-        System.out.println("1. Show transit details ");
-        System.out.println("2. Show pending orders ");
-        System.out.println("3. Add order to transit ");
-        System.out.println("4. Remove order from transit ");
-        System.out.println("5. Replace truck ");
-        System.out.println("6. Start transit ");
-        System.out.println("0. Back to main menu ");
+    public void handleUpdateTransitMenu(int ch2, Scanner scanner, TransitController transitC, OrderDocumentController orderDocC){
+        switch (ch2){
+            case 1:
+                transitC.printTransitDetails(scanner);
+                break;
+            case 2:
+                orderDocC.showAllOrderDocs();
+                break;
+            case 3: transitC.addOrderToTransit(scanner);
+                break;
+            case 4:
+                transitC.removeOrderFromTransit(scanner);
+                break;
+            case 5:
+                transitC.replaceTransitTruck(scanner);
+                break;
+            case 0:
+                System.out.println("Going back...");
+                break;
+            default:
+                System.out.println("Invalid input");
+                break;
+        }
     }
 }
 

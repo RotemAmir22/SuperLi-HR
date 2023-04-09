@@ -97,6 +97,8 @@ public class TransitServiceImpl implements TransitService{
         Transit transitToUpdate = findTransitByID(transitId);
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
         if (!qualifiedDriverFlag) return 0; // driver is not qualified
+        //driver is qualified
+        transitToUpdate.setDriver(otherDriver);
         return 1;
     }
     @Override

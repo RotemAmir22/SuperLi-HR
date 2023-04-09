@@ -70,6 +70,9 @@ public class Transit {
         getTruck().printTruck();
         System.out.println("Driver Details: ");
         getDriver().printDriver();
+        for (OrderDocument od : ordersDocs){
+            od.printOrder();
+        }
     }
 
     public void addDestination(Site dest){
