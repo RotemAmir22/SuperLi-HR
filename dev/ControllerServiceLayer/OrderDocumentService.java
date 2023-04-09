@@ -2,6 +2,7 @@ package ControllerServiceLayer;
 
 import DataAccessLayer.OrderDocumentRepository;
 import DomainLayer.OrderDocument;
+import DomainLayer.Product;
 
 import java.util.Map;
 import java.util.Set;
@@ -13,9 +14,11 @@ public interface OrderDocumentService {
 
     public void updateWeight(OrderDocument orderDocument,double weight);
 
-    public void updateProductList(OrderDocument orderDocument,Map<String, Double> productsList);
+    public void updateProductList(OrderDocument orderDocument,Map<Product, Double> productsList);
 
-    Set<OrderDocument> getOrderDocumentsSet();
+    public ProductService getProductService();
+
+        Set<OrderDocument> getOrderDocumentsSet();
 
     public void showAllProductsInDoc(int orderId);
     public void updateAmount(int orderId,String productName, double amount);

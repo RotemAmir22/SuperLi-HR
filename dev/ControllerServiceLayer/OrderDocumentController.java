@@ -1,6 +1,7 @@
 package ControllerServiceLayer;
 
 import DomainLayer.OrderDocument;
+import DomainLayer.Product;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +57,8 @@ public class OrderDocumentController {
             System.out.println("The order id does not exist! ");
             return;
         }
-        Map<String, Double> productsList = new HashMap<>();
+        OrderDocument orderDocument = this.orderDocService.getOrderDocRepo().findOrderDocById(orderDocId);
+
         double weight = 0;
         boolean flag = false;
         while (!flag) {
@@ -64,22 +66,25 @@ public class OrderDocumentController {
             //function that prints all products instead of what there is now
             this.productService.showAllProducts();
             String input = scanner.nextLine(); //assuming valid input
+            Product newProduct = orderDocService.getProductService().findProductByName(input);
 
-            System.out.println("Please choose what amount of the product you would like: ");
-            Double inAmount = scanner.nextDouble();
-            scanner.nextLine();
-            weight += inAmount;
-            productsList.put(input, inAmount);
-            System.out.println("Would you like to add more products? ");
-            System.out.println(("Y/N "));
-            input = scanner.nextLine();
+            if(newProduct != null); //product exist
+            {
+                System.out.println("Please choose what amount of the product you would like: ");
+                Double inAmount = scanner.nextDouble();
+                scanner.nextLine();
+                weight += inAmount;
+                orderDocument.getProductsList().put(newProduct, inAmount);
+                System.out.println("Would you like to add more products? ");
+                System.out.println(("Y/N "));
+                input = scanner.nextLine();
 
-            if (input.equalsIgnoreCase("N")) {
-                flag = true;
+                if (input.equalsIgnoreCase("N")) {
+                    flag = true;
+                }
+            System.out.println("Not a valid product name! ");
             }
         }
-        OrderDocument orderDocument = this.orderDocService.getOrderDocRepo().findOrderDocById(orderDocId);
-        orderDocService.updateProductList(orderDocument,productsList);
         orderDocService.updateWeight(orderDocument,weight);
     }
     public void updateProductAmount(Scanner scanner){
@@ -116,7 +121,7 @@ public class OrderDocumentController {
 
         OrderDocument orderDoc= this.orderDocService.getOrderDocRepo().findOrderDocById(orderDocumentId);
         this.orderDocService.removeProduct(orderDocumentId,productName);
-        System.out.println("product "+ productName + "has been removed");
+        System.out.println("product: "+ productName + " has been removed");
     };
 
     public void showAllOrderDocs() {

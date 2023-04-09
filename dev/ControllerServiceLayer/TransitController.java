@@ -14,6 +14,10 @@ public class TransitController {
         this.transitService = transitService;
     }
 
+    public void showAllTransits()
+    {
+
+    }
     public void createNewTransit(Scanner scanner) {
         System.out.println("-----Create new transit-----");
         System.out.println("Enter transit Date: (dd-mm-yyyy) ");
@@ -48,6 +52,7 @@ public class TransitController {
         int transitId = getTransitIdHandler(scanner);
         printTransitById(transitId);
     }
+
 
     public void replaceTransitTruck(Scanner scanner){
         int transitId = getTransitIdHandler(scanner);
@@ -96,8 +101,6 @@ public class TransitController {
 //
 //        }
 //    }
-
-
 
 
     public void printTransitById(int transitId){

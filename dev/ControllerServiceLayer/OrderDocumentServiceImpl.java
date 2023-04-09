@@ -2,6 +2,7 @@ package ControllerServiceLayer;
 
 import DataAccessLayer.OrderDocumentRepository;
 import DomainLayer.OrderDocument;
+import DomainLayer.Product;
 import DomainLayer.Store;
 import DomainLayer.Supplier;
 
@@ -12,11 +13,18 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     private final OrderDocumentRepository orderDocRepo;
     private final SupplierService supplierService;
     private final StoreService storeService;
+    private final ProductService productService;
     public OrderDocumentServiceImpl(OrderDocumentRepository orderDocRepo,
-                                    SupplierService supplierService, StoreService storeService) {
+                                    SupplierService supplierService, StoreService storeService,
+                                    ProductService productService) {
         this.orderDocRepo = orderDocRepo;
         this.supplierService = supplierService;
         this.storeService = storeService;
+        this.productService = productService;
+    }
+
+    public ProductService getProductService() {
+        return productService;
     }
 
     public OrderDocumentRepository getOrderDocRepo() { return orderDocRepo;}
@@ -27,7 +35,9 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     }
 
     @Override
-    public void updateProductList(OrderDocument orderDocument, Map<String, Double> productsList) {
+    //update and not drive through
+    public void updateProductList(OrderDocument orderDocument, Map<Product, Double> productsList) {
+
         orderDocument.setProductsList(productsList);
     }
 
@@ -46,13 +56,12 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     }
 
 
-    //TODO - i don't like that the print is happening here
     @Override
     public void showAllProductsInDoc(int orderId) {
         OrderDocument orderDoc = findOrderDocById(orderId);
-        Map<String, Double> productsList = orderDoc.getProductsList();
-        for (Map.Entry<String, Double> entry : productsList.entrySet()){
-            String productName = entry.getKey();
+        Map<Product, Double> productsList = orderDoc.getProductsList();
+        for (Map.Entry<Product, Double> entry : productsList.entrySet()){
+            String productName = entry.getKey().getProductName();
             Double amount = entry.getValue();
             System.out.println("Product Name: "+ productName + " amount: " +amount);
         }
@@ -60,14 +69,17 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
 
     @Override
     public void updateAmount(int orderId, String productName, double amount) {
+
+        Product product = productService.findProductByName(productName);
         OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderId);
-        orderDocument.getProductsList().replace(productName,amount);
+        orderDocument.getProductsList().replace(product,amount);
     }
 
     @Override
     public void removeProduct(int orderDocumentId, String productName) {
+        Product product = productService.findProductByName(productName);
         OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderDocumentId);
-        orderDocument.getProductsList().remove(productName);
+        orderDocument.getProductsList().remove(product);
     }
 
     @Override
