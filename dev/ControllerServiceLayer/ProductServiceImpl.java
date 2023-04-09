@@ -25,6 +25,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product findProductByName(String productName) {
+        for (Product product : productRepo.getProductsSet()) {
+            if (product.getProductName().equalsIgnoreCase(productName)) {
+                return product;
+            }
+        }
         return null;
     }
 

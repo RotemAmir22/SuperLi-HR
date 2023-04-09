@@ -68,7 +68,7 @@ public class OrderDocumentController {
             String input = scanner.nextLine(); //assuming valid input
             Product newProduct = orderDocService.getProductService().findProductByName(input);
 
-            if(newProduct != null); //product exist
+            if(newProduct != null) //product exist
             {
                 System.out.println("Please choose what amount of the product you would like: ");
                 Double inAmount = scanner.nextDouble();
@@ -82,8 +82,8 @@ public class OrderDocumentController {
                 if (input.equalsIgnoreCase("N")) {
                     flag = true;
                 }
-            System.out.println("Not a valid product name! ");
             }
+            else { System.out.println("Not a valid product name! ");}
         }
         orderDocService.updateWeight(orderDocument,weight);
     }

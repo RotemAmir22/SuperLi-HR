@@ -1,5 +1,6 @@
 package DomainLayer;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class OrderDocument {
@@ -16,6 +17,7 @@ public class OrderDocument {
         this.source = source;
         this.destination = destination;
         this.totalWeight=0;
+        this.productsList = new HashMap<>();
     }
 
     public int getDocumentId() {
