@@ -144,16 +144,23 @@ public class ShiftOrganizer {
                 numOfShiftManagers = amount;
             /* Check if there is need for this role:
                If the employee can do it, and if he doesn't pass his weekly limitation. */
+            if(amount <=0)
+                continue;
             for (Employee employee : listEmployees) {
                 /* get the employees constraints */
                 constraints = employee.getConstraints();
-                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift])
+                if (amount > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift])
                 {
                     /* check where the employee can be and update */
-                    key = rolesAmount.get(String.valueOf(roleName));
-                    key--;
-                    rolesAmount.put(String.valueOf(roleName), key);
-                    dailyShift.addEmployeeToShift(employee, roleName, shift);
+                    boolean addToShift = dailyShift.addEmployeeToShift(employee, roleName, shift);
+                    if(addToShift)
+                    {
+                        key = rolesAmount.get(String.valueOf(roleName));
+                        key--;
+                        rolesAmount.put(String.valueOf(roleName), key);
+                    }
+
+
                 }
             }
 

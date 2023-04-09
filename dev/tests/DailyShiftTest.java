@@ -24,6 +24,8 @@ public class DailyShiftTest {
         employee1 = new Employee("Jason", "Bordello","1233", "651-12334",34.77,"Student", "2023-11-13");
         employee2 = new Employee("Alex", "Blue","5112", "781-7723",100.77,"General worker", "2023-09-13");
         dailyShift = new DailyShift(date);
+        employee1.addRole(Role.CASHIER);
+        employee2.addRole(Role.GENERAL);
     }
     @Test
     public void addShiftManager() {
@@ -42,9 +44,10 @@ public class DailyShiftTest {
 
     @Test
     public void removeEmployeeFromShift() {
-        dailyShift.addEmployeeToShift(employee1, Role.CASHIER,1);
-        dailyShift.addEmployeeToShift(employee2, Role.GENERAL, 0);
-        dailyShift.removeEmployeeFromShift(employee1,Role.CASHIER,1);
+
+        dailyShift.addEmployeeToShift(employee1, Role.CASHIER,1);//evening
+        dailyShift.addEmployeeToShift(employee2, Role.GENERAL, 0);//morning
+        dailyShift.removeEmployeeFromShift(employee1,Role.CASHIER,1);//evening
         assertEquals(0,dailyShift.getEveningShift().size());
         assertEquals(1,dailyShift.getMorningShift().size());
     }

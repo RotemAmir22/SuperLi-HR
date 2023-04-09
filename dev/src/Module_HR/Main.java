@@ -2,6 +2,7 @@ package Module_HR;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -160,8 +161,8 @@ public class Main {
         HR_SystemManagement system = new HR_SystemManagement();
         Scanner scanner = new Scanner(System.in);
         System.out.println("HELLO. Do you wish to upload the system with/without data? enter (0/1)");
-        int data = scanner.nextInt();
-        if(data == 0)
+        String data = scanner.nextLine();
+        if(Objects.equals(data, "0"))
         {
             uploadData(system);
             for (BranchStore branchStore : system.getNetworkBranches())

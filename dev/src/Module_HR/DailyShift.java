@@ -62,15 +62,23 @@ public class DailyShift {
     * remove from shift
     * remove from morning shift
     */
-    public void removeEmployeeFromMorning(Employee employee, Role role)
+    public boolean removeEmployeeFromMorning(Employee employee, Role role)
     {
-        this.morningShift.remove(role,employee);
+        boolean removed = this.morningShift.get(role).remove(employee);
+
+        if (this.morningShift.get(role).size() == 0)
+            this.morningShift.remove(role);
+        return removed;
     }
 
     //remove from evening shift
-    public void removeEmployeeFromEvening(Employee employee, Role role)
+    public boolean removeEmployeeFromEvening(Employee employee, Role role)
     {
-        this.eveningShift.remove(role,employee);
+        boolean removed =this.eveningShift.get(role).remove(employee);
+
+        if (this.eveningShift.get(role).size() == 0)
+            this.eveningShift.remove(role);
+        return removed;
     }
     //according to shift this function refers to the right helper
 
@@ -89,39 +97,46 @@ public class DailyShift {
             if(shiftManager != null)
                 removeShiftManager(shiftManager);
         }
+
+        boolean removedFromShift;
         // means the employee is in morning shift
         if(shift == 0)
-            removeEmployeeFromMorning(employee,role);
+            removedFromShift =removeEmployeeFromMorning(employee,role);
         else
-            removeEmployeeFromEvening(employee, role);
+            removedFromShift = removeEmployeeFromEvening(employee, role);
 
-        //update limit
-        employee.setShiftsLimit(employee.getShiftsLimit()+1);
-        //update salary
-        employee.setCumulativeSalary(employee.getCumulativeSalary() - employee.getSalary());
+        //only if removed
+        if(removedFromShift)
+        {
+            //update limit
+            employee.setShiftsLimit(employee.getShiftsLimit()+1);
+            //update salary
+            employee.setCumulativeSalary(employee.getCumulativeSalary() - employee.getSalary());
+        }
+
     }
 
     /* add to shift
     * remove from morning shift
     */
-    public void addEmployeeToMorning(Employee employee, Role role)
+    public boolean addEmployeeToMorning(Employee employee, Role role)
     {
         if(!this.morningShift.containsKey(role))
             this.morningShift.put(role, new ArrayList<>());
-        this.morningShift.get(role).add(employee);
+        return this.morningShift.get(role).add(employee);
 
     }
 
     //remove from evening shift
-    public void addEmployeeToEvening(Employee employee, Role role)
+    public boolean addEmployeeToEvening(Employee employee, Role role)
     {
         if(!this.eveningShift.containsKey(role))
             this.eveningShift.put(role, new ArrayList<>());
-        this.eveningShift.get(role).add(employee);
+        return this.eveningShift.get(role).add(employee);
     }
 
     //according to shift this function refers to the right helper
-    public void addEmployeeToShift(Employee employee, Role role, int shift)
+    public boolean addEmployeeToShift(Employee employee, Role role, int shift)
     {
         if(employee.canDoRole(role) && !isExistEvening(employee) && !isExistMorning(employee))
         {
@@ -136,16 +151,23 @@ public class DailyShift {
                 }
             }
 
+            boolean addToShift;
             if(shift == 0)
-                addEmployeeToMorning(employee,role);
+                addToShift = addEmployeeToMorning(employee,role);
             else
-                addEmployeeToEvening(employee, role);
+                addToShift=addEmployeeToEvening(employee, role);
 
-            //update limit
-            employee.setShiftsLimit(employee.getShiftsLimit()-1);
-            //update salary
-            employee.setCumulativeSalary(employee.getCumulativeSalary() + employee.getSalary());
+            //only if added
+            if(addToShift)
+            {
+                //update limit
+                employee.setShiftsLimit(employee.getShiftsLimit()-1);
+                //update salary
+                employee.setCumulativeSalary(employee.getCumulativeSalary() + employee.getSalary());
+            }
+            return addToShift;
         }
+        return false;
     }
 
     /**
