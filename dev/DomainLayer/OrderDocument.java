@@ -8,7 +8,7 @@ public class OrderDocument {
     private Site source;
     private Site destination;
     private double totalWeight; //detailed weight ??
-    private Map<String, Double> productsList;
+    private Map<Product, Double> productsList;
 
     public OrderDocument(Site source, Site destination) {
         this.documentId = documentNextId;
@@ -34,11 +34,11 @@ public class OrderDocument {
         return totalWeight;
     }
 
-    public Map<String, Double> getProductsList() {
+    public Map<Product, Double> getProductsList() {
         return productsList;
     }
 
-    public void setProductsList(Map<String, Double> newProductsList) {
+    public void setProductsList(Map<Product, Double> newProductsList) {
         productsList = newProductsList;
     }
 
@@ -46,8 +46,8 @@ public class OrderDocument {
         totalWeight=weight;
     }
     public void printOrderProductList() {
-        for (Map.Entry<String, Double> entry : productsList.entrySet()) {
-            String product = entry.getKey();
+        for (Map.Entry<Product, Double> entry : productsList.entrySet()) {
+            String product = entry.getKey().getProductName();
             Double amount = entry.getValue();
             System.out.println(product + " : " + amount);
         }

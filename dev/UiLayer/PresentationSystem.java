@@ -29,7 +29,7 @@ public class PresentationSystem {
 
         OrderDocumentRepository primeOrderDocRepo = new OrderDocumentRepositoryImpl();
         OrderDocumentService primeOrderDocService = new OrderDocumentServiceImpl(primeOrderDocRepo,
-                primeSupplierService,primeStoreService);
+                primeSupplierService,primeStoreService,primeProductService);
         OrderDocumentController orderDocumentController = new OrderDocumentController(primeOrderDocService,
                 primeProductService);
 
