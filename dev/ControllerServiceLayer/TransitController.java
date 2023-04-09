@@ -154,12 +154,14 @@ public class TransitController {
     public void addOrderToTransit(Scanner scanner)
     {
         int transitId = getTransitIdHandler(scanner);
-        Transit currenTransit = findTransitById(transitId);
-        if (currenTransit == null) return;
+        Transit currentTransit = findTransitById(transitId);
+        if (currentTransit == null) return;
         int orderId = getOrderIdHandler(scanner);
         OrderDocument orderDocument = findOrderById(orderId);
         if (orderDocument == null) return;
-        currenTransit.addOrderDoc(orderDocument);
+        boolean validWeight = transitService.isValidWeight(currentTransit, orderDocument);
+        if (!validWeight) return;
+        currentTransit.addOrderDoc(orderDocument);
         System.out.println("Order document added successfully");
     }
 
