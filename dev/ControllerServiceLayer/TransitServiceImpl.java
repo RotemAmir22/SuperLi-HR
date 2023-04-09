@@ -29,7 +29,7 @@ public class TransitServiceImpl implements TransitService{
         try {
             transitDate = createDateObj(dateString);
         } catch (ParseException e) {
-            throw new UiException("Invalid date format " + dateString + "%t" + "The correct format is: dd/mm/yyyy ");
+            throw new UiException("Invalid date format " + dateString + "\t" + "The correct format is: dd/mm/yyyy ");
         }
         Truck truckForTransit = truckService.findTruckByPlate(truckPlateNumber);
         if (truckForTransit == null) {
@@ -104,7 +104,7 @@ public class TransitServiceImpl implements TransitService{
         return orderDocService;
     }
     public Date createDateObj(String dateString) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(dateString);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date transitDate = dateFormat.parse(dateString);
         return transitDate;
     }

@@ -31,7 +31,7 @@ public class Driver {
         System.out.println("driver's Licenses: ");
         for (Qualification driverLicense : licenses)
         {
-            System.out.println("%t"+driverLicense);
+            System.out.println("\t"+driverLicense);
         }
     }
 }

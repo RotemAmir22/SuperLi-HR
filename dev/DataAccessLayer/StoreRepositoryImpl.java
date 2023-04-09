@@ -1,5 +1,6 @@
 package DataAccessLayer;
 
+import DomainLayer.Site;
 import DomainLayer.Store;
 
 import java.util.HashSet;

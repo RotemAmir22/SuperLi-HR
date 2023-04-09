@@ -40,28 +40,12 @@ public class TruckController {
         maxWeight = scanner.nextDouble();
         scanner.nextLine();
 
-        String ans;
         int[] iQArr = new int[0];
-        while (true){
-            System.out.println("Does this truck have special qualifications? (Y/N)");
-            ans = scanner.nextLine().toUpperCase();
-            switch (ans.charAt(0)) {
-                case 'Y':
-                    try {
-                        iQArr = truckQualificationsHandler(scanner); // Handler for getting truck qualifications
-                    } catch (UiException e) {
-                        System.out.println(e.getMessage());
-                        return;
-                    }
-                    break;
-                case 'N':
-                    System.out.println("No special qualifications");
-                    break;
-                default:
-                    System.out.println("Invalid input.");
-                    continue;
-            }
-            break;
+        try {
+            iQArr = truckQualificationsHandler(scanner); // Handler for getting truck qualifications
+        } catch (UiException e) {
+            System.out.println(e.getMessage());
+            return;
         }
         Truck newTruck = this.truckService.createTruck(plateNumber, iModel, iQArr, truckWeight, maxWeight);
         // TODO figure out the correct way of doing this v.

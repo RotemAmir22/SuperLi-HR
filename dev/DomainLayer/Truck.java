@@ -24,6 +24,14 @@ public class Truck {
         this.maxCarryWeight = maxWeight;
         this.qSet = new HashSet<Qualification>();
     }
+    public Truck(String plateNumber, TruckModel model, double truckWeight, double maxWeight, Set<Qualification> quliSet) {
+        this.plateNumber = plateNumber;
+        this.model = model;
+        this.truckWeight = truckWeight;
+        this.currentLoadWeight = 0;
+        this.maxCarryWeight = maxWeight;
+        this.qSet = quliSet;
+    }
 
     public double getMaxCarryWeight() {
         return maxCarryWeight;

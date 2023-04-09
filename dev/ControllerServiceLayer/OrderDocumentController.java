@@ -50,9 +50,8 @@ public class OrderDocumentController {
      **/
     public void addProductToOrder(Scanner scanner) {
         int orderDocId;
-        scanner.nextLine();
         orderDocId = orderDocChoice(scanner);
-        if (orderDocId ==-1)
+        if (orderDocId ==-1) // order id not found
         {
             System.out.println("The order id does not exist! ");
             return;
@@ -85,7 +84,6 @@ public class OrderDocumentController {
     }
     public void updateProductAmount(Scanner scanner){
         int orderDocumentId;
-        scanner.nextLine();
         orderDocumentId = orderDocChoice(scanner);
         if (orderDocumentId ==-1)
         {
@@ -105,9 +103,7 @@ public class OrderDocumentController {
         System.out.println("Amount has changed to: "+ amount);
     }
     public void removeProductFromOrder(Scanner scanner){
-        scanner.nextLine();
         int orderDocumentId;
-        scanner.nextLine();
         orderDocumentId = orderDocChoice(scanner);
         if (orderDocumentId ==-1)
         {
@@ -139,9 +135,9 @@ public class OrderDocumentController {
     public int orderDocChoice(Scanner scanner)
     {
         int orderId;
-//        scanner.nextLine();
         System.out.println("What Order would you like to manage? ");
         orderId = scanner.nextInt();
+        if (scanner.hasNextLine()) scanner.nextLine();
         if(orderDocService.orderDocumentChooser(orderId)){
             return orderId;}
         return -1;

@@ -16,7 +16,7 @@ public class TransitController {
 
     public void createNewTransit(Scanner scanner) {
         System.out.println("-----Create new transit-----");
-        System.out.println("Enter transit Date: (dd/mm/yyyy) ");
+        System.out.println("Enter transit Date: (dd-mm-yyyy) ");
         String sTransitDate = scanner.nextLine();
         System.out.println("Enter truck's plate number: ");
         String truckPLateNumber = scanner.nextLine();
@@ -153,7 +153,7 @@ public class TransitController {
         OrderDocument orderDocument = findOrderById(orderId);
         if (orderDocument == null) return;
         currenTransit.addOrderDoc(orderDocument);
-        System.out.println("Document added successfully");
+        System.out.println("Order document added successfully");
     }
 
     public void removeOrderFromTransit(Scanner scanner)

@@ -1,7 +1,11 @@
 package UiLayer;
 import ControllerServiceLayer.*;
 import DataAccessLayer.*;
+import DomainLayer.*;
+
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class PresentationSystem {
     public static void main(String[] args) {
@@ -33,6 +37,48 @@ public class PresentationSystem {
         TransitService primeTransitService = new TransitServiceImpl(primeTransitRepo, primeTruckService,
                 primeDriverService, primeOrderDocService);
         TransitController transitController = new TransitController(primeTransitService);
+
+
+        Set<Qualification> s1 = new HashSet<>();
+        Set<Qualification> s2 = new HashSet<>();
+        Set<Qualification> sT3 = new HashSet<>();
+        Set<Qualification> sT4 = new HashSet<>();
+        s1.add(Qualification.C);
+        s1.add(Qualification.C1);
+        s1.add(Qualification.COOLER);
+
+        s2.add(Qualification.C1);
+
+        sT3.add(Qualification.C);
+        sT3.add(Qualification.COOLER);
+
+        sT4.add(Qualification.C1);
+
+
+        Driver d1 = new Driver(1, "Moshe Mor",s1);
+        Driver d2 = new Driver(2, "Dani Lev",s2);
+        Product p1 = new Product(1,"Banana");
+        Product p2 = new Product(2,"Apple");
+        Supplier sup1 = new Supplier("Jerusalem", Area.Center, "David", "0523333333", 1);
+        Supplier sup2 = new Supplier("Hiafa", Area.North, "Shlomi", "0524444444", 2);
+//        Parking park = new Parking("Parking Street", Area.Center,"Michael", "0525555555");
+        Store sro1 = new Store("Bash", Area.South, "Miri", "0526666666", 111);
+        Store sro2 = new Store("Mevaseret", Area.Center, "Regev", "0527777777", 112);
+        Truck t1 = new Truck("123", TruckModel.LARGETRUCK, 5000, 10000, sT3);
+        Truck t2 = new Truck("321", TruckModel.SMALLTRUCK, 100, 2000, sT4);
+
+
+        primeDriverRepo.saveDriver(d1);
+        primeDriverRepo.saveDriver(d2);
+        primeProductRepo.saveProduct(p1);
+        primeProductRepo.saveProduct(p2);
+        primeSupplierRepo.saveSupplier(sup1);
+        primeSupplierRepo.saveSupplier(sup2);
+        primeStoreRepo.saveStore(sro1);
+        primeStoreRepo.saveStore(sro2);
+        primeTruckRepo.saveTruck(t1);
+        primeTruckRepo.saveTruck(t2);
+
 
         ps.switchMenu(truckController,orderDocumentController, transitController);
     }
@@ -96,7 +142,6 @@ public class PresentationSystem {
                         displayOrderManagerMenu();
                         ch5 = scanner.nextInt();
                         if (scanner.hasNextLine()) scanner.nextLine();
-
                         switch (ch5) {
                             case 1:
                                 orderDocC.createNewOrderDocument(scanner);
@@ -109,13 +154,12 @@ public class PresentationSystem {
                                 int orderId;
                                 do {
                                     System.out.println("-----Manage Order-----");
-                                    System.out.println("What Order would you like to manage? ");
-                                    orderId = scanner.nextInt();
                                     System.out.println("1. Add products to an order ");
                                     System.out.println("2. Change the amount of a product ");
                                     System.out.println("3. Remove products ");
                                     System.out.println("0. Back to main menu");
                                     ch53 = scanner.nextInt();
+                                    if (scanner.hasNextLine()) scanner.nextLine();
                                     switch (ch53) {
                                         case 1:
                                             orderDocC.addProductToOrder(scanner);
@@ -215,8 +259,8 @@ public class PresentationSystem {
     public void displayUpdateTransitMenu(){
         System.out.println("-----Update Transit-----");
         System.out.println("1. Show transit details ");
-        System.out.println("2. Show ?pending? orders ");
-        System.out.println("3. Add orders to transit ");
+        System.out.println("2. Show pending orders ");
+        System.out.println("3. Add order to transit ");
         System.out.println("4. Remove order from transit ");
         System.out.println("5. Replace truck ");
         System.out.println("6. Start transit ");
