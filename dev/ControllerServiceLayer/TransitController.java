@@ -113,6 +113,7 @@ public class TransitController {
     {
         System.out.println("Enter transit id: ");
         int transitId = scanner.nextInt();
+        if (scanner.hasNextLine())scanner.nextLine();
         return transitId;
     }
 
@@ -142,6 +143,9 @@ public class TransitController {
                     System.out.printf("Driver id: %d not found! %n", driverId);
                 } else if (iFlag==0) {
                     System.out.println("Current driver is not qualified to drive the chosen truck");
+                }
+                else if (iFlag == 1){
+                    System.out.println("Transit's driver updated successfully");
                 }
             }
         }while (choice != 2 || iFlag != 1);
