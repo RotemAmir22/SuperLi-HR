@@ -7,7 +7,7 @@ import DomainLayer.Truck;
 import java.util.Set;
 
 public class DriverServiceImpl implements DriverService{
-    private DriverRepository driverRepo;
+    private final DriverRepository driverRepo;
 
     public DriverServiceImpl(DriverRepository driverRepo) {
         this.driverRepo = driverRepo;

@@ -5,9 +5,9 @@ import java.util.Set;
 public class Driver {
     private int driverId;
     private String driverName;
-    private Set<DriverLicense> licenses;
+    private Set<Qualification> licenses;
 
-    public Driver(int driverId, String driverName, Set<DriverLicense> licenses) {
+    public Driver(int driverId, String driverName, Set<Qualification> licenses) {
         this.driverId = driverId;
         this.driverName = driverName;
         this.licenses = licenses;
@@ -21,7 +21,7 @@ public class Driver {
         return driverName;
     }
 
-    public Set<DriverLicense> getLicenses() {
+    public Set<Qualification> getLicenses() {
         return licenses;
     }
 
@@ -29,7 +29,7 @@ public class Driver {
         System.out.println("driver's name: "+ driverName);
         System.out.println("driver's id: "+ driverId);
         System.out.println("driver's Licenses: ");
-        for (DriverLicense driverLicense : licenses)
+        for (Qualification driverLicense : licenses)
         {
             System.out.println("%t"+driverLicense);
         }

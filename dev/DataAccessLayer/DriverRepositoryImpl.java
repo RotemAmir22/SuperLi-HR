@@ -24,6 +24,7 @@ public class DriverRepositoryImpl implements DriverRepository{
 
     @Override
     public Driver findDriverByID(int driverId) {
+        if (drivers.isEmpty())return null;
         for (Driver driver: drivers){
             if(driver.getDriverId() == driverId)
                 return driver;

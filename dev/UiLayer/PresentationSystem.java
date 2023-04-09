@@ -7,6 +7,9 @@ public class PresentationSystem {
     public static void main(String[] args) {
         PresentationSystem ps = new PresentationSystem();
 
+        DriverRepository primeDriverRepo = new DriverRepositoryImpl();
+        DriverService primeDriverService = new DriverServiceImpl(primeDriverRepo);
+
         TruckRepository primeTruckRepo = new TruckRepositoryImpl();
         TruckService primeTruckService = new TruckServiceImpl(primeTruckRepo);
         TruckController truckController = new TruckController(primeTruckService);
@@ -27,7 +30,7 @@ public class PresentationSystem {
                 primeProductService);
 
         TransitRepository primeTransitRepo = new TransitRepositoryImpl();
-        TransitService primeTransitService = new TransitServiceImpl(primeTransitRepo);
+        TransitService primeTransitService = new TransitServiceImpl(primeTransitRepo, primeTruckService, primeDriverService);
         TransitController transitController = new TransitController(primeTransitService);
 
         ps.switchMenu(truckController,orderDocumentController, transitController);
@@ -57,7 +60,13 @@ public class PresentationSystem {
                             case 2:
                                 orderDocC.showAllOrderDocs();
                                 break;
-                            case 3:
+                            case 3: orderDocC.addOrdersToTransit();
+                                break;
+                            case 4:
+                                transitC.removeOrderFromTrnasit(scanner);
+                                break;
+                            case 5:
+                                transitC.replaceTransitTruck(scanner);
 
 
 
@@ -114,13 +123,13 @@ public class PresentationSystem {
                                             orderDocC.removeProductFromOrder(scanner);
                                             break;
                                         case 0:
-                                            System.out.println("\nGoing back...");
+                                            System.out.println("Going back...");
                                             break;
                                     }
                                 } while (ch53<0 || ch53>3);
                                 break;
                             case 0:
-                                System.out.println("\nGoing back...");
+                                System.out.println("Going back...");
                                 break;
                             default:
                                 System.out.println("Invalid input");
@@ -191,7 +200,7 @@ public class PresentationSystem {
                 truckC.printAllTrucks();
                 break;
             case 0:
-                System.out.println("\nGoing back...");
+                System.out.println("Going back...");
                 break;
             default:
                 System.out.println("Invalid input");
@@ -203,8 +212,10 @@ public class PresentationSystem {
         System.out.println("-----Update Transit-----");
         System.out.println("1. Show transit details ");
         System.out.println("2. Show ?pending? orders ");
-        System.out.println("3. Replace truck ");
+        System.out.println("3. Add orders to transit ");
         System.out.println("4. Remove order from transit ");
+        System.out.println("5. Replace truck ");
+        System.out.println("6. Start transit ");
         System.out.println("0. Back to main menu ");
     }
 }

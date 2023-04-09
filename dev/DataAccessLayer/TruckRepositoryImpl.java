@@ -24,11 +24,12 @@ public class TruckRepositoryImpl implements TruckRepository{
 
     @Override
     public Truck findTruckByPlateNumber(String tPlateNumber) {
+        if (trucks.isEmpty()) return null;
             for (Truck truck : trucks) {
                 if (truck.getPlateNumber().equals(tPlateNumber)) {
                     return truck;
                 }
             }
-            return null; // DomainLayer.Truck with specified plate number not found
+            return null; // Truck with specified plate number not found
         }
 }

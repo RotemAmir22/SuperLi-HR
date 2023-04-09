@@ -23,7 +23,6 @@ public class TruckServiceImpl implements TruckService {
         }
         return truck;
     }
-
     @Override
     public boolean removeTruckByPlateNumber(String tPlateNumber) {
         Truck truckToRemove = this.truckRepo.findTruckByPlateNumber(tPlateNumber);
@@ -31,22 +30,18 @@ public class TruckServiceImpl implements TruckService {
         this.truckRepo.removeTruck(truckToRemove);
         return true;
         }
-
     @Override
     public Truck findTruckByPlate(String tPlateNumber) {
         return this.truckRepo.findTruckByPlateNumber(tPlateNumber);
     }
-
     @Override
     public Set<Truck> getTrucksSet() {
         return this.truckRepo.getTrucksSet();
     }
-
     @Override
     public TruckRepository getTruckRepo() {
         return this.truckRepo;
     }
-
     @Override
     public void showAllTrucks() {
         Set<Truck> trucks = getTrucksSet();
@@ -54,7 +49,6 @@ public class TruckServiceImpl implements TruckService {
             t.printTruck();
         }
     }
-
     @Override
     public boolean showTruckByPlate(String tPlateNumber) {
         Truck truckToShow = findTruckByPlate(tPlateNumber);
@@ -62,12 +56,10 @@ public class TruckServiceImpl implements TruckService {
         truckToShow.printTruck();
         return true;
         }
-
     @Override
     public TruckModel getTruckModel(Truck truck) {
         return truck.getModel();
     }
-
     @Override
     public Set<Qualification> getTruckQualiSet(Truck truck) {
         return null;

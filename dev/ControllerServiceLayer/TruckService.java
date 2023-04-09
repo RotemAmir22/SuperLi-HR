@@ -16,7 +16,6 @@ public interface TruckService {
     TruckRepository getTruckRepo();
     void showAllTrucks();
     boolean showTruckByPlate(String tPlateNumber);
-
     TruckModel getTruckModel(Truck truck);
     Set<Qualification> getTruckQualiSet(Truck truck);
 
