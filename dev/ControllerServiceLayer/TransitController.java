@@ -213,26 +213,6 @@ public void beginTransit (Scanner scanner)
 }
 
 
-//        double weight = 0;
-//        Truck truck = transit.getTruck();
-//        for (OrderDocument orderDocument: transit.getOrdersDocs())
-//        {
-//            weight += orderDocument.getTotalWeight();
-//            truck.loadTruck(weight); // truck service ?
-//            //if overweight - need to add to TransitDocument that there was a problem
-//            if (truck.getMaxCarryWeight()<truck.getCurrentWeight()) {overWeight(scanner);}
-//            /**
-//             * all good, can go unload in store
-//             *  or do i need to continue to all destinations and only
-//             * then go back to stores?
-//            **/
-//            transit.getTruck().unloadTruck(weight);
-//            //create in repository a set of orders that are finished and add the current order there
-//            //
-//        }
-//        //create in repository a set of transits that are finished and add this transit there
-//    }
-
     public void overWeight(Scanner scanner)
     {
         int ans;

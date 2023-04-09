@@ -61,7 +61,8 @@ public class PresentationSystem {
         Product p2 = new Product(2,"Apple");
         Supplier sup1 = new Supplier("Jerusalem", Area.Center, "David", "0523333333", 1);
         Supplier sup2 = new Supplier("Hiafa", Area.North, "Shlomi", "0524444444", 2);
-//        Parking park = new Parking("Parking Street", Area.Center,"Michael", "0525555555");
+        Supplier parkSup = new Supplier("Parking Street", Area.Center,"Michael", "0525555555", 50);
+        Store parkSro = new Store("Parking Street", Area.Center,"Michael", "0525555555", 50);
         Store sro1 = new Store("Bash", Area.South, "Miri", "0526666666", 111);
         Store sro2 = new Store("Mevaseret", Area.Center, "Regev", "0527777777", 112);
         Truck t1 = new Truck("123", TruckModel.LARGETRUCK, 5000, 10000, sT3);
@@ -74,6 +75,8 @@ public class PresentationSystem {
         primeProductRepo.saveProduct(p2);
         primeSupplierRepo.saveSupplier(sup1);
         primeSupplierRepo.saveSupplier(sup2);
+        primeSupplierRepo.saveSupplier(parkSup);
+        primeStoreRepo.saveStore(parkSro);
         primeStoreRepo.saveStore(sro1);
         primeStoreRepo.saveStore(sro2);
         primeTruckRepo.saveTruck(t1);
