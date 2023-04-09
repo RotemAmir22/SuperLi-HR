@@ -13,7 +13,8 @@ public class Transit {
     private Truck truck;
     private Driver driver; // String driverName??
     private Site source;
-    private Set<Site> destinations;
+    private Set<Supplier> destinationSuppliers;
+    private Set<Store> destinationStores;
     private Set<OrderDocument> ordersDocs;
 
 
@@ -23,8 +24,9 @@ public class Transit {
         this.transitDate = transitDate;
         this.truck = truck;
         this.driver = driver;
-        destinations = new HashSet<>();
-        ordersDocs = new HashSet<>();
+        this.destinationStores = new HashSet<>();
+        this.destinationSuppliers = new HashSet<>();
+        this.ordersDocs = new HashSet<>();
     }
 
     public int getTransitId() {
@@ -55,9 +57,13 @@ public class Transit {
         return source;
     }
 
-    public Set<Site> getDestinations() {
-        return destinations;
+    public Set<Supplier> getDestinationSuppliers() {
+        return destinationSuppliers;
     }
+    public Set<Store> getDestinationStores() {
+        return destinationStores;
+    }
+
 
     public Set<OrderDocument> getOrdersDocs() {
         return ordersDocs;
@@ -74,9 +80,11 @@ public class Transit {
             od.printOrder();
         }
     }
-
-    public void addDestination(Site dest){
-        destinations.add(dest);
+    public void addDestinationStore(Store dest){
+        destinationStores.add(dest);
+    };
+    public void addDestinationSupplier(Supplier dest){
+        destinationSuppliers.add(dest);
     };
     public void addOrderDoc(OrderDocument orderDocument){
         ordersDocs.add(orderDocument);

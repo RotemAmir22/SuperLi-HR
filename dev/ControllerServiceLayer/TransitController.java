@@ -4,7 +4,10 @@ import DomainLayer.*;
 import ExceptionsPackage.ModuleException;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Scanner;
 
 public class TransitController {
@@ -190,10 +193,16 @@ public class TransitController {
 
 public void beginTransit (Scanner scanner)
 {
+    boolean overload = false;
     int transitId = getTransitIdHandler(scanner);
     Transit transit = findTransitById(transitId);
+    TransitRecord transitRecord = new TransitRecord(transit);
     //check if date is today
-    if (!transit.getTransitDate().equals(LocalDate.now()))
+    LocalDateTime presentDate = LocalDate.now().atStartOfDay(); // using java.time.LocalDate
+    Date presentDateAlt = Date.from(presentDate.atZone(ZoneId.systemDefault()).toInstant()); // using java.util.Date
+
+
+    if (transit.getTransitDate().compareTo(presentDateAlt) != 0)
     {
         System.out.println("Warning, the date of transaction is not today ");
         System.out.println("Back to main menu ");
@@ -201,37 +210,55 @@ public void beginTransit (Scanner scanner)
     }
     transit.setDepartureTime(LocalTime.now());
     Truck truck = transit.getTruck();
-    //destination
+    //add destinations
     for(OrderDocument orderDoc : transit.getOrdersDocs())
     {
-        transit.addDestination(orderDoc.getSource());
+        transit.addDestinationSupplier(orderDoc.getSource());
     }
-    for (Site supplier :transit.getDestinations())
+    // drive to suppliers
+    for (Supplier supplier : transit.getDestinationSuppliers())
     {
+        //check all orders that are in the suppliers source
+        for(OrderDocument orderDoc : transit.getOrdersDocs())
+        {
+            System.out.println("Arrived to supplier: " + supplier.getSupplierID());
+            if(supplier.getSupplierID() == orderDoc.getSource().getSupplierID())
+            {
 
+                System.out.println("Loading order number: " + orderDoc.getDocumentId());
+                truck.loadTruck(orderDoc.getTotalWeight());
+                if (truck.getMaxCarryWeight()<truck.getCurrentWeight())
+                {
+                    overload = true;
+                    //overWeight();
+                }
+            }
+        }
+        transitRecord.addSupWeightExit(supplier,truck.getCurrentWeight());
+        transitRecord.setTransitProblem(overload);
+    }
+    //add destinations
+    for(OrderDocument orderDoc : transit.getOrdersDocs())
+    {
+        transit.addDestinationStore(orderDoc.getDestination());
+    }
+    for (Store store : transit.getDestinationStores()) {
+        //check all orders that are in the stores destination
+        for (OrderDocument orderDoc : transit.getOrdersDocs()) {
+            System.out.println("Arrived to store: " + store.getStoreId());
+            if (store.getStoreId() == orderDoc.getDestination().getStoreId()) {
+
+                System.out.println("Unloading order number: " + orderDoc.getDocumentId());
+                truck.unloadTruck(orderDoc.getTotalWeight());
+            }
+        }
+        System.out.println("finished transit ");
+        //transitRecordRepo
+        //OrderDocRepoFinished
+        //transitfinishedRepo
     }
 }
 
-
-//        double weight = 0;
-//        Truck truck = transit.getTruck();
-//        for (OrderDocument orderDocument: transit.getOrdersDocs())
-//        {
-//            weight += orderDocument.getTotalWeight();
-//            truck.loadTruck(weight); // truck service ?
-//            //if overweight - need to add to TransitDocument that there was a problem
-//            if (truck.getMaxCarryWeight()<truck.getCurrentWeight()) {overWeight(scanner);}
-//            /**
-//             * all good, can go unload in store
-//             *  or do i need to continue to all destinations and only
-//             * then go back to stores?
-//            **/
-//            transit.getTruck().unloadTruck(weight);
-//            //create in repository a set of orders that are finished and add the current order there
-//            //
-//        }
-//        //create in repository a set of transits that are finished and add this transit there
-//    }
 
     public void overWeight(Scanner scanner)
     {

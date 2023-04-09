@@ -248,6 +248,8 @@ public class PresentationSystem {
                 break;
             case 5:
                 transitC.replaceTransitTruck(scanner);
+            case 6:
+                transitC.beginTransit(scanner);
                 break;
             case 0:
                 System.out.println("Going back...");

@@ -6,12 +6,12 @@ import java.util.Map;
 public class OrderDocument {
     public static int documentNextId=1;
     private final int documentId;
-    private Site source;
-    private Site destination;
+    private Supplier source;
+    private Store destination;
     private double totalWeight; //detailed weight ??
     private Map<Product, Double> productsList;
 
-    public OrderDocument(Site source, Site destination) {
+    public OrderDocument(Supplier source, Store destination) {
         this.documentId = documentNextId;
         documentNextId++;
         this.source = source;
@@ -24,11 +24,11 @@ public class OrderDocument {
         return documentId;
     }
 
-    public Site getSource() {
+    public Supplier getSource() {
         return source;
     }
 
-    public Site getDestination() {
+    public Store getDestination() {
         return destination;
     }
 
