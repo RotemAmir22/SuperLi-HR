@@ -26,20 +26,21 @@ public class DailyShiftTest {
         dailyShift = new DailyShift(date);
         employee1.addRole(Role.CASHIER);
         employee2.addRole(Role.GENERAL);
+        dailyShift.addShiftManager(shiftManager1);
+        dailyShift.addShiftManager(shiftManager2);
     }
     @Test
     public void addShiftManager() {
 
-        dailyShift.addShiftManager(shiftManager1);
-        assertEquals(1,dailyShift.getShiftManagers().size());
+        assertEquals(2,dailyShift.getShiftManagers().size());
     }
 
     @Test
     public void removeShiftManager() {
-        dailyShift.addShiftManager(shiftManager1);
-        dailyShift.addShiftManager(shiftManager2);
+
         dailyShift.removeShiftManager(shiftManager1);
         assertEquals(1,dailyShift.getShiftManagers().size());
+        dailyShift.addShiftManager(shiftManager1);
     }
 
     @Test
