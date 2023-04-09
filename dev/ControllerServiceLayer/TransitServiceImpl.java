@@ -105,6 +105,23 @@ public class TransitServiceImpl implements TransitService{
     public OrderDocumentService getOrderDocService() {
         return orderDocService;
     }
+
+    @Override
+    public boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument) {
+        Truck currentTruck = currentTransit.getTruck();
+        double maxCarry = currentTruck.getMaxCarryWeight();
+        double currentTransitWeight = currentTransit.calcOrdersWeight();
+        double weightToAdd = orderDocument.getTotalWeight();
+        double newCapacity = maxCarry-(currentTransitWeight+weightToAdd);
+        if (newCapacity < 0){
+            System.out.println("Exceeding truck's max weight");
+            System.out.printf("available capacity is: %.2f %n", (maxCarry-currentTransitWeight));
+            System.out.println("Order was not added to transit");
+            return false;
+        }
+        return true;
+    }
+
     public Date createDateObj(String dateString) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date transitDate = dateFormat.parse(dateString);

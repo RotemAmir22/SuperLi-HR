@@ -97,4 +97,12 @@ public class Transit {
     public void removeOrderDoc(OrderDocument orderDocument) {
         this.ordersDocs.remove(orderDocument);
     }
+
+    public double calcOrdersWeight(){
+        double currentWeight = 0;
+        for (OrderDocument od : ordersDocs){
+            currentWeight += od.getTotalWeight();
+        }
+        return currentWeight;
+    }
 }
