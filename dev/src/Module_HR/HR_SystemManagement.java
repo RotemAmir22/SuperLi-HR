@@ -344,7 +344,7 @@ public class HR_SystemManagement {
         for(int j=0; j<2 ; j++)
         {
             Days day = Days.values()[j];
-            System.out.println("- Set Shift Schedule for "+ LocalDate.now().plusDays(day.ordinal()+2)+" -");
+            System.out.println("\n- Set Shift Schedule for "+ LocalDate.now().plusDays(day.ordinal()+2)+" -");
             DailyShift[] newShift = new DailyShift[getNetworkBranches().size()];
             /*
              * Second function set all branches shifts for one day.
@@ -352,7 +352,7 @@ public class HR_SystemManagement {
             List<Employee> listEmployees;
             for(int i = 0; i<getNetworkBranches().size(); i++)
             {
-                System.out.println("Setting shift for Branch No. "+getNetworkBranches().get(i).getBranchID());
+                System.out.println("\nSetting shift for Branch No. "+getNetworkBranches().get(i).getBranchID());
                 newShift[i] = new DailyShift(LocalDate.now().plusDays(day.ordinal()+2));
                 // get the employees from each branch and set them a new scheduling
                 listEmployees = getNetworkBranches().get(i).getEmployees();
