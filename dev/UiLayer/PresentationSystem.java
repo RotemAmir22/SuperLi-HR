@@ -30,7 +30,8 @@ public class PresentationSystem {
                 primeProductService);
 
         TransitRepository primeTransitRepo = new TransitRepositoryImpl();
-        TransitService primeTransitService = new TransitServiceImpl(primeTransitRepo, primeTruckService, primeDriverService);
+        TransitService primeTransitService = new TransitServiceImpl(primeTransitRepo, primeTruckService,
+                primeDriverService, primeOrderDocService);
         TransitController transitController = new TransitController(primeTransitService);
 
         ps.switchMenu(truckController,orderDocumentController, transitController);
@@ -60,17 +61,20 @@ public class PresentationSystem {
                             case 2:
                                 orderDocC.showAllOrderDocs();
                                 break;
-                            case 3: orderDocC.addOrdersToTransit();
+                            case 3: transitC.addOrderToTransit(scanner);
                                 break;
                             case 4:
-                                transitC.removeOrderFromTrnasit(scanner);
+                                transitC.removeOrderFromTransit(scanner);
                                 break;
                             case 5:
                                 transitC.replaceTransitTruck(scanner);
-
-
-
-
+                                break;
+                            case 6:
+                                System.out.println("Not implemented Yest");
+                                break;
+                            case 0:
+                                System.out.println("Back to main menu");
+                                break;
                         }
                     } while (ch2<0 || ch2>4);
 

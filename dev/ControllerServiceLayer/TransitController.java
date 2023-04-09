@@ -1,5 +1,6 @@
 package ControllerServiceLayer;
 
+import DomainLayer.OrderDocument;
 import DomainLayer.Transit;
 import ExceptionsPackage.ModuleException;
 
@@ -141,6 +142,42 @@ public class TransitController {
                 }
             }
         }while (choice != 2 || iFlag != 1);
+    }
+
+    public void addOrderToTransit(Scanner scanner)
+    {
+        int transitId = getTransitIdHandler(scanner);
+        Transit currenTransit = findTransitById(transitId);
+        if (currenTransit == null) return;
+        int orderId = getOrderIdHandler(scanner);
+        OrderDocument orderDocument = findOrderById(orderId);
+        if (orderDocument == null) return;
+        currenTransit.addOrderDoc(orderDocument);
+        System.out.println("Document added successfully");
+    }
+
+    public void removeOrderFromTransit(Scanner scanner)
+    {
+        int transitId = getTransitIdHandler(scanner);
+        Transit currenTransit = findTransitById(transitId);
+        if (currenTransit == null) return;
+        int orderId = getOrderIdHandler(scanner);
+        OrderDocument orderDocument = findOrderById(orderId);
+        if (orderDocument == null) return;
+        currenTransit.removeOrderDoc(orderDocument);
+        System.out.println("Document removed successfully");
+    }
+
+    public int getOrderIdHandler(Scanner scanner){
+        System.out.println("Enter order id: ");
+        int orderId = scanner.nextInt();
+        return orderId;
+    }
+    public OrderDocument findOrderById(int orderId){
+        OrderDocument orderDocFound = transitService.getOrderDocService().findOrderDocById(orderId);
+        if (orderDocFound == null)
+            System.out.printf("Order Document id: %d not found %n",orderId);
+        return orderDocFound;
     }
 
 

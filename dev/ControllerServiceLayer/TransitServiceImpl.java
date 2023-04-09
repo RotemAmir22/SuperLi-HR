@@ -14,12 +14,14 @@ public class TransitServiceImpl implements TransitService{
     private final TransitRepository transitRepo;
     private final TruckService truckService;
     private final DriverService driverService;
+    private final OrderDocumentService orderDocService;
 
     public TransitServiceImpl(TransitRepository transitRepo, TruckService truckService,
-                              DriverService driverService) {
+                              DriverService driverService, OrderDocumentService orderDocService) {
         this.transitRepo = transitRepo;
         this.truckService = truckService;
         this.driverService = driverService;
+        this.orderDocService = orderDocService;
     }
     @Override
     public Transit createTransit(String dateString, String truckPlateNumber, int driverId) throws UiException, QualificationsException {
@@ -88,7 +90,6 @@ public class TransitServiceImpl implements TransitService{
         transitToUpdate.setTruck(otherTruck);
         return 1;// successes
     }
-
     public int replaceTransitDriver(int transitId, int newDriverId, String truckPlate){
         Driver otherDriver = driverService.findDriverByID(newDriverId);
         if (otherDriver == null) return -1; //fail to find driver
@@ -97,6 +98,10 @@ public class TransitServiceImpl implements TransitService{
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
         if (!qualifiedDriverFlag) return 0; // driver is not qualified
         return 1;
+    }
+    @Override
+    public OrderDocumentService getOrderDocService() {
+        return orderDocService;
     }
     public Date createDateObj(String dateString) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(dateString);

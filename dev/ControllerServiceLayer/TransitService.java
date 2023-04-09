@@ -1,6 +1,7 @@
 package ControllerServiceLayer;
 
 import DataAccessLayer.TransitRepository;
+import DomainLayer.OrderDocument;
 import DomainLayer.Transit;
 import ExceptionsPackage.QualificationsException;
 import ExceptionsPackage.UiException;
@@ -17,4 +18,5 @@ public interface TransitService {
     boolean showTransitByID(int transitId);
     int replaceTransitTruck(int transitId, String truckPlate);
     int replaceTransitDriver(int transitId, int driverId, String truckPlate);
+    OrderDocumentService getOrderDocService();
 }

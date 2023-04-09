@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class OrderDocumentRepositoryImpl implements OrderDocumentRepository{
     private final Set<OrderDocument> orderDocuments = new HashSet<>();
+    private final Set<OrderDocument> finishedOrdersDocs = new HashSet<>();
     @Override
     public void saveOrderDocument(OrderDocument orderDocument) {
         orderDocuments.add(orderDocument);

@@ -86,4 +86,8 @@ public class Transit {
     public void setDriver(Driver driver) {
         this.driver = driver;
     }
+
+    public void removeOrderDoc(OrderDocument orderDocument) {
+        this.ordersDocs.remove(orderDocument);
+    }
 }
