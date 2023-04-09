@@ -30,4 +30,7 @@ public interface OrderDocumentService {
     boolean showOrderDocById(int orderId);
 
     public boolean orderDocumentChooser(int orderId);
+    public SupplierService getSupplierService();
+
+    public StoreService getStoreService();
     }

@@ -82,6 +82,10 @@ public class Transit {
         ordersDocs.add(orderDocument);
     };
 
+    public void setSource(Site source) {
+        this.source = source;
+    }
+
     public void setTruck(Truck truck) {
         this.truck = truck;
     }

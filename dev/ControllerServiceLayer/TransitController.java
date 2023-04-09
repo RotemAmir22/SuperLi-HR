@@ -1,7 +1,6 @@
 package ControllerServiceLayer;
 
-import DomainLayer.OrderDocument;
-import DomainLayer.Transit;
+import DomainLayer.*;
 import ExceptionsPackage.ModuleException;
 
 import java.time.LocalDate;
@@ -187,19 +186,31 @@ public class TransitController {
         return orderDocFound;
     }
 
+public void beginTransit (Scanner scanner)
+{
+    int transitId = getTransitIdHandler(scanner);
+    Transit transit = findTransitById(transitId);
+    //check if date is today
+    if (!transit.getTransitDate().equals(LocalDate.now()))
+    {
+        System.out.println("Warning, the date of transaction is not today ");
+        System.out.println("Back to main menu ");
+        return;
+    }
+    transit.setDepartureTime(LocalTime.now());
+    Truck truck = transit.getTruck();
+    //destination
+    for(OrderDocument orderDoc : transit.getOrdersDocs())
+    {
+        transit.addDestination(orderDoc.getSource());
+    }
+    for (Site supplier :transit.getDestinations())
+    {
 
-//    public void beginTransit(Scanner scanner){
-//        int transitId = getTransitIdHandler(scanner);
-//        Transit transit = findTransitById(transitId);
-//        //check if date is today
-//        if (!transit.getTransitDate().equals(LocalDate.now()))
-//        {
-//            System.out.println("Warning, the date of transaction is not today ");
-//            System.out.println("Back to main menu ");
-//            return;
-//        }
-//        transit.setDepartureTime(LocalTime.now());
-//        // load?
+    }
+}
+
+
 //        double weight = 0;
 //        Truck truck = transit.getTruck();
 //        for (OrderDocument orderDocument: transit.getOrdersDocs())
@@ -219,6 +230,7 @@ public class TransitController {
 //        }
 //        //create in repository a set of transits that are finished and add this transit there
 //    }
+
     public void overWeight(Scanner scanner)
     {
         int ans;
@@ -231,6 +243,7 @@ public class TransitController {
         switch (ans)
         {
             case 1:// switch truck
+
                 break;
             case 2: // delete order
                 break;

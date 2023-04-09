@@ -30,10 +30,19 @@ public class OrderDocumentController {
         System.out.println("Enter source (supplier id) of the order: "); // assuming valid supplier id
         supplierId = scanner.nextInt();
         scanner.nextLine();
-
+        if(orderDocService.getSupplierService().findSupplierById(supplierId) == null)
+        {
+            System.out.println("that is not an existing id of a supplier! ");
+            return;
+        }
         System.out.println("Enter destination (store id)  of the order: "); //assuming valid store id
         storeId = scanner.nextInt();
         scanner.nextLine();
+        if(orderDocService.getStoreService().findStoreById(storeId) == null)
+        {
+            System.out.println("that is not an existing id of a store! ");
+            return;
+        }
 
         //TODO if we want this last, need to change the constructor
         System.out.println("This order id is: "+ OrderDocument.documentNextId);
@@ -130,6 +139,7 @@ public class OrderDocumentController {
             showSpecificOrderDoc(orderDoc.getDocumentId());
         }
     }
+
     public void showSpecificOrderDoc(int orderId){
         OrderDocument orderDoc = orderDocService.getOrderDocRepo().findOrderDocById(orderId);
         orderDoc.printOrderId();

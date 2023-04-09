@@ -27,6 +27,14 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
         return productService;
     }
 
+    public SupplierService getSupplierService() {
+        return supplierService;
+    }
+
+    public StoreService getStoreService() {
+        return storeService;
+    }
+
     public OrderDocumentRepository getOrderDocRepo() { return orderDocRepo;}
 
     @Override
