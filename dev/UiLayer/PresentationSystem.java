@@ -3,13 +3,14 @@ import ControllerServiceLayer.*;
 import DataAccessLayer.*;
 import DomainLayer.*;
 
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class PresentationSystem {
     public static void main(String[] args) {
         PresentationSystem ps = new PresentationSystem();
+        Scanner scanner = new Scanner(System.in);
 
         DriverRepository primeDriverRepo = new DriverRepositoryImpl();
         DriverService primeDriverService = new DriverServiceImpl(primeDriverRepo);
@@ -57,40 +58,91 @@ public class PresentationSystem {
 
         sT4.add(Qualification.C1);
 
-
-        Driver d1 = new Driver(1, "Moshe Mor",s1);
-        Driver d2 = new Driver(2, "Dani Lev",s2);
-        Product p1 = new Product(1,"Banana");
-        Product p2 = new Product(2,"Apple");
-        Supplier sup1 = new Supplier("Jerusalem", Area.Center, "David", "0523333333", 1);
-        Supplier sup2 = new Supplier("Hiafa", Area.North, "Shlomi", "0524444444", 2);
-        Supplier parkSup = new Supplier("Parking Street", Area.Center,"Michael", "0525555555", 50);
-        Store parkSro = new Store("Parking Street", Area.Center,"Michael", "0525555555", 50);
-        Store sro1 = new Store("Bash", Area.South, "Miri", "0526666666", 111);
-        Store sro2 = new Store("Mevaseret", Area.Center, "Regev", "0527777777", 112);
         Truck t1 = new Truck("123", TruckModel.LARGETRUCK, 5000, 10000, sT3);
         Truck t2 = new Truck("321", TruckModel.SMALLTRUCK, 100, 2000, sT4);
 
+        Driver d1 = new Driver(1, "Moshe Mor",s1);
+        Driver d2 = new Driver(2, "Dani Lev",s2);
+
+        Product p1 = new Product(1,"Banana");
+        Product p2 = new Product(2,"Apple");
+        Product p3 = new Product(3,"Orange");
+
+        Supplier sup1 = new Supplier("Jerusalem", Area.Center, "David", "0523333333", 1);
+        Supplier sup2 = new Supplier("Hiafa", Area.North, "Shlomi", "0524444444", 2);
+        Supplier parkSup = new Supplier("Logistical warehouse", Area.Center,"Michael", "0525555555", 50);
+
+        Store parkSro = new Store("Logistical warehouse", Area.Center,"Michael", "0525555555", 50);
+        Store sro1 = new Store("Bash", Area.South, "Miri", "0526666666", 111);
+        Store sro2 = new Store("Mevaseret", Area.Center, "Regev", "0527777777", 112);
+
+
+        OrderDocument o11 = new OrderDocument(sup1, sro1);
+        OrderDocument o12 = new OrderDocument(sup1, sro2);
+        OrderDocument o21 = new OrderDocument(sup2, sro1);
+        OrderDocument o22 = new OrderDocument(sup2, sro2);
+
+        Map<Product, Double> m1 = new HashMap<>();
+        Map<Product, Double> m2 = new HashMap<>();
+        Map<Product, Double> m3 = new HashMap<>();
+        Map<Product, Double> m4 = new HashMap<>();
+
+        m1.put(p1, 5000.0);
+        m1.put(p2, 5000.0);
+        o11.setProductsList(m1);
+        o11.setWeight(10000);
+
+        m2.put(p2, 2000.0);
+        o12.setProductsList(m2);
+        o12.setWeight(2000);
+
+        m3.put(p1, 1100.0);
+        m3.put(p2, 1000.0);
+        o21.setProductsList(m3);
+        o21.setWeight(2100);
+
+        m4.put(p3, 1000.0);
+        o22.setProductsList(m4);
+        o22.setWeight(1000);
+
+        String dateString = "11-04-2023";
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+        try{
+            date = format.parse(dateString);
+        }catch (ParseException e){
+            System.out.println();
+        }
+        Transit deli1 = new Transit(date, t2, d2);
+        deli1.addOrderDoc(o22);
+
+        primeTruckRepo.saveTruck(t1);
+        primeTruckRepo.saveTruck(t2);
+        primeOrderDocRepo.saveOrderDocument(o11);
+        primeOrderDocRepo.saveOrderDocument(o12);
+        primeOrderDocRepo.saveOrderDocument(o21);
+        primeOrderDocRepo.saveOrderDocument(o22);
+        primeTransitRepo.saveTransit(deli1);
 
         primeDriverRepo.saveDriver(d1);
         primeDriverRepo.saveDriver(d2);
         primeProductRepo.saveProduct(p1);
         primeProductRepo.saveProduct(p2);
+        primeProductRepo.saveProduct(p3);
         primeSupplierRepo.saveSupplier(sup1);
         primeSupplierRepo.saveSupplier(sup2);
         primeSupplierRepo.saveSupplier(parkSup);
         primeStoreRepo.saveStore(parkSro);
         primeStoreRepo.saveStore(sro1);
         primeStoreRepo.saveStore(sro2);
-        primeTruckRepo.saveTruck(t1);
-        primeTruckRepo.saveTruck(t2);
 
 
-        ps.switchMenu(truckController,orderDocumentController, transitController);
+        ps.preRunData(scanner,primeTransitRepo, primeTruckRepo, primeOrderDocRepo);
+        ps.switchMenu(scanner, truckController,orderDocumentController, transitController);
     }
 
-    public void switchMenu(TruckController truckC,OrderDocumentController orderDocC, TransitController transitC){
-        Scanner scanner = new Scanner(System.in);
+    public void switchMenu(Scanner scanner,TruckController truckC,OrderDocumentController orderDocC, TransitController transitC){
+//        Scanner scanner = new Scanner(System.in);
         int choice;
         do {
             displayMainMenu();
@@ -133,42 +185,7 @@ public class PresentationSystem {
                         displayOrderManagerMenu();
                         ch5 = scanner.nextInt();
                         if (scanner.hasNextLine()) scanner.nextLine();
-                        switch (ch5) {
-                            case 1: // create new order
-                                orderDocC.createNewOrderDocument(scanner);
-                                break;
-                            case 2: //prints all orders
-                                orderDocC.printPendingOrderDocs();
-                                break;
-                            case 3: //open edit order menu
-                                int ch53;
-                                do {
-                                    displayEditOrderMenu();
-                                    ch53 = scanner.nextInt();
-                                    if (scanner.hasNextLine()) scanner.nextLine();
-                                    switch (ch53) {
-                                        case 1:
-                                            orderDocC.addProductToOrder(scanner);
-                                            break;
-                                        case 2:
-                                            orderDocC.updateProductAmount(scanner);
-                                            break;
-                                        case 3:
-                                            orderDocC.removeProductFromOrder(scanner);
-                                            break;
-                                        case 0:
-                                            System.out.println("Going back...");
-                                            break;
-                                    }
-                                } while (ch53<0 || ch53>3);
-                                break;
-                            case 0:
-                                System.out.println("Going back...");
-                                break;
-                            default:
-                                System.out.println("Invalid input");
-                                break;
-                        }
+                        handleOrderManagerMenu(scanner, ch5, orderDocC);
                     } while (ch5<0 || ch5>3);
                     break;
                 case 0:
@@ -298,6 +315,70 @@ public class PresentationSystem {
                 System.out.println("Invalid input");
                 break;
         }
+    }
+
+    public void handleOrderManagerMenu(Scanner scanner, int ch5, OrderDocumentController orderDocC){
+        switch (ch5) {
+            case 1: // create new order
+                orderDocC.createNewOrderDocument(scanner);
+                break;
+            case 2: //prints all orders
+                orderDocC.printPendingOrderDocs();
+                break;
+            case 3: //open edit order menu
+                int ch53;
+                do {
+                    displayEditOrderMenu();
+                    ch53 = scanner.nextInt();
+                    if (scanner.hasNextLine()) scanner.nextLine();
+                    handleEditOrderMenu(scanner, ch53, orderDocC);
+                } while (ch53<0 || ch53>3);
+                break;
+            case 0:
+                System.out.println("Going back...");
+                break;
+            default:
+                System.out.println("Invalid input");
+                break;
+        }
+    }
+
+    public void handleEditOrderMenu(Scanner scanner, int ch53, OrderDocumentController orderDocC){
+        switch (ch53) {
+            case 1:
+                orderDocC.addProductToOrder(scanner);
+                break;
+            case 2:
+                orderDocC.updateProductAmount(scanner);
+                break;
+            case 3:
+                orderDocC.removeProductFromOrder(scanner);
+                break;
+            case 0:
+                System.out.println("Going back...");
+                break;
+        }
+    }
+
+    public void preRunData(Scanner scanner, TransitRepository transitRepository,
+                           TruckRepository truckRepository, OrderDocumentRepository orderDocumentRepository){
+        String ans;
+        do{
+            System.out.println("Would you like to start the system with built in data ? (Y/N) ");
+            ans = scanner.nextLine();
+            switch (ans.toUpperCase()){
+                case "Y":
+                    return;
+                case "N":
+                    transitRepository.getTransitsSet().clear();
+                    truckRepository.getTrucksSet().clear();
+                    orderDocumentRepository.getOrderDocsSet().clear();
+                    break;
+                default:
+                    System.out.println("Invalid input");
+                    break;
+            }
+        }while (!(ans.equalsIgnoreCase("y")) && !(ans.equalsIgnoreCase("n")));
     }
 }
 

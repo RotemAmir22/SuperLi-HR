@@ -125,7 +125,6 @@ public class OrderDocumentController {
         this.orderDocService.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to remove: ");
         String productName = scanner.nextLine();
-
         OrderDocument orderDoc= this.orderDocService.getOrderDocRepo().findOrderDocById(orderDocumentId);
         this.orderDocService.removeProduct(orderDocumentId,productName);
         System.out.println("product: "+ productName + " has been removed");

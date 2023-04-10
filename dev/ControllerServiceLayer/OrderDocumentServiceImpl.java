@@ -69,9 +69,11 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
 
     @Override
     public void removeProduct(int orderDocumentId, String productName) {
-        Product product = productService.findProductByName(productName);
+        Product productToRemove = productService.findProductByName(productName);
+        if(productToRemove == null) return;
         OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderDocumentId);
-        orderDocument.getProductsList().remove(product);
+        if(orderDocument == null) return;
+        orderDocument.removeProductFromOrder(productToRemove);
     }
 
     @Override
@@ -103,35 +105,6 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
             orderDocument.printOrder();
         }
     }
-
-
-    /**
-     * Set<Store> storeSet = new HashSet<>();
-     * storeSet.add(new Store("Store 1", Area.NORTH));
-     * storeSet.add(new Store("Store 2", Area.SOUTH));
-     * storeSet.add(new Store("Store 3", Area.WEST));
-     * storeSet.add(new Store("Store 4", Area.EAST));
-     *
-     * List<Store> storeList = new ArrayList<>(storeSet);
-     * Collections.sort(storeList, Comparator.comparing(Store::getArea));
-     *
-     * for (Store store : storeList) {
-     *     System.out.println(store.getName() + " - " + store.getArea());
-     * }
-     */
-
-//    @Override
-//    public void showPendingOrderDocs() {
-//        System.out.println("-----Pending Orders-----");
-//        Set<OrderDocument> pendingOrders = this.orderDocRepo.getOrderDocsSet();
-//
-//        List<OrderDocument> sortedOrders = new ArrayList<>(pendingOrders);
-//        Collections.sort(sortedOrders, Comparator.comparing(OrderDocument::getSource().g);
-//
-//        for (OrderDocument orderDocument :pendingOrders){
-//            orderDocument.printOrder();
-//        }
-//    }
 
     public void showPendingOrderDocs() {
         System.out.println("-----Pending Orders-----");

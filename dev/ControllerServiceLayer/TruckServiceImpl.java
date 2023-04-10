@@ -62,4 +62,9 @@ public class TruckServiceImpl implements TruckService {
     public Set<Qualification> getTruckQualiSet(Truck truck) {
         return null;
     }
+    @Override
+    public void transferLoad(Truck smallerTruck, Truck biggerTruck){
+        biggerTruck.loadTruck(smallerTruck.getCurrentWeight());
+        smallerTruck.setCurrentLoadWeight(0);
+    }
 }

@@ -8,6 +8,7 @@ import ExceptionsPackage.UiException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Scanner;
 import java.util.Set;
 
 public class TransitServiceImpl implements TransitService{
@@ -139,6 +140,7 @@ public class TransitServiceImpl implements TransitService{
         Date transitDate = dateFormat.parse(dateString);
         return transitDate;
     }
+    @Override
     public boolean isDriverAllowToDriveTruck(Truck truck, Driver driver){
         Set <Qualification> truckQualiSet = truck.getTruckQualification();
         Set <Qualification> driverLicenseSet = driver.getLicenses();
@@ -148,4 +150,32 @@ public class TransitServiceImpl implements TransitService{
         this.transitRepo.removeTransit(completedTransit);
         this.transitRepo.saveToCompleted(completedTransit);
     }
+    @Override
+    public Truck findNewTruck(Scanner scanner)
+    {
+        System.out.println("Enter truck's plate number: ");
+        String sPlateNumber = scanner.nextLine();
+        Truck newTruck = truckService.findTruckByPlate(sPlateNumber);
+        if (newTruck == null){
+            System.out.printf("Truck's plate number: %s not found %n", sPlateNumber);
+        }
+        return newTruck;
+    }
+    @Override
+    public Driver findNewDriver(Scanner scanner){
+        System.out.println("Enter driver's id: ");
+        int driverId = scanner.nextInt();
+        scanner.nextLine();
+        Driver newDriver = driverService.findDriverByID(driverId);
+        if (newDriver == null){
+            System.out.printf("Driver's id: %d not found %n", driverId);
+        }
+        return newDriver;
+    }
+    public void transferLoad(Truck smallTruck, Truck biggerTruck){
+        System.out.println("Transfer load form truck: " + smallTruck.getPlateNumber() + " to truck: " + biggerTruck.getPlateNumber());
+        this.truckService.transferLoad(smallTruck, biggerTruck);
+    }
+
+
 }

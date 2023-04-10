@@ -39,4 +39,5 @@ public class OrderDocumentRepositoryImpl implements OrderDocumentRepository{
     public void saveToCompleted(OrderDocument completedOrder) {
         this.completedOrderDocs.add(completedOrder);
     }
+
 }

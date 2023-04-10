@@ -14,10 +14,6 @@ public class TransitController {
         this.transitService = transitService;
     }
 
-    public void showAllTransits()
-    {
-
-    }
     public void createNewTransit(Scanner scanner) {
         System.out.println("-----Create new transit-----");
         System.out.println("Enter transit Date: (dd-mm-yyyy) ");
@@ -75,34 +71,6 @@ public class TransitController {
         }
     }
 
-//    public void replaceTransitTruck(Scanner scanner){
-//        int transitId = getTransitIdHandler(scanner);
-//        String newTruckPlate = getTruckPlateHandler(scanner);
-//        Transit currentTransit = findTransitById(transitId);
-//        Truck newTruck = findTruckByPlate(newTruckPlate);
-//
-//        if (currentTransit == null || newTruck == null )return;
-//        boolean confirmNewTruck = isOkReplaceTruck(currentTransit, newTruck);
-//        while (!confirmNewTruck){ //the driver is not allowed to drive the truck
-//
-//        }
-//        Driver potencialDriver = findDriverById(int driverID);
-//
-//        if (currentTransit == null) eturn;
-//        int flag = transitService.replaceTransitTruck(transitId, newTruckPlate);
-//        switch (flag) {
-//            case 0:
-//                System.out.println("Current driver is not qualified to drive the chosen truck");
-//                lookForQualifiedDriver(scanner, transitId, newTruckPlate);
-//                return;
-//            case 1:
-//                System.out.println("Transit's truck updated successfully");
-//                return;
-//
-//        }
-//    }
-
-
     public void printTransitById(int transitId){
         boolean flag = transitService.showTransitByID(transitId);
         if(!flag)
@@ -159,8 +127,8 @@ public class TransitController {
         int orderId = getOrderIdHandler(scanner);
         OrderDocument orderDocument = findOrderById(orderId);
         if (orderDocument == null) return;
-        boolean validWeight = transitService.isValidWeight(currentTransit, orderDocument);
-        if (!validWeight) return;
+//        boolean validWeight = transitService.isValidWeight(currentTransit, orderDocument);
+//        if (!validWeight) return;
         currentTransit.addOrderDoc(orderDocument);
         System.out.println("Order document added successfully");
     }
@@ -181,6 +149,11 @@ public class TransitController {
         System.out.println("Enter order id: ");
         int orderId = scanner.nextInt();
         return orderId;
+    }
+    public String getProductNameHandler(Scanner scanner){
+        System.out.println("Enter product name: ");
+        String productName = scanner.nextLine();
+        return productName;
     }
     public OrderDocument findOrderById(int orderId){
         OrderDocument orderDocFound = transitService.getOrderDocService().findOrderDocById(orderId);
@@ -207,7 +180,7 @@ public void beginTransit (Scanner scanner)
         return;
     }
     transit.setDepartureTime(LocalTime.now());
-    Truck truck = transit.getTruck();
+//    Truck truck = transit.getTruck();
     //add destinations
     for(OrderDocument orderDoc : transit.getOrdersDocs())
     {
@@ -224,16 +197,15 @@ public void beginTransit (Scanner scanner)
             {
 
                 System.out.println("Loading order number: " + orderDoc.getDocumentId());
-                truck.loadTruck(orderDoc.getTotalWeight());
-                if (truck.getMaxCarryWeight()<truck.getCurrentWeight())
+                transit.getTruck().loadTruck(orderDoc.getTotalWeight());
+                if (transit.getTruck().getMaxCarryWeight()<transit.getTruck().getCurrentWeight())
                 {
-//                    overload = true;
                     transitRecord.setTransitProblem(true);
-                    //overWeight();
+                    overWeight(scanner,transit,orderDoc);
                 }
             }
         }
-        transitRecord.addSupWeightExit(supplier,truck.getCurrentWeight());
+        transitRecord.addSupWeightExit(supplier,transit.getTruck().getCurrentWeight());
     }
     //add destinations
     for(OrderDocument orderDoc : transit.getOrdersDocs())
@@ -247,7 +219,7 @@ public void beginTransit (Scanner scanner)
             if (store.getStoreId() == orderDoc.getDestination().getStoreId()) {
 
                 System.out.println("Unloading order number: " + orderDoc.getDocumentId());
-                truck.unloadTruck(orderDoc.getTotalWeight());
+                transit.getTruck().unloadTruck(orderDoc.getTotalWeight());
                 this.transitService.getOrderDocService().moveOrderToFinished(orderDoc);
             }
         }
@@ -261,27 +233,74 @@ public void beginTransit (Scanner scanner)
         this.transitService.getTransitRecordService().showTransitRecords();
     }
 
-    public void overWeight(Scanner scanner)
+    public void overWeight(Scanner scanner, Transit transit, OrderDocument currentOrder)
     {
-        int ans;
-        //scanner.nextLine();
-        System.out.println("Overweight truck - what would you wish to do? ");
-        System.out.println("1. switch truck ");
-        System.out.println("2. delete order from transit ");
-        System.out.println("3. remove products from order ");
-        ans = scanner.nextInt();
-        switch (ans)
-        {
-            case 1:// switch truck
-
-                break;
-            case 2: // delete order
-                break;
-            case 3: //delete products from order
-                break;
-            default:
-                System.out.println("The defult choice is to delete order from transit");
-                //case 2
-        }
+        int choice;
+        boolean verifiedFlag = false;
+        do{
+            System.out.println("-----Overweight-----");
+            System.out.println("Enter your choice: ");
+            System.out.println("1. Bring bigger truck ");
+            System.out.println("2. Remove products from this order ");
+            System.out.println("3. Delete this order from transit ");
+            choice = scanner.nextInt();
+            scanner.nextLine();
+            switch (choice) {
+                case 1:// switch truck
+                    verifiedFlag = bringBiggerTruck(scanner,transit);
+                    break;
+                case 2: //delete products from order
+                    if (currentOrder.getProductsList().size() > 1){
+                        verifiedFlag = removeProductFromOrder(scanner, transit, currentOrder);
+                        break;
+                    }
+                    else {
+                        currentOrder.printOrder();
+                        System.out.println("Order id: " + currentOrder.getDocumentId() + " contains only one product, removing order ");
+                    }
+                case 3:// delete order
+                    // update weight
+                    double updatedLoadWeight =  transit.getTruck().getCurrentWeight() - currentOrder.getTotalWeight();
+                    transit.getTruck().setCurrentLoadWeight(updatedLoadWeight);
+                    transit.getOrdersDocs().remove(currentOrder);
+                    verifiedFlag = true;
+                    break;
+                default:
+                    System.out.println("Invalid input");
+            }
+        } while (!verifiedFlag);
     }
+
+    public boolean bringBiggerTruck(Scanner scanner, Transit transit)
+    {
+        Truck newTruck = transitService.findNewTruck(scanner);
+        if (newTruck == null)return false;
+        Driver newDriver = transitService.findNewDriver(scanner);
+        if (newDriver == null)return false;
+        if (!transitService.isDriverAllowToDriveTruck(newTruck, newDriver)){
+            System.out.printf("Chosen driver: %d is not qualified to drive the chosen truck %n", newDriver.getDriverId());
+            return false;
+        }
+        transit.setDriver(newDriver);
+        Truck smallTuck = transit.getTruck();
+        transit.setTruck(newTruck);
+        transitService.transferLoad(smallTuck, newTruck);
+        return true;
+    }
+
+    public boolean removeProductFromOrder(Scanner scanner, Transit transit, OrderDocument orderDocument){
+        double truckCurrentWeight = transit.getTruck().getCurrentWeight();
+        double overWeightAmount = truckCurrentWeight - transit.getTruck().getMaxCarryWeight();
+        double originalOrderWeight = orderDocument.getTotalWeight();
+        System.out.println("Reduce at least: " + overWeightAmount + " kg");
+        orderDocument.printOrder();
+        String sProductName = getProductNameHandler(scanner);
+        transitService.getOrderDocService().removeProduct(transit.getTransitId(), sProductName);
+        double updatedOrderWeight = orderDocument.getTotalWeight();
+        double newCurrentWeight = truckCurrentWeight - (originalOrderWeight - updatedOrderWeight);
+        transit.getTruck().setCurrentLoadWeight(newCurrentWeight);
+        return !(newCurrentWeight > transit.getTruck().getMaxCarryWeight());
+    }
+
+
 }

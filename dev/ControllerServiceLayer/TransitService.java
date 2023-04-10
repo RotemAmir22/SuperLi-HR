@@ -1,11 +1,14 @@
 package ControllerServiceLayer;
 
 import DataAccessLayer.TransitRepository;
+import DomainLayer.Driver;
 import DomainLayer.OrderDocument;
 import DomainLayer.Transit;
+import DomainLayer.Truck;
 import ExceptionsPackage.QualificationsException;
 import ExceptionsPackage.UiException;
 
+import java.util.Scanner;
 import java.util.Set;
 
 public interface TransitService {
@@ -22,4 +25,8 @@ public interface TransitService {
     TransitRecordService getTransitRecordService();
     boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument);
     void moveTransitToFinished(Transit transit);
+    Truck findNewTruck(Scanner scanner);
+    Driver findNewDriver(Scanner scanner);
+    boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);
+    void transferLoad(Truck smallTruck, Truck biggerTruck);
 }

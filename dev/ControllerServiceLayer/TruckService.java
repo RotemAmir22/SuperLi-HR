@@ -18,6 +18,7 @@ public interface TruckService {
     boolean showTruckByPlate(String tPlateNumber);
     TruckModel getTruckModel(Truck truck);
     Set<Qualification> getTruckQualiSet(Truck truck);
+    void transferLoad(Truck smallerTruck, Truck biggerTruck);
 
 
 }

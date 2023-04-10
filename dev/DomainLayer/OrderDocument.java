@@ -28,19 +28,15 @@ public class OrderDocument {
     public Store getDestination() {
         return destination;
     }
-
     public double getTotalWeight() {
         return totalWeight;
     }
-
     public Map<Product, Double> getProductsList() {
         return productsList;
     }
-
     public void setProductsList(Map<Product, Double> newProductsList) {
         productsList = newProductsList;
     }
-
     public void setWeight(double weight) {
         totalWeight=weight;
     }
@@ -60,13 +56,17 @@ public class OrderDocument {
     public void printOrderId() {
         System.out.println("Order Id is: " + documentId);
     }
-
     public void printOrder(){
         System.out.println("Document id: " + this.documentId);
         System.out.println("Source: " + source.address);
         System.out.println("Destination: " + destination.address);
+        System.out.println("Total weight: " + totalWeight);
         System.out.println("Products in order: ");
         printOrderProductList();
     }
-
+    public void removeProductFromOrder(Product product){
+        double amountToReduce = productsList.get(product);
+        productsList.remove(product);
+        totalWeight-= amountToReduce;
+    }
 }

@@ -81,4 +81,8 @@ public class Truck {
     public Set<Qualification> getqSet() {
         return qSet;
     }
+
+    public void setCurrentLoadWeight(double currentLoadWeight) {
+        this.currentLoadWeight = currentLoadWeight;
+    }
 }
