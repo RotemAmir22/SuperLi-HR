@@ -7,7 +7,7 @@ public class TransitRecord {
     public static int recordNextId = 1;
     private int transitRecordId;
     private boolean transitProblem;
-    private Map<Supplier,Double> weightAtExit;
+    private final Map<Supplier,Double> weightAtExit;
     private Transit transit;
 
     public TransitRecord(Transit transit) {
@@ -16,6 +16,16 @@ public class TransitRecord {
         this.transitProblem = false;
         this.weightAtExit = new HashMap<>();
         this.transit = transit;
+    }
+
+    public void printTransitRecord(){
+        System.out.println("Record id: " + transitRecordId);
+        System.out.println("Transit id: " + transit.getTransitId());
+        System.out.println("Overweight: " + transitProblem);
+        weightAtExit.forEach((supplier, weight) -> {
+            supplier.printSupplier();
+            System.out.println(" Truck weight at exit: " + weight);
+        });
     }
 
     public int getTransitRecordId() {

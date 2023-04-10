@@ -9,11 +9,9 @@ import java.util.Set;
 
 public class TruckServiceImpl implements TruckService {
     private final TruckRepository truckRepo;
-
     public TruckServiceImpl(TruckRepository truckRepo){
         this.truckRepo = truckRepo;
     }
-
     @Override
     public Truck createTruck(String plateNumber, int iModel, int[] iQArr, double truckWeight, double maxWeight) {
         TruckModel model = TruckModel.values()[iModel];
@@ -44,7 +42,7 @@ public class TruckServiceImpl implements TruckService {
     }
     @Override
     public void showAllTrucks() {
-        Set<Truck> trucks = getTrucksSet();
+        Set<Truck> trucks = truckRepo.getTrucksSet();
         for (Truck t : trucks){
             t.printTruck();
         }

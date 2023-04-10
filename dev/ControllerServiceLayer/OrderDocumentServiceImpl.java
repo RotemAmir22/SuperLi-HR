@@ -1,13 +1,9 @@
 package ControllerServiceLayer;
 
 import DataAccessLayer.OrderDocumentRepository;
-import DomainLayer.OrderDocument;
-import DomainLayer.Product;
-import DomainLayer.Store;
-import DomainLayer.Supplier;
+import DomainLayer.*;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class OrderDocumentServiceImpl implements OrderDocumentService {
     private final OrderDocumentRepository orderDocRepo;
@@ -22,33 +18,25 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
         this.storeService = storeService;
         this.productService = productService;
     }
-
     public ProductService getProductService() {
         return productService;
     }
-
     public SupplierService getSupplierService() {
         return supplierService;
     }
-
     public StoreService getStoreService() {
         return storeService;
     }
-
     public OrderDocumentRepository getOrderDocRepo() { return orderDocRepo;}
-
     @Override
     public void updateWeight(OrderDocument orderDocument, double weight) {
         orderDocument.setWeight(weight);
     }
-
     @Override
     //update and not drive through
     public void updateProductList(OrderDocument orderDocument, Map<Product, Double> productsList) {
-
         orderDocument.setProductsList(productsList);
     }
-
     @Override
     public OrderDocument createOrderDoc(int sourceId, int destinationId) {
         Supplier supplier = supplierService.findSupplierById(sourceId) ;
@@ -57,13 +45,10 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
         OrderDocument orderDoc = new OrderDocument(supplier,store);
         return orderDoc;
     }
-
     @Override
     public Set<OrderDocument> getOrderDocumentsSet() {
         return orderDocRepo.getOrderDocsSet();
     }
-
-
     @Override
     public void showAllProductsInDoc(int orderId) {
         OrderDocument orderDoc = findOrderDocById(orderId);
@@ -77,7 +62,6 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
 
     @Override
     public void updateAmount(int orderId, String productName, double amount) {
-
         Product product = productService.findProductByName(productName);
         OrderDocument orderDocument = this.orderDocRepo.findOrderDocById(orderId);
         orderDocument.getProductsList().replace(product,amount);
@@ -105,5 +89,62 @@ public class OrderDocumentServiceImpl implements OrderDocumentService {
     public boolean orderDocumentChooser(int orderId){
         if(orderDocRepo.findOrderDocById(orderId)==null) {return false;}
         return true;
+    }
+
+    public void moveOrderToFinished(OrderDocument completedOrder){
+        this.orderDocRepo.removeOrderDoc(completedOrder);
+        this.orderDocRepo.saveToCompleted(completedOrder);
+    }
+    @Override
+    public void showCompletedOrderDocs(){
+        System.out.println("-----Completed Orders-----");
+        Set<OrderDocument> completedOrders = this.orderDocRepo.getCompletedOrdersSet();
+        for (OrderDocument orderDocument : completedOrders){
+            orderDocument.printOrder();
+        }
+    }
+
+
+    /**
+     * Set<Store> storeSet = new HashSet<>();
+     * storeSet.add(new Store("Store 1", Area.NORTH));
+     * storeSet.add(new Store("Store 2", Area.SOUTH));
+     * storeSet.add(new Store("Store 3", Area.WEST));
+     * storeSet.add(new Store("Store 4", Area.EAST));
+     *
+     * List<Store> storeList = new ArrayList<>(storeSet);
+     * Collections.sort(storeList, Comparator.comparing(Store::getArea));
+     *
+     * for (Store store : storeList) {
+     *     System.out.println(store.getName() + " - " + store.getArea());
+     * }
+     */
+
+//    @Override
+//    public void showPendingOrderDocs() {
+//        System.out.println("-----Pending Orders-----");
+//        Set<OrderDocument> pendingOrders = this.orderDocRepo.getOrderDocsSet();
+//
+//        List<OrderDocument> sortedOrders = new ArrayList<>(pendingOrders);
+//        Collections.sort(sortedOrders, Comparator.comparing(OrderDocument::getSource().g);
+//
+//        for (OrderDocument orderDocument :pendingOrders){
+//            orderDocument.printOrder();
+//        }
+//    }
+
+    public void showPendingOrderDocs() {
+        System.out.println("-----Pending Orders-----");
+        Set<OrderDocument> pendingOrders = this.orderDocRepo.getOrderDocsSet();
+
+        List<OrderDocument> sortedOrders = new ArrayList<>(pendingOrders);
+        Comparator<OrderDocument> bySupplierArea = Comparator.comparing(
+                order -> order.getSource().getAreaCode().name());
+        Collections.sort(sortedOrders, bySupplierArea);
+
+        for (OrderDocument orderDocument : sortedOrders) {
+            System.out.println("Area: "+ orderDocument.getSource().getSupplierArea());
+            orderDocument.printOrder();
+        }
     }
 }

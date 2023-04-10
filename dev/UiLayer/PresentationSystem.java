@@ -33,9 +33,12 @@ public class PresentationSystem {
         OrderDocumentController orderDocumentController = new OrderDocumentController(primeOrderDocService,
                 primeProductService);
 
+        TransitRecordRepository primeTransitRecordRepo = new TransitRecordsRepositoryImpl();
+        TransitRecordService primeTransitRecordService = new TransitRecordServiceImpl(primeTransitRecordRepo);
+
         TransitRepository primeTransitRepo = new TransitRepositoryImpl();
         TransitService primeTransitService = new TransitServiceImpl(primeTransitRepo, primeTruckService,
-                primeDriverService, primeOrderDocService);
+                primeDriverService, primeOrderDocService, primeTransitRecordService);
         TransitController transitController = new TransitController(primeTransitService);
 
 
@@ -116,8 +119,15 @@ public class PresentationSystem {
                 } while (ch3<0 || ch3>3);
                     break;
                 case 4: //manage documents
+                    int ch4;
+                    do{
+                        displayDocumentManagerMenu();
+                        ch4 = scanner.nextInt();
+                        if (scanner.hasNextLine()) scanner.nextLine();
+                        handleDocumentManagerMenu(ch4, transitC, orderDocC);
+                    } while (ch4<0 || ch4>3);
                     break;
-                case 5:
+                case 5: //manage orders
                     int ch5;
                     do {
                         displayOrderManagerMenu();
@@ -128,7 +138,7 @@ public class PresentationSystem {
                                 orderDocC.createNewOrderDocument(scanner);
                                 break;
                             case 2: //prints all orders
-                                orderDocC.showAllOrderDocs();
+                                orderDocC.printPendingOrderDocs();
                                 break;
                             case 3: //open edit order menu
                                 int ch53;
@@ -193,11 +203,10 @@ public class PresentationSystem {
     public void displayOrderManagerMenu(){
         System.out.println("-----Manage Orders-----");
         System.out.println("1. Create a new Order ");
-        System.out.println("2. print all orders ");
+        System.out.println("2. Show pending orders (by area) ");
         System.out.println("3. Edit order ");
         System.out.println("0. Back to main menu");
     }
-
     public void displayUpdateTransitMenu(){
         System.out.println("-----Update Transit-----");
         System.out.println("1. print transit details ");
@@ -215,6 +224,34 @@ public class PresentationSystem {
         System.out.println("2. Change the amount of a product ");
         System.out.println("3. Remove products ");
         System.out.println("0. Back to main menu");
+    }
+
+    public void displayDocumentManagerMenu(){
+        System.out.println("-----Manage Documents-----");
+        System.out.println("1. Show pending orders (by area) ");
+        System.out.println("2. Show completed orders ");
+        System.out.println("3. Show Transit records ");
+        System.out.println("0. Back to main menu");
+    }
+
+    public void handleDocumentManagerMenu(int ch4, TransitController transitC, OrderDocumentController orderDocC){
+        switch (ch4) {
+            case 1:
+                orderDocC.printPendingOrderDocs();
+                break;
+            case 2:
+                orderDocC.printCompletedOrderDocs();
+                break;
+            case 3:
+                transitC.printAllTransitRecords();
+                break;
+            case 0:
+                System.out.println("Going back...");
+                break;
+            default:
+                System.out.println("Invalid input");
+                break;
+        }
     }
 
     public void handleTruckManagerMenu(int ch3, Scanner scanner, TruckController truckC){
@@ -242,7 +279,7 @@ public class PresentationSystem {
                 transitC.printTransitDetails(scanner);
                 break;
             case 2:
-                orderDocC.showAllOrderDocs();
+                orderDocC.printPendingOrderDocs();
                 break;
             case 3: transitC.addOrderToTransit(scanner);
                 break;

@@ -19,15 +19,12 @@ public class OrderDocument {
         this.totalWeight=0;
         this.productsList = new HashMap<>();
     }
-
     public int getDocumentId() {
         return documentId;
     }
-
     public Supplier getSource() {
         return source;
     }
-
     public Store getDestination() {
         return destination;
     }
@@ -51,7 +48,7 @@ public class OrderDocument {
         for (Map.Entry<Product, Double> entry : productsList.entrySet()) {
             String product = entry.getKey().getProductName();
             Double amount = entry.getValue();
-            System.out.println(product + " : " + amount);
+            System.out.println("\t" + product + " : " + amount);
         }
     }
     public void printOrderDestination() {
@@ -68,6 +65,8 @@ public class OrderDocument {
         System.out.println("Document id: " + this.documentId);
         System.out.println("Source: " + source.address);
         System.out.println("Destination: " + destination.address);
+        System.out.println("Products in order: ");
+        printOrderProductList();
     }
 
 }

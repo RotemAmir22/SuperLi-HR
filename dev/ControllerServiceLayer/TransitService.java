@@ -19,5 +19,7 @@ public interface TransitService {
     int replaceTransitTruck(int transitId, String truckPlate);
     int replaceTransitDriver(int transitId, int driverId, String truckPlate);
     OrderDocumentService getOrderDocService();
+    TransitRecordService getTransitRecordService();
     boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument);
+    void moveTransitToFinished(Transit transit);
 }

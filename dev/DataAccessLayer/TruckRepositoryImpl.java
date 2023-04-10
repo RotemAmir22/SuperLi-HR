@@ -11,25 +11,21 @@ public class TruckRepositoryImpl implements TruckRepository{
     public void saveTruck(Truck truck) {
         trucks.add(truck);
     }
-
     @Override
     public void removeTruck(Truck truck) {
         trucks.remove(truck);
     }
-
     @Override
     public Set<Truck> getTrucksSet() {
         return trucks;
     }
-
     @Override
     public Truck findTruckByPlateNumber(String tPlateNumber) {
-        if (trucks.isEmpty()) return null;
-            for (Truck truck : trucks) {
-                if (truck.getPlateNumber().equals(tPlateNumber)) {
-                    return truck;
-                }
+        for (Truck truck : trucks) {
+            if (truck.getPlateNumber().equals(tPlateNumber)) {
+                return truck;
             }
-            return null; // Truck with specified plate number not found
+        }
+        return null; // Truck with specified plate number not found
         }
 }

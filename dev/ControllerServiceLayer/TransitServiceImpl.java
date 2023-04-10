@@ -15,14 +15,19 @@ public class TransitServiceImpl implements TransitService{
     private final TruckService truckService;
     private final DriverService driverService;
     private final OrderDocumentService orderDocService;
+    private final TransitRecordService transitRecordService;
 
     public TransitServiceImpl(TransitRepository transitRepo, TruckService truckService,
-                              DriverService driverService, OrderDocumentService orderDocService) {
+                              DriverService driverService, OrderDocumentService orderDocService,
+                              TransitRecordService transitRecordService) {
         this.transitRepo = transitRepo;
         this.truckService = truckService;
         this.driverService = driverService;
         this.orderDocService = orderDocService;
+        this.transitRecordService = transitRecordService;
+
     }
+
     @Override
     public Transit createTransit(String dateString, String truckPlateNumber, int driverId) throws UiException, QualificationsException {
         Date transitDate;
@@ -107,6 +112,14 @@ public class TransitServiceImpl implements TransitService{
     }
 
     @Override
+    public TransitRecordService getTransitRecordService() {
+        return transitRecordService;
+    }
+
+    public void printTransitRecords(){
+        this.transitRecordService.showTransitRecords();
+    }
+    @Override
     public boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument) {
         Truck currentTruck = currentTransit.getTruck();
         double maxCarry = currentTruck.getMaxCarryWeight();
@@ -121,7 +134,6 @@ public class TransitServiceImpl implements TransitService{
         }
         return true;
     }
-
     public Date createDateObj(String dateString) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date transitDate = dateFormat.parse(dateString);
@@ -131,5 +143,9 @@ public class TransitServiceImpl implements TransitService{
         Set <Qualification> truckQualiSet = truck.getTruckQualification();
         Set <Qualification> driverLicenseSet = driver.getLicenses();
         return (driverLicenseSet.containsAll(truckQualiSet));
+    }
+    public void moveTransitToFinished(Transit completedTransit){
+        this.transitRepo.removeTransit(completedTransit);
+        this.transitRepo.saveToCompleted(completedTransit);
     }
 }

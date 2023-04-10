@@ -1,8 +1,6 @@
 package ControllerServiceLayer;
-
 import DomainLayer.*;
 import ExceptionsPackage.ModuleException;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -196,7 +194,7 @@ public void beginTransit (Scanner scanner)
     boolean overload = false;
     int transitId = getTransitIdHandler(scanner);
     Transit transit = findTransitById(transitId);
-    TransitRecord transitRecord = new TransitRecord(transit);
+    TransitRecord transitRecord = this.transitService.getTransitRecordService().createTransitRecord(transit);
     //check if date is today
     LocalDateTime presentDate = LocalDate.now().atStartOfDay(); // using java.time.LocalDate
     Date presentDateAlt = Date.from(presentDate.atZone(ZoneId.systemDefault()).toInstant()); // using java.util.Date
@@ -218,10 +216,10 @@ public void beginTransit (Scanner scanner)
     // drive to suppliers
     for (Supplier supplier : transit.getDestinationSuppliers())
     {
+        System.out.println("Arrived to supplier: " + supplier.getSupplierID());
         //check all orders that are in the suppliers source
         for(OrderDocument orderDoc : transit.getOrdersDocs())
         {
-            System.out.println("Arrived to supplier: " + supplier.getSupplierID());
             if(supplier.getSupplierID() == orderDoc.getSource().getSupplierID())
             {
 
@@ -229,13 +227,13 @@ public void beginTransit (Scanner scanner)
                 truck.loadTruck(orderDoc.getTotalWeight());
                 if (truck.getMaxCarryWeight()<truck.getCurrentWeight())
                 {
-                    overload = true;
+//                    overload = true;
+                    transitRecord.setTransitProblem(true);
                     //overWeight();
                 }
             }
         }
         transitRecord.addSupWeightExit(supplier,truck.getCurrentWeight());
-        transitRecord.setTransitProblem(overload);
     }
     //add destinations
     for(OrderDocument orderDoc : transit.getOrdersDocs())
@@ -243,28 +241,31 @@ public void beginTransit (Scanner scanner)
         transit.addDestinationStore(orderDoc.getDestination());
     }
     for (Store store : transit.getDestinationStores()) {
+        System.out.println("Arrived to store: " + store.getStoreId());
         //check all orders that are in the stores destination
         for (OrderDocument orderDoc : transit.getOrdersDocs()) {
-            System.out.println("Arrived to store: " + store.getStoreId());
             if (store.getStoreId() == orderDoc.getDestination().getStoreId()) {
 
                 System.out.println("Unloading order number: " + orderDoc.getDocumentId());
                 truck.unloadTruck(orderDoc.getTotalWeight());
+                this.transitService.getOrderDocService().moveOrderToFinished(orderDoc);
             }
         }
-        System.out.println("finished transit ");
-        //transitRecordRepo
-        //OrderDocRepoFinished
-        //transitfinishedRepo
     }
+    this.transitService.getTransitRecordService().getTransitRecordRepo().saveTransitRecord(transitRecord);
+    System.out.println("finished transit ");
+    this.transitService.moveTransitToFinished(transit);
 }
 
+    public void printAllTransitRecords(){
+        this.transitService.getTransitRecordService().showTransitRecords();
+    }
 
     public void overWeight(Scanner scanner)
     {
         int ans;
         //scanner.nextLine();
-        System.out.println("Overweighted truck - what would you wish to do? ");
+        System.out.println("Overweight truck - what would you wish to do? ");
         System.out.println("1. switch truck ");
         System.out.println("2. delete order from transit ");
         System.out.println("3. remove products from order ");

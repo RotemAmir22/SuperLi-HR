@@ -3,8 +3,6 @@ package ControllerServiceLayer;
 import DomainLayer.OrderDocument;
 import DomainLayer.Product;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -133,19 +131,11 @@ public class OrderDocumentController {
         System.out.println("product: "+ productName + " has been removed");
     };
 
-    public void showAllOrderDocs() {
-        Set<OrderDocument> allOrders = orderDocService.getOrderDocRepo().getOrderDocsSet();
-        for (OrderDocument orderDoc :allOrders){
-            showSpecificOrderDoc(orderDoc.getDocumentId());
-        }
+    public void printPendingOrderDocs() {
+        this.orderDocService.showPendingOrderDocs();
     }
-
-    public void showSpecificOrderDoc(int orderId){
-        OrderDocument orderDoc = orderDocService.getOrderDocRepo().findOrderDocById(orderId);
-        orderDoc.printOrderId();
-        orderDoc.printOrderSource();
-        orderDoc.printOrderDestination();
-        orderDoc.printOrderProductList();
+    public void printCompletedOrderDocs(){
+        this.orderDocService.showCompletedOrderDocs();
     }
     public int orderDocChoice(Scanner scanner)
     {

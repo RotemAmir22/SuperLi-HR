@@ -9,4 +9,5 @@ public interface TransitRepository {
     void removeTransit(Transit transit);
     Set<Transit> getTransitsSet();
     Transit findTransitByID(int transitId);
+    void saveToCompleted(Transit completedTransit);
 }

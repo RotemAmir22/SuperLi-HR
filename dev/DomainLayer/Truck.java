@@ -38,7 +38,7 @@ public class Truck {
     }
 
     public double getCurrentWeight() {
-        return truckWeight;
+        return currentLoadWeight;
     }
 
     public void loadTruck(double weight){
