@@ -102,7 +102,10 @@ public class HR_SystemManagement {
                     System.out.println(i + " - " + roles[i]);
                 }
                 int qualification = scanner.nextInt();
-                employee.addRole(roles[qualification]);
+                if(!employee.getQualifications().contains(roles[qualification]))
+                    employee.addRole(roles[qualification]);
+                else
+                    System.out.println("This employee is already a " + roles[qualification].toString());
                 answer=scanner.nextLine();
                 System.out.println("Would you like to add more qualifications? (Enter y/n): ");
                 answer = scanner.nextLine();
@@ -133,7 +136,10 @@ public class HR_SystemManagement {
                     System.out.println(i + " - " + roles[i]);
                 }
                 int qualification = scanner.nextInt();
-                employee.removeRole(roles[qualification]);
+                if(employee.getQualifications().contains(roles[qualification]))
+                    employee.removeRole(roles[qualification]);
+                else
+                    System.out.println("This employee isn't a " + roles[qualification].toString());
                 answer=scanner.nextLine();
                 System.out.println("Would you like to remove another qualification? (Enter y/n): ");
                 answer = scanner.nextLine();
@@ -227,8 +233,19 @@ public class HR_SystemManagement {
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new employee please enter the following details:");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter employee's start Date (enter as yyyy-MM-dd): ");
-        String startDate = scanner.nextLine();
+        String startDate;
+        while(true){
+            System.out.println("Enter employee's start Date (enter as yyyy-MM-dd): ");
+            try {
+                startDate = scanner.nextLine();
+                LocalDate.parse(startDate);
+                break;
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid format");
+            }
+        }
         System.out.println("Enter employee's First name: ");
         String first = scanner.nextLine();
         System.out.println("Enter employee's Last name: ");
@@ -237,8 +254,20 @@ public class HR_SystemManagement {
         String id = scanner.nextLine();
         System.out.println("Enter employee's bank account: ");
         String bankAccount = scanner.nextLine();
-        System.out.println("Enter employee's salary: ");
-        double salary = scanner.nextDouble();
+        String tmp;
+        double salary;
+        while(true){
+            System.out.println("Enter employee's salary: ");
+            try {
+                tmp = scanner.nextLine();
+                salary = Double.parseDouble(tmp);
+                break;
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid input. Enter a number please");
+            }
+        }
         System.out.println("Enter employee's terms of employment: ");
         String filePath = "";
 
@@ -454,11 +483,20 @@ public class HR_SystemManagement {
     {
         Scanner scanner = new Scanner(System.in);
         System.out.println("-Update Employee Constraints-");
-        System.out.println("Hello, Enter your ID to update your shift constraints: ");
-        String employeeId = scanner.nextLine();
-        Employee employee = findEmployeeByID(employeeId);
-        EmployeeConstraints.updateConstraints(employee);
-        System.out.println("Constraints updated ");
+        while (true)
+        {
+            System.out.println("Hello, Enter your ID to update your shift constraints: ");
+            String employeeId = scanner.nextLine();
+            Employee employee = findEmployeeByID(employeeId);
+            if (employee == null){
+                System.out.println("Invalid ID.");
+                continue;
+            }
+            EmployeeConstraints.updateConstraints(employee);
+            System.out.println("Constraints updated ");
+            break;
+        }
+
     }
 
     /**
@@ -633,37 +671,64 @@ public class HR_SystemManagement {
                         System.out.println("Enter new bank account number");
                         String bank = scanner.nextLine();
                         employee.setBankAccount(bank);
+                        break;
 
                     case 2:
                         System.out.println("You chose Option 2.");
-                        System.out.println("Enter new salary");
-                        double salary = scanner.nextDouble();
-                        employee.setSalary(salary);
+                        while (true){
+                            System.out.println("Enter new salary");
+                            try{
+                                String salary = scanner.nextLine();
+                                employee.setSalary(Double.parseDouble(salary));
+                                break;
+                            }
+                            catch (Exception e){
+                                System.out.println("Invalid input. Please enter a number");
+                            }
+                        }
+                        break;
 
                     case 3:
                         System.out.println("You chose Option 3.");
                         System.out.println("Enter new employment terms");
                         String empTerms = scanner.nextLine();
                         employee.setEmpTerms(empTerms);
+                        break;
 
-                    case 4: System.out.println("You chose Option 4.\n This option is in the works");
+                    case 4:
+                        System.out.println("You chose Option 4.\n This option is in the works");
+                        break;
                     case 5:
                         System.out.println("You chose Option 5.");
                         addQualificationToEmployee(employee);
+                        break;
 
                     case 6:
                         System.out.println("You chose Option 6.");
                         removeQualificationToEmployee(employee);
+                        break;
 
                     case 7 :
                         System.out.println("You chose Option 7.");
-                        System.out.println("How much do you wish to add as a bonus?");
-                        double bonus = scanner.nextDouble();
-                        employee.setCumulativeSalary(employee.getCumulativeSalary() + bonus);
-                        System.out.println("Employees cumulative salary now is: " + employee.getCumulativeSalary());
-
-                    case 8: System.out.println("Existing menu....");
-                    default: System.out.println("Invalid choice. Please try again.");
+                        while (true){
+                            System.out.println("How much do you wish to add as a bonus?");
+                            try{
+                                String bonus = scanner.nextLine();
+                                employee.setCumulativeSalary(employee.getCumulativeSalary() + Double.parseDouble(bonus));
+                                System.out.println("Employees cumulative salary now is: " + employee.getCumulativeSalary());
+                                break;
+                            }
+                            catch (Exception e){
+                                System.out.println("Invalid input. Please enter a number");
+                            }
+                        }
+                        break;
+                    case 8:
+                        System.out.println("Existing menu....");
+                        break;
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                        break;
                 }
             }
             catch (Exception e)
