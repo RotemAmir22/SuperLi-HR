@@ -1,6 +1,6 @@
 package DataAccess;
 
-import Module_HR.BranchStore;
+import BussinesLogic.BranchStore;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,4 +1,4 @@
-package Module_HR;
+package BussinesLogic;
 
 /**
  * this class creates new employee in the system

@@ -1,5 +1,5 @@
 package DataAccess;
-import Module_HR.Employee;
+import BussinesLogic.Employee;
 
 import java.util.HashMap;
 import java.util.List;

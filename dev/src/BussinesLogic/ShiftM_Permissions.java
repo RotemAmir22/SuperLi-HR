@@ -1,4 +1,4 @@
-package Module_HR;
+package BussinesLogic;
 
 /**
  * This class creates the shift managers permissions.

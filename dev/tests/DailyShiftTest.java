@@ -1,7 +1,7 @@
-import Module_HR.DailyShift;
-import Module_HR.Employee;
-import Module_HR.Role;
-import Module_HR.ShiftManager;
+import BussinesLogic.DailyShift;
+import BussinesLogic.Employee;
+import BussinesLogic.Role;
+import BussinesLogic.ShiftManager;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

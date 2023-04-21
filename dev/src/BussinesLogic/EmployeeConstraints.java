@@ -1,4 +1,4 @@
-package Module_HR;
+package BussinesLogic;
 
 import java.util.Objects;
 import java.util.Scanner;

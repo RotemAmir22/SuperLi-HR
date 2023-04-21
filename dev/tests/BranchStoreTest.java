@@ -1,7 +1,7 @@
 
-import Module_HR.BranchStore;
-import Module_HR.DailyShift;
-import Module_HR.Employee;
+import BussinesLogic.BranchStore;
+import BussinesLogic.DailyShift;
+import BussinesLogic.Employee;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

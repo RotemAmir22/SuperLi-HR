@@ -1,4 +1,4 @@
-package Module_HR;
+package BussinesLogic;
 
 /**
  * roles that can be scheduled in every branch store

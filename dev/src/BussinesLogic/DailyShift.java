@@ -1,4 +1,4 @@
-package Module_HR;
+package BussinesLogic;
 
 import java.io.File;
 import java.time.DayOfWeek;
@@ -146,7 +146,7 @@ public class DailyShift {
                 ShiftManager shiftManager = findEmployeeInShiftManager(employee.getId());
                 if(shiftManager == null)
                 {
-                    shiftManager = new ShiftManager(employee.getName(), employee.getId(), LocalDate.now(),shift);
+                    shiftManager = ShiftManagerGenerator.CreateShiftManager(employee.getName(), employee.getId(), LocalDate.now(),shift);
                     addShiftManager(shiftManager);
                 }
             }

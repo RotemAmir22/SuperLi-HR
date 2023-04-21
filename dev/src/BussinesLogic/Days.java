@@ -1,4 +1,4 @@
-package Module_HR;
+package BussinesLogic;
 
 /**
  * Enum to follow the weekly days

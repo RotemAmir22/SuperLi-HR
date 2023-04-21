@@ -1,4 +1,6 @@
-package Module_HR;
+package Presentation;
+
+import BussinesLogic.*;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -73,7 +75,7 @@ public class ShiftOrganizer {
      * @param weekDay : what day to schedule the shift
      * @return suggestion of a daily shift for the date requested
      */
-    public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours, int shift, DailyShift dailyShift,Days weekDay) {
+    public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours, int shift, DailyShift dailyShift, Days weekDay) {
        //check if morning or evening shift
        if(shift !=0 && shift != 1){return null;}
        /* Get the current date, and pull the vent date for scheduling */
@@ -113,6 +115,7 @@ public class ShiftOrganizer {
                 {
                     numOfShiftManagers = Integer.parseInt(c);
                 }
+
 
                 //update role amount
                 rolesAmount.put(String.valueOf(roles[i]), Integer.parseInt(c));
