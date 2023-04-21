@@ -1,5 +1,9 @@
 package Module_HR;
 
+import DataAccess.DAO_BranchStore;
+import DataAccess.DAO_Employee;
+import DataAccess.DAO_Generator;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -13,76 +17,15 @@ import java.util.*;
 public class HR_SystemManagement {
 
     //variables
-    private List<BranchStore> networkBranches;
-    private List<Employee> networkEmployees;
+    private DAO_Employee employeesDAO;
+    private DAO_BranchStore branchStoreDAO;
 
     //constructor
     public HR_SystemManagement() {
-        this.networkBranches= new ArrayList<>();
-        this.networkEmployees= new ArrayList<>();
+        employeesDAO = DAO_Generator.getEmployeeDAO();
+        branchStoreDAO = DAO_Generator.getBranchStoreDAO();
     }
 
-    /**
-     * @return list of all employees in system
-     */
-    public List<Employee> getNetworkEmployees()
-    {
-        return networkEmployees;
-    }
-
-    /**
-     * get number of employees in system
-     * @return int
-     */
-    public int getNumOfEmployee(){return networkEmployees.size();}
-
-    /**
-     * @param b: adds this branch to the list of all the branches in the network
-     */
-    public void addBranchStoreToList(BranchStore b)
-    {
-        networkBranches.add(b);
-    }
-
-    /**
-     *
-     * @return list of all the branches in the network
-     */
-    public List<BranchStore> getNetworkBranches()
-    {
-        return networkBranches;
-    }
-
-    /**
-     * look for branch using given id
-     * @param ID : branch id to find
-     * @return if found return branch and if not, null
-     */
-    public BranchStore findBranchByID(int ID) {
-
-        for (BranchStore branch : networkBranches)
-            if (branch.getBranchID()==ID)
-                return branch;
-        return null;
-    }
-
-    /**
-     * searches for employee in network
-     * @param ID: uses ID to identify employee
-     * @return if found returns employee, null if not found
-     */
-    public Employee findEmployeeByID(String ID) {
-        for (Employee employee : networkEmployees)
-            if (Objects.equals(employee.getId(), ID))
-                return employee;
-        return null;
-    }
-
-    /**
-     *
-     * @param e: add employee to list of all networks employees
-     */
-    public void addEmployeeToList(Employee e){this.networkEmployees.add(e);}
 
     /**
      * @param employee: gets employee and adds a qualification to the employee
@@ -91,6 +34,7 @@ public class HR_SystemManagement {
     {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
+        boolean change = false;
         System.out.println("-Add qualification to Employee-");
         //add qualification to employee - only one when it is a new employee
         while (Objects.equals(answer, "y"))
@@ -102,8 +46,11 @@ public class HR_SystemManagement {
                     System.out.println(i + " - " + roles[i]);
                 }
                 int qualification = scanner.nextInt();
-                if(!employee.getQualifications().contains(roles[qualification]))
+                if(!employee.getQualifications().contains(roles[qualification])){
                     employee.addRole(roles[qualification]);
+                    change = true;
+                }
+
                 else
                     System.out.println("This employee is already a " + roles[qualification].toString());
                 answer=scanner.nextLine();
@@ -116,6 +63,7 @@ public class HR_SystemManagement {
             }
 
         }
+        if(change){employeesDAO.update(employee);} // update DB
     }
 
     /**
@@ -125,6 +73,7 @@ public class HR_SystemManagement {
     {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
+        boolean change = false;
         System.out.println("-Remove qualification from Employee-");
         //add qualification to employee - only one when it is a new employee
         while (Objects.equals(answer, "y"))
@@ -136,8 +85,11 @@ public class HR_SystemManagement {
                     System.out.println(i + " - " + roles[i]);
                 }
                 int qualification = scanner.nextInt();
-                if(employee.getQualifications().contains(roles[qualification]))
+                if(employee.getQualifications().contains(roles[qualification])){
                     employee.removeRole(roles[qualification]);
+                    change = true;
+                }
+
                 else
                     System.out.println("This employee isn't a " + roles[qualification].toString());
                 answer=scanner.nextLine();
@@ -150,6 +102,7 @@ public class HR_SystemManagement {
             }
 
         }
+        if(change){employeesDAO.update(employee);}
     }
 
     /**
@@ -169,12 +122,13 @@ public class HR_SystemManagement {
                 int branchNum = scanner.nextInt();
 
                 //find branch in network
-                BranchStore branch = findBranchByID(branchNum);
+                BranchStore branch = branchStoreDAO.findBranchByID(branchNum); // check in DAO
                 if(branch== null){
                     System.out.println("ID entered does not exist, please try again: ");
                 }
                 else {
                     branch.addEmployee(employee);
+                    branchStoreDAO.update(branch); // connect to DB
                     answer=scanner.nextLine();
                     System.out.println("Do you want to add the employee to another branch? (enter y/n): ");
                     answer = scanner.nextLine();
@@ -206,12 +160,13 @@ public class HR_SystemManagement {
                 int branchNum = scanner.nextInt();
 
                 //find branch in network
-                BranchStore branch = findBranchByID(branchNum);
+                BranchStore branch = branchStoreDAO.findBranchByID(branchNum);
                 if(branch== null){
                     System.out.println("ID entered does not exist, please try again: ");
                 }
                 else {
                     branch.removeEmployee(employee);
+                    branchStoreDAO.update(branch); // connect to DB
                     answer=scanner.nextLine();
                     System.out.println("Do you want to remove the employee from another branch? (enter y/n): ");
                     answer = scanner.nextLine();
@@ -275,15 +230,12 @@ public class HR_SystemManagement {
         EmployeeGenerator employeeGenerator = new EmployeeGenerator();
         //create new employee
         Employee employee = employeeGenerator.CreateEmployee(first,last,id,bankAccount,salary,filePath,startDate);
-        //add employee to list of all employees in network
-        addEmployeeToList(employee);
-
-        //add employee to branch
+        //add employee to list of all employees in network and update the DB
+        employeesDAO.insert(employee);
+        //add employee to branch and update the DB
         addEmployeeToBranch(employee);
-
         //add qualifications
         addQualificationToEmployee(employee);
-
         System.out.println("Employee successfully added to system");
     }
 
@@ -318,6 +270,7 @@ public class HR_SystemManagement {
         System.out.println("Enter a summery for this branch's opening time");
         answer = scanner.nextLine();
         branchStore.setOpeningTime(answer);
+        branchStoreDAO.update(branchStore); // connect to DB
 
     }
     /**
@@ -335,7 +288,8 @@ public class HR_SystemManagement {
         System.out.println("Enter branch's phone number: ");
         String phone = scanner.nextLine();
         BranchStore branchStore = new BranchStore(name,address,phone, "24/7");
-        addBranchStoreToList(branchStore);
+
+        branchStoreDAO.insert(branchStore);
 
         System.out.println("Please update the open hours in according to the opening time for scheduling purposes\nthe default is that the branch store is open 24/7");
         updateBranchOpenHours(branchStore);
@@ -352,13 +306,15 @@ public class HR_SystemManagement {
          * First function ask all the employees in all branches to give constraints
          */
         System.out.println("TIME TO SCHEDULE CONSTRAINTS \u231B");
-        for(int j = 0; j<getNetworkBranches().size(); j ++)
+        for(int j = 0; j<branchStoreDAO.getNetworkBranches().size(); j ++) // note that it's not all
         {
-            getNetworkBranches().get(j).printOpenHours();
+            branchStoreDAO.getNetworkBranches().get(j).printOpenHours();
         }
-        for(int i = 0; i< getNumOfEmployee(); i ++)
+        for(int i = 0; i< employeesDAO.getNetworkEmployees().size(); i ++) // note that it's not all
         {
-            EmployeeConstraints.askForConstraints(getNetworkEmployees().get(i));
+            EmployeeConstraints.askForConstraints(employeesDAO.getNetworkEmployees().get(i));
+            Employee e = employeesDAO.getNetworkEmployees().get(i);
+            employeesDAO.update(e); // update DB
         }
         System.out.println("DONE.");
 
@@ -374,26 +330,27 @@ public class HR_SystemManagement {
         {
             Days day = Days.values()[j];
             System.out.println("\n- Set Shift Schedule for "+ LocalDate.now().plusDays(day.ordinal()+2)+" -");
-            DailyShift[] newShift = new DailyShift[getNetworkBranches().size()];
+            DailyShift[] newShift = new DailyShift[branchStoreDAO.getNetworkBranches().size()];
             /*
              * Second function set all branches shifts for one day.
              */
             List<Employee> listEmployees;
-            for(int i = 0; i<getNetworkBranches().size(); i++)
+            for(int i = 0; i<branchStoreDAO.getNetworkBranches().size(); i++) // note that it's not all
             {
-                System.out.println("\nSetting shift for Branch No. "+getNetworkBranches().get(i).getBranchID());
+                System.out.println("\nSetting shift for Branch No. "+branchStoreDAO.getNetworkBranches().get(i).getBranchID());
                 newShift[i] = new DailyShift(LocalDate.now().plusDays(day.ordinal()+2));
                 // get the employees from each branch and set them a new scheduling
-                listEmployees = getNetworkBranches().get(i).getEmployees();
+                listEmployees = branchStoreDAO.getNetworkBranches().get(i).getEmployees();
 
                 //schedule morning shift
-                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours(), 0, newShift[i],day);
+                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, branchStoreDAO.getNetworkBranches().get(i).getOpenHours(), 0, newShift[i],day);
                 assert newShift[i] != null;
                 System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Morning);
 
                 //schedule evening shift
-                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, getNetworkBranches().get(i).getOpenHours(), 1, newShift[i],day);
-                getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
+                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, branchStoreDAO.getNetworkBranches().get(i).getOpenHours(), 1, newShift[i],day);
+                branchStoreDAO.getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
+                branchStoreDAO.update(branchStoreDAO.getNetworkBranches().get(i));
                 assert newShift[i] != null;
                 System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
 
@@ -421,12 +378,12 @@ public class HR_SystemManagement {
                 int branchID = scanner.nextInt();
 
                 //find branch
-                BranchStore branch = findBranchByID(branchID);
+                BranchStore branch = branchStoreDAO.findBranchByID(branchID);
                 while (branch == null)
                 {
                     System.out.println("Invalid Branch Store ID, please try again ");
                     branchID = scanner.nextInt();
-                    branch = findBranchByID(branchID);
+                    branch = branchStoreDAO.findBranchByID(branchID);
                 }
 
                 String dateString=scanner.nextLine();
@@ -487,7 +444,7 @@ public class HR_SystemManagement {
         {
             System.out.println("Hello, Enter your ID to update your shift constraints: ");
             String employeeId = scanner.nextLine();
-            Employee employee = findEmployeeByID(employeeId);
+            Employee employee = employeesDAO.findEmployeeByID(employeeId);
             if (employee == null){
                 System.out.println("Invalid ID.");
                 continue;
@@ -507,8 +464,10 @@ public class HR_SystemManagement {
         LocalDate currentDate = LocalDate.now();
         /* Reset employee's limit of shifts if the week is over */
         if(currentDate.toString().equals("Saturday"))
-            for (Employee employee : getNetworkEmployees()){employee.setShiftsLimit(6);}
-
+            for (Employee employee : employeesDAO.getNetworkEmployees()){
+                employee.setShiftsLimit(6);
+                employeesDAO.update(employee);
+            }
     }
 
     /**
@@ -535,7 +494,7 @@ public class HR_SystemManagement {
                 int branchNum = scanner.nextInt();
 
                 //find branch in network
-                BranchStore branch = findBranchByID(branchNum);
+                BranchStore branch = branchStoreDAO.findBranchByID(branchNum);
                 if(branch== null)
                 {
                     System.out.println("ID entered does not exist, please try again: ");
@@ -571,11 +530,13 @@ public class HR_SystemManagement {
                     System.out.println("Do you want to add another permission to a shift manager? (enter y/n): ");
                     answer = scanner.nextLine();
                 }
+                branchStoreDAO.update(branch); // connect to DB
             }
             catch (Exception e)
             {
                 System.out.println("Invalid choice. Please try again.");
             }
+
 
         }
     }
@@ -599,7 +560,7 @@ public class HR_SystemManagement {
                 int branchNum = scanner.nextInt();
 
                 //find branch in network
-                BranchStore branch = findBranchByID(branchNum);
+                BranchStore branch = branchStoreDAO.findBranchByID(branchNum);
                 if(branch== null)
                 {
                     System.out.println("ID entered does not exist, please try again: ");
@@ -635,6 +596,7 @@ public class HR_SystemManagement {
                     System.out.println("Do you want to remove another permission from a shift manager? (enter y/n): ");
                     answer = scanner.nextLine();
                 }
+                branchStoreDAO.update(branch); // connect to DB
             }
             catch (Exception e)
             {
@@ -730,6 +692,7 @@ public class HR_SystemManagement {
                         System.out.println("Invalid choice. Please try again.");
                         break;
                 }
+                employeesDAO.update(employee);
             }
             catch (Exception e)
             {
@@ -849,6 +812,7 @@ public class HR_SystemManagement {
                         System.out.println("Invalid choice. Please try again.");
                         break;
                 }
+                branchStoreDAO.update(branch);
             }
             catch (Exception e)
             {
@@ -864,15 +828,18 @@ public class HR_SystemManagement {
     {
         System.out.println("- Cumulative Salary -");
 
-        for (Employee employee: networkEmployees)
+        for (Employee employee: employeesDAO.getNetworkEmployees())
             System.out.println(employee.getName()+ ": "+ employee.getCumulativeSalary());
 
         System.out.println("Do you want to nullify employees cumulative salary? (y/n)");
         Scanner scanner = new Scanner(System.in);
         String ans = scanner.nextLine();
         if(Objects.equals(ans, "y"))
-            for (Employee employee: networkEmployees)
+            for (Employee employee: employeesDAO.getNetworkEmployees()){
                 employee.setCumulativeSalary(0);
+                employeesDAO.update(employee);
+            }
+
 
         System.out.println("Complete");
     }

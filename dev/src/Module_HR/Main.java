@@ -1,5 +1,9 @@
 package Module_HR;
 
+import DataAccess.DAO_BranchStore;
+import DataAccess.DAO_Employee;
+import DataAccess.DAO_Generator;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -10,12 +14,16 @@ import java.util.Scanner;
  */
 public class Main {
 
+    private static DAO_Employee employeesDAO;
+    private static DAO_BranchStore branchStoreDAO;
     /**
      * upload data of network into system
      * @param system upload data
      */
     public static void uploadData(HR_SystemManagement system)
     {
+        employeesDAO = DAO_Generator.getEmployeeDAO();
+        branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         //employees
         Employee e1 = new Employee("Yoni","Cohen","111111","923-456120",600,"Salary per shift - 600","2022-11-13");
         Employee e2 = new Employee("Efrat","Gosh","111112","908-257197",750,"Salary per shift - 750","2022-12-13");
@@ -90,25 +98,25 @@ public class Main {
         e15.addRole(Role.GENERAL);
 
         //add to system
-        system.addEmployeeToList(e1);
-        system.addEmployeeToList(e2);
-        system.addEmployeeToList(e3);
-        system.addEmployeeToList(e4);
-        system.addEmployeeToList(e5);
-        system.addEmployeeToList(e6);
-        system.addEmployeeToList(e7);
-        system.addEmployeeToList(e8);
-        system.addEmployeeToList(e9);
-        system.addEmployeeToList(e10);
-        system.addEmployeeToList(e11);
-        system.addEmployeeToList(e12);
-        system.addEmployeeToList(e13);
-        system.addEmployeeToList(e14);
-        system.addEmployeeToList(e15);
-
-        system.addBranchStoreToList(b1);
-        system.addBranchStoreToList(b2);
-        system.addBranchStoreToList(b3);
+//        system.addEmployeeToList(e1);
+//        system.addEmployeeToList(e2);
+//        system.addEmployeeToList(e3);
+//        system.addEmployeeToList(e4);
+//        system.addEmployeeToList(e5);
+//        system.addEmployeeToList(e6);
+//        system.addEmployeeToList(e7);
+//        system.addEmployeeToList(e8);
+//        system.addEmployeeToList(e9);
+//        system.addEmployeeToList(e10);
+//        system.addEmployeeToList(e11);
+//        system.addEmployeeToList(e12);
+//        system.addEmployeeToList(e13);
+//        system.addEmployeeToList(e14);
+//        system.addEmployeeToList(e15);
+//
+//        system.addBranchStoreToList(b1);
+//        system.addBranchStoreToList(b2);
+//        system.addBranchStoreToList(b3);
 
 
     }
@@ -125,7 +133,7 @@ public class Main {
         {
             System.out.println("Enter the employees ID please");
             String id = scanner.nextLine();
-            Employee e = system.findEmployeeByID(id);
+            Employee e = employeesDAO.findEmployeeByID(id);
             if(e == null)
                 System.out.println("Invalid ID. Please try again");
             else
@@ -144,7 +152,7 @@ public class Main {
         while(true) {
             System.out.println("Enter the Branch ID please");
             int id = scanner.nextInt();
-            BranchStore b = system.findBranchByID(id);
+            BranchStore b = branchStoreDAO.findBranchByID(id);
             if (b == null)
                 System.out.println("Invalid ID. Please try again");
             else
@@ -165,7 +173,7 @@ public class Main {
         if(Objects.equals(data, "0"))
         {
             uploadData(system);
-            for (BranchStore branchStore : system.getNetworkBranches())
+            for (BranchStore branchStore : branchStoreDAO.getNetworkBranches())
             {
                 branchStore.printBranchDetails();
                 System.out.println("");
@@ -212,7 +220,7 @@ public class Main {
                             system.calculateSalary();
                             break;
                         case "5":
-                            for (Employee employee : system.getNetworkEmployees())
+                            for (Employee employee : employeesDAO.getNetworkEmployees())
                             {
                                 employee.printEmployeeDetails();
                                 System.out.println("");
@@ -247,7 +255,7 @@ public class Main {
                             system.removeEmployeeFromBranch(searchAnEmployee(system));
                             break;
                         case "5":
-                            for (BranchStore branchStore : system.getNetworkBranches())
+                            for (BranchStore branchStore : branchStoreDAO.getNetworkBranches())
                             {
                                 branchStore.printBranchDetails();
                                 System.out.println("");
@@ -345,7 +353,7 @@ public class Main {
                             }
                             break;
                         case "2":
-                            for( BranchStore branch: system.getNetworkBranches()){branch.deleteHistory();}
+                            for( BranchStore branch: branchStoreDAO.getNetworkBranches()){branch.deleteHistory();}
                             System.out.println("All history is reset.");
                             break;
                         default:
