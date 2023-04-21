@@ -40,29 +40,22 @@ public class ShiftOrganizer {
      * if invalid, sends an alert
      * @param rolesAmount: to check if all are update to 0
      */
-    public static void checkShiftValidation(Map<String, Integer> rolesAmount, int numOfShiftManagers)
+    public static void checkShiftValidation(Map<String, Integer> rolesAmount)
     {
         Scanner scanner = new Scanner(System.in);
-        /*
-        force the HR manager to choose shift manager
-         */
-        if(numOfShiftManagers != 0)
+        //go over the roles and check if all of them are fulfilled
+        for(Role role: Role.values())
         {
-            //go over the roles and check if all of them are fulfilled
-            for(Role role: Role.values())
+            if(rolesAmount.get(role.toString()) > 0)
             {
-                if(rolesAmount.get(role.toString()) > 0)
-                {
-                    System.out.println("Daily shift is INVALID !!!\nAsk backup from another branch? (y/n)");
-                    String replay = scanner.nextLine();
-                    if(Objects.equals(replay, "y")) {
-                        System.out.println("ALL BRANCHES: please contact HR manager");
-                    }
-                    break;
+                System.out.println("Daily shift is INVALID !!!\nAsk backup from another branch? (y/n)");
+                String replay = scanner.nextLine();
+                if(Objects.equals(replay, "y")) {
+                    System.out.println("ALL BRANCHES: please contact HR manager");
                 }
+                break;
             }
         }
-        else{System.out.println("Daily shift is INVALID - Every shift requires a shift-manager!");}
 
     }
 
@@ -114,9 +107,11 @@ public class ShiftOrganizer {
                 if(Objects.equals(roles[i].toString(), "SHIFTMANAGER"))
                 {
                     numOfShiftManagers = Integer.parseInt(c);
+                    if(numOfShiftManagers < 1){
+                        System.out.println("Invalid input. Please enter at least one shift manager.");
+                        continue;
+                    }
                 }
-
-
                 //update role amount
                 rolesAmount.put(String.valueOf(roles[i]), Integer.parseInt(c));
                 i++;
@@ -169,7 +164,7 @@ public class ShiftOrganizer {
 
         }
         /* Create and set a new shift */
-        checkShiftValidation(rolesAmount, numOfShiftManagers); // check if there is a problem
+        checkShiftValidation(rolesAmount); // check if there is a problem
         return dailyShift; //return a new daily shift
     }
 }
