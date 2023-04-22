@@ -167,6 +167,7 @@ public void beginTransit (Scanner scanner)
     boolean overload = false;
     int transitId = getTransitIdHandler(scanner);
     Transit transit = findTransitById(transitId);
+    if (transit == null) return;
     TransitRecord transitRecord = this.transitService.getTransitRecordService().createTransitRecord(transit);
     //check if date is today
     LocalDateTime presentDate = LocalDate.now().atStartOfDay(); // using java.time.LocalDate
