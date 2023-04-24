@@ -103,6 +103,9 @@ public class ShiftOrganizer {
             try{
                 System.out.println("How much "+ roles[i] + " do you need for " + shiftDate + " "+Shift.values()[shift].toString()+" shift?");
                 c = scanner.nextLine();
+                //update role amount - check if it's a positive integer
+                if(Integer.parseInt(c) < 0) {throw new Exception("");}
+                rolesAmount.put(String.valueOf(roles[i]), Integer.parseInt(c));
                 //check how many shift managers are in the shift
                 if(Objects.equals(roles[i].toString(), "SHIFTMANAGER"))
                 {
@@ -112,8 +115,6 @@ public class ShiftOrganizer {
                         continue;
                     }
                 }
-                //update role amount
-                rolesAmount.put(String.valueOf(roles[i]), Integer.parseInt(c));
                 i++;
             }
             catch (Exception e)
@@ -138,8 +139,6 @@ public class ShiftOrganizer {
         {
             roleName = Role.valueOf(entry.getKey());
             amount = entry.getValue();
-            if(roleName == Role.SHIFTMANAGER)
-                numOfShiftManagers = amount;
             /* Check if there is need for this role:
                If the employee can do it, and if he doesn't pass his weekly limitation. */
             if(amount <=0)

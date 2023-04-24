@@ -327,7 +327,7 @@ public class HR_SystemManagement {
     public void setShift()
     {
 
-        for(int j=0; j<2 ; j++)
+        for(int j=0; j<2 ; j++) // two days
         {
             Days day = Days.values()[j];
             System.out.println("\n- Set Shift Schedule for "+ LocalDate.now().plusDays(day.ordinal()+2)+" -");
