@@ -1,4 +1,7 @@
-package BussinesLogic;
+package Presentation;
+
+import BussinesLogic.Days;
+import BussinesLogic.Employee;
 
 import java.util.Objects;
 import java.util.Scanner;
