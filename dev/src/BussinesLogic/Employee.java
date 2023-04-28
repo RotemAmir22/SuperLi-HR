@@ -18,7 +18,7 @@ public class Employee {
     private List<AEmployeeDetails> details;
     private boolean[][] constrains; // [0,0] sunday morning, [0,1] sunday eve...
     private int shiftsLimit;
-    private List<Role> qualifications;
+    private Collection<Role> qualifications;
     private double cumulativeSalary;
 
     //constructor
@@ -46,7 +46,7 @@ public class Employee {
     public String getId() {return id;}
     public String getName() {return firstName+" "+lastName;}
     public boolean[][] getConstraints() {return constrains;}
-    public List<Role> getQualifications() {return qualifications;}
+    public List<Role> getQualifications() {return (List<Role>) qualifications;}
     public int getShiftsLimit() {return shiftsLimit;}
     public String getBankAccount() {return bankAccount;}
     public double getSalary() {return salary;}
