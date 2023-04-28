@@ -143,12 +143,8 @@ public class DailyShift {
             //if the employee is a shift manager
             if(role == Role.SHIFTMANAGER)
             {
-                ShiftManager shiftManager = findEmployeeInShiftManager(employee.getId());
-                if(shiftManager == null)
-                {
-                    shiftManager = ShiftManagerGenerator.CreateShiftManager(employee.getName(), employee.getId(), LocalDate.now(),shift);
-                    addShiftManager(shiftManager);
-                }
+                ShiftManager shiftManager = ShiftManagerGenerator.CreateShiftManager(employee.getName(), employee.getId(), LocalDate.now(),shift);
+                addShiftManager(shiftManager);
             }
 
             boolean addToShift;
