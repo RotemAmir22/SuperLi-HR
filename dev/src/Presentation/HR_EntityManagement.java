@@ -11,8 +11,8 @@ import java.util.*;
 
 /**
  * This class will help HR user to manage the system:
- * - schedule shifts by the ShiftOrganizer class
- * - ask for employees' constraints by the EmployeeConstraints class
+ * - create new employees and branches
+ * - update employees and branches
  * We assume there is one user at this point.
  */
 public class HR_EntityManagement {

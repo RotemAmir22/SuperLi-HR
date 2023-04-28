@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * This class will help HR user to manage the system:
+ * - schedule shifts by the ShiftOrganizer class
+ * - ask for employees' constraints by the EmployeeConstraints class
+ * We assume there is one user at this point.
+ */
 public class HR_SchedulingManagement {
 
     //variables
