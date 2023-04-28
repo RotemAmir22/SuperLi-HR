@@ -4,8 +4,6 @@ import BussinesLogic.*;
 import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
-import Presentation.HR_SystemManagement;
-import Presentation.ManageShift;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -23,7 +21,7 @@ public class Main {
      * upload data of network into system
      * @param system upload data
      */
-    public static void uploadData(HR_SystemManagement system)
+    public static void uploadData(HR_EntityManagement system)
     {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
@@ -129,7 +127,7 @@ public class Main {
      * @param system user
      * @return the required employee
      */
-    public static Employee searchAnEmployee(HR_SystemManagement system)
+    public static Employee searchAnEmployee(HR_EntityManagement system)
     {
         Scanner scanner = new Scanner(System.in);
         while(true)
@@ -149,7 +147,7 @@ public class Main {
      * @param system user
      * @return the required branch
      */
-    public static BranchStore searchABranchStore(HR_SystemManagement system)
+    public static BranchStore searchABranchStore(HR_EntityManagement system)
     {
         Scanner scanner = new Scanner(System.in);
         while(true) {
@@ -169,13 +167,14 @@ public class Main {
     public static void main(String[] args){
 
         /* The main object "HR" control */
-        HR_SystemManagement system = new HR_SystemManagement();
+        HR_EntityManagement entityManagement = new HR_EntityManagement();
+        HR_SchedulingManagement schedulingManager = new HR_SchedulingManagement();
         Scanner scanner = new Scanner(System.in);
         System.out.println("HELLO. Do you wish to upload the system with/without data? enter (0/1)");
         String data = scanner.nextLine();
         if(Objects.equals(data, "0"))
         {
-            uploadData(system);
+            uploadData(entityManagement);
             for (BranchStore branchStore : branchStoreDAO.getNetworkBranches())
             {
                 branchStore.printBranchDetails();
@@ -211,16 +210,16 @@ public class Main {
                     switch (c)
                     {
                         case "1":
-                            system.newEmployeeInNetwork();
+                            entityManagement.newEmployeeInNetwork();
                             break;
                         case "2":
-                            system.updateEmployeesDetails(searchAnEmployee(system));
+                            entityManagement.updateEmployeesDetails(searchAnEmployee(entityManagement));
                             break;
                         case "3":
-                            system.getEmployeesDetails(searchAnEmployee(system));
+                            entityManagement.getEmployeesDetails(searchAnEmployee(entityManagement));
                             break;
                         case "4":
-                            system.calculateSalary();
+                            entityManagement.calculateSalary();
                             break;
                         case "5":
                             for (Employee employee : employeesDAO.getNetworkEmployees())
@@ -247,15 +246,15 @@ public class Main {
                     switch (c)
                     {
                         case "1":
-                            system.newBranchInNetwork();
+                            entityManagement.newBranchInNetwork();
                             break;
                         case "2":
-                            system.updateBranchDetails(searchABranchStore(system));
+                            entityManagement.updateBranchDetails(searchABranchStore(entityManagement));
                         case "3":
-                            system.addEmployeeToBranch(searchAnEmployee(system));
+                            entityManagement.addEmployeeToBranch(searchAnEmployee(entityManagement));
                             break;
                         case "4":
-                            system.removeEmployeeFromBranch(searchAnEmployee(system));
+                            entityManagement.removeEmployeeFromBranch(searchAnEmployee(entityManagement));
                             break;
                         case "5":
                             for (BranchStore branchStore : branchStoreDAO.getNetworkBranches())
@@ -281,13 +280,13 @@ public class Main {
                     switch (c)
                     {
                         case "1":
-                            system.schedulingFromEmployees();
+                            schedulingManager.schedulingFromEmployees();
                             break;
                         case "2":
-                            system.updateEmployeeConstrainsByID();
+                            schedulingManager.updateEmployeeConstrainsByID();
                             break;
                         case "3":
-                            Employee employee = searchAnEmployee(system);
+                            Employee employee = searchAnEmployee(entityManagement);
                             System.out.println(employee.getName()+ "constraints are: ");
                             employee.printEmployeesConstraints();
 
@@ -309,19 +308,19 @@ public class Main {
                     c = scanner.nextLine();
                     switch (c) {
                         case "1":
-                            system.setShift();
+                            schedulingManager.setShift();
                             break;
                         case "2":
-                            system.changeShiftSchedule();
+                            schedulingManager.changeShiftSchedule();
                             break;
                         case "3":
-                            system.addPermissionToShiftManagerForDailyShiftToday();
+                            schedulingManager.addPermissionToShiftManagerForDailyShiftToday();
                             break;
                         case "4":
-                            system.removePermissionToShiftManagerForDailyShiftToday();
+                            schedulingManager.removePermissionToShiftManagerForDailyShiftToday();
                             break;
                         case "5":
-                            system.resetEmployeesLimits();
+                            schedulingManager.resetEmployeesLimits();
                             break;
                         case "6":
                             continue;
@@ -338,7 +337,7 @@ public class Main {
                     switch (c) {
 
                         case "1":
-                            BranchStore b = searchABranchStore(system);
+                            BranchStore b = searchABranchStore(entityManagement);
                             scanner.nextLine();
                             while (true)
                             {
@@ -366,7 +365,7 @@ public class Main {
 
                     break;
                 case "6":
-                    BranchStore branch_ = searchABranchStore(system);
+                    BranchStore branch_ = searchABranchStore(entityManagement);
                     DailyShift s = branch_.getShiftByDate(LocalDate.now().plusDays(2).toString());
                     scanner.nextLine();
                     if(s == null)
