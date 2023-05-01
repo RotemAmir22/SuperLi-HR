@@ -44,65 +44,37 @@ public class BranchStore {
 
     //getters
     public String getOpeningTime() { return openingTime; }
-    public int getBranchID() {
-        return branchID;
-    }
-    public String getName() {
-        return name;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public String getPhoneNum() {
-        return phoneNum;
-    }
-    public int[][] getOpenHours() {
-        return openHours;
-    }
-    public Map<LocalDate, DailyShift> getShiftsHistory() {
-        return shiftsHistory;
-    }
+    public int getBranchID() {return branchID;}
+    public String getName() {return name;}
+    public String getAddress() {return address;}
+    public String getPhoneNum() {return phoneNum;}
+    public int[][] getOpenHours() {return openHours;}
+    public Map<LocalDate, DailyShift> getShiftsHistory() {return shiftsHistory;}
     public List<Employee> getEmployees() {return employees;}
 
-
     //setters
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setPhoneNum(String phoneNum) {
-        this.phoneNum = phoneNum;
-    }
-    public void setOpenHours(int day, int shift, int availability) {
-        this.openHours[day][shift] = availability;
-    }
-    public String setOpeningTime(String openingTime) { return this.openingTime = openingTime; }
-
+    public void setName(String name) {this.name = name;}
+    public void setPhoneNum(String phoneNum) {this.phoneNum = phoneNum;}
+    public void setOpenHours(int day, int shift, int availability) {this.openHours[day][shift] = availability;}
+    public void setOpeningTime(String openingTime) { this.openingTime = openingTime;}
 
     /**
      * saves branches new employee in list
      * @param employee: new employee to add to branch
      */
-    public void addEmployee(Employee employee)
-    {
-        this.employees.add(employee);
-    }
+    public void addEmployee(Employee employee){this.employees.add(employee);}
 
     /**
      *
      * @param employee: removes given employee from branch
      */
-    public void removeEmployee(Employee employee)
-    {
-        this.employees.remove(employee); //returns bool
-    }
+    public void removeEmployee(Employee employee){this.employees.remove(employee);} //returns bool}
 
     /**
      *
      * @param dailyShift: adds this shift to history
      */
-    public void addShiftToHistory(DailyShift dailyShift) {
-        this.shiftsHistory.put(dailyShift.getDate(),dailyShift);
-    }
+    public void addShiftToHistory(DailyShift dailyShift) {this.shiftsHistory.put(dailyShift.getDate(),dailyShift);}
 
     /**
      * clears all shift history of the past month
@@ -159,10 +131,7 @@ public class BranchStore {
     /**
      * print open hours
      */
-    public void printOpenHours()
-    {
-        System.out.println("Branch no. "+this.branchID+" open hours are "+this.openingTime);
-    }
+    public void printOpenHours(){System.out.println("Branch no. "+this.branchID+" open hours are "+this.openingTime);}
 
     /**
      * finds employee in branch by ID
