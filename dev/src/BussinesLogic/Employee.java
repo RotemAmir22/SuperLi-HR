@@ -15,7 +15,6 @@ public class Employee {
     private double salary;
     private String empTerms;
     private String startDate;
-    private List<AEmployeeDetails> details;
     private boolean[][] constrains; // [0,0] sunday morning, [0,1] sunday eve...
     private int shiftsLimit;
     private Collection<Role> qualifications;
@@ -33,7 +32,6 @@ public class Employee {
         this.startDate = startDate;
         this.shiftsLimit = 6; // worker can only work 6 shifts a week
         this.constrains = new boolean[7][2]; //if worker can work in the morning or evening shift of each day
-        this.details= new ArrayList<AEmployeeDetails>(); //additional details about worker
         this.qualifications=new ArrayList<Role>(); //employees qualifications to perform a role, description can be saved in details if required
         for(int i=0; i<7; i++)
         {
@@ -51,7 +49,6 @@ public class Employee {
     public String getBankAccount() {return bankAccount;}
     public double getSalary() {return salary;}
     public String getEmpTerms() {return empTerms;}
-    public List<AEmployeeDetails> getDetails() {return details;}
     public boolean[][] getConstrains() {return constrains;}
     public double getCumulativeSalary() {return cumulativeSalary;}
     public String getStartDate() {return startDate;}
@@ -67,19 +64,6 @@ public class Employee {
     public void setSalary(double salary) {this.salary = salary;}
     public void setEmpTerms(String empTerms) {this.empTerms = empTerms;}
     public void setCumulativeSalary(double cumulativeSalary) {this.cumulativeSalary = cumulativeSalary;}
-
-    //Employee Details - not in use, abstract for now
-    /**
-     * @param detail: add detail to employee
-     */
-    public void addEmployeeDetails(AEmployeeDetails detail) {
-        this.details.add(detail);
-    }
-
-    /**
-     * @param detail: removes detail from employee
-     */
-    public void removeEmployeeDetail(AEmployeeDetails detail){this.details.remove(detail);}
 
     //Employee Qualifications
     /**
