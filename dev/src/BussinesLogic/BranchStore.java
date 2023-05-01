@@ -21,7 +21,7 @@ public class BranchStore {
     private int[][] openHours; // days (0 - Sunday, 1- Monday, etc.) and hours ([0][0] - Sunday morning, [0][1] - Sunday evening)
     private String openingTime; // a summery for employees to know when the branch is open
     private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
-    Map<LocalDate, Driver> transits;
+    public Map<LocalDate, Driver> transits;
 
 
     /**

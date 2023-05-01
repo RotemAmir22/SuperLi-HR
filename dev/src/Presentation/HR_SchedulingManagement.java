@@ -72,14 +72,14 @@ public class HR_SchedulingManagement {
                 newShift[i] = new DailyShift(LocalDate.now().plusDays(day.ordinal()+2));
                 // get the employees from each branch and set them a new scheduling
                 listEmployees = branchStoreDAO.getNetworkBranches().get(i).getEmployees();
-
+                BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(i);
                 //schedule morning shift
-                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, branchStoreDAO.getNetworkBranches().get(i).getOpenHours(), 0, newShift[i],day);
+                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.transits,branchStore.getOpenHours(), 0, newShift[i],day);
                 assert newShift[i] != null;
                 System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Morning);
 
                 //schedule evening shift
-                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees, branchStoreDAO.getNetworkBranches().get(i).getOpenHours(), 1, newShift[i],day);
+                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.transits, branchStore.getOpenHours(), 1, newShift[i],day);
                 branchStoreDAO.getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
                 branchStoreDAO.update(branchStoreDAO.getNetworkBranches().get(i));
                 assert newShift[i] != null;

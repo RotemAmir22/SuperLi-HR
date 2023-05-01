@@ -40,23 +40,30 @@ public class ShiftOrganizer {
      * if invalid, sends an alert
      * @param rolesAmount: to check if all are update to 0
      */
-    public static void checkShiftValidation(Map<String, Integer> rolesAmount)
+    public static void checkShiftValidation(Map<String, Integer> rolesAmount, boolean isTransit)
     {
         Scanner scanner = new Scanner(System.in);
         //go over the roles and check if all of them are fulfilled
+        StringBuilder output = new StringBuilder();
         for(Role role: Role.values())
         {
-            if(rolesAmount.get(role.toString()) > 0)
-            {
-                System.out.println("Daily shift is INVALID !!!\nAsk backup from another branch? (y/n)");
-                String replay = scanner.nextLine();
-                if(Objects.equals(replay, "y")) {
-                    System.out.println("ALL BRANCHES: please contact HR manager");
-                }
-                break;
+            if(rolesAmount.get(role.toString()) > 0){
+                output.append(role).append(" are missing.\n");
+                if(role.equals(Role.STORAGE) && isTransit)
+                    ManageTransit.Alert("TRANSIT CANNOT BE COMPLETE!");
+                //TODO: use DAO_TransitRecord to change private boolean transitProblem
+            }
+
+
+        }
+        if(!output.toString().equals("")){
+            System.out.println("Daily shift is INVALID!!! " + output);
+            System.out.println("Ask backup from another branch? (y/n)");
+            String replay = scanner.nextLine();
+            if(Objects.equals(replay, "y")) {
+                System.out.println("ALL BRANCHES: please contact HR manager");
             }
         }
-
     }
 
     /**
@@ -68,7 +75,7 @@ public class ShiftOrganizer {
      * @param weekDay : what day to schedule the shift
      * @return suggestion of a daily shift for the date requested
      */
-    public static DailyShift DailyShifts(List<Employee> listEmployees, int[][] openHours, int shift, DailyShift dailyShift, Days weekDay) {
+    public static DailyShift DailyShifts(List<Employee> listEmployees,Map<LocalDate,Driver> transits, int[][] openHours, int shift, DailyShift dailyShift, Days weekDay) {
        //check if morning or evening shift
        if(shift !=0 && shift != 1){return null;}
        /* Get the current date, and pull the vent date for scheduling */
@@ -96,6 +103,7 @@ public class ShiftOrganizer {
         Role[] roles = Role.values();
         Scanner scanner = new Scanner(System.in);
         int numOfShiftManagers = 0;
+        int numOfStorage = 0;
         String c;
         int i = 0;
         while(i < roles.length)
@@ -113,6 +121,17 @@ public class ShiftOrganizer {
                     if(numOfShiftManagers < 1){
                         System.out.println("Invalid input. Please enter at least one shift manager.");
                         continue;
+                    }
+                }
+                //check if there is a transit in this day
+                else if(Objects.equals(roles[i].toString(), "STORAGE"))
+                {
+                    if(transits.containsKey(shiftDate)){
+                        numOfStorage = Integer.parseInt(c);
+                        if(numOfStorage < 1){
+                            System.out.println("There is a transit in this day, please input at least 1.");
+                            continue;
+                        }
                     }
                 }
                 i++;
@@ -163,7 +182,7 @@ public class ShiftOrganizer {
 
         }
         /* Create and set a new shift */
-        checkShiftValidation(rolesAmount); // check if there is a problem
+        checkShiftValidation(rolesAmount, transits.containsKey(shiftDate)); // check if there is a problem
         return dailyShift; //return a new daily shift
     }
 }
