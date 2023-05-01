@@ -9,4 +9,8 @@ public class EmployeeGenerator {
         return new Employee(firstName,lastName,id,bankAccount,salary,empTermsPath,startDate);
     }
 
+    public Driver CreateDriver(String firstName, String lastName, String id, String bankAccount, double salary, String empTermsPath, String startDate){
+        return new Driver(firstName,lastName,id,bankAccount,salary,empTermsPath,startDate);
+    }
+
 }

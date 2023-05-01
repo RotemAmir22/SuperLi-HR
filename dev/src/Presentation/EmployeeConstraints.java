@@ -1,8 +1,10 @@
 package Presentation;
 
 import BussinesLogic.Days;
+import BussinesLogic.Driver;
 import BussinesLogic.Employee;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -12,6 +14,21 @@ import java.util.Scanner;
  * this class is used as an interface between the system and the employee
  */
 public class EmployeeConstraints {
+
+    /**
+     * This function check if the driver can take the transit
+     * @param date of the transit
+     * @param d Driver
+     * @return true or false depends on his answer
+     */
+    public static boolean checkDriverAvailabilityForDate(LocalDate date, Driver d){
+        Scanner scanner = new Scanner(System.in);
+        String choice = "";
+        System.out.println("Hello " + d.getName() +". Please enter your availability for the "+date.toString()+"\ny/n");
+        choice = scanner.nextLine();
+        return choice.equals("y");
+
+    }
 
     /**
      * Ask every employee about their constraints and updates them

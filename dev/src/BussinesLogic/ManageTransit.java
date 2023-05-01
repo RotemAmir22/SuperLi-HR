@@ -3,8 +3,11 @@ package BussinesLogic;
 import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_Drivers;
 import DataAccess.DAO_Generator;
+import Presentation.EmployeeConstraints;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ManageTransit {
@@ -19,6 +22,22 @@ public class ManageTransit {
     public ManageTransit(){
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         driversDAO = DAO_Generator.getDriverDAO();
+    }
+
+    /**
+     * This function help to transit-module to schedule the drivers
+     * @param transitDate to schedule
+     * @param license of the needed driver
+     * @return list of available drivers
+     */
+    public List<Driver> getAvailableDrivers(LocalDate transitDate, License license){
+        List<Driver> availableDrivers = new ArrayList<>();
+        for(Driver driver : driversDAO.getNetworkDrivers())
+            if(driver.getLicenses().contains(license))
+                if(EmployeeConstraints.checkDriverAvailabilityForDate(transitDate, driver))
+                    availableDrivers.add(driver);
+        return availableDrivers;
+
     }
 
     /**

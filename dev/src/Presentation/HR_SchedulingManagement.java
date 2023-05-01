@@ -56,7 +56,6 @@ public class HR_SchedulingManagement {
      */
     public void setShift()
     {
-
         for(int j=0; j<2 ; j++) // two days
         {
             Days day = Days.values()[j];
