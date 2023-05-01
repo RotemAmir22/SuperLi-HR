@@ -10,13 +10,11 @@ import java.util.*;
  * Every branch get a unique ID
  * The shifts history saved at a specific branch for later use
  */
-public class BranchStore {
+public class BranchStore extends Site {
 
     private static int serialNumCounter=0;
     private int branchID; //cannot change to ID once created
     private String name;
-    private String address; //cannot change the address once created
-    private String phoneNum;
     private List<Employee> employees;
     private int[][] openHours; // days (0 - Sunday, 1- Monday, etc.) and hours ([0][0] - Sunday morning, [0][1] - Sunday evening)
     private String openingTime; // a summery for employees to know when the branch is open
@@ -28,10 +26,9 @@ public class BranchStore {
      * Constructor
      * @param openingtime: description
      */
-    public BranchStore(String name, String address, String phoneNum, String openingtime) {
+    public BranchStore(String name,Area area, String address, String phoneNum, String openingtime) {
+        super(address, area, name, phoneNum);
         this.name = name;
-        this.address = address;
-        this.phoneNum = phoneNum;
         serialNumCounter++;
         this.branchID = serialNumCounter;
         this.employees = new ArrayList<Employee>();
@@ -47,14 +44,14 @@ public class BranchStore {
     public int getBranchID() {return branchID;}
     public String getName() {return name;}
     public String getAddress() {return address;}
-    public String getPhoneNum() {return phoneNum;}
+    public String getPhoneNum() {return ContactNumber;}
     public int[][] getOpenHours() {return openHours;}
     public Map<LocalDate, DailyShift> getShiftsHistory() {return shiftsHistory;}
     public List<Employee> getEmployees() {return employees;}
 
     //setters
     public void setName(String name) {this.name = name;}
-    public void setPhoneNum(String phoneNum) {this.phoneNum = phoneNum;}
+    public void setPhoneNum(String phoneNum) {this.ContactNumber = phoneNum;}
     public void setOpenHours(int day, int shift, int availability) {this.openHours[day][shift] = availability;}
     public void setOpeningTime(String openingTime) { this.openingTime = openingTime;}
 

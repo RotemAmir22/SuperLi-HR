@@ -53,8 +53,6 @@ public class ShiftOrganizer {
                     ManageTransit.Alert("TRANSIT CANNOT BE COMPLETE!");
                 //TODO: use DAO_TransitRecord to change private boolean transitProblem
             }
-
-
         }
         if(!output.toString().equals("")){
             System.out.println("Daily shift is INVALID!!! " + output);
@@ -113,7 +111,6 @@ public class ShiftOrganizer {
                 c = scanner.nextLine();
                 //update role amount - check if it's a positive integer
                 if(Integer.parseInt(c) < 0) {throw new Exception("");}
-                rolesAmount.put(String.valueOf(roles[i]), Integer.parseInt(c));
                 //check how many shift managers are in the shift
                 if(Objects.equals(roles[i].toString(), "SHIFTMANAGER"))
                 {
@@ -134,6 +131,7 @@ public class ShiftOrganizer {
                         }
                     }
                 }
+                rolesAmount.put(String.valueOf(roles[i]), Integer.parseInt(c));
                 i++;
             }
             catch (Exception e)

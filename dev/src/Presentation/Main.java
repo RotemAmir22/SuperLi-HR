@@ -43,7 +43,7 @@ public class Main {
         Employee e15 = new Employee("Joni","Depp","121212","910-454120",700,"Salary per shift - 700","2022-11-13");
 
         //branches
-        BranchStore b1 = new BranchStore("Super-Li","Tel-Aviv","08-6543210","24/7");
+        BranchStore b1 = new BranchStore("Super-Li",Area.East,"Tel-Aviv","08-6543210","24/7");
         //add employees to branch
         b1.addEmployee(e1);
         b1.addEmployee(e2);
@@ -54,14 +54,14 @@ public class Main {
         b1.addEmployee(e9);
         b1.addEmployee(e10);
 
-        BranchStore b2 = new BranchStore("Super-Li","Jaffa","08-6442280","All week 10:00-22:00 except Saturday");
+        BranchStore b2 = new BranchStore("Super-Li",Area.East,"Jaffa","08-6442280","All week 10:00-22:00 except Saturday");
         //add employees to branch
         b2.addEmployee(e2);
         b2.addEmployee(e4);
         b2.addEmployee(e5);
         b2.addEmployee(e6);
 
-        BranchStore b3 = new BranchStore("Super-Li","Haifa","08-6573452","Sunday, Tuesday and Thursday 10:00-16:00");
+        BranchStore b3 = new BranchStore("Super-Li",Area.North,"Haifa","08-6573452","Sunday, Tuesday and Thursday 10:00-16:00");
         //add employees to branch
         b3.addEmployee(e11);
         b3.addEmployee(e12);
