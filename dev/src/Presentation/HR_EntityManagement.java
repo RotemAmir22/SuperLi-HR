@@ -123,7 +123,7 @@ public class HR_EntityManagement {
                 int branchNum = scanner.nextInt();
 
                 //find branch in network
-                BranchStore branch = branchStoreDAO.findBranchByID(branchNum); // check in DAO
+                BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum); // check in DAO
                 if(branch== null){
                     System.out.println("ID entered does not exist, please try again: ");
                 }
@@ -161,7 +161,7 @@ public class HR_EntityManagement {
                 int branchNum = scanner.nextInt();
 
                 //find branch in network
-                BranchStore branch = branchStoreDAO.findBranchByID(branchNum);
+                BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum);
                 if(branch== null){
                     System.out.println("ID entered does not exist, please try again: ");
                 }

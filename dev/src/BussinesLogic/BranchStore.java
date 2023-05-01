@@ -21,6 +21,7 @@ public class BranchStore {
     private int[][] openHours; // days (0 - Sunday, 1- Monday, etc.) and hours ([0][0] - Sunday morning, [0][1] - Sunday evening)
     private String openingTime; // a summery for employees to know when the branch is open
     private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
+    Map<LocalDate, Driver> transits;
 
 
     /**
@@ -37,6 +38,7 @@ public class BranchStore {
         this.openHours = new int[7][2]; //default value is 0 means open 24/7
         this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
         this.openingTime = openingtime;
+        this.transits = new HashMap<>();
 
     }
 
