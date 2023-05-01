@@ -286,9 +286,11 @@ public class HR_EntityManagement {
         String name = scanner.nextLine();
         System.out.println("Enter branch's address: ");
         String address = scanner.nextLine();
+        System.out.println("Enter branch's Area: ");
+        Area area = Area.valueOf(scanner.nextLine());
         System.out.println("Enter branch's phone number: ");
         String phone = scanner.nextLine();
-        BranchStore branchStore = BranchStoreGenerator.CreateBranchStore(name,address,phone, "24/7");
+        BranchStore branchStore = BranchStoreGenerator.CreateBranchStore(name,area,address,phone, "24/7");
 
         branchStoreDAO.insert(branchStore);
 

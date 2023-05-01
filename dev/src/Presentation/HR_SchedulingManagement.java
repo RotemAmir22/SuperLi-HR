@@ -180,6 +180,7 @@ public class HR_SchedulingManagement {
                 continue;
             }
             EmployeeConstraints.updateConstraints(employee);
+            employeesDAO.update(employee);
             System.out.println("Constraints updated ");
             break;
         }
