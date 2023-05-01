@@ -15,8 +15,7 @@ public class DAO_BranchStore implements DAO{
         networkBranches = new HashMap<>();
     }
 
-    public BranchStore findBranchByID(int ID) {
-
+    public Object findByID(Object ID) {
         if (networkBranches.containsKey(ID)){return networkBranches.get(ID);}
         return null;
     }

@@ -103,12 +103,12 @@ public class HR_SchedulingManagement {
                 int branchID = scanner.nextInt();
 
                 //find branch
-                BranchStore branch = branchStoreDAO.findBranchByID(branchID);
+                BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchID);
                 while (branch == null)
                 {
                     System.out.println("Invalid Branch Store ID, please try again ");
                     branchID = scanner.nextInt();
-                    branch = branchStoreDAO.findBranchByID(branchID);
+                    branch = (BranchStore) branchStoreDAO.findByID(branchID);
                 }
 
                 String dateString=scanner.nextLine();
@@ -169,7 +169,7 @@ public class HR_SchedulingManagement {
         {
             System.out.println("Hello, Enter your ID to update your shift constraints: ");
             String employeeId = scanner.nextLine();
-            Employee employee = employeesDAO.findEmployeeByID(employeeId);
+            Employee employee = (Employee) employeesDAO.findByID(employeeId);
             if (employee == null){
                 System.out.println("Invalid ID.");
                 continue;
@@ -219,7 +219,7 @@ public class HR_SchedulingManagement {
                 int branchNum = scanner.nextInt();
 
                 //find branch in network
-                BranchStore branch = branchStoreDAO.findBranchByID(branchNum);
+                BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum);
                 if(branch== null)
                 {
                     System.out.println("ID entered does not exist, please try again: ");
@@ -285,7 +285,7 @@ public class HR_SchedulingManagement {
                 int branchNum = scanner.nextInt();
 
                 //find branch in network
-                BranchStore branch = branchStoreDAO.findBranchByID(branchNum);
+                BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum);
                 if(branch== null)
                 {
                     System.out.println("ID entered does not exist, please try again: ");
