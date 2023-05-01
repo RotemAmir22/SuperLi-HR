@@ -68,4 +68,11 @@ public class ManageTransit {
             System.out.println("Invalid branch ID");
         return null;
     }
+
+    /**
+     * Static function to alert of any change in transit's status
+     */
+    public static void Alert(String message){
+        System.out.println(message);
+    }
 }
