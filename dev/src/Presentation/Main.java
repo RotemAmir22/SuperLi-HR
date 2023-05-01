@@ -134,7 +134,7 @@ public class Main {
         {
             System.out.println("Enter the employees ID please");
             String id = scanner.nextLine();
-            Employee e = employeesDAO.findEmployeeByID(id);
+            Employee e = (Employee) employeesDAO.findByID(id);
             if(e == null)
                 System.out.println("Invalid ID. Please try again");
             else
@@ -153,7 +153,7 @@ public class Main {
         while(true) {
             System.out.println("Enter the Branch ID please");
             int id = scanner.nextInt();
-            BranchStore b = branchStoreDAO.findBranchByID(id);
+            BranchStore b = (BranchStore) branchStoreDAO.findByID(id);
             if (b == null)
                 System.out.println("Invalid ID. Please try again");
             else

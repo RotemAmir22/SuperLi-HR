@@ -15,7 +15,8 @@ public class DAO_Employee implements DAO{
         networkEmployees = new HashMap<>();
     }
 
-    public Employee findEmployeeByID(String ID) {
+    @Override
+    public Object findByID(Object ID) {
         if (networkEmployees.containsKey(ID)){return networkEmployees.get(ID);}
         return null;
     }

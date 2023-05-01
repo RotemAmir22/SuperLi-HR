@@ -1,7 +1,11 @@
 package DataAccess;
 
+import java.lang.reflect.GenericDeclaration;
+
 public interface DAO {
-    public void insert(Object o);
-    public void update(Object o);
-    public void delete(Object o);
+    Object findByID(Object ID);
+
+    void insert(Object o);
+    void update(Object o);
+    void delete(Object o);
 }
