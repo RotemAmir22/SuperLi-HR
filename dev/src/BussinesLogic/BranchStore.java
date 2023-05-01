@@ -188,5 +188,31 @@ public class BranchStore {
         }
 
     }
+
+    /**
+     * view the transit that will arrive at the store
+     * only shift managers and inventory workers can view
+     * @param date : date that supply will arrive
+     * @param employeeID : ID of the employee that wants to view
+     */
+    public void viewTransit(LocalDate date, String employeeID)
+    {
+        DailyShift dailyShift = getShiftByDate(date.toString());
+        //works in the daily shift
+        Employee employee = dailyShift.isEmployeeInShift(employeeID);
+        if( employee != null)
+        {
+            //can view transit
+            Role role = dailyShift.getEmployeeRoleInShift(employee);
+            if(role != null)
+            {
+                if(Objects.equals(role.toString(), "SHIFTMANAGER") || Objects.equals(role.toString(), "STORAGE"))
+                {
+                    //TODO: getTransit(LocalDate date, String branchStoreID) the function already prints the details
+                }
+            }
+        }
+        System.out.println("You cannot view the transit information");
+    }
 }
 

@@ -243,4 +243,48 @@ public class DailyShift {
             }
         return false;
     }
+
+    /**
+     * find employee in shift
+     */
+    public Employee isEmployeeInShift(String employeeID)
+    {
+        //go over morning shift and find employee
+        for(Map.Entry<Role,ArrayList<Employee>> employees : morningShift.entrySet())
+            for (Employee employee : employees.getValue())
+            {
+                if(employee.getId().equals(employeeID))
+                    return employee;
+            }
+        //go over evening shift and find employee
+        for(Map.Entry<Role,ArrayList<Employee>> employees : eveningShift.entrySet())
+            for (Employee employee : employees.getValue())
+            {
+                if(employee.getId().equals(employeeID))
+                    return employee;
+            }
+        return null;
+    }
+
+    /**
+     * find employees role in shift
+     * @param e : employee
+     */
+    public Role getEmployeeRoleInShift(Employee e)
+    {
+        //go over morning shift
+       for(Role role: this.morningShift.keySet())
+       {
+           for(Employee employee: this.morningShift.get(role))
+               if(employee == e)
+                   return role;
+       }
+        for(Role role: this.eveningShift.keySet())
+        {
+            for(Employee employee: this.eveningShift.get(role))
+                if(employee == e)
+                    return role;
+        }
+        return null;
+    }
 }
