@@ -156,6 +156,9 @@ public class BranchStore {
         return this.shiftsHistory.get(date);
     }
 
+    /**
+     * print open hours
+     */
     public void printOpenHours()
     {
         System.out.println("Branch no. "+this.branchID+" open hours are "+this.openingTime);
@@ -188,7 +191,6 @@ public class BranchStore {
         {
             System.out.println(counter+++". "+employee.getName());
         }
-
     }
 
     /**
