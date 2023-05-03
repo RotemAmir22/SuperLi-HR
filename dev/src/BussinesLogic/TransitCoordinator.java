@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ManageTransit {
+public class TransitCoordinator {
 
     private DAO_BranchStore branchStoreDAO;
     private DAO_Drivers driversDAO;
@@ -19,7 +19,7 @@ public class ManageTransit {
      * Using DAO's of branchStore and drivers
      * this class will let you manage a transit include add drivers
      */
-    public ManageTransit(){
+    public TransitCoordinator(){
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         driversDAO = DAO_Generator.getDriverDAO();
     }

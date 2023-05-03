@@ -50,7 +50,7 @@ public class ShiftOrganizer {
             if(rolesAmount.get(role.toString()) > 0){
                 output.append(role).append(" are missing.\n");
                 if(role.equals(Role.STORAGE) && isTransit)
-                    ManageTransit.Alert("TRANSIT CANNOT BE COMPLETE!");
+                    TransitCoordinator.Alert("TRANSIT CANNOT BE COMPLETE!");
                 //TODO: use DAO_TransitRecord to change private boolean transitProblem
             }
         }
