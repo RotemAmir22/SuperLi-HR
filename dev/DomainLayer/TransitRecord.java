@@ -10,6 +10,7 @@ public class TransitRecord {
     private final Map<Supplier,Double> weightAtExit;
     private Transit transit;
 
+
     public TransitRecord(Transit transit) {
         this.transitRecordId = recordNextId;
         recordNextId++;
@@ -17,7 +18,30 @@ public class TransitRecord {
         this.weightAtExit = new HashMap<>();
         this.transit = transit;
     }
-
+    public int getTransitRecordId() {
+        return transitRecordId;
+    }
+    public void setTransitRecordId(int transitRecordId) {
+        this.transitRecordId = transitRecordId;
+    }
+    public boolean isTransitProblem() {
+        return transitProblem;
+    }
+    public void updateTransitProblem() {
+        this.transitProblem = true;
+    }
+    public Map<Supplier, Double> getWeightAtExit() {
+        return weightAtExit;
+    }
+    public void addSupWeightExit(Supplier supplier,Double weight) {
+        weightAtExit.put(supplier,weight);
+    }
+    public Transit getTransit() {
+        return transit;
+    }
+    public void setTransit(Transit transit) {
+        this.transit = transit;
+    }
     public void printTransitRecord(){
         System.out.println("Record id: " + transitRecordId);
         System.out.println("Transit id: " + transit.getTransitId());
@@ -26,37 +50,5 @@ public class TransitRecord {
             supplier.printSupplier();
             System.out.println(" Truck weight at exit: " + weight);
         });
-    }
-
-    public int getTransitRecordId() {
-        return transitRecordId;
-    }
-
-    public void setTransitRecordId(int transitRecordId) {
-        this.transitRecordId = transitRecordId;
-    }
-
-    public boolean isTransitProblem() {
-        return transitProblem;
-    }
-
-    public void setTransitProblem(boolean transitProblem) {
-        this.transitProblem = transitProblem;
-    }
-
-    public Map<Supplier, Double> getWeightAtExit() {
-        return weightAtExit;
-    }
-
-    public void addSupWeightExit(Supplier supplier,Double weight) {
-        weightAtExit.put(supplier,weight);
-    }
-
-    public Transit getTransit() {
-        return transit;
-    }
-
-    public void setTransit(Transit transit) {
-        this.transit = transit;
     }
 }

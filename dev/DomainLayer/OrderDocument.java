@@ -6,10 +6,11 @@ import java.util.Map;
 public class OrderDocument {
     public static int documentNextId=1;
     private final int documentId;
-    private Supplier source;
-    private Store destination;
+    private final Supplier source;
+    private final Store destination;
     private double totalWeight; //detailed weight ??
     private Map<Product, Double> productsList;
+
 
     public OrderDocument(Supplier source, Store destination) {
         this.documentId = documentNextId;
@@ -47,15 +48,6 @@ public class OrderDocument {
             System.out.println("\t" + product + " : " + amount);
         }
     }
-    public void printOrderDestination() {
-        System.out.println("Destination is: " +destination.address);
-    }
-    public void printOrderSource(){
-        System.out.println("Source is: " + source.address);
-    }
-    public void printOrderId() {
-        System.out.println("Order Id is: " + documentId);
-    }
     public void printOrder(){
         System.out.println("Document id: " + this.documentId);
         System.out.println("Source: " + source.address);
@@ -68,5 +60,14 @@ public class OrderDocument {
         double amountToReduce = productsList.get(product);
         productsList.remove(product);
         totalWeight-= amountToReduce;
+    }
+    public void printOrderDestination() {
+        System.out.println("Destination is: " + destination.address);
+    }
+    public void printOrderSource(){
+        System.out.println("Source is: " + source.address);
+    }
+    public void printOrderId() {
+        System.out.println("Order Id is: " + documentId);
     }
 }

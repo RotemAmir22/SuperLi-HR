@@ -16,6 +16,7 @@ public class Truck {
     double currentLoadWeight;
     final double maxCarryWeight;
 
+
     public Truck(String plateNumber, TruckModel model, double truckWeight, double maxWeight) {
         this.plateNumber = plateNumber;
         this.model = model;
@@ -32,15 +33,12 @@ public class Truck {
         this.maxCarryWeight = maxWeight;
         this.qSet = quliSet;
     }
-
     public double getMaxCarryWeight() {
         return maxCarryWeight;
     }
-
     public double getCurrentWeight() {
         return currentLoadWeight;
     }
-
     public void loadTruck(double weight){
         currentLoadWeight += weight;
     }; // will be inside truck service
@@ -51,14 +49,18 @@ public class Truck {
     public Set<Qualification> getTruckQualification(){
         return this.qSet;
     }
-    public void addToQSet(Qualification qQual){
+    public void addQToQSet(Qualification qQual){
         this.qSet.add(qQual);
     }
-
     public String getPlateNumber() {
         return plateNumber;
     }
-
+    public Set<Qualification> getqSet() {
+        return qSet;
+    }
+    public void setCurrentLoadWeight(double currentLoadWeight) {
+        this.currentLoadWeight = currentLoadWeight;
+    }
     public void printTruck(){
         System.out.println("Plate number: " + this.plateNumber);
         System.out.println("Model: " + this.model);
@@ -72,17 +74,5 @@ public class Truck {
             }
         }
         System.out.println();
-    }
-
-    public TruckModel getModel() {
-        return model;
-    }
-
-    public Set<Qualification> getqSet() {
-        return qSet;
-    }
-
-    public void setCurrentLoadWeight(double currentLoadWeight) {
-        this.currentLoadWeight = currentLoadWeight;
     }
 }

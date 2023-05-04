@@ -8,6 +8,7 @@ public abstract class Site {
     protected String contactName;
     protected String ContactNumber;
 
+
     public Site(String address, Area areaCode, String contactName, String contactNumber) {
         this.address = address;
         this.areaCode = areaCode;

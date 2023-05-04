@@ -1,8 +1,7 @@
 package UiLayer;
-import ControllerServiceLayer.*;
+import ControllerLayer.*;
 import DataAccessLayer.*;
 import DomainLayer.*;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -12,35 +11,36 @@ public class PresentationSystem {
         PresentationSystem ps = new PresentationSystem();
         Scanner scanner = new Scanner(System.in);
 
-        DriverRepository primeDriverRepo = new DriverRepositoryImpl();
-        DriverService primeDriverService = new DriverServiceImpl(primeDriverRepo);
+        DriverDAO primeDriverDAO = new DriverDAOImpl();
+        DriverController primeDriverController = new DriverControllerImpl(primeDriverDAO);
 
-        TruckRepository primeTruckRepo = new TruckRepositoryImpl();
-        TruckService primeTruckService = new TruckServiceImpl(primeTruckRepo);
-        TruckController truckController = new TruckController(primeTruckService);
+        TruckDAO primeTruckDAO = new TruckDAOImpl();
+        TruckController primeTruckController = new TruckControllermpl(primeTruckDAO);
+        TruckPresentation truckPresentation = new TruckPresentation(primeTruckController);
 
-        StoreRepository primeStoreRepo = new StoreRepositoryImpl();
-        StoreService primeStoreService = new StoreServiceImpl(primeStoreRepo);
+        StoreDAO primeStoreDAO = new StoreDAOImpl();
+        StoreController primeStoreController = new StoreControllerImpl(primeStoreDAO);
 
-        SupplierRepository primeSupplierRepo = new SupplierRepositoryImpl();
-        SupplierService primeSupplierService = new SupplierServiceImpl(primeSupplierRepo);
+        SupplierDAO primeSupplierDAO = new SupplierDAOImpl();
+        SupplierController primeSupplierController = new SupplierControllerImpl(primeSupplierDAO);
 
-        ProductRepository primeProductRepo = new ProductRepositoryImpl();
-        ProductService primeProductService = new ProductServiceImpl(primeProductRepo);
+        ProductDAO primeProductDAO = new ProductDAOImpl();
+        ProductController primeProductController = new ProductControllerImpl(primeProductDAO);
 
-        OrderDocumentRepository primeOrderDocRepo = new OrderDocumentRepositoryImpl();
-        OrderDocumentService primeOrderDocService = new OrderDocumentServiceImpl(primeOrderDocRepo,
-                primeSupplierService,primeStoreService,primeProductService);
-        OrderDocumentController orderDocumentController = new OrderDocumentController(primeOrderDocService,
-                primeProductService);
+        OrderDocumentDAO primeOrderDocDAO = new OrderDocumentDAOImpl();
+        OrderDocumentController primeOrderDocController = new OrderDocumentControllerImpl(primeOrderDocDAO,
+                primeSupplierController,primeStoreController,primeProductController);
+        OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(primeOrderDocController,
+                primeProductController);
 
-        TransitRecordRepository primeTransitRecordRepo = new TransitRecordsRepositoryImpl();
-        TransitRecordService primeTransitRecordService = new TransitRecordServiceImpl(primeTransitRecordRepo);
 
-        TransitRepository primeTransitRepo = new TransitRepositoryImpl();
-        TransitService primeTransitService = new TransitServiceImpl(primeTransitRepo, primeTruckService,
-                primeDriverService, primeOrderDocService, primeTransitRecordService);
-        TransitController transitController = new TransitController(primeTransitService);
+        TransitRecordDAO primeTransitRecordDAO = new TransitRecordsDAOImpl();
+        TransitRecordController primeTransitRecordController = new TransitRecordControllerImpl(primeTransitRecordDAO);
+
+        TransitDAO primeTransitDAO = new TransitDAOImpl();
+        TransitController primeTransitController = new TransitControllerImpl(primeTransitDAO, primeTruckController,
+                primeDriverController, primeOrderDocController, primeTransitRecordController);
+        TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeDriverController);
 
 
         Set<Qualification> s1 = new HashSet<>();
@@ -116,32 +116,32 @@ public class PresentationSystem {
         Transit deli1 = new Transit(date, t2, d2);
         deli1.addOrderDoc(o22);
 
-        primeTruckRepo.saveTruck(t1);
-        primeTruckRepo.saveTruck(t2);
-        primeOrderDocRepo.saveOrderDocument(o11);
-        primeOrderDocRepo.saveOrderDocument(o12);
-        primeOrderDocRepo.saveOrderDocument(o21);
-        primeOrderDocRepo.saveOrderDocument(o22);
-        primeTransitRepo.saveTransit(deli1);
+        primeTruckDAO.saveTruck(t1);
+        primeTruckDAO.saveTruck(t2);
+        primeOrderDocDAO.saveOrderDocument(o11);
+        primeOrderDocDAO.saveOrderDocument(o12);
+        primeOrderDocDAO.saveOrderDocument(o21);
+        primeOrderDocDAO.saveOrderDocument(o22);
+        primeTransitDAO.saveTransit(deli1);
 
-        primeDriverRepo.saveDriver(d1);
-        primeDriverRepo.saveDriver(d2);
-        primeProductRepo.saveProduct(p1);
-        primeProductRepo.saveProduct(p2);
-        primeProductRepo.saveProduct(p3);
-        primeSupplierRepo.saveSupplier(sup1);
-        primeSupplierRepo.saveSupplier(sup2);
-        primeSupplierRepo.saveSupplier(parkSup);
-        primeStoreRepo.saveStore(parkSro);
-        primeStoreRepo.saveStore(sro1);
-        primeStoreRepo.saveStore(sro2);
+        primeDriverDAO.saveDriver(d1);
+        primeDriverDAO.saveDriver(d2);
+        primeProductDAO.saveProduct(p1);
+        primeProductDAO.saveProduct(p2);
+        primeProductDAO.saveProduct(p3);
+        primeSupplierDAO.saveSupplier(sup1);
+        primeSupplierDAO.saveSupplier(sup2);
+        primeSupplierDAO.saveSupplier(parkSup);
+        primeStoreDAO.saveStore(parkSro);
+        primeStoreDAO.saveStore(sro1);
+        primeStoreDAO.saveStore(sro2);
 
 
-        ps.preRunData(scanner,primeTransitRepo, primeTruckRepo, primeOrderDocRepo);
-        ps.switchMenu(scanner, truckController,orderDocumentController, transitController);
+        ps.preRunData(scanner,primeTransitDAO, primeTruckDAO, primeOrderDocDAO);
+        ps.switchMenu(scanner, truckPresentation,orderDocumentPresentation, transitPresentation);
     }
 
-    public void switchMenu(Scanner scanner,TruckController truckC,OrderDocumentController orderDocC, TransitController transitC){
+    public void switchMenu(Scanner scanner, TruckPresentation truckC, OrderDocumentPresentation orderDocC, TransitPresentation transitC){
 //        Scanner scanner = new Scanner(System.in);
         int choice;
         do {
@@ -198,7 +198,6 @@ public class PresentationSystem {
         } while (choice != 0);
         scanner.close();
     }
-
     public void displayMainMenu(){
         System.out.println("-----Main Menu-----");
         System.out.println("Please select an option: ");
@@ -216,7 +215,6 @@ public class PresentationSystem {
         System.out.println("3. Show all trucks ");
         System.out.println("0. Back to main menu ");
     }
-
     public void displayOrderManagerMenu(){
         System.out.println("-----Manage Orders-----");
         System.out.println("1. Create a new Order ");
@@ -234,7 +232,6 @@ public class PresentationSystem {
         System.out.println("6. Start transit ");
         System.out.println("0. Back to main menu ");
     }
-
     public void displayEditOrderMenu(){
         System.out.println("-----Edit Order-----");
         System.out.println("1. Add products to an order ");
@@ -242,7 +239,6 @@ public class PresentationSystem {
         System.out.println("3. Remove products ");
         System.out.println("0. Back to main menu");
     }
-
     public void displayDocumentManagerMenu(){
         System.out.println("-----Manage Documents-----");
         System.out.println("1. Show pending orders (by area) ");
@@ -250,8 +246,7 @@ public class PresentationSystem {
         System.out.println("3. Show Transit records ");
         System.out.println("0. Back to main menu");
     }
-
-    public void handleDocumentManagerMenu(int ch4, TransitController transitC, OrderDocumentController orderDocC){
+    public void handleDocumentManagerMenu(int ch4, TransitPresentation transitC, OrderDocumentPresentation orderDocC){
         switch (ch4) {
             case 1:
                 orderDocC.printPendingOrderDocs();
@@ -270,8 +265,7 @@ public class PresentationSystem {
                 break;
         }
     }
-
-    public void handleTruckManagerMenu(int ch3, Scanner scanner, TruckController truckC){
+    public void handleTruckManagerMenu(int ch3, Scanner scanner, TruckPresentation truckC){
         switch (ch3) {
             case 1:
                 truckC.createNewTruck(scanner);
@@ -290,7 +284,7 @@ public class PresentationSystem {
                 break;
         }
     }
-    public void handleUpdateTransitMenu(int ch2, Scanner scanner, TransitController transitC, OrderDocumentController orderDocC){
+    public void handleUpdateTransitMenu(int ch2, Scanner scanner, TransitPresentation transitC, OrderDocumentPresentation orderDocC){
         switch (ch2){
             case 1:
                 transitC.printTransitDetails(scanner);
@@ -316,8 +310,7 @@ public class PresentationSystem {
                 break;
         }
     }
-
-    public void handleOrderManagerMenu(Scanner scanner, int ch5, OrderDocumentController orderDocC){
+    public void handleOrderManagerMenu(Scanner scanner, int ch5, OrderDocumentPresentation orderDocC){
         switch (ch5) {
             case 1: // create new order
                 orderDocC.createNewOrderDocument(scanner);
@@ -342,8 +335,7 @@ public class PresentationSystem {
                 break;
         }
     }
-
-    public void handleEditOrderMenu(Scanner scanner, int ch53, OrderDocumentController orderDocC){
+    public void handleEditOrderMenu(Scanner scanner, int ch53, OrderDocumentPresentation orderDocC){
         switch (ch53) {
             case 1:
                 orderDocC.addProductToOrder(scanner);
@@ -359,9 +351,8 @@ public class PresentationSystem {
                 break;
         }
     }
-
-    public void preRunData(Scanner scanner, TransitRepository transitRepository,
-                           TruckRepository truckRepository, OrderDocumentRepository orderDocumentRepository){
+    public void preRunData(Scanner scanner, TransitDAO transitRepository,
+                           TruckDAO truckRepository, OrderDocumentDAO orderDocumentRepository){
         String ans;
         do{
             System.out.println("Would you like to start the system with built in data ? (Y/N) ");
