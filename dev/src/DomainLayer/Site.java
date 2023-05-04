@@ -1,7 +1,5 @@
 package DomainLayer;
 
-import DomainLayer.Area;
-
 public abstract class Site {
     protected String address;
     protected Area areaCode;
