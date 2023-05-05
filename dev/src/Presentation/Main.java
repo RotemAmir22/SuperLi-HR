@@ -26,48 +26,48 @@ public class Main {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         //employees
-        Employee e1 = new Employee("Yoni","Cohen","111111","923-456120",600,"Salary per shift - 600","2022-11-13");
-        Employee e2 = new Employee("Efrat","Gosh","111112","908-257197",750,"Salary per shift - 750","2022-12-13");
-        Employee e3 = new Employee("Ninet","Tayeb","111113","786-352124",700,"Salary per shift - 700","2022-11-22");
-        Employee e4 = new Employee("Roza","Li","222222","012-453240",600,"Salary per shift - 600","2022-11-13");
-        Employee e5 = new Employee("Natan","Goshen","222221","123-873120",550,"Salary per shift - 550","2022-11-13");
-        Employee e6 = new Employee("Arik","Ainshtein","076333","432-356187",760,"Salary per shift - 760","2022-11-13");
-        Employee e7 = new Employee("Or","Peretz","092354","025-823321",900,"Salary per shift - 900","2022-11-13");
-        Employee e8 = new Employee("Whitney","Uston","035281","497-423920",650,"Salary per shift - 650","2022-11-13");
-        Employee e9 = new Employee("Erez","Tal","798321","082-623120",450,"Salary per shift - 450","2022-11-13");
-        Employee e10 = new Employee("Assi","Cohen","0176234","384-623430",450,"Salary per shift - 450","2022-11-13");
-        Employee e11 = new Employee("Tzvika","Pik","666666","213-732120",450,"Salary per shift - 450","2022-11-13");
-        Employee e12 = new Employee("Rotem","Sela","777777","098-456523",530,"Salary per shift - 530","2022-11-13");
-        Employee e13 = new Employee("Noa","Kirel","222333","146-723120",760,"Salary per shift - 760","2022-11-13");
-        Employee e14 = new Employee("David","Bowie","666555","763-452120",430,"Salary per shift - 430","2022-11-13");
-        Employee e15 = new Employee("Joni","Depp","121212","910-454120",700,"Salary per shift - 700","2022-11-13");
+//        Employee e1 = new Employee("Yoni","Cohen","111111","923-456120",600,"Salary per shift - 600","2022-11-13");
+//        Employee e2 = new Employee("Efrat","Gosh","111112","908-257197",750,"Salary per shift - 750","2022-12-13");
+//        Employee e3 = new Employee("Ninet","Tayeb","111113","786-352124",700,"Salary per shift - 700","2022-11-22");
+//        Employee e4 = new Employee("Roza","Li","222222","012-453240",600,"Salary per shift - 600","2022-11-13");
+//        Employee e5 = new Employee("Natan","Goshen","222221","123-873120",550,"Salary per shift - 550","2022-11-13");
+//        Employee e6 = new Employee("Arik","Ainshtein","076333","432-356187",760,"Salary per shift - 760","2022-11-13");
+//        Employee e7 = new Employee("Or","Peretz","092354","025-823321",900,"Salary per shift - 900","2022-11-13");
+//        Employee e8 = new Employee("Whitney","Uston","035281","497-423920",650,"Salary per shift - 650","2022-11-13");
+//        Employee e9 = new Employee("Erez","Tal","798321","082-623120",450,"Salary per shift - 450","2022-11-13");
+//        Employee e10 = new Employee("Assi","Cohen","0176234","384-623430",450,"Salary per shift - 450","2022-11-13");
+//        Employee e11 = new Employee("Tzvika","Pik","666666","213-732120",450,"Salary per shift - 450","2022-11-13");
+//        Employee e12 = new Employee("Rotem","Sela","777777","098-456523",530,"Salary per shift - 530","2022-11-13");
+//        Employee e13 = new Employee("Noa","Kirel","222333","146-723120",760,"Salary per shift - 760","2022-11-13");
+//        Employee e14 = new Employee("David","Bowie","666555","763-452120",430,"Salary per shift - 430","2022-11-13");
+//        Employee e15 = new Employee("Joni","Depp","121212","910-454120",700,"Salary per shift - 700","2022-11-13");
 
         //branches
-        BranchStore b1 = new BranchStore("Super-Li",Area.East,"Tel-Aviv","08-6543210","24/7");
+//        BranchStore b1 = new BranchStore("Super-Li",Area.East,"Tel-Aviv","08-6543210","24/7");
         //add employees to branch
-        b1.addEmployee(e1);
-        b1.addEmployee(e2);
-        b1.addEmployee(e3);
-        b1.addEmployee(e4);
-        b1.addEmployee(e7);
-        b1.addEmployee(e8);
-        b1.addEmployee(e9);
-        b1.addEmployee(e10);
+//        b1.addEmployee(e1);
+//        b1.addEmployee(e2);
+//        b1.addEmployee(e3);
+//        b1.addEmployee(e4);
+//        b1.addEmployee(e7);
+//        b1.addEmployee(e8);
+//        b1.addEmployee(e9);
+//        b1.addEmployee(e10);
 
-        BranchStore b2 = new BranchStore("Super-Li",Area.East,"Jaffa","08-6442280","All week 10:00-22:00 except Saturday");
+//        BranchStore b2 = new BranchStore("Super-Li",Area.East,"Jaffa","08-6442280","All week 10:00-22:00 except Saturday");
         //add employees to branch
-        b2.addEmployee(e2);
-        b2.addEmployee(e4);
-        b2.addEmployee(e5);
-        b2.addEmployee(e6);
+//        b2.addEmployee(e2);
+//        b2.addEmployee(e4);
+//        b2.addEmployee(e5);
+//        b2.addEmployee(e6);
 
-        BranchStore b3 = new BranchStore("Super-Li",Area.North,"Haifa","08-6573452","Sunday, Tuesday and Thursday 10:00-16:00");
+//        BranchStore b3 = new BranchStore("Super-Li",Area.North,"Haifa","08-6573452","Sunday, Tuesday and Thursday 10:00-16:00");
         //add employees to branch
-        b3.addEmployee(e11);
-        b3.addEmployee(e12);
-        b3.addEmployee(e13);
-        b3.addEmployee(e14);
-        b3.addEmployee(e15);
+//        b3.addEmployee(e11);
+//        b3.addEmployee(e12);
+//        b3.addEmployee(e13);
+//        b3.addEmployee(e14);
+//        b3.addEmployee(e15);
 
         //add roles to employees
 //        e1.addRole(Role.SHIFTMANAGER);
