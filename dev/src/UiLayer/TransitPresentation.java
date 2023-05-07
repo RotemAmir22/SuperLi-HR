@@ -131,6 +131,9 @@ public class TransitPresentation {
 //        boolean validWeight = transitService.isValidWeight(currentTransit, orderDocument);
 //        if (!validWeight) return;
         currentTransit.addOrderDoc(orderDocument);
+        currentTransit.addDestinationStore(orderDocument.getDestination());
+        currentTransit.addDestinationSupplier(orderDocument.getSource());
+        currentTransit.setETA();
         System.out.println("Order document added successfully");
     }
     public void removeOrderFromTransit(Scanner scanner)
@@ -142,6 +145,10 @@ public class TransitPresentation {
         OrderDocument orderDocument = findOrderById(orderId);
         if (orderDocument == null) return;
         currenTransit.removeOrderDoc(orderDocument);
+
+        currenTransit.removeDestinationSupplier(orderDocument.getSource());
+        currenTransit.removeDestinationStore(orderDocument.getDestination());
+        currenTransit.setETA();
         System.out.println("Document removed successfully");
     }
     public int getOrderIdHandler(Scanner scanner){
@@ -185,10 +192,10 @@ public class TransitPresentation {
         TransitRecord transitRecord = this.transitController.getTransitRecordController().createTransitRecord(transit);
 
         //add destinations
-        for(OrderDocument orderDoc : transit.getOrdersDocs())
-        {
-            transit.addDestinationSupplier(orderDoc.getSource());
-        }
+//        for(OrderDocument orderDoc : transit.getOrdersDocs())
+//        {
+//            transit.addDestinationSupplier(orderDoc.getSource());
+//        }
         // drive to suppliers
         for (Supplier supplier : transit.getDestinationSuppliers())
         {
@@ -211,10 +218,10 @@ public class TransitPresentation {
             transitRecord.addSupWeightExit(supplier,transit.getTruck().getCurrentWeight());
         }
         //add destinations
-        for(OrderDocument orderDoc : transit.getOrdersDocs())
-        {
-            transit.addDestinationStore(orderDoc.getDestination());
-        }
+//        for(OrderDocument orderDoc : transit.getOrdersDocs())
+//        {
+//            transit.addDestinationStore(orderDoc.getDestination());
+//        }
 
         for (Store store : transit.getDestinationStores()) {
             System.out.println("Arrived to store: " + store.getStoreId());

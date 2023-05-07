@@ -59,21 +59,51 @@ public class TransitCoordinator {
     /**
      * Add a driver to a transit
      * @param date of the transit
-     * @param driver which is going to be added
-     * @param branchID of the branch
+     * @param driverID which is going to be added
+     * @param licenses of the truck that the driver needs to know
      */
-    public void addDriverToTransit(LocalDate date, Driver driver, int branchID){
-        if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-        {
-            BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
-            if(branchStore.transits.containsKey(date))
-                branchStore.transits.put(date, driver);
-            else
-                System.out.println("Invalid transit date");
+    public Driver addDriverToTransit(LocalDate date, int driverID,ArrayList<License> licenses) {
+        //need to add function that seeks a driver by id and Date in the DAO
+        Driver driver = findNewDriver(driverID, date, licenses);
+        if (driver == null) {
+            System.out.println("Driver not available");
+            return null;
         }
-        else
-            System.out.println("Invalid branch ID");
+
+        return driver;
     }
+
+
+    /**
+     * switch a new driver to a transit instead of the old driver
+     * @param date of the transit
+     * @param newdriverID which is going to be added
+     * @param licenses of the truck that the driver must have
+     * @param oldDriverID which needed to be removed from the transit - need to delete its date from transitDate list
+     */
+
+    public Driver SwitchDriverInTransit(LocalDate date, int newdriverID, ArrayList<License> licenses, int oldDriverID){
+            //need to add function that seeks a driver by id and Date in the DAO
+            Driver driver = findNewDriver(newdriverID, date);
+            if (driver == null) {
+                System.out.println("Driver not available");
+                return null;
+        }
+
+            return driver;
+    }
+
+    /**
+     *
+     * @param store the store that we need to check if there are workers there
+     * @param date date of transit
+     * @return true if there are 2 storageWorkers, else false
+     */
+    public boolean StorageWorkersExist(BranchStore store, LocalDate date)
+    {
+        return false;
+    }
+
 
     /**
      * Get the map of date and driver's transits from a branch
