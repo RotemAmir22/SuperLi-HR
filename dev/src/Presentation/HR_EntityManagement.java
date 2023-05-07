@@ -35,7 +35,6 @@ public class HR_EntityManagement {
     public void addQualificationToEmployee(Employee employee) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
-        boolean change = false;
         System.out.println("-Add qualification to Employee-");
         //add qualification to employee - only one when it is a new employee
         while (Objects.equals(answer, "y"))
@@ -50,7 +49,7 @@ public class HR_EntityManagement {
                 int qualification = scanner.nextInt();
                 if(!employee.getQualifications().contains(roles[qualification])){
                     employee.addRole(roles[qualification]);
-                    change = true;
+                    employeesDAO.update(employee);
                 }
 
                 else
@@ -65,7 +64,6 @@ public class HR_EntityManagement {
             }
 
         }
-        if(change){employeesDAO.update(employee);} // update DB
     }
 
     /**
@@ -74,7 +72,6 @@ public class HR_EntityManagement {
     public void removeQualificationToEmployee(Employee employee) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
-        boolean change = false;
         System.out.println("-Remove qualification from Employee-");
         //add qualification to employee - only one when it is a new employee
         while (Objects.equals(answer, "y"))
@@ -88,7 +85,7 @@ public class HR_EntityManagement {
                 int qualification = scanner.nextInt();
                 if(employee.getQualifications().contains(roles[qualification])){
                     employee.removeRole(roles[qualification]);
-                    change = true;
+                    employeesDAO.update(employee);
                 }
 
                 else
@@ -103,7 +100,6 @@ public class HR_EntityManagement {
             }
 
         }
-        if(change){employeesDAO.update(employee);}
     }
 
     /**
@@ -113,7 +109,6 @@ public class HR_EntityManagement {
     public void addLicenceToDriver(Driver driver) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
-        boolean change = false;
         System.out.println("-Add licence to Driver-");
         //add qualification to employee - only one when it is a new employee
         while (Objects.equals(answer, "y"))
@@ -127,7 +122,7 @@ public class HR_EntityManagement {
                 int type = scanner.nextInt();
                 if(!driver.getLicenses().contains(licenses[type])){
                     driver.addLicense(licenses[type]);
-                    change = true;
+                    employeesDAO.update(driver);
                 }
 
                 else
@@ -142,7 +137,6 @@ public class HR_EntityManagement {
             }
 
         }
-        if(change){employeesDAO.update(driver);} // update DB
     }
 
     /**
@@ -151,7 +145,6 @@ public class HR_EntityManagement {
     public void removeLicenceFromDriver(Driver driver) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
-        boolean change = false;
         System.out.println("-Remove Licence from Driver-");
         //add qualification to employee - only one when it is a new employee
         while (Objects.equals(answer, "y"))
@@ -166,7 +159,7 @@ public class HR_EntityManagement {
                 if(driver.getLicenses().contains(licenses[qualification]))
                 {
                     driver.removeLicense(licenses[qualification]);
-                    change = true;
+                    employeesDAO.update(driver);
                 }
                 else
                     System.out.println("This employee doesn't have a " + licenses[qualification].toString()+ " licence.");
@@ -180,7 +173,6 @@ public class HR_EntityManagement {
             }
 
         }
-        if(change){employeesDAO.update(driver);}
     }
 
     /**
