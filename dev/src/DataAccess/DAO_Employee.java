@@ -103,35 +103,28 @@ public class DAO_Employee implements DAO{
             }
         }
     }
+
+    /**
+     * adds an employee to the DB and also the matching map
+     * @param o - new employee
+     * @throws SQLException incase of an error
+     */
     @Override
-    public void insert(Object o) throws SQLException {
+    public void insert(Object o) throws SQLException
+    {
         Employee e = (Employee)o;
         if(e != null)
         {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
                     "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
             stmt.executeQuery();
-            for(int i =0; i<e.getQualifications().size();i++)
-            {
-                stmt = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID, qualificationId)" +
-                        "VALUES (e.getId(), e.getQualifications().get(i))");
-                stmt.executeQuery();
-            }
-            if(e.canDoRole(DRIVER)){
+
+            //add to the right map
+            if(e.canDoRole(DRIVER))
                 newtworkDrivers.put(e.getId(), (Driver) e);
-                for(int i =0; i<((Driver) e).getLicenses().size();i++)
-                {
-                    PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID, qualificationId)" +
-                            "VALUES (e.getId(), ((Driver) e).getLicenses().get(i)");
-                    stmt1.executeQuery();
-                }
-            }
             else
                 networkEmployees.put(e.getId(),e);
         }
-
-
-
     }
 
     @Override
