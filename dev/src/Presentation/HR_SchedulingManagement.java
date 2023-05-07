@@ -167,8 +167,7 @@ public class HR_SchedulingManagement {
     /**
      * updates employees constrains by id
      */
-    public void updateEmployeeConstrainsByID()
-    {
+    public void updateEmployeeConstrainsByID() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("-Update Employee Constraints-");
         while (true)
