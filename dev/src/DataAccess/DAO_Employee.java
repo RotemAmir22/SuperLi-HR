@@ -22,7 +22,7 @@ public class DAO_Employee implements DAO{
     private Connection conn;
 
     // constructor
-    public DAO_Employee() throws SQLException {
+    public DAO_Employee() throws SQLException, ClassNotFoundException {
         conn = Database.connect();
         networkEmployees = new HashMap<>();
 

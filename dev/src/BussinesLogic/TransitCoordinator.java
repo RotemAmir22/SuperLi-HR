@@ -20,7 +20,7 @@ public class TransitCoordinator {
      * Using DAO's of branchStore and drivers
      * this class will let you manage a transit include add drivers
      */
-    public TransitCoordinator() throws SQLException {
+    public TransitCoordinator() throws SQLException, ClassNotFoundException {
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         driversDAO = DAO_Generator.getEmployeeDAO();
     }

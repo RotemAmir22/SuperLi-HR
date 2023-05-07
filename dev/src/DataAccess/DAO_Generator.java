@@ -22,7 +22,7 @@ public class DAO_Generator {
         return BranchStoreDAO;
     }
 
-    public static DAO_Employee getEmployeeDAO() throws SQLException {
+    public static DAO_Employee getEmployeeDAO() throws SQLException, ClassNotFoundException {
         if (EmployeeDAO == null) {
             EmployeeDAO = new DAO_Employee();
         }

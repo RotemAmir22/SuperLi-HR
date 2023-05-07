@@ -23,7 +23,7 @@ public class HR_EntityManagement {
     private DAO_BranchStore branchStoreDAO;
 
     //constructor
-    public HR_EntityManagement() throws SQLException {
+    public HR_EntityManagement() throws SQLException, ClassNotFoundException {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
     }

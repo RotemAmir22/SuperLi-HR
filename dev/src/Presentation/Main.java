@@ -22,7 +22,7 @@ public class Main {
      * upload data of network into system
      * @param system upload data
      */
-    public static void uploadData(HR_EntityManagement system) throws SQLException {
+    public static void uploadData(HR_EntityManagement system) throws SQLException, ClassNotFoundException {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
     }
@@ -68,7 +68,7 @@ public class Main {
     /**
      * Main
      */
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
         /* The main object "HR" control */
         HR_EntityManagement entityManagement = new HR_EntityManagement();

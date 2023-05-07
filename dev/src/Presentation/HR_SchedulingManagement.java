@@ -24,7 +24,7 @@ public class HR_SchedulingManagement {
     private DAO_BranchStore branchStoreDAO;
 
     //constructor
-    public HR_SchedulingManagement() throws SQLException {
+    public HR_SchedulingManagement() throws SQLException, ClassNotFoundException {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
     }
