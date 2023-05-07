@@ -67,11 +67,18 @@ public class DAO_BranchStore implements DAO{
     }
     @Override
     public void insert(Object o) throws SQLException {
-        BranchStore b = (BranchStore)o;
-        if(b != null) {
+        BranchStore branch = (BranchStore)o;
+        if(branch != null) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO BranchStore (branchID, name, openingTime, address, areaCode, contactName, contactNumber)" +
-                    "VALUES (b.getBranchID(),b.getName(), b.getOpeningTime(), b.getAddress(), b.getArea(), b.getName(), b.getPhoneNum())");
-            stmt.executeQuery();
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)");
+            stmt.setInt(1, branch.getBranchID());
+            stmt.setString(2, branch.getName());
+            stmt.setString(3, branch.getOpeningTime());
+            stmt.setString(4, branch.getAddress());
+            stmt.setString(5, branch.getArea().toString());
+            stmt.setString(6, branch.getContactName());
+            stmt.setString(7, branch.getContactNumber());
+            stmt.executeUpdate();
         }
 
     }
