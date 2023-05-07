@@ -18,6 +18,6 @@ public class Driver extends Employee{
 
     public ArrayList<License> getLicenses(){return this.licenses;}
 
-
+    //TODO: schedule driver to transit
 
 }

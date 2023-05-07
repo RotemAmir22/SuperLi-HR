@@ -32,8 +32,7 @@ public class HR_EntityManagement {
     /**
      * @param employee: gets employee and adds a qualification to the employee
      */
-    public void addQualificationToEmployee(Employee employee)
-    {
+    public void addQualificationToEmployee(Employee employee) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         boolean change = false;
@@ -72,8 +71,7 @@ public class HR_EntityManagement {
     /**
      * @param employee: gets employee and removes a role qualification
      */
-    public void removeQualificationToEmployee(Employee employee)
-    {
+    public void removeQualificationToEmployee(Employee employee) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         boolean change = false;
@@ -112,8 +110,7 @@ public class HR_EntityManagement {
      * add a licence to a driver
      * @param driver to update
      */
-    public void addLicenceToDriver(Driver driver)
-    {
+    public void addLicenceToDriver(Driver driver) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         boolean change = false;
@@ -151,8 +148,7 @@ public class HR_EntityManagement {
     /**
      * @param driver: gets driver and removes a licence
      */
-    public void removeLicenceFromDriver(Driver driver)
-    {
+    public void removeLicenceFromDriver(Driver driver) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         boolean change = false;
@@ -220,7 +216,6 @@ public class HR_EntityManagement {
             {
                 System.out.println("Invalid choice. Please try again.");
             }
-
         }
     }
 
@@ -618,8 +613,7 @@ public class HR_EntityManagement {
     /**
      * print all employees cumulative salary
      */
-    public void calculateSalary()
-    {
+    public void calculateSalary() throws SQLException {
         System.out.println("- Cumulative Salary -");
 
         for (Employee employee: employeesDAO.getNetworkEmployees())

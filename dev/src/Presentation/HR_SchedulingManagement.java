@@ -32,8 +32,7 @@ public class HR_SchedulingManagement {
     /**
      * once a week the system asks all the network employees for their schedule constraints
      */
-    public void schedulingFromEmployees()
-    {
+    public void schedulingFromEmployees() throws SQLException {
         /*
          * First function ask all the employees in all branches to give constraints
          */
@@ -190,8 +189,7 @@ public class HR_SchedulingManagement {
     /**
      * this function reset the employees limits to 6
      */
-    public void resetEmployeesLimits()
-    {
+    public void resetEmployeesLimits() throws SQLException {
         LocalDate currentDate = LocalDate.now();
         /* Reset employee's limit of shifts if the week is over */
         if(currentDate.toString().equals("Saturday"))
