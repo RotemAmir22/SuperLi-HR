@@ -24,6 +24,13 @@ public class DAO_BranchStore implements DAO{
         networkBranches = new HashMap<>();
     }
 
+    /**
+     * find branchStore by ID
+     * @param ID of the branch
+     * @return the branch or null if not exist
+     * @throws SQLException in case of error
+     * @throws ClassNotFoundException in case of error
+     */
     public Object findByID(Object ID) throws SQLException, ClassNotFoundException {
         if (networkBranches.containsKey(ID))
             return networkBranches.get(ID);
@@ -65,6 +72,12 @@ public class DAO_BranchStore implements DAO{
         }
         return null;
     }
+
+    /**
+     * insert new branch
+     * @param o the branchStore
+     * @throws SQLException in case of error
+     */
     @Override
     public void insert(Object o) throws SQLException {
         BranchStore branch = (BranchStore)o;
@@ -79,8 +92,8 @@ public class DAO_BranchStore implements DAO{
             stmt.setString(6, branch.getContactName());
             stmt.setString(7, branch.getContactNumber());
             stmt.executeUpdate();
+            networkBranches.put(branch.getBranchID(), branch);
         }
-
     }
 
     @Override
