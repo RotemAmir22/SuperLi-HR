@@ -28,6 +28,12 @@ public class DAO_Employee implements DAO{
 
     }
 
+    /**
+     * find an Employee (or Driver) by their ID
+     * @param ID of the employee
+     * @return the employee or null if not exist
+     * @throws SQLException in case of error
+     */
     @Override
     public Object findByID(Object ID) throws SQLException {
         if (networkEmployees != null && networkEmployees.containsKey(ID))
@@ -88,14 +94,30 @@ public class DAO_Employee implements DAO{
                     driver = generator.CreateDriver(employee);
                     driver.addLicense(License.values()[license - 1]);
                 }
+                newtworkDrivers.put((String) ID,driver);
                 return driver;
             }
-            else
+            else {
+                networkEmployees.put((String) ID,employee);
                 return employee;
+            }
         }
     }
     @Override
-    public void insert(Object o) {
+    public void insert(Object o) throws SQLException {
+        Employee e = (Employee)o;
+        if(e != null)
+        {
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
+                    "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
+            if(e.canDoRole(DRIVER)){
+                newtworkDrivers.put(e.getId(), (Driver) e);
+            }
+            else
+                networkEmployees.put(e.getId(),e);
+        }
+
+
 
     }
 

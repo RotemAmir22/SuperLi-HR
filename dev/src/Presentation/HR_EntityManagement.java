@@ -185,7 +185,7 @@ public class HR_EntityManagement {
     /**
      * add a new employee to system
      */
-    public void newEmployeeInNetwork() {
+    public void newEmployeeInNetwork() throws SQLException {
         System.out.println("-Add Employee to Network-");
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new employee please enter the following details:");
@@ -232,12 +232,12 @@ public class HR_EntityManagement {
         EmployeeGenerator employeeGenerator = new EmployeeGenerator();
         //create new employee
         Employee employee = employeeGenerator.CreateEmployee(first,last,id,bankAccount,salary,filePath,startDate);
-        //add employee to list of all employees in network and update the DB
-        employeesDAO.insert(employee);
         //add employee to branch and update the DB
         addEmployeeToBranch(employee);
         //add qualifications
         addQualificationToEmployee(employee);
+        //add employee to list of all employees in network and update the DB
+        employeesDAO.insert(employee);
         System.out.println("Employee successfully added to system");
     }
 
