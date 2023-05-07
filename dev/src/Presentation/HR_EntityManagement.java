@@ -32,8 +32,7 @@ public class HR_EntityManagement {
     /**
      * @param employee: gets employee and adds a qualification to the employee
      */
-    public void addQualificationToEmployee(Employee employee)
-    {
+    public void addQualificationToEmployee(Employee employee) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         boolean change = false;
@@ -45,7 +44,8 @@ public class HR_EntityManagement {
                 System.out.println("Choose from the following, please enter the number of the role");
                 Role[] roles = Role.values();
                 for (int i = 0; i < roles.length; i++) {
-                    System.out.println(i + " - " + roles[i]);
+                    if(!roles[i].equals(Role.DRIVER))
+                        System.out.println(i + " - " + roles[i]);
                 }
                 int qualification = scanner.nextInt();
                 if(!employee.getQualifications().contains(roles[qualification])){
@@ -71,8 +71,7 @@ public class HR_EntityManagement {
     /**
      * @param employee: gets employee and removes a role qualification
      */
-    public void removeQualificationToEmployee(Employee employee)
-    {
+    public void removeQualificationToEmployee(Employee employee) throws SQLException {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         boolean change = false;
@@ -108,6 +107,83 @@ public class HR_EntityManagement {
     }
 
     /**
+     * add a licence to a driver
+     * @param driver to update
+     */
+    public void addLicenceToDriver(Driver driver) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        String answer = "y";
+        boolean change = false;
+        System.out.println("-Add licence to Driver-");
+        //add qualification to employee - only one when it is a new employee
+        while (Objects.equals(answer, "y"))
+        {
+            try{
+                System.out.println("Choose from the following, please enter the number of the licence");
+                License[] licenses = License.values();
+                for (int i = 0; i < licenses.length; i++) {
+                        System.out.println(i + " - " + licenses[i]);
+                }
+                int type = scanner.nextInt();
+                if(!driver.getLicenses().contains(licenses[type])){
+                    driver.addLicense(licenses[type]);
+                    change = true;
+                }
+
+                else
+                    System.out.println("This driver is already qualified for " + licenses[type].toString());
+                answer=scanner.nextLine();
+                System.out.println("Would you like to add more licences? (Enter y/n): ");
+                answer = scanner.nextLine();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
+            }
+
+        }
+        if(change){employeesDAO.update(driver);} // update DB
+    }
+
+    /**
+     * @param driver: gets driver and removes a licence
+     */
+    public void removeLicenceFromDriver(Driver driver) throws SQLException {
+        Scanner scanner = new Scanner(System.in);
+        String answer = "y";
+        boolean change = false;
+        System.out.println("-Remove Licence from Driver-");
+        //add qualification to employee - only one when it is a new employee
+        while (Objects.equals(answer, "y"))
+        {
+            try{
+                System.out.println("Choose from the following, please enter the number of the licence");
+                License[] licenses = License.values();
+                for (int i = 0; i < licenses.length; i++) {
+                    System.out.println(i + " - " + licenses[i]);
+                }
+                int qualification = scanner.nextInt();
+                if(driver.getLicenses().contains(licenses[qualification]))
+                {
+                    driver.removeLicense(licenses[qualification]);
+                    change = true;
+                }
+                else
+                    System.out.println("This employee doesn't have a " + licenses[qualification].toString()+ " licence.");
+                answer=scanner.nextLine();
+                System.out.println("Would you like to remove another licence? (Enter y/n): ");
+                answer = scanner.nextLine();
+            }
+            catch (Exception e)
+            {
+                System.out.println("Invalid choice. Please try again.");
+            }
+
+        }
+        if(change){employeesDAO.update(driver);}
+    }
+
+    /**
      * function asks the user what branch to add to
      * @param employee: employee to add
      */
@@ -140,7 +216,6 @@ public class HR_EntityManagement {
             {
                 System.out.println("Invalid choice. Please try again.");
             }
-
         }
     }
 
@@ -226,18 +301,36 @@ public class HR_EntityManagement {
             }
         }
         System.out.println("Enter employee's terms of employment: ");
-        String filePath = "";
+        String filePath = scanner.nextLine();
 
         //create an employee generator
         EmployeeGenerator employeeGenerator = new EmployeeGenerator();
         //create new employee
         Employee employee = employeeGenerator.CreateEmployee(first,last,id,bankAccount,salary,filePath,startDate);
-        //add employee to branch and update the DB
-        addEmployeeToBranch(employee);
-        //add qualifications
-        addQualificationToEmployee(employee);
         //add employee to list of all employees in network and update the DB
         employeesDAO.insert(employee);
+
+        System.out.println("Is the new employee a Driver? (y/n)");
+        String ans = scanner.nextLine();
+        while (Objects.equals(ans, "y") || Objects.equals(ans, "n"))
+        {
+            if (ans.equals("y"))// driver
+            {
+                Driver driver = employeeGenerator.CreateDriver(employee);
+                addLicenceToDriver(driver);
+            }
+            else if (ans.equals("n")) //employee
+            {
+                addEmployeeToBranch(employee);
+                //add qualifications - call update DAO
+                addQualificationToEmployee(employee);
+                break;
+            }
+            else System.out.print("Invalid input. Try again");
+        }
+
+        //add employee to branch and update the DB
+
         System.out.println("Employee successfully added to system");
     }
 
@@ -520,8 +613,7 @@ public class HR_EntityManagement {
     /**
      * print all employees cumulative salary
      */
-    public void calculateSalary()
-    {
+    public void calculateSalary() throws SQLException {
         System.out.println("- Cumulative Salary -");
 
         for (Employee employee: employeesDAO.getNetworkEmployees())
