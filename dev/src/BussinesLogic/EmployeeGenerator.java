@@ -14,7 +14,9 @@ public class EmployeeGenerator {
     }
 
     public Driver CreateDriver(Employee employee){
-        return new Driver(employee.getFirstName(),employee.getLastName(), employee.getId(), employee.getBankAccount(), employee.getSalary(), employee.getEmpTerms(), employee.getStartDate());
+        Driver driver =  (Driver) employee;
+        driver.addRole(Role.DRIVER);
+        return  driver;
     }
 
 }
