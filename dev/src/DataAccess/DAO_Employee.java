@@ -70,7 +70,7 @@ public class DAO_Employee implements DAO{
             rs = stmt.executeQuery();
             while (rs.next()) {
                 int roleID = rs.getInt("qualificationId");
-                employee.addRole(Role.values()[roleID - 1]);
+                employee.addRole(Role.values()[roleID]);
             }
             stmt = conn.prepareStatement("SELECT * FROM EmployeeConstraints ec WHERE ec.employeeID = ?");
             stmt.setString(1, (String) ID);
@@ -92,7 +92,7 @@ public class DAO_Employee implements DAO{
                 while (rs.next()) {
                     int license = rs.getInt("licenseId");
                     driver = generator.CreateDriver(employee);
-                    driver.addLicense(License.values()[license - 1]);
+                    driver.addLicense(License.values()[license]);
                 }
                 newtworkDrivers.put((String) ID,driver);
                 return driver;
@@ -110,8 +110,21 @@ public class DAO_Employee implements DAO{
         {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
                     "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
+            stmt.executeQuery();
+            for(int i =0; i<e.getQualifications().size();i++)
+            {
+                stmt = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID, qualificationId)" +
+                        "VALUES (e.getId(), e.getQualifications().get(i))");
+                stmt.executeQuery();
+            }
             if(e.canDoRole(DRIVER)){
                 newtworkDrivers.put(e.getId(), (Driver) e);
+                for(int i =0; i<((Driver) e).getLicenses().size();i++)
+                {
+                    PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID, qualificationId)" +
+                            "VALUES (e.getId(), ((Driver) e).getLicenses().get(i)");
+                    stmt1.executeQuery();
+                }
             }
             else
                 networkEmployees.put(e.getId(),e);
