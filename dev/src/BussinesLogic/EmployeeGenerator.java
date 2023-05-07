@@ -14,7 +14,10 @@ public class EmployeeGenerator {
     }
 
     public Driver CreateDriver(Employee employee){
-        Driver driver =  (Driver) employee;
+        Driver driver =  new Driver(employee.getFirstName(),employee.getLastName(), employee.getId(), employee.getBankAccount(), employee.getSalary(), employee.getEmpTerms(), employee.getStartDate());
+        driver.setShiftsLimit(employee.getShiftsLimit());
+        driver.setCumulativeSalary(employee.getCumulativeSalary());
+        driver.setConstrains(employee.getConstrains());
         driver.addRole(Role.DRIVER);
         return  driver;
     }

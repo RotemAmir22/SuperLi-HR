@@ -61,6 +61,7 @@ public class Employee {
         if(limit){this.constrains[day][shift] = true;}
         else {this.constrains[day][shift] = false;}
     }
+    public void setConstrains(boolean [][] constrains){this.constrains = constrains;}
     public void setShiftsLimit(int shiftsLimit) {this.shiftsLimit = shiftsLimit;}
     public void setBankAccount(String bankAccount) {this.bankAccount = bankAccount;}
     public void setSalary(double salary) {this.salary = salary;}
