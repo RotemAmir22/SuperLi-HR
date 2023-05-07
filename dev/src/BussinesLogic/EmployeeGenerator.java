@@ -13,7 +13,7 @@ public class EmployeeGenerator {
         return new Driver(firstName,lastName,id,bankAccount,salary,empTermsPath,startDate);
     }
 
-    public Driver CreateCreateDriver(Employee employee){
+    public Driver CreateDriver(Employee employee){
         return new Driver(employee.getFirstName(),employee.getLastName(), employee.getId(), employee.getBankAccount(), employee.getSalary(), employee.getEmpTerms(), employee.getStartDate());
     }
 

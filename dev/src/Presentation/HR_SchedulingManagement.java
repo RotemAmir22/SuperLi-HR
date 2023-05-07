@@ -5,6 +5,7 @@ import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +24,7 @@ public class HR_SchedulingManagement {
     private DAO_BranchStore branchStoreDAO;
 
     //constructor
-    public HR_SchedulingManagement() {
+    public HR_SchedulingManagement() throws SQLException {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
     }

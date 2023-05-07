@@ -6,6 +6,7 @@ import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Scanner;
@@ -21,8 +22,7 @@ public class Main {
      * upload data of network into system
      * @param system upload data
      */
-    public static void uploadData(HR_EntityManagement system)
-    {
+    public static void uploadData(HR_EntityManagement system) throws SQLException {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         //employees
@@ -164,7 +164,7 @@ public class Main {
     /**
      * Main
      */
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLException {
 
         /* The main object "HR" control */
         HR_EntityManagement entityManagement = new HR_EntityManagement();

@@ -5,6 +5,7 @@ import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 import BussinesLogic.*;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -22,7 +23,7 @@ public class HR_EntityManagement {
     private DAO_BranchStore branchStoreDAO;
 
     //constructor
-    public HR_EntityManagement() {
+    public HR_EntityManagement() throws SQLException {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
     }

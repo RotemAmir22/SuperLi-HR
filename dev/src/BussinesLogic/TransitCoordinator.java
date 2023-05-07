@@ -1,10 +1,11 @@
 package BussinesLogic;
 
 import DataAccess.DAO_BranchStore;
-import DataAccess.DAO_Drivers;
+import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 import Presentation.EmployeeConstraints;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +14,15 @@ import java.util.Map;
 public class TransitCoordinator {
 
     private DAO_BranchStore branchStoreDAO;
-    private DAO_Drivers driversDAO;
+    private DAO_Employee driversDAO;
 
     /**
      * Using DAO's of branchStore and drivers
      * this class will let you manage a transit include add drivers
      */
-    public TransitCoordinator(){
+    public TransitCoordinator() throws SQLException {
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
-        driversDAO = DAO_Generator.getDriverDAO();
+        driversDAO = DAO_Generator.getEmployeeDAO();
     }
 
     /**

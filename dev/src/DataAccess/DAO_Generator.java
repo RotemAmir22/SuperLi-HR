@@ -1,5 +1,7 @@
 package DataAccess;
 
+import java.sql.SQLException;
+
 /**
  * DAO generator
  * Implements by singleton
@@ -8,7 +10,6 @@ public class DAO_Generator {
 
     private static DAO_BranchStore BranchStoreDAO;
     private static DAO_Employee EmployeeDAO;
-    private static DAO_Drivers DriverDAO;
 
     private DAO_Generator() {
         // Private constructor to prevent instantiation from outside the class
@@ -21,19 +22,13 @@ public class DAO_Generator {
         return BranchStoreDAO;
     }
 
-    public static DAO_Employee getEmployeeDAO() {
+    public static DAO_Employee getEmployeeDAO() throws SQLException {
         if (EmployeeDAO == null) {
             EmployeeDAO = new DAO_Employee();
         }
         return EmployeeDAO;
     }
 
-    public static DAO_Drivers getDriverDAO() {
-        if (DriverDAO == null) {
-            DriverDAO = new DAO_Drivers();
-        }
-        return DriverDAO;
-    }
 
 
 }
