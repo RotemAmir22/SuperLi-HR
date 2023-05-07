@@ -43,8 +43,7 @@ public class Main {
      * @param system user
      * @return the required branch
      */
-    public static BranchStore searchABranchStore(HR_EntityManagement system)
-    {
+    public static BranchStore searchABranchStore(HR_EntityManagement system) throws SQLException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
         while(true) {
             System.out.println("Enter the Branch ID please");

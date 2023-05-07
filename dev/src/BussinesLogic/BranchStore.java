@@ -48,6 +48,7 @@ public class BranchStore extends Site {
     public int[][] getOpenHours() {return openHours;}
     public Map<LocalDate, DailyShift> getShiftsHistory() {return shiftsHistory;}
     public List<Employee> getEmployees() {return employees;}
+    public Area getArea(){return areaCode;}
 
     //setters
     public void setName(String name) {this.name = name;}
