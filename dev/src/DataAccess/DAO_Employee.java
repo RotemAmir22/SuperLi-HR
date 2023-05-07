@@ -105,6 +105,7 @@ public class DAO_Employee implements DAO{
 
     /**
      * adds an employee to the DB and also the matching map
+     * NO QUALIFICATIONS AT THIS POINT
      * @param o - new employee
      * @throws SQLException incase of an error
      */
@@ -126,6 +127,11 @@ public class DAO_Employee implements DAO{
         }
     }
 
+    /**
+     * update employees details
+     * @param o employee to update
+     * @throws SQLException in case of an error
+     */
     @Override
     public void update(Object o) throws SQLException {
         Employee e = (Employee)o;
@@ -159,6 +165,8 @@ public class DAO_Employee implements DAO{
             rs.last();
             int amount = rs.getRow();
             rs.beforeFirst();
+
+            //remove role from DB
             if(amount > roles.size()){
                 while(rs.next()){
                     int index = rs.getInt("qualificationId");
@@ -169,6 +177,8 @@ public class DAO_Employee implements DAO{
                     }
                 }
             }
+
+            //add role to DB
             else if(amount < roles.size()){
                 ArrayList<Integer> rolesInDB = new ArrayList<>();
                 while(rs.next()) {
@@ -181,7 +191,6 @@ public class DAO_Employee implements DAO{
                         break;
                     }
                 }
-
             }
         }
     }
