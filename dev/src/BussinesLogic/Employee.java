@@ -43,6 +43,8 @@ public class Employee {
     //getters
     public String getId() {return id;}
     public String getName() {return firstName+" "+lastName;}
+    public String getFirstName(){return firstName;}
+    public String getLastName() {return lastName;}
     public boolean[][] getConstraints() {return constrains;}
     public List<Role> getQualifications() {return (List<Role>) qualifications;}
     public int getShiftsLimit() {return shiftsLimit;}
