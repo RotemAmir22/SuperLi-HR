@@ -30,9 +30,9 @@ public class DAO_Employee implements DAO{
 
     @Override
     public Object findByID(Object ID) throws SQLException {
-        if (networkEmployees.containsKey(ID))
-            return networkEmployees.get(ID);
-        else if(newtworkDrivers.containsKey(ID))
+        if (networkEmployees != null && networkEmployees.containsKey(ID))
+                return networkEmployees.get(ID);
+        else if(newtworkDrivers != null && newtworkDrivers.containsKey(ID))
             return newtworkDrivers.get(ID);
         // if the employee not in the MAP
         else
@@ -86,7 +86,7 @@ public class DAO_Employee implements DAO{
                 while (rs.next()) {
                     int license = rs.getInt("licenseId");
                     driver = generator.CreateDriver(employee);
-                    driver.addLicense(License.values()[license]);
+                    driver.addLicense(License.values()[license - 1]);
                 }
                 return driver;
             }

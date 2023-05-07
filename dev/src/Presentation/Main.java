@@ -18,14 +18,6 @@ public class Main {
 
     private static DAO_Employee employeesDAO;
     private static DAO_BranchStore branchStoreDAO;
-    /**
-     * upload data of network into system
-     * @param system upload data
-     */
-    public static void uploadData(HR_EntityManagement system) throws SQLException, ClassNotFoundException {
-        employeesDAO = DAO_Generator.getEmployeeDAO();
-        branchStoreDAO = DAO_Generator.getBranchStoreDAO();
-    }
 
     /**
      * Search an employee by id
@@ -70,23 +62,12 @@ public class Main {
      */
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
 
+        employeesDAO = DAO_Generator.getEmployeeDAO();
+        branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         /* The main object "HR" control */
         HR_EntityManagement entityManagement = new HR_EntityManagement();
         HR_SchedulingManagement schedulingManager = new HR_SchedulingManagement();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("HELLO. Do you wish to upload the system with/without data? enter (0/1)");
-        String data = scanner.nextLine();
-        if(Objects.equals(data, "0"))
-        {
-            uploadData(entityManagement);
-            for (BranchStore branchStore : branchStoreDAO.getNetworkBranches())
-            {
-                branchStore.printBranchDetails();
-                System.out.println("");
-            }
-        }
-
-        //MENU
         String choice = "";
         while (choice != "7") {
             System.out.println("Hello HR manager. Welcome to Super-li system:");
