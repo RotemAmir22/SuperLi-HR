@@ -4,6 +4,7 @@ import BussinesLogic.Driver;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -151,9 +152,38 @@ public class DAO_Employee implements DAO{
             }
 
             //set qualifications
+            List<Role> roles = e.getQualifications();
+            stmt = conn.prepareStatement("SELECT * FROM EmployeeQualification WHERE employeeID = ? ");
+            stmt.setString(1,e.getId());
+            ResultSet rs = stmt.executeQuery();
+            rs.last();
+            int amount = rs.getRow();
+            rs.beforeFirst();
+            if(amount > roles.size()){
+                while(rs.next()){
+                    int index = rs.getInt("qualificationId");
+                    if(!roles.contains(Role.values()[index])) {
+                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualification WHERE employeeID = e.getId() AND qualificationId = index");
+                        stmt.executeQuery();
+                        break;
+                    }
+                }
+            }
+            else if(amount < roles.size()){
+                ArrayList<Integer> rolesInDB = new ArrayList<>();
+                while(rs.next()) {
+                    rolesInDB.add(rs.getInt("qualificationId"));
+                }
+                for(Role role: roles){
+                    if(!rolesInDB.contains(role.ordinal())) {
+                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualification (employeeID,qualificationId) VALUES (e.getId(), role.ordinal())");
+                        stmt.executeQuery();
+                        break;
+                    }
+                }
 
+            }
         }
-
     }
 
     @Override
