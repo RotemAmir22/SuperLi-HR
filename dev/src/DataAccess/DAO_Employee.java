@@ -1,11 +1,10 @@
 package DataAccess;
 import BussinesLogic.*;
+import BussinesLogic.Driver;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,40 +102,97 @@ public class DAO_Employee implements DAO{
             }
         }
     }
+
+    /**
+     * adds an employee to the DB and also the matching map
+     * NO QUALIFICATIONS AT THIS POINT
+     * @param o - new employee
+     * @throws SQLException incase of an error
+     */
     @Override
-    public void insert(Object o) throws SQLException {
+    public void insert(Object o) throws SQLException
+    {
         Employee e = (Employee)o;
         if(e != null)
         {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
                     "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
             stmt.executeQuery();
-            for(int i =0; i<e.getQualifications().size();i++)
-            {
-                stmt = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID, qualificationId)" +
-                        "VALUES (e.getId(), e.getQualifications().get(i))");
-                stmt.executeQuery();
-            }
-            if(e.canDoRole(DRIVER)){
+
+            //add to the right map
+            if(e.canDoRole(DRIVER))
                 newtworkDrivers.put(e.getId(), (Driver) e);
-                for(int i =0; i<((Driver) e).getLicenses().size();i++)
-                {
-                    PreparedStatement stmt1 = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID, qualificationId)" +
-                            "VALUES (e.getId(), ((Driver) e).getLicenses().get(i)");
-                    stmt1.executeQuery();
-                }
-            }
             else
                 networkEmployees.put(e.getId(),e);
         }
-
-
-
     }
 
+    /**
+     * update employees details
+     * @param o employee to update
+     * @throws SQLException in case of an error
+     */
     @Override
-    public void update(Object o) {
+    public void update(Object o) throws SQLException {
+        Employee e = (Employee)o;
+        if(e != null)
+        {
+            //set details
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Employees SET firstName = ?, lastName = ?, bankAccount = ?, salary = ?, empTerms = ?, startDate = ?, shiftsLimit = ?, cumulativeSalary = ? WHERE employeeID = e.getId()");
+            stmt.setString(1, e.getFirstName());
+            stmt.setString(2, e.getLastName());
+            stmt.setString(3, e.getBankAccount());
+            stmt.setDouble(4, e.getSalary());
+            stmt.setString(5, e.getEmpTerms());
+            stmt.setDate(6, (Date.valueOf(e.getStartDate())));
+            stmt.setInt(7, e.getShiftsLimit());
+            stmt.setDouble(8, e.getCumulativeSalary());
+            stmt.executeUpdate();
 
+            //set constraints
+            for (Days day : Days.values())
+            {
+                stmt = conn.prepareStatement("UPDATE EmployeeConstraints SET morningShift = ?, eveningShift = ? WHERE employeeID = e.getId() AND dayOfWeek = day.ordianl()");
+                stmt.setInt(1, e.getConstraints()[day.ordinal()][0]? 1:0);
+                stmt.setInt(2, e.getConstraints()[day.ordinal()][1]? 1:0);
+            }
+
+            //set qualifications
+            List<Role> roles = e.getQualifications();
+            stmt = conn.prepareStatement("SELECT * FROM EmployeeQualification WHERE employeeID = ? ");
+            stmt.setString(1,e.getId());
+            ResultSet rs = stmt.executeQuery();
+            rs.last();
+            int amount = rs.getRow();
+            rs.beforeFirst();
+
+            //remove role from DB
+            if(amount > roles.size()){
+                while(rs.next()){
+                    int index = rs.getInt("qualificationId");
+                    if(!roles.contains(Role.values()[index])) {
+                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualification WHERE employeeID = e.getId() AND qualificationId = index");
+                        stmt.executeQuery();
+                        break;
+                    }
+                }
+            }
+
+            //add role to DB
+            else if(amount < roles.size()){
+                ArrayList<Integer> rolesInDB = new ArrayList<>();
+                while(rs.next()) {
+                    rolesInDB.add(rs.getInt("qualificationId"));
+                }
+                for(Role role: roles){
+                    if(!rolesInDB.contains(role.ordinal())) {
+                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualification (employeeID,qualificationId) VALUES (e.getId(), role.ordinal())");
+                        stmt.executeQuery();
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     @Override

@@ -12,22 +12,12 @@ public class Driver extends Employee{
         licenses = new ArrayList<>();
     }
 
-    public void addLicense(License newLicense){
-        if(!this.licenses.contains(newLicense))
-            licenses.add(newLicense);
-        else
-            System.out.println("This driver already has this license!");
-    }
+    public void addLicense(License newLicense){licenses.add(newLicense);}
 
-    public void removeLicense(License license){
-        if(this.licenses.contains(license))
-            licenses.remove(license);
-        else
-            System.out.println("This driver hasn't this license!");
-    }
+    public void removeLicense(License license){  licenses.remove(license);}
 
     public ArrayList<License> getLicenses(){return this.licenses;}
 
-
+    //TODO: schedule driver to transit
 
 }
