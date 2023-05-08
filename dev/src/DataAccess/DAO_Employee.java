@@ -16,7 +16,10 @@ public class DAO_Employee implements DAO{
 
     private Map<String ,Employee> networkEmployees;
 
+    private List<Employee> employeeList;
     private Map<String, Driver> newtworkDrivers;
+
+    private List<Driver> driverList;
 
     private Connection conn;
 
@@ -24,7 +27,9 @@ public class DAO_Employee implements DAO{
     public DAO_Employee() throws SQLException, ClassNotFoundException {
         conn = Database.connect();
         networkEmployees = new HashMap<>();
-
+        newtworkDrivers = new HashMap<>();
+        employeeList = new ArrayList<>();
+        driverList = new ArrayList<>();
     }
 
     /**
@@ -200,8 +205,17 @@ public class DAO_Employee implements DAO{
 
     }
 
-    public List<Employee> getNetworkEmployees(){
-        return (List<Employee>) networkEmployees.values();
+    public List<Employee> getNetworkEmployees() throws SQLException {
+        if(networkEmployees.isEmpty())
+        {
+            PreparedStatement stmt = conn.prepareStatement("SELECT employeeID FROM Employees");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                findByID(rs.getString("employeeID"));
+            }
+        }
+        employeeList.addAll(networkEmployees.values());
+        return employeeList;
     }
 
     public List<Driver> getNetworkDrivers(){

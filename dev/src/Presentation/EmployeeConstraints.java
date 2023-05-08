@@ -27,7 +27,6 @@ public class EmployeeConstraints {
         System.out.println("Hello " + d.getName() +". Please enter your availability for the "+date.toString()+"\ny/n");
         choice = scanner.nextLine();
         return choice.equals("y");
-
     }
 
     /**
