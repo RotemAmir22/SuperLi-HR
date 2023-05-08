@@ -31,7 +31,7 @@ public class TransitCoordinator {
      * @param license of the needed driver
      * @return list of available drivers
      */
-    public List<Driver> getAvailableDrivers(LocalDate transitDate, License license){
+    public List<Driver> getAvailableDrivers(LocalDate transitDate, License license) throws SQLException {
         List<Driver> availableDrivers = new ArrayList<>();
         for(Driver driver : driversDAO.getNetworkDrivers())
             if(driver.getLicenses().contains(license))

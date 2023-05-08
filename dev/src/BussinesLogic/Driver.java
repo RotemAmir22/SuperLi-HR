@@ -17,7 +17,7 @@ public class Driver extends Employee{
     }
 
     public void addLicense(License newLicense){licenses.add(newLicense);}
-    public void removeLicense(License license){  licenses.remove(license);}
+    public void removeLicense(License license){licenses.remove(license);}
 
     //getters
     public ArrayList<License> getLicenses(){return this.licenses;}
@@ -39,12 +39,13 @@ public class Driver extends Employee{
      */
     public void printTransits()
     {
-        System.out.printf(this.getName() +" transit schedule is: "+ this.getTransits().toString());
+        System.out.print("Transit schedule is: "+ this.getTransits().toString()+"\n");
     }
 
     public void printEmployeeDetails()
     {
-        printEmployeeDetails();
+        System.out.println("- "+getName()+" -\nID: "+getId()+"\nStart Date: "+getStartDate()+
+                "\nCumulative Salary: "+getCumulativeSalary()+ "\nShift Salary: "+getSalary()+"\nBank account: "+getBankAccount()+"\nQualifications: "+getQualifications().toString());
         printTransits();
     }
 }

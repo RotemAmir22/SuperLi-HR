@@ -200,25 +200,80 @@ public class DAO_Employee implements DAO{
         }
     }
 
+    /**
+     *
+     * @param o employee to remove from database
+     * @throws SQLException
+     */
     @Override
-    public void delete(Object o) {
+    public void delete(Object o) throws SQLException {
+        Employee e = (Employee)o;
+        if(e != null) {
+            //delete from employees table
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Employees WHERE employeeID = ?");
+            stmt.setString(1, e.getId());
+            stmt.executeQuery();
 
+            //delete from qualification tables
+            stmt = conn.prepareStatement("DELETE FROM EmployeeQualifications WHERE employeeID = ?");
+            stmt.setString(1, e.getId());
+            stmt.executeQuery();
+
+            //delete from constraints tables
+            stmt = conn.prepareStatement("DELETE FROM EmployeeConstraints WHERE employeeID = ?");
+            stmt.setString(1, e.getId());
+            stmt.executeQuery();
+
+            //delete from drivers
+            if(e.canDoRole(DRIVER))
+            {
+                stmt = conn.prepareStatement("DELETE FROM Driver WHERE id = ?");
+                stmt.setString(1, e.getId());
+                stmt.executeQuery();
+
+                //remove from map
+                newtworkDrivers.remove(e.getId());
+            }
+            else
+                networkEmployees.remove(e.getId());
+        }
     }
 
+    /**
+     *
+     * @return list of all employees-no drivers
+     * @throws SQLException
+     */
     public List<Employee> getNetworkEmployees() throws SQLException {
         if(networkEmployees.isEmpty())
-        {
-            PreparedStatement stmt = conn.prepareStatement("SELECT employeeID FROM Employees");
-            ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
-                findByID(rs.getString("employeeID"));
-            }
-        }
+            ifEmptyMaps();
+
         employeeList.addAll(networkEmployees.values());
         return employeeList;
     }
 
-    public List<Driver> getNetworkDrivers(){
-        return (List<Driver>) newtworkDrivers.values();
+    /**
+     *
+     * @return list of all network drivers
+     * @throws SQLException
+     */
+    public List<Driver> getNetworkDrivers() throws SQLException {
+        if(newtworkDrivers.isEmpty())
+            ifEmptyMaps();
+
+        driverList.addAll(newtworkDrivers.values());
+        return driverList;
+    }
+
+    /**
+     * uploads the data to the list if they are required
+     * @throws SQLException
+     */
+    private void ifEmptyMaps() throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT employeeID FROM Employees");
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()) {
+            findByID(rs.getString("employeeID"));
+        }
     }
 }

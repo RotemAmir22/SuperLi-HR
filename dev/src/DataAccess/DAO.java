@@ -8,5 +8,5 @@ public interface DAO {
 
     void insert(Object o) throws SQLException;
     void update(Object o) throws SQLException;
-    void delete(Object o);
+    void delete(Object o) throws SQLException;
 }
