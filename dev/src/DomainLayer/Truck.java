@@ -11,7 +11,7 @@ import java.util.Set;
 public class Truck {
     final String plateNumber;
     final TruckModel model;
-    Set<Qualification> qSet;
+    Set<License> lSet;
     final double truckWeight;
     double currentLoadWeight;
     final double maxCarryWeight;
@@ -23,56 +23,78 @@ public class Truck {
         this.truckWeight = truckWeight;
         this.currentLoadWeight = 0;
         this.maxCarryWeight = maxWeight;
-        this.qSet = new HashSet<Qualification>();
+        this.lSet = new HashSet<License>();
     }
-    public Truck(String plateNumber, TruckModel model, double truckWeight, double maxWeight, Set<Qualification> quliSet) {
+
+    public Truck(String plateNumber, TruckModel model, double truckWeight, double maxWeight, Set<License> quliSet) {
         this.plateNumber = plateNumber;
         this.model = model;
         this.truckWeight = truckWeight;
         this.currentLoadWeight = 0;
         this.maxCarryWeight = maxWeight;
-        this.qSet = quliSet;
+        this.lSet = quliSet;
     }
+
+    public double getTruckWeight() {
+        return truckWeight;
+    }
+
     public double getMaxCarryWeight() {
         return maxCarryWeight;
     }
+
     public double getCurrentWeight() {
         return currentLoadWeight;
     }
-    public void loadTruck(double weight){
+
+    public void loadTruck(double weight) {
         currentLoadWeight += weight;
-    }; // will be inside truck service
-    public void unloadTruck (double weight)
-    {
-        currentLoadWeight-=weight;
     }
-    public Set<Qualification> getTruckQualification(){
-        return this.qSet;
+
+    ; // will be inside truck service
+
+    public void unloadTruck(double weight) {
+        currentLoadWeight -= weight;
     }
-    public void addQToQSet(Qualification qQual){
-        this.qSet.add(qQual);
+
+    public Set<License> getTruckLicenses() {
+        return this.lSet;
     }
+
+    public void addQToQSet(License qLicense) {
+        this.lSet.add(qLicense);
+    }
+
     public String getPlateNumber() {
         return plateNumber;
     }
-    public Set<Qualification> getqSet() {
-        return qSet;
+
+    public TruckModel getModel() {
+        return this.model;
     }
+
+    public Set<License> getlSet() {
+        return lSet;
+    }
+
     public void setCurrentLoadWeight(double currentLoadWeight) {
         this.currentLoadWeight = currentLoadWeight;
     }
-    public void printTruck(){
+
+    public void printTruck() {
         System.out.println("Plate number: " + this.plateNumber);
         System.out.println("Model: " + this.model);
         System.out.println("Truck's weight: " + this.truckWeight);
         System.out.println("Current load weight: " + this.currentLoadWeight);
         System.out.println("Max carry weight: " + this.maxCarryWeight);
-        if (!qSet.isEmpty()) {
-            System.out.println("Qualifications: ");
-            for (Qualification q : qSet) {
-                System.out.println("\t" + q);
+        if (!lSet.isEmpty()) {
+            System.out.println("Licenses: ");
+            for (License l : lSet) {
+                System.out.println("\t" + l);
             }
         }
         System.out.println();
     }
+
+
 }

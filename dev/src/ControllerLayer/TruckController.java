@@ -10,7 +10,6 @@ public interface TruckController {
                       double truckWeight, double maxWeight);
     boolean removeTruckByPlateNumber(String tPlateNumber);
     Truck findTruckByPlate(String tPlateNumber);
-    Set<Truck> getTrucksSet();
     TruckDAO getTruckDAO();
     void showAllTrucks();
     boolean showTruckByPlate(String tPlateNumber);

@@ -30,7 +30,7 @@ public class TransitPresentation {
         System.out.println("Enter truck's plate number: ");
         String truckPLateNumber = scanner.nextLine();
         System.out.println("Enter driver's id: ");
-        int driverId = scanner.nextInt();
+        int driverId = scanner.nextInt(); // TODO convert to string
         scanner.nextLine();
         Transit newTransit;
         try {
@@ -186,6 +186,8 @@ public class TransitPresentation {
             System.out.println("Back to main menu ");
             return;
         }
+
+        // TODO boolean NoamValidateShopKeepers(Date date, List<Store>)
         transit.setDepartureTime(LocalTime.now());
 
 
@@ -285,6 +287,9 @@ public class TransitPresentation {
         // TODO verify truck and driver availability
         Truck biggerTruck = findNewTruck(scanner);
         if (biggerTruck == null)return false;
+
+
+        // TODO Driver NoamResponsibility(String driverId, Set<Licenses> forDrivingTruck, Date transitDate);
         Driver newDriver = findNewDriver(scanner);
         if (newDriver == null)return false;
         if (!transitController.isDriverAllowToDriveTruck(biggerTruck, newDriver)){

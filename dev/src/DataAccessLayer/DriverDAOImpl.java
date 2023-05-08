@@ -6,8 +6,6 @@ import java.util.Set;
 
 public class DriverDAOImpl implements DriverDAO {
     private final Set<Driver> driversSet = new HashSet<>();
-
-
     @Override
     public void saveDriver(Driver driver) {
         driversSet.add(driver);
@@ -20,9 +18,5 @@ public class DriverDAOImpl implements DriverDAO {
                 return driver;
         }
         return null;
-    }
-    @Override
-    public void removeDriver(Driver driver) {
-        driversSet.remove(driver);
     }
 }
