@@ -50,7 +50,7 @@ public class TransitCoordinator {
         if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
         {
             BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
-//            branchStore.transits.put(date, Driver);
+            branchStore.transits.put(date, Driver);
         }
         else
             System.out.println("Invalid branch ID");
@@ -62,16 +62,16 @@ public class TransitCoordinator {
      * @param driverID which is going to be added
      * @param licenses of the truck that the driver needs to know
      */
-//    public Driver addDriverToTransit(LocalDate date, int driverID,ArrayList<License> licenses) {
-//        //need to add function that seeks a driver by id and Date in the DAO
-//        Driver driver = findNewDriver(driverID, date, licenses);
-//        if (driver == null) {
-//            System.out.println("Driver not available");
-//            return null;
-//        }
-//
-//        return driver;
-//    }
+    public Driver addDriverToTransit(LocalDate date, int driverID,ArrayList<License> licenses) {
+        //need to add function that seeks a driver by id and Date in the DAO
+        Driver driver = findNewDriver(driverID, date, licenses);
+        if (driver == null) {
+            System.out.println("Driver not available");
+            return null;
+        }
+
+        return driver;
+    }
 
 
     /**
@@ -82,16 +82,16 @@ public class TransitCoordinator {
      * @param oldDriverID which needed to be removed from the transit - need to delete its date from transitDate list
      */
 
-//    public Driver SwitchDriverInTransit(LocalDate date, int newdriverID, ArrayList<License> licenses, int oldDriverID){
-//            //need to add function that seeks a driver by id and Date in the DAO
-//            Driver driver = findNewDriver(newdriverID, date);
-//            if (driver == null) {
-//                System.out.println("Driver not available");
-//                return null;
-//        }
-//
-//            return driver;
-//    }
+    public Driver SwitchDriverInTransit(LocalDate date, int newdriverID, ArrayList<License> licenses, int oldDriverID){
+            //need to add function that seeks a driver by id and Date in the DAO
+            Driver driver = findNewDriver(newdriverID, date);
+            if (driver == null) {
+                System.out.println("Driver not available");
+                return null;
+        }
+
+            return driver;
+    }
 
     /**
      *
