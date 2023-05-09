@@ -1,6 +1,7 @@
 package DataAccess;
 
 import BussinesLogic.*;
+import BussinesLogic.Driver;
 
 import java.sql.*;
 import java.sql.Date;
@@ -13,12 +14,15 @@ public class DAO_BranchStore implements DAO{
 
     private Map<Integer,BranchStore> networkBranches;
 
+    private ArrayList<BranchStore> branchesList;
+
     private Connection conn;
 
     // constructor
     public DAO_BranchStore() throws SQLException, ClassNotFoundException {
         conn = Database.connect();
         networkBranches = new HashMap<>();
+        branchesList = new ArrayList<>();
     }
 
     /**
@@ -218,7 +222,23 @@ public class DAO_BranchStore implements DAO{
 
     }
 
-    public List<BranchStore> getNetworkBranches(){
-        return (List<BranchStore>) networkBranches.values();
+    public List<BranchStore> getNetworkBranches() throws SQLException, ClassNotFoundException {
+        if(networkBranches.isEmpty())
+            ifEmptyMaps();
+
+        branchesList.addAll(networkBranches.values());
+        return branchesList;
+    }
+
+    /**
+     * uploads the data to the list if they are required
+     * @throws SQLException
+     */
+    private void ifEmptyMaps() throws SQLException, ClassNotFoundException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT branchID FROM BranchStore");
+        ResultSet rs = stmt.executeQuery();
+        while(rs.next()) {
+            findByID(rs.getString("branchID"));
+        }
     }
 }

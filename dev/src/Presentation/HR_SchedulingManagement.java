@@ -32,7 +32,7 @@ public class HR_SchedulingManagement {
     /**
      * once a week the system asks all the network employees for their schedule constraints
      */
-    public void schedulingFromEmployees() throws SQLException {
+    public void schedulingFromEmployees() throws SQLException, ClassNotFoundException {
         /*
          * First function ask all the employees in all branches to give constraints
          */
@@ -54,7 +54,7 @@ public class HR_SchedulingManagement {
     /**
      * daily the system build the shifts for the next week in each branch
      */
-    public void setShift() throws SQLException {
+    public void setShift() throws SQLException, ClassNotFoundException {
         for(int j=0; j<2 ; j++) // two days
         {
             Days day = Days.values()[j];
