@@ -49,7 +49,7 @@ public class TransitCoordinator {
         if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
         {
             BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
-            branchStore.transits.put(date, false); // default value until validate there is a storekeeper
+            branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
             branchStoreDAO.update(branchStore);
         }
         else
@@ -112,7 +112,7 @@ public class TransitCoordinator {
      */
     public Map<LocalDate, Boolean> getTransitsInBranch(int branchID, LocalDate date){
         if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-            return branchStoreDAO.getNetworkBranches().get(branchID).transits;
+            return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
         else
             System.out.println("Invalid branch ID");
         return null;
