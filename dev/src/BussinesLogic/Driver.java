@@ -36,7 +36,7 @@ public class Driver extends Employee{
      */
     public void printTransits()
     {
-        System.out.print("Transit schedule is: "+ this.getTransitsDates().toString()+"\n");
+        System.out.print("Transit scheduled dates are: "+ this.getTransitsDates().toString()+"\n");
     }
 
     public void printEmployeeDetails()
