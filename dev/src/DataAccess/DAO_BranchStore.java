@@ -73,7 +73,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                     Boolean transitStatus = rs.getBoolean("status");
                     branchStore.storekeeperStatusByDate.put(transitDate, transitStatus);
                 }
-                networkBranches.put((int) ID, branchStore);
+                networkBranches.put(Integer.parseInt((String) ID), branchStore);
                 return branchStore;
             }
         }
