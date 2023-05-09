@@ -3,7 +3,6 @@ import BussinesLogic.*;
 import BussinesLogic.Driver;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.Map;
 import static BussinesLogic.Role.DRIVER;
 
 
-public class DAO_Employee implements DAO{
+public class DAO_Employee implements IDAO_Entity {
 
     private Map<String ,Employee> networkEmployees;
 

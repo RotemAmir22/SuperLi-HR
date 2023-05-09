@@ -1,16 +1,13 @@
 package DataAccess;
 
 import BussinesLogic.*;
-import BussinesLogic.Driver;
 
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
-import static BussinesLogic.Role.DRIVER;
-
-public class DAO_BranchStore implements DAO{
+public class DAO_BranchStore implements IDAO_Entity {
 
     private Map<Integer,BranchStore> networkBranches;
 
