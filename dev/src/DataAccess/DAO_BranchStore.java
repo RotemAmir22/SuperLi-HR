@@ -7,6 +7,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
+import static BussinesLogic.Role.DRIVER;
+
 public class DAO_BranchStore implements IDAO_Entity {
 
     private Map<Integer,BranchStore> networkBranches;
@@ -216,9 +218,36 @@ public class DAO_BranchStore implements IDAO_Entity {
     }
 
     @Override
-    public void delete(Object o) {
+    public void delete(Object o) throws SQLException {
+        BranchStore b = (BranchStore) o;
+        if(b != null) {
+            //delete from branch store table
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM BranchStore WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
 
+            //delete from open hours
+            stmt = conn.prepareStatement("DELETE FROM BranchOpeningHours WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
 
+            //delete from BranchStoreTransits
+            stmt = conn.prepareStatement("DELETE FROM BranchStoreTransits WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
+
+            //delete from DailyShifts
+            stmt = conn.prepareStatement("DELETE FROM DailyShifts WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
+
+            //delete from EmployeeBranches
+            stmt = conn.prepareStatement("DELETE FROM EmployeeBranches WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
+
+            networkBranches.remove(b.getBranchID());
+        }
     }
 
     public List<BranchStore> getNetworkBranches() throws SQLException, ClassNotFoundException {
