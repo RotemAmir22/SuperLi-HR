@@ -152,6 +152,7 @@ public class BranchStore extends Site {
     public void printBranchDetails()
     {
         System.out.println("- "+getName()+", ID: "+getBranchID()+" -\nAddress: "+getAddress()+"\nPhone number: "+getPhoneNum()+"\nOpen Hours: "+getOpeningTime());
+        System.out.println("Upcoming transit dates are:\n"+ storekeeperStatusByDate.keySet());
         System.out.println("Employees in this Branch:");
         int counter = 1;
         for (Employee employee : getEmployees())
@@ -169,6 +170,8 @@ public class BranchStore extends Site {
     public void viewTransit(LocalDate date, String employeeID)
     {
         DailyShift dailyShift = getShiftByDate(date.toString());
+        if(dailyShift == null)
+            System.out.println("No shift scheduled..");
         //works in the daily shift
         Employee employee = dailyShift.isEmployeeInShift(employeeID);
         if( employee != null)
