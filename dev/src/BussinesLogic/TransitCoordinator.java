@@ -38,7 +38,6 @@ public class TransitCoordinator {
                 if(EmployeeConstraints.checkDriverAvailabilityForDate(transitDate, driver))
                     availableDrivers.add(driver);
         return availableDrivers;
-
     }
 
     /**
@@ -62,14 +61,13 @@ public class TransitCoordinator {
      * @param driverID which is going to be added
      * @param licenses of the truck that the driver needs to know
      */
-    public Driver addDriverToTransit(LocalDate date, int driverID,ArrayList<License> licenses) {
+    public Driver addDriverToTransit(LocalDate date, int driverID, ArrayList<License> licenses) {
         //need to add function that seeks a driver by id and Date in the DAO
         Driver driver = findNewDriver(driverID, date, licenses);
         if (driver == null) {
             System.out.println("Driver not available");
             return null;
         }
-
         return driver;
     }
 
