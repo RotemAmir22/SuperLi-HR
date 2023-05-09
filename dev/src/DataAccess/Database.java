@@ -3,7 +3,7 @@ package DataAccess;
 import java.sql.*;
 public class Database {
 
-    private static final String DB_URL = "jdbc:sqlite:C:/Users/Rotem/Documents/GitHub/ADSS_Group_H/identifier.sqlite";
+    private static final String DB_URL = "jdbc:sqlite:C:/Users/PC/Documents/GitHub/ADSS_Group_H/identifier.sqlite";
     public static Connection connect() throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         return DriverManager.getConnection(DB_URL);
