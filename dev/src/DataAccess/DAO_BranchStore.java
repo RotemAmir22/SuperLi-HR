@@ -60,9 +60,9 @@ public class DAO_BranchStore implements IDAO_Entity {
                 stmt = conn.prepareStatement("SELECT * FROM EmployeeBranches WHERE branchID = ?");
                 stmt.setString(1, (String) ID);
                 rs = stmt.executeQuery();
+                DAO_Employee employeesDAO = DAO_Generator.getEmployeeDAO();
                 while (rs.next()){
                     String employeeId = rs.getString("employeeID");
-                    DAO_Employee employeesDAO = DAO_Generator.getEmployeeDAO();
                     Employee e = (Employee) employeesDAO.findByID(employeeId);
                     branchStore.addEmployee(e);
                 }

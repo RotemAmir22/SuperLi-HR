@@ -21,12 +21,21 @@ public class DAO_DailyShift implements IDAO_DailyShift {
     private Connection conn;
 
 
+    // constructor
     public DAO_DailyShift() throws SQLException, ClassNotFoundException {
         conn = Database.connect();
         networkDailyShift = new ArrayList<>();
         daoBranchStore = DAO_Generator.getBranchStoreDAO();
     }
 
+    /**
+     * Search a dailyShift by key - date and branchId
+     * @param date of the shift
+     * @param id of the branch
+     * @return the DailyShift object
+     * @throws SQLException in case of a problem
+     * @throws ClassNotFoundException in case of a problem
+     */
     @Override
     public Object findByKey(Object date, Object id) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = null;
@@ -41,13 +50,52 @@ public class DAO_DailyShift implements IDAO_DailyShift {
 
         }
         // get the morning employees
+        stmt = conn.prepareStatement("SELECT * FROM MorningShiftEmployees WHERE date = ?");
+        stmt.setDate(1, (Date) date);
+        rs = stmt.executeQuery();
+        DAO_Employee employeesDAO = DAO_Generator.getEmployeeDAO();
+        while(rs.next()){
+            String employeeId = rs.getString("employeeID");
+            Employee e = (Employee) employeesDAO.findByID(employeeId);
+            Role r = Role.values()[rs.getInt("role")];
+            assert dailyShift != null;
+            dailyShift.addEmployeeToMorning(e, r);
+        }
 
         // get the evening employees
+        stmt = conn.prepareStatement("SELECT * FROM EveningShiftEmployees WHERE date = ?");
+        stmt.setDate(1, (Date) date);
+        rs = stmt.executeQuery();
+        while(rs.next()){
+            String employeeId = rs.getString("employeeID");
+            Employee e = (Employee) employeesDAO.findByID(employeeId);
+            Role r = Role.values()[rs.getInt("role")];
+            assert dailyShift != null;
+            dailyShift.addEmployeeToEvening(e, r);
+        }
 
         // get shift managers
+        stmt = conn.prepareStatement("SELECT * FROM ShiftManagers WHERE shiftDate = ?");
+        stmt.setDate(1, (Date) date);
+        rs = stmt.executeQuery();
+        while(rs.next()) {
+            String employeeId = rs.getString("employeeID");
+            Employee e = (Employee) employeesDAO.findByID(employeeId);
+            int shift = rs.getInt("shiftsSlot");
+            ShiftManager manager = ShiftManagerGenerator.CreateShiftManager(e.getName(), employeeId, ((Date) date).toLocalDate(),shift);
+            dailyShift.addShiftManager(manager);
+        }
+        networkDailyShift.add(dailyShift);
         return dailyShift;
     }
 
+    /**
+     * Search and return the DailyShifts Map for a specific branchStore
+     * @param ID of the branch
+     * @return a Map of date and DailyShift
+     * @throws SQLException in case of a problem
+     * @throws ClassNotFoundException in case of a problem
+     */
     public Map<LocalDate,DailyShift> findByBranchID(Object ID) throws SQLException, ClassNotFoundException {
         Map<LocalDate,DailyShift> dailyShifts = new HashMap<>();
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM DailyShifts WHERE branchID = ?");
@@ -60,8 +108,13 @@ public class DAO_DailyShift implements IDAO_DailyShift {
         return dailyShifts;
     }
 
+    /**
+     * Insert new dailyShift to DB
+     * @param o the DailyShift object
+     * @param id of the branch
+     * @throws SQLException in case of any problem
+     */
     @Override
-
     public void insert(Object o, Object id) throws SQLException {
         DailyShift dailyShift = (DailyShift) o;
         if (dailyShift != null) {
@@ -124,6 +177,13 @@ public class DAO_DailyShift implements IDAO_DailyShift {
         }
     }
 
+    /**
+     * Update a DailyShift - in case of any change in details
+     * @param o the DailyShift object
+     * @param id of the branch
+     * @throws SQLException in case of any problem
+     * @throws ClassNotFoundException in case of any problem
+     */
     @Override
     public void update(Object o, Object id) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = (DailyShift) o;
@@ -146,7 +206,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
             }
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getEveningShift().entrySet()) {
                 for (Employee e : shift.getValue()) {
-                    stmt = conn.prepareStatement("UPDATE EveningShiftEmployees date = ?, employeeID = ?, role = ?");
+                    stmt = conn.prepareStatement("UPDATE EveningShiftEmployees SET date = ?, employeeID = ?, role = ?");
                     stmt.setDate(1, java.sql.Date.valueOf(dailyShift.getDate()));
                     stmt.setString(2, e.getId());
                     stmt.setInt(3, shift.getKey().ordinal());
@@ -184,9 +244,15 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                 }
             }
         }
-
     }
 
+    /**
+     * Delete a DailyShift from DB
+     * @param date of the shift
+     * @param id of the branch
+     * @throws SQLException in case of any problem
+     * @throws ClassNotFoundException in case of any problem
+     */
     @Override
     public void delete(Object date, Object id) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = (DailyShift) findByKey(date,id);
@@ -231,7 +297,6 @@ public class DAO_DailyShift implements IDAO_DailyShift {
             }
         }
         networkDailyShift.remove(dailyShift);
-
     }
 }
 
