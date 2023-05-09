@@ -105,6 +105,8 @@ public class DAO_BranchStore implements DAO{
             stmt.setInt(1, branch.getBranchID());
             ResultSet rs = stmt.executeQuery();
 
+
+
             networkBranches.put(branch.getBranchID(), branch);
         }
     }
