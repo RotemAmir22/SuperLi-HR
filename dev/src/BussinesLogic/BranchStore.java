@@ -1,5 +1,9 @@
 package BussinesLogic;
 
+import DataAccess.DAO_DailyShift;
+import DataAccess.DAO_Generator;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.*;
@@ -11,14 +15,13 @@ import java.util.*;
  * The shifts history saved at a specific branch for later use
  */
 public class BranchStore extends Site {
-
+    private static DAO_DailyShift dao_dailyShift;
     private static int serialNumCounter=0;
     private int branchID; //cannot change to ID once created
     private String name;
     private List<Employee> employees;
     private int[][] openHours; // days (0 - Sunday, 1- Monday, etc.) and hours ([0][0] - Sunday morning, [0][1] - Sunday evening)
     private String openingTime; // a summery for employees to know when the branch is open
-    private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
 
     public Map<LocalDate, Boolean> storekeeperStatusByDate; // means if the transit can arrive
 
@@ -27,16 +30,18 @@ public class BranchStore extends Site {
      * Constructor
      * @param openingtime: description
      */
-    public BranchStore(String name,Area area, String address, String phoneNum, String openingtime) {
+    public BranchStore(String name,Area area, String address, String phoneNum, String openingtime) throws SQLException, ClassNotFoundException {
         super(address, area, name, phoneNum);
         this.name = name;
         serialNumCounter++;
         this.branchID = serialNumCounter;
         this.employees = new ArrayList<Employee>();
         this.openHours = new int[7][2]; //default value is 0 means open 24/7
-        this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
+        //this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
         this.openingTime = openingtime;
         this.storekeeperStatusByDate = new HashMap<>();
+        dao_dailyShift=DAO_Generator.getDailyShiftDAO();
+
 
     }
 
@@ -47,7 +52,7 @@ public class BranchStore extends Site {
     public String getAddress() {return address;}
     public String getPhoneNum() {return ContactNumber;}
     public int[][] getOpenHours() {return openHours;}
-    public Map<LocalDate, DailyShift> getShiftsHistory() {return shiftsHistory;}
+    public Map<LocalDate, DailyShift> getShiftsHistory() {return dao_dailyShift.findByBranchID(branchID);}
     public List<Employee> getEmployees() {return employees;}
     public Area getArea(){return areaCode;}
 
@@ -69,19 +74,13 @@ public class BranchStore extends Site {
      */
     public void removeEmployee(Employee employee){this.employees.remove(employee);} //returns bool}
 
-    /**
-     *
-     * @param dailyShift: adds this shift to history
-     */
-    public void addShiftToHistory(DailyShift dailyShift) {this.shiftsHistory.put(dailyShift.getDate(),dailyShift);}
 
     /**
      * clears all shift history of the past month
      * this function is called once a month (by the user)
      * the deletion is this way so that if more dates have been added to the map, they won't be deleted.
      */
-    public void deleteHistory()
-    {
+    public void deleteHistory() throws SQLException, ClassNotFoundException {
         // Get the current date
         LocalDate today = LocalDate.now();
 
@@ -96,8 +95,8 @@ public class BranchStore extends Site {
             //get the date of the previous month
             LocalDate date = LocalDate.of(today.getYear(), previousMonth, i);
             //remove date from history
-            if(this.shiftsHistory.get(date) != null)
-                this.shiftsHistory.remove(date);
+            if(dao_dailyShift.findByKey(date,branchID) != null)
+                dao_dailyShift.delete(date,branchID);
         }
     }
 
@@ -105,13 +104,12 @@ public class BranchStore extends Site {
      * print shift by given date
      * @param dateString: date in string
      */
-    public void showShiftByDate(String dateString)
-    {
+    public void showShiftByDate(String dateString) throws SQLException, ClassNotFoundException {
         //convert string to key type LocalDate
         LocalDate date = LocalDate.parse(dateString);
-        if(this.shiftsHistory.get(date)== null)
+        if(dao_dailyShift.findByKey(date,branchID)== null)
             System.out.println("NO SHIFT YET");
-        else this.shiftsHistory.get(date).showMeSchedualing();
+        else ((DailyShift) dao_dailyShift.findByKey(date,branchID)).showMeSchedualing();
     }
 
     /**
@@ -119,11 +117,10 @@ public class BranchStore extends Site {
      * @param dateString: gets a date
      * @return daily shift of this date
      */
-    public DailyShift getShiftByDate(String dateString)
-    {
+    public DailyShift getShiftByDate(String dateString) throws SQLException, ClassNotFoundException {
         //convert string to key type LocalDate
         LocalDate date = LocalDate.parse(dateString);
-        return this.shiftsHistory.get(date);
+        return (DailyShift) dao_dailyShift.findByKey(date,branchID);
     }
 
     /**
@@ -167,8 +164,7 @@ public class BranchStore extends Site {
      * @param date : date that supply will arrive
      * @param employeeID : ID of the employee that wants to view
      */
-    public void viewTransit(LocalDate date, String employeeID)
-    {
+    public void viewTransit(LocalDate date, String employeeID) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = getShiftByDate(date.toString());
         if(dailyShift == null)
             System.out.println("No shift scheduled..");
