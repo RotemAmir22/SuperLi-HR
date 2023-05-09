@@ -3,11 +3,9 @@ package DataAccess;
 import BussinesLogic.*;
 
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static BussinesLogic.Role.DRIVER;
 
@@ -100,13 +98,16 @@ public class DAO_BranchStore implements DAO{
             stmt.setString(6, branch.getContactName());
             stmt.setString(7, branch.getContactNumber());
             stmt.executeUpdate();
+            // set opening hours
+            for(int i=0; i<7; i++) {
+                stmt = conn.prepareStatement("INSERT INTO BranchOpeningHours (branchID, dayOfWeek, morningOpen, eveningOpen)" + "VALUES (?,?,?,?)");
+                stmt.setInt(1, branch.getBranchID());
+                stmt.setInt(2, i);
+                stmt.setInt(3, branch.getOpenHours()[i][0]);
+                stmt.setInt(4, branch.getOpenHours()[i][1]);
+                stmt.executeQuery();
 
-            stmt = conn.prepareStatement("SELECT * FROM BranchOpeningHours WHERE branchID = ?");
-            stmt.setInt(1, branch.getBranchID());
-            ResultSet rs = stmt.executeQuery();
-
-
-
+            }
             networkBranches.put(branch.getBranchID(), branch);
         }
     }
@@ -116,6 +117,7 @@ public class DAO_BranchStore implements DAO{
         BranchStore branch = (BranchStore) o;
         if (branch != null) {
             //set details
+            ResultSet rs;
             PreparedStatement stmt = conn.prepareStatement("UPDATE BranchStore SET branchID = ?, name = ?, openingTime = ?, address = ?, areaCode = ?, contactName = ?, contactNumber = ? WHERE branchID = ?");
             stmt.setInt(1, branch.getBranchID());
             stmt.setString(2, branch.getName());
@@ -125,10 +127,54 @@ public class DAO_BranchStore implements DAO{
             stmt.setString(6, branch.getContactName());
             stmt.setString(7, branch.getContactNumber());
             stmt.executeUpdate();
+
+            // set opening hours
+            for(int i=0; i<7; i++) {
+                stmt = conn.prepareStatement("UPDATE BranchOpeningHours SET branchID = ?, dayOfWeek = ?, morningOpen = ?, eveningOpen = ? WHERE branchID = ?");
+                stmt.setInt(1, branch.getBranchID());
+                stmt.setInt(2, i);
+                stmt.setInt(3, branch.getOpenHours()[i][0]);
+                stmt.setInt(4, branch.getOpenHours()[i][1]);
+                stmt.executeQuery();
+            }
+
+            // set Employees
+            stmt = conn.prepareStatement("SELECT * FROM EmployeeBranches WHERE branchID = ?");
+            stmt.setInt(1, branch.getBranchID());
+            rs = stmt.executeQuery();
+            ArrayList<String> workersInDB = new ArrayList<>();
+            while(rs.next()) {
+                workersInDB.add(rs.getString("employeeID"));
+            }
+            // add employee to DB
+            ArrayList<String> workersIdInbranch = new ArrayList<>();
+            for(Employee e : branch.getEmployees())
+            {
+                workersIdInbranch.add(e.getId());
+                if(!workersInDB.contains(e.getId())){
+                    stmt = conn.prepareStatement("INSERT INTO EmployeeBranches (employeeID,branchID)" + "VALUES (?,?)");
+                    stmt.setString(1,e.getId());
+                    stmt.setInt(2, branch.getBranchID());
+                    stmt.executeQuery();
+                    break;
+                }
+            }
+            // remove from DB
+            for(String workerID : workersInDB){
+                if(!workersIdInbranch.contains(workerID))
+                {
+                    stmt = conn.prepareStatement("DELETE FROM EmployeeBranches (employeeID,branchID)" + "VALUES (?,?)");
+                    stmt.setString(1,workerID);
+                    stmt.setInt(2, branch.getBranchID());
+                    stmt.executeQuery();
+                    break;
+                }
+            }
+
             // set transits
             stmt = conn.prepareStatement("SELECT * FROM BranchStoreTransits WHERE branchID = ?");
             stmt.setInt(1, branch.getBranchID());
-            ResultSet rs = stmt.executeQuery();
+            rs = stmt.executeQuery();
             // get last date to count the transits
             rs.last();
             int amount = rs.getRow();
@@ -167,7 +213,8 @@ public class DAO_BranchStore implements DAO{
         }
     }
 
-    @Override    public void delete(Object o) {
+    @Override
+    public void delete(Object o) {
 
     }
 

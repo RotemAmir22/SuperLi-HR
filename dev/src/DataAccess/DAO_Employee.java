@@ -123,7 +123,13 @@ public class DAO_Employee implements DAO{
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
                     "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
             stmt.executeQuery();
+            // add to constraints table
+            for(int i=0; i<7; i++) {
+                stmt = conn.prepareStatement("INSERT INTO EmployeeConstriants (employeeId, dayOfWeek)" +
+                        "VALUES (e.getId() , i)");
+                stmt.executeQuery();
 
+            }
             //add to the right map
             if(e.canDoRole(DRIVER))
                 newtworkDrivers.put(e.getId(), (Driver) e);
