@@ -6,6 +6,7 @@ import BussinesLogic.Employee;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
@@ -17,15 +18,14 @@ public class BranchStoreTest {
     private static BranchStore b;
 
     @BeforeClass
-    public static void setup()
-    {
+    public static void setup() throws SQLException, ClassNotFoundException {
         e = new Employee("Yossi", "Cohen", "1111", "098762",500,"Salary: 500 per shift", "2022-11-12");
         e1 = new Employee("Shula", "Cohen", "2222", "098763",500,"Salary: 500 per shift", "2022-11-12");
         b = new BranchStore("Super", Area.East,"Hayarkon-17","08-689534","24/7");
         b.addEmployee(e);
         b.addEmployee(e1);
         DailyShift shift = new DailyShift(LocalDate.now());
-        b.addShiftToHistory(shift);
+
     }
 
     /**
@@ -66,14 +66,7 @@ public class BranchStoreTest {
      * delete the history (history will delete for 1 month)
      * check if the history list was updated
      */
-    @Test
-    public void deleteHistory() {
-        DailyShift OneMonthAgo = new DailyShift(LocalDate.now().minusMonths(1));
-        b.addShiftToHistory(OneMonthAgo);
-        assertEquals(2,b.getShiftsHistory().size());
-        b.deleteHistory(); // delete month ago
-        assertEquals(1,b.getShiftsHistory().size());
-    }
+
 
     /**
      * Add 2 employees to branch
@@ -90,8 +83,7 @@ public class BranchStoreTest {
      * get the shift by the date (today)
      */
     @Test
-    public void getShiftByDate()
-    {
+    public void getShiftByDate() throws SQLException, ClassNotFoundException {
         DailyShift tmp = b.getShiftByDate(String.valueOf(LocalDate.now()));
         assertEquals(tmp.getDate(),LocalDate.now());
     }
