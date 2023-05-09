@@ -80,6 +80,7 @@ public class DAO_BranchStore implements IDAO_Entity {
         return null;
     }
 
+
     /**
      * insert new branch
      * @param o the branchStore
