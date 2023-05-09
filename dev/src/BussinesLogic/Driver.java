@@ -21,7 +21,15 @@ public class Driver extends Employee{
     public ArrayList<LocalDate> getTransitsDates(){return transitsDates;}
 
     //functions on transit
-    public void addTransit(LocalDate date){this.transitsDates.add(date);}
+
+    /**
+     * add delivery to driver and update salary
+     * @param date of future delivery
+     */
+    public void addTransit(LocalDate date){
+        this.transitsDates.add(date);
+        this.setCumulativeSalary(this.getCumulativeSalary()+this.getSalary());
+    }
     public void removeTransit(LocalDate date){this.transitsDates.remove(date);}
 
     /**

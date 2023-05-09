@@ -19,6 +19,7 @@ public class BranchStore extends Site {
     private int[][] openHours; // days (0 - Sunday, 1- Monday, etc.) and hours ([0][0] - Sunday morning, [0][1] - Sunday evening)
     private String openingTime; // a summery for employees to know when the branch is open
     private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
+
     public Map<LocalDate, Boolean> storekeeperStatusByDate; // means if the transit can arrive
 
 
@@ -98,7 +99,6 @@ public class BranchStore extends Site {
             if(this.shiftsHistory.get(date) != null)
                 this.shiftsHistory.remove(date);
         }
-
     }
 
     /**
@@ -173,6 +173,7 @@ public class BranchStore extends Site {
         if(dailyShift == null)
             System.out.println("No shift scheduled..");
         //works in the daily shift
+        assert dailyShift != null;
         Employee employee = dailyShift.isEmployeeInShift(employeeID);
         if( employee != null)
         {
