@@ -3,6 +3,7 @@ package Presentation;
 import BussinesLogic.*;
 import DataAccess.DAO_DailyShift;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -24,8 +25,7 @@ public class ShiftOrganizer {
      * @param employee: employee to update
      * @param role: what role he is doing
      */
-    public static void changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role)
-    {
+    public static void changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role) throws SQLException, ClassNotFoundException {
         if(choice == 0)// add employee
         {
             branchStore.getShiftsHistory().get(date).addEmployeeToShift(employee, role, shift);

@@ -12,7 +12,6 @@ import java.util.*;
 public class DailyShift {
 
     private LocalDate date; // date of the shift
-
     private File endOfDayReport; // file of "end-of-day-report" for the shift manager's ability to create/update/get
     private Map<Role, ArrayList<Employee>> morningShift; // list of employees which work at morning shift
     private Map<Role, ArrayList<Employee>> eveningShift; // list of employees which work at evening shift

@@ -52,7 +52,7 @@ public class BranchStore extends Site {
     public String getAddress() {return address;}
     public String getPhoneNum() {return ContactNumber;}
     public int[][] getOpenHours() {return openHours;}
-    public Map<LocalDate, DailyShift> getShiftsHistory() {return dao_dailyShift.findByBranchID(branchID);}
+    public Map<LocalDate, DailyShift> getShiftsHistory() throws SQLException, ClassNotFoundException {return dao_dailyShift.findByBranchID(branchID);}
     public List<Employee> getEmployees() {return employees;}
     public Area getArea(){return areaCode;}
 

@@ -56,8 +56,7 @@ public class BranchStoreTest {
      * check in the history list if there is 1 shift
      */
     @Test
-    public void addShiftToHistory()
-    {
+    public void addShiftToHistory() throws SQLException, ClassNotFoundException {
         assertEquals(1,b.getShiftsHistory().size());
     }
 

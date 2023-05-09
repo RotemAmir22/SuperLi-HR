@@ -6,6 +6,7 @@ import java.io.File;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -47,13 +48,14 @@ public class DAO_DailyShift implements IDAO_DailyShift {
         return dailyShift;
     }
 
-    public ArrayList<DailyShift> findByBranchID(Object ID) throws SQLException, ClassNotFoundException {
-        ArrayList<DailyShift> dailyShifts = new ArrayList<>();
+    public Map<LocalDate,DailyShift> findByBranchID(Object ID) throws SQLException, ClassNotFoundException {
+        Map<LocalDate,DailyShift> dailyShifts = new HashMap<>();
         PreparedStatement statement = conn.prepareStatement("SELECT * FROM DailyShifts WHERE branchID = ?");
         statement.setInt(1, (Integer) ID);
         ResultSet rs = statement.executeQuery();
         while (rs.next()){
-            dailyShifts.add((DailyShift) findByKey(rs.getDate("date"), ID));
+            LocalDate date = rs.getDate("date").toLocalDate();
+            dailyShifts.put(date,(DailyShift) findByKey(rs.getDate("date"), ID));
         }
         return dailyShifts;
     }
