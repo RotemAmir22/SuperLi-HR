@@ -19,7 +19,7 @@ public class BranchStore extends Site {
     private int[][] openHours; // days (0 - Sunday, 1- Monday, etc.) and hours ([0][0] - Sunday morning, [0][1] - Sunday evening)
     private String openingTime; // a summery for employees to know when the branch is open
     private Map<LocalDate,DailyShift> shiftsHistory; //Save shifts by date
-    public Map<LocalDate, Driver> transits;
+    public Map<LocalDate, Boolean> storekeeperStatusByDate; // means if the transit can arrive
 
 
     /**

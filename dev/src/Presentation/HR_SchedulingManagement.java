@@ -54,8 +54,7 @@ public class HR_SchedulingManagement {
     /**
      * daily the system build the shifts for the next week in each branch
      */
-    public void setShift()
-    {
+    public void setShift() throws SQLException {
         for(int j=0; j<2 ; j++) // two days
         {
             Days day = Days.values()[j];

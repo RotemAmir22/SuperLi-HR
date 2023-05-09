@@ -331,8 +331,7 @@ public class HR_EntityManagement {
      * inside this function it calls a helper function that changes a specific day
      * @param branchStore : store to update
      */
-    public void updateBranchOpenHours(BranchStore branchStore)
-    {
+    public void updateBranchOpenHours(BranchStore branchStore) throws SQLException {
         System.out.println("-Update Branch opening hours-");
         Scanner scanner = new Scanner(System.in);
         String answer = "y";

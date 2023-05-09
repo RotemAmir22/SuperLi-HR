@@ -73,7 +73,7 @@ public class ShiftOrganizer {
      * @param weekDay : what day to schedule the shift
      * @return suggestion of a daily shift for the date requested
      */
-    public static DailyShift DailyShifts(List<Employee> listEmployees,Map<LocalDate,Driver> transits, int[][] openHours, int shift, DailyShift dailyShift, Days weekDay) {
+    public static DailyShift DailyShifts(List<Employee> listEmployees,Map<LocalDate,Boolean> transits, int[][] openHours, int shift, DailyShift dailyShift, Days weekDay) {
        //check if morning or evening shift
        if(shift !=0 && shift != 1){return null;}
        /* Get the current date, and pull the vent date for scheduling */

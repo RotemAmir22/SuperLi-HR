@@ -2,10 +2,9 @@ package DataAccess;
 
 import BussinesLogic.*;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +65,15 @@ public class DAO_BranchStore implements DAO{
                     Employee e = (Employee) employeesDAO.findByID(employeeId);
                     branchStore.addEmployee(e);
                 }
+                // get branch's transits
+                stmt = conn.prepareStatement("SELECT * FROM BranchStoreTransits WHERE branchID = ?");
+                stmt.setString(1, (String) ID);
+                rs = stmt.executeQuery();
+                while (rs.next()){
+                    LocalDate transitDate = rs.getDate("transitDate").toLocalDate();
+                    Boolean transitStatus = rs.getBoolean("status");
+                    branchStore.storekeeperStatusByDate.put(transitDate, transitStatus);
+                }
                 networkBranches.put((int) ID, branchStore);
                 return branchStore;
             }
@@ -92,17 +100,72 @@ public class DAO_BranchStore implements DAO{
             stmt.setString(6, branch.getContactName());
             stmt.setString(7, branch.getContactNumber());
             stmt.executeUpdate();
+
+            stmt = conn.prepareStatement("SELECT * FROM BranchOpeningHours WHERE branchID = ?");
+            stmt.setInt(1, branch.getBranchID());
+            ResultSet rs = stmt.executeQuery();
+
             networkBranches.put(branch.getBranchID(), branch);
         }
     }
 
     @Override
-    public void update(Object o) {
+    public void update(Object o) throws SQLException {
+        BranchStore branch = (BranchStore) o;
+        if (branch != null) {
+            //set details
+            PreparedStatement stmt = conn.prepareStatement("UPDATE BranchStore SET branchID = ?, name = ?, openingTime = ?, address = ?, areaCode = ?, contactName = ?, contactNumber = ? WHERE branchID = ?");
+            stmt.setInt(1, branch.getBranchID());
+            stmt.setString(2, branch.getName());
+            stmt.setString(3, branch.getOpeningTime());
+            stmt.setString(4, branch.getAddress());
+            stmt.setString(5, branch.getArea().toString());
+            stmt.setString(6, branch.getContactName());
+            stmt.setString(7, branch.getContactNumber());
+            stmt.executeUpdate();
+            // set transits
+            stmt = conn.prepareStatement("SELECT * FROM BranchStoreTransits WHERE branchID = ?");
+            stmt.setInt(1, branch.getBranchID());
+            ResultSet rs = stmt.executeQuery();
+            // get last date to count the transits
+            rs.last();
+            int amount = rs.getRow();
+            rs.beforeFirst();
+            // remove transit from branch
+            if(branch.storekeeperStatusByDate.size() < amount){
+                while(rs.next()) {
+                    if(!branch.storekeeperStatusByDate.containsKey(rs.getDate("transitDate"))){
+                        stmt = conn.prepareStatement("DELETE FROM BranchStoreTransits WHERE branchID = ? AND transitDate = ?");
+                        stmt.setInt(1, branch.getBranchID());
+                        stmt.setDate(2, rs.getDate("transitDate"));
+                        stmt.executeQuery();
+                        break;
+                    }
+                }
+            }
+            // add new transit to branch
+            else if(branch.storekeeperStatusByDate.size() > amount){
+                ArrayList<LocalDate> datesInDB = new ArrayList<>();
+                while(rs.next()) {
+                    datesInDB.add(rs.getDate("transitDate").toLocalDate());
+                }
+                for(LocalDate transitDate: branch.storekeeperStatusByDate.keySet()){
+                    if(!datesInDB.contains(transitDate)) {
+                        stmt = conn.prepareStatement("INSERT INTO BranchStoreTransits (branchID,transitDate, status)" + "VALUES (?,?,?)");
+                        stmt.setInt(1,branch.getBranchID());
+                        stmt.setDate(2, Date.valueOf(transitDate));
+                        stmt.setBoolean(3,branch.storekeeperStatusByDate.get(transitDate));
+                        stmt.executeQuery();
+                        break;
+                    }
+                }
+            }
 
+
+        }
     }
 
-    @Override
-    public void delete(Object o) {
+    @Override    public void delete(Object o) {
 
     }
 
