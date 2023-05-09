@@ -35,7 +35,7 @@ public class BranchStore extends Site {
         this.openHours = new int[7][2]; //default value is 0 means open 24/7
         this.shiftsHistory = new HashMap<LocalDate, DailyShift>();
         this.openingTime = openingtime;
-        this.transits = new HashMap<>();
+        this.storekeeperStatusByDate = new HashMap<>();
 
     }
 
