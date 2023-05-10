@@ -390,8 +390,7 @@ public class HR_EntityManagement {
      * gets an employee and asks HR manger what details to update
      * @param employee: employee to update
      */
-    public void updateEmployeesDetails(Employee employee)
-    {
+    public void updateEmployeesDetails(Employee employee) throws SQLException {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
         while (choice != 8) {
@@ -472,14 +471,13 @@ public class HR_EntityManagement {
                         System.out.println("Invalid choice. Please try again.");
                         break;
                 }
-                employeesDAO.update(employee);
-                break;
             }
             catch (Exception e)
             {
                 System.out.println("Invalid choice. Please try again.");
             }
-
+            employeesDAO.update(employee);
+            break;
         }
     }
 

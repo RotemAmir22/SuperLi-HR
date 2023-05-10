@@ -156,7 +156,7 @@ public class DAO_Employee implements IDAO_Entity {
             stmt.setString(3, e.getBankAccount());
             stmt.setDouble(4, e.getSalary());
             stmt.setString(5, e.getEmpTerms());
-            stmt.setDate(6, (Date.valueOf(e.getStartDate())));
+            stmt.setString(6, (e.getStartDate()));
             stmt.setInt(7, e.getShiftsLimit());
             stmt.setDouble(8, e.getCumulativeSalary());
             stmt.setString(9, e.getId());
@@ -175,19 +175,21 @@ public class DAO_Employee implements IDAO_Entity {
 
             //set qualifications
             List<Role> roles = e.getQualifications();
-            stmt = conn.prepareStatement("SELECT * FROM EmployeeQualification WHERE employeeID = ? ");
+            stmt = conn.prepareStatement("SELECT * FROM EmployeeQualifications WHERE employeeID = ?");
             stmt.setString(1,e.getId());
             ResultSet rs = stmt.executeQuery();
-            rs.last();
-            int amount = rs.getRow();
-            rs.beforeFirst();
+            int amount = 0;
+            while(rs.next()) {
+                amount++;
+            }
+            rs = stmt.executeQuery();
 
             //remove role from DB
             if(amount > roles.size()){
                 while(rs.next()){
                     int index = rs.getInt("qualificationId");
                     if(!roles.contains(Role.values()[index])) {
-                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualification WHERE employeeID = ? AND qualificationId = ?");
+                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualifications WHERE employeeID = ? AND qualificationId = ?");
                         stmt.setString(1, e.getId());
                         stmt.setInt(2,index);
                         stmt.executeQuery();
@@ -204,7 +206,7 @@ public class DAO_Employee implements IDAO_Entity {
                 }
                 for(Role role: roles){
                     if(!rolesInDB.contains(role.ordinal())) {
-                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualification (employeeID,qualificationId) VALUES (?,?)");
+                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID,qualificationId) VALUES (?,?)");
                         stmt.setString(1, e.getId());
                         stmt.setInt(2,role.ordinal());
                         stmt.executeQuery();
