@@ -9,7 +9,11 @@ public class OrderDocument {
     public static int documentNextId=1;
     private final int documentId;
     private final Supplier source;
+    //private final Store destination;
+
+    //TODO
     private final BranchStore destination;
+
     private double totalWeight; //detailed weight ??
     private Map<Product, Double> productsList;
 
@@ -22,12 +26,22 @@ public class OrderDocument {
         this.totalWeight=0;
         this.productsList = new HashMap<>();
     }
+
+    public OrderDocument(int orderDocId, Supplier sourceSupplier, BranchStore destinationStore, double totalWeight, Map<Product, Double> productsList) {
+        this. documentId = orderDocId;
+        this.source = sourceSupplier;
+        this.destination = destinationStore;
+        this.totalWeight = totalWeight;
+        this.productsList = productsList;
+    }
+
     public int getDocumentId() {
         return documentId;
     }
     public Supplier getSource() {
         return source;
     }
+
     public BranchStore getDestination() {
         return destination;
     }
@@ -52,7 +66,7 @@ public class OrderDocument {
     }
     public void printOrder(){
         System.out.println("Document id: " + this.documentId);
-        System.out.println("Source: " + source.getAddress());
+        System.out.println("Source: " + source.address);
         System.out.println("Destination: " + destination.getAddress());
         System.out.println("Total weight: " + totalWeight);
         System.out.println("Products in order: ");
@@ -67,7 +81,7 @@ public class OrderDocument {
         System.out.println("Destination is: " + destination.getAddress());
     }
     public void printOrderSource(){
-        System.out.println("Source is: " + source.getAddress());
+        System.out.println("Source is: " + source.address);
     }
     public void printOrderId() {
         System.out.println("Order Id is: " + documentId);

@@ -1,7 +1,7 @@
 package ControllerLayer;
 
 import DataAccessLayer.TruckDAO;
-import DomainLayer.Qualification;
+import DomainLayer.License;
 import DomainLayer.Truck;
 import DomainLayer.TruckModel;
 
@@ -9,8 +9,6 @@ import java.util.Set;
 
 public class TruckControllermpl implements TruckController {
     private final TruckDAO truckDAO;
-
-
     public TruckControllermpl(TruckDAO truckDAO){
         this.truckDAO = truckDAO;
     }
@@ -19,7 +17,7 @@ public class TruckControllermpl implements TruckController {
         TruckModel model = TruckModel.values()[iModel];
         Truck truck = new Truck(plateNumber, model, truckWeight, maxWeight);
         for (int i : iQArr) {
-            truck.addQToQSet(Qualification.values()[i]);
+            truck.addLToLSet(License.values()[i]);
         }
         return truck;
     }
@@ -35,14 +33,12 @@ public class TruckControllermpl implements TruckController {
         return this.truckDAO.findTruckByPlateNumber(tPlateNumber);
     }
     @Override
-    public Set<Truck> getTrucksSet() {
-        return this.truckDAO.getTrucksSet();
-    }
-    @Override
     public TruckDAO getTruckDAO() {
         return this.truckDAO;
     }
+
     @Override
+    // TODO what to do about this function ?
     public void showAllTrucks() {
         Set<Truck> trucks = truckDAO.getTrucksSet();
         for (Truck t : trucks){

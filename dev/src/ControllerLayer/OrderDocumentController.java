@@ -10,8 +10,6 @@ public interface OrderDocumentController {
     OrderDocument createOrderDoc(int sourceId, int destinationId);
     OrderDocumentDAO getOrderDocumentDAO();
     ProductController getProductController();
-    Set<OrderDocument> getOrderDocumentsSet();
-    OrderDocument findOrderDocById(int orderId);
     SupplierController getSupplierController();
     TransitCoordinator getTransitCoordinator();
     void updateWeight(OrderDocument orderDocument, double weight);
@@ -22,4 +20,7 @@ public interface OrderDocumentController {
     void moveOrderToFinish(OrderDocument completedOrder);
     void showCompletedOrderDocs();
     void showPendingOrderDocs();
+    OrderDocument findOrderDocById(int orderId);
+
+    //    Set<OrderDocument> getOrderDocumentsSet();
 }
