@@ -37,7 +37,7 @@ public class HR_EntityManagement {
         String answer = "y";
         System.out.println("-Add qualification to Employee-");
         //add qualification to employee - only one when it is a new employee
-        while (Objects.equals(answer, "y"))
+        while (!Objects.equals(answer, "n"))
         {
             try{
                 System.out.println("Choose from the following, please enter the number of the role");
@@ -189,7 +189,7 @@ public class HR_EntityManagement {
         {
             try{
                 System.out.println("Enter branch ID: ");
-                int branchNum = scanner.nextInt();
+                String branchNum = scanner.nextLine();
 
                 //find branch in network
                 BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum); // check in DAO
@@ -226,7 +226,7 @@ public class HR_EntityManagement {
             try
             {
                 System.out.println("Enter branch ID: ");
-                int branchNum = scanner.nextInt();
+                String branchNum = scanner.nextLine();
 
                 //find branch in network
                 BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum);
@@ -393,16 +393,15 @@ public class HR_EntityManagement {
     public void updateEmployeesDetails(Employee employee) throws SQLException {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 8) {
+        while (choice != 7) {
             System.out.println("-Update Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
             System.out.println("3. Employment Terms");
-            System.out.println("4. Add Employee detail");
-            System.out.println("5. Add qualification");
-            System.out.println("6. Remove qualification");
-            System.out.println("7. Add Bonus");
-            System.out.println("8. Exit");
+            System.out.println("4. Add qualification");
+            System.out.println("5. Remove qualification");
+            System.out.println("6. Add Bonus");
+            System.out.println("7. Exit");
             try{
                 choice = scanner.nextInt();
                 String temp = scanner.nextLine();
@@ -437,19 +436,16 @@ public class HR_EntityManagement {
                         break;
 
                     case 4:
-                        System.out.println("You chose Option 4.\n This option is in the works");
-                        break;
-                    case 5:
                         System.out.println("You chose Option 5.");
                         addQualificationToEmployee(employee);
                         break;
 
-                    case 6:
+                    case 5:
                         System.out.println("You chose Option 6.");
                         removeQualificationToEmployee(employee);
                         break;
 
-                    case 7 :
+                    case 6 :
                         System.out.println("You chose Option 7.");
                         while (true){
                             System.out.println("How much do you wish to add as a bonus?");
@@ -464,20 +460,21 @@ public class HR_EntityManagement {
                             }
                         }
                         break;
-                    case 8:
+                    case 7:
                         System.out.println("Existing menu....");
                         break;
                     default:
                         System.out.println("Invalid choice. Please try again.");
                         break;
                 }
+                employeesDAO.update(employee);
+                break;
             }
             catch (Exception e)
             {
                 System.out.println("Invalid choice. Please try again.");
             }
-            employeesDAO.update(employee);
-            break;
+
         }
     }
 

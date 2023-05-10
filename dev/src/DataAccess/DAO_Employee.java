@@ -123,12 +123,12 @@ public class DAO_Employee implements IDAO_Entity {
         {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
                     "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
-            stmt.executeQuery();
+            stmt.executeUpdate();
             // add to constraints table
             for(int i=0; i<7; i++) {
                 stmt = conn.prepareStatement("INSERT INTO EmployeeConstriants (employeeId, dayOfWeek)" +
                         "VALUES (e.getId() , i)");
-                stmt.executeQuery();
+                stmt.executeUpdate();
 
             }
             //add to the right map
@@ -192,7 +192,10 @@ public class DAO_Employee implements IDAO_Entity {
                         stmt = conn.prepareStatement("DELETE FROM EmployeeQualifications WHERE employeeID = ? AND qualificationId = ?");
                         stmt.setString(1, e.getId());
                         stmt.setInt(2,index);
-                        stmt.executeQuery();
+                        int rowsAffected = stmt.executeUpdate();
+                        if (rowsAffected == 0) {
+                            System.out.println("No rows were deleted.");
+                        }
                         break;
                     }
                 }
@@ -209,7 +212,7 @@ public class DAO_Employee implements IDAO_Entity {
                         stmt = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID,qualificationId) VALUES (?,?)");
                         stmt.setString(1, e.getId());
                         stmt.setInt(2,role.ordinal());
-                        stmt.executeQuery();
+                        stmt.executeUpdate();
                         break;
                     }
                 }
@@ -229,24 +232,24 @@ public class DAO_Employee implements IDAO_Entity {
             //delete from employees table
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Employees WHERE employeeID = ?");
             stmt.setString(1, e.getId());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             //delete from qualification tables
             stmt = conn.prepareStatement("DELETE FROM EmployeeQualifications WHERE employeeID = ?");
             stmt.setString(1, e.getId());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             //delete from constraints tables
             stmt = conn.prepareStatement("DELETE FROM EmployeeConstraints WHERE employeeID = ?");
             stmt.setString(1, e.getId());
-            stmt.executeQuery();
+            stmt.executeUpdate();;
 
             //delete from drivers
             if(e.canDoRole(DRIVER))
             {
                 stmt = conn.prepareStatement("DELETE FROM Driver WHERE id = ?");
                 stmt.setString(1, e.getId());
-                stmt.executeQuery();
+                stmt.executeUpdate();
 
                 //remove from map
                 newtworkDrivers.remove(e.getId());
