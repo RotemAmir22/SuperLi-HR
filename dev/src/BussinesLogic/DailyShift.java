@@ -284,6 +284,10 @@ public class DailyShift {
         return null;
     }
 
+    /**
+     *
+     * @return if there is a storekeeper in each shift then returns true
+     */
     public boolean storeKeepersInDailyShift()
     {
         return (morningShift.containsKey(Role.STORAGE)&&eveningShift.containsKey(Role.STORAGE));

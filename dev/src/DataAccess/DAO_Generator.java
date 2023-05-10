@@ -16,6 +16,7 @@ public class DAO_Generator {
         // Private constructor to prevent instantiation from outside the class
     }
 
+    //use singleton design patter for all DAOs
     public static DAO_BranchStore getBranchStoreDAO() throws SQLException, ClassNotFoundException {
         if (BranchStoreDAO == null) {
             BranchStoreDAO = new DAO_BranchStore();

@@ -10,7 +10,9 @@ import java.util.Map;
 
 import static BussinesLogic.Role.DRIVER;
 
-
+/**
+ * This DAO is for the employees
+ */
 public class DAO_Employee implements IDAO_Entity {
 
     private Map<String ,Employee> networkEmployees;

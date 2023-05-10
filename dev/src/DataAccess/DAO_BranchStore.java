@@ -9,6 +9,9 @@ import java.util.*;
 
 import static BussinesLogic.Role.DRIVER;
 
+/**
+ * This DAO is for the branchStores
+ */
 public class DAO_BranchStore implements IDAO_Entity {
 
     private Map<Integer,BranchStore> networkBranches;
@@ -116,6 +119,11 @@ public class DAO_BranchStore implements IDAO_Entity {
         }
     }
 
+    /**
+     *  update a branch
+     * @param o : branch to update
+     * @throws SQLException
+     */
     @Override
     public void update(Object o) throws SQLException {
         BranchStore branch = (BranchStore) o;
@@ -217,6 +225,11 @@ public class DAO_BranchStore implements IDAO_Entity {
         }
     }
 
+    /**
+     *  delete branch from data base
+     * @param o : branch to delete
+     * @throws SQLException
+     */
     @Override
     public void delete(Object o) throws SQLException {
         BranchStore b = (BranchStore) o;
@@ -250,6 +263,12 @@ public class DAO_BranchStore implements IDAO_Entity {
         }
     }
 
+    /**
+     *
+     * @return returns all the branches
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public List<BranchStore> getNetworkBranches() throws SQLException, ClassNotFoundException {
         if(networkBranches.isEmpty())
             ifEmptyMaps();

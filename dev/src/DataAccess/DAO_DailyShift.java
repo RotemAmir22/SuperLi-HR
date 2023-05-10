@@ -194,7 +194,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
             stmt.setString(3, dailyShift.getEndOfDayReport().toString());
             stmt.executeQuery();
 
-            // add employees
+            // update employees
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getMorningShift().entrySet()) {
                 for (Employee e : shift.getValue()) {
                     stmt = conn.prepareStatement("UPDATE MorningShiftEmployees SET date = ?, employeeID = ?, role = ?");
@@ -213,7 +213,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                     stmt.executeQuery();
                 }
             }
-            // add shift managers
+            // update shift managers
             for (ShiftManager shiftManager : dailyShift.getShiftManagers()) {
                 stmt = conn.prepareStatement("UPDATE ShiftManagers SET shiftDate = ?, shiftManagerID = ?, fullName = ?, shiftSlot = ?");
                 stmt.setDate(1, java.sql.Date.valueOf(dailyShift.getDate()));
@@ -222,7 +222,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                 stmt.setInt(4, shiftManager.getShiftSlot());
                 stmt.executeQuery();
 
-                // add permissions
+                // update permissions
                 for (ShiftM_Permissions perm : shiftManager.getPermissions()) {
                     stmt = conn.prepareStatement("UPDATE ShiftM_Permissions SET shiftDate = ?, shiftManagerID = ?, permissionName = ?, permissionDescription = ?");
                     stmt.setDate(1, java.sql.Date.valueOf(dailyShift.getDate()));
@@ -232,7 +232,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                     stmt.executeQuery();
                 }
 
-                // add cancellations
+                // update cancellations
                 for (Cancellation cancel : shiftManager.getCancelations()) {
                     stmt = conn.prepareStatement("UPDATE Cancellations SET shiftDate = ?, shiftManagerID = ?, cancelID = ?, item = ?, amount = ?");
                     stmt.setDate(1, java.sql.Date.valueOf(dailyShift.getDate()));
@@ -262,7 +262,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
             stmt.setString(2, (String) id);
             stmt.executeQuery();
 
-            // add employees
+            // delete employees
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getMorningShift().entrySet()) {
                 for (Employee e : shift.getValue()) {
                     stmt = conn.prepareStatement("DELETE FROM MorningShiftEmployees WHERE date = ? AND employeeID = ?");
@@ -279,14 +279,14 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                     stmt.executeQuery();
                 }
             }
-            // add shift managers
+            // delete shift managers
             for (ShiftManager shiftManager : dailyShift.getShiftManagers()) {
                 stmt = conn.prepareStatement("DELETE FROM ShiftManagers WHERE shiftDate = ? AND shiftManagerID = ?");
                 stmt.setDate(1, java.sql.Date.valueOf(dailyShift.getDate()));
                 stmt.setString(2, shiftManager.getId());
                 stmt.executeQuery();
 
-                // add permissions
+                // delete permissions
                 for (ShiftM_Permissions perm : shiftManager.getPermissions()) {
                     stmt = conn.prepareStatement("DELETE FROM ShiftM_Permissions WHERE shiftDate = ? AND shiftManagerID = ?");
                     stmt.setDate(1, java.sql.Date.valueOf(dailyShift.getDate()));
