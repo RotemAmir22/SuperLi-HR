@@ -473,6 +473,7 @@ public class HR_EntityManagement {
                         break;
                 }
                 employeesDAO.update(employee);
+                break;
             }
             catch (Exception e)
             {

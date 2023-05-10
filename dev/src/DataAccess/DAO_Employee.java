@@ -150,7 +150,7 @@ public class DAO_Employee implements IDAO_Entity {
         if(e != null)
         {
             //set details
-            PreparedStatement stmt = conn.prepareStatement("UPDATE Employees SET firstName = ?, lastName = ?, bankAccount = ?, salary = ?, empTerms = ?, startDate = ?, shiftsLimit = ?, cumulativeSalary = ? WHERE employeeID = e.getId()");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Employees SET firstName = ?, lastName = ?, bankAccount = ?, salary = ?, empTerms = ?, startDate = ?, shiftsLimit = ?, cumulativeSalary = ? WHERE employeeID = ?");
             stmt.setString(1, e.getFirstName());
             stmt.setString(2, e.getLastName());
             stmt.setString(3, e.getBankAccount());
@@ -159,14 +159,18 @@ public class DAO_Employee implements IDAO_Entity {
             stmt.setDate(6, (Date.valueOf(e.getStartDate())));
             stmt.setInt(7, e.getShiftsLimit());
             stmt.setDouble(8, e.getCumulativeSalary());
+            stmt.setString(9, e.getId());
             stmt.executeUpdate();
 
             //set constraints
             for (Days day : Days.values())
             {
-                stmt = conn.prepareStatement("UPDATE EmployeeConstraints SET morningShift = ?, eveningShift = ? WHERE employeeID = e.getId() AND dayOfWeek = day.ordianl()");
+                stmt = conn.prepareStatement("UPDATE EmployeeConstraints SET morningShift = ?, eveningShift = ? WHERE employeeID = ? AND dayOfWeek = ?");
                 stmt.setInt(1, e.getConstraints()[day.ordinal()][0]? 1:0);
                 stmt.setInt(2, e.getConstraints()[day.ordinal()][1]? 1:0);
+                stmt.setString(3, e.getId());
+                stmt.setInt(4,day.ordinal());
+                stmt.executeUpdate();
             }
 
             //set qualifications
@@ -183,7 +187,9 @@ public class DAO_Employee implements IDAO_Entity {
                 while(rs.next()){
                     int index = rs.getInt("qualificationId");
                     if(!roles.contains(Role.values()[index])) {
-                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualification WHERE employeeID = e.getId() AND qualificationId = index");
+                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualification WHERE employeeID = ? AND qualificationId = ?");
+                        stmt.setString(1, e.getId());
+                        stmt.setInt(2,index);
                         stmt.executeQuery();
                         break;
                     }
@@ -198,7 +204,9 @@ public class DAO_Employee implements IDAO_Entity {
                 }
                 for(Role role: roles){
                     if(!rolesInDB.contains(role.ordinal())) {
-                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualification (employeeID,qualificationId) VALUES (e.getId(), role.ordinal())");
+                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualification (employeeID,qualificationId) VALUES (?,?)");
+                        stmt.setString(1, e.getId());
+                        stmt.setInt(2,role.ordinal());
                         stmt.executeQuery();
                         break;
                     }
