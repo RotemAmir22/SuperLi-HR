@@ -38,7 +38,7 @@ public class OrderDocumentPresentation {
         System.out.println("Enter destination (store id)  of the order: "); //assuming valid store id
         storeId = scanner.nextInt();
         scanner.nextLine();
-        if(orderDocumentController.getStoreController().findStoreById(storeId) == null)
+        if(orderDocumentController.getTransitCoordinator().findStoreById(storeId) == null)
         {
             System.out.println("that is not an existing id of a store! ");
             return;

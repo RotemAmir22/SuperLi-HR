@@ -1,5 +1,7 @@
 package BussinesLogic;
 
+import DomainLayer.License;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -53,4 +55,12 @@ public class Driver extends Employee{
                 "\nCumulative Salary: "+getCumulativeSalary()+ "\nShift Salary: "+getSalary()+"\nBank account: "+getBankAccount()+"\nQualifications: "+getQualifications().toString());
         printTransits();
     }
+//    public void printDriver(){
+//        System.out.println("driver's name: "+ driverName);
+//        System.out.println("driver's id: "+ driverId);
+//        System.out.println("driver's Licenses: ");
+//        for (Qualification driverLicense : licenses)
+//        {
+//            System.out.println("\t"+driverLicense);
+//        }
 }

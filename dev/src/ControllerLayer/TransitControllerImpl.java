@@ -40,19 +40,14 @@ public class TransitControllerImpl implements TransitController {
         if (truckForTransit == null) {
             throw new UiException("Truck's plate number not found: " + truckPlateNumber);
         }
-
-
-        // TODO Driver NoamResponsibility(String driverId, Set<Licenses> forDrivingTruck, Date transitDate);
         Driver driverForTransit = driverController.findDriverByID(driverId);
         if (driverForTransit == null) {
-            throw new UiException("Driver id not found: " + driverId);
+            throw new UiException("Driver id not found: " + truckPlateNumber);
         }
         boolean driverCanDriveTruckFlag = isDriverAllowToDriveTruck(truckForTransit, driverForTransit);
         if (!driverCanDriveTruckFlag){
             throw new QualificationsException("Driver lack certain qualifications for driving the chosen truck");
         }
-
-
         Transit newTransit = new Transit(transitDate, truckForTransit, driverForTransit);
         return newTransit;
     }
@@ -89,8 +84,6 @@ public class TransitControllerImpl implements TransitController {
     }
     public int replaceTransitDriver(int transitId, int newDriverId, String truckPlate){
         Driver otherDriver = driverController.findDriverByID(newDriverId);
-        // TODO Driver NoamResponsibility(String newDriverId, Set<Licenses> forDrivingTruck, Date transitDate);
-
         if (otherDriver == null) return -1; //fail to find driver
         Truck newTruck = truckController.findTruckByPlate(truckPlate);
         Transit transitToUpdate = findTransitByID(transitId);
@@ -130,8 +123,8 @@ public class TransitControllerImpl implements TransitController {
     }
     @Override
     public boolean isDriverAllowToDriveTruck(Truck truck, Driver driver){
-        Set <License> truckQualiSet = truck.getTruckLicenses();
-        Set <License> driverLicenseSet = driver.getLicenses();
+        Set <Qualification> truckQualiSet = truck.getTruckQualification();
+        Set <Qualification> driverLicenseSet = driver.getLicenses();
         return (driverLicenseSet.containsAll(truckQualiSet));
     }
     public void moveTransitToFinished(Transit completedTransit){

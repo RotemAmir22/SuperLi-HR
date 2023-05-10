@@ -1,5 +1,6 @@
 package ControllerLayer;
 
+import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.OrderDocumentDAO;
 import DomainLayer.OrderDocument;
 
@@ -10,7 +11,7 @@ public interface OrderDocumentController {
     OrderDocumentDAO getOrderDocumentDAO();
     ProductController getProductController();
     SupplierController getSupplierController();
-    StoreController getStoreController();
+    TransitCoordinator getTransitCoordinator();
     void updateWeight(OrderDocument orderDocument, double weight);
     void showAllProductsInDoc(int orderId);
     void updateAmount(int orderId, String productName, double amount);

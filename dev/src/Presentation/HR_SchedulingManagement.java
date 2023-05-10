@@ -102,14 +102,14 @@ public class HR_SchedulingManagement {
             try{
                 System.out.println("Hello, please answer the following questions to update a shift:");
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Enter Branch Store ID that you want to update ");
+                System.out.println("Enter Branch BranchStore ID that you want to update ");
                 int branchID = scanner.nextInt();
 
                 //find branch
                 BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchID);
                 while (branch == null)
                 {
-                    System.out.println("Invalid Branch Store ID, please try again ");
+                    System.out.println("Invalid Branch BranchStore ID, please try again ");
                     branchID = scanner.nextInt();
                     branch = (BranchStore) branchStoreDAO.findByID(branchID);
                 }
