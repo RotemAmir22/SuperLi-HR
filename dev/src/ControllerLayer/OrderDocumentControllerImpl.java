@@ -42,10 +42,10 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         OrderDocument orderDoc = new OrderDocument(supplier,store);
         return orderDoc;
     }
-    @Override
-    public Set<OrderDocument> getOrderDocumentsSet() {
-        return orderDocumentDAO.getOrderDocsSet();
-    }
+//    @Override
+//    public Set<OrderDocument> getOrderDocumentsSet() {
+//        return orderDocumentDAO.getPendingOrderDocsSet();
+//    }
     @Override
     public void showAllProductsInDoc(int orderId) {
         OrderDocument orderDoc = findOrderDocById(orderId);
@@ -83,14 +83,14 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     @Override
     public void showCompletedOrderDocs(){
         System.out.println("-----Completed Orders-----");
-        Set<OrderDocument> completedOrders = this.orderDocumentDAO.getCompletedOrdersSet();
+        Set<OrderDocument> completedOrders = this.orderDocumentDAO.getOrderDocsSet(true);
         for (OrderDocument orderDocument : completedOrders){
             orderDocument.printOrder();
         }
     }
     public void showPendingOrderDocs() {
         System.out.println("-----Pending Orders-----");
-        Set<OrderDocument> pendingOrders = this.orderDocumentDAO.getOrderDocsSet();
+        Set<OrderDocument> pendingOrders = this.orderDocumentDAO.getOrderDocsSet(false);
         List<OrderDocument> sortedOrders = new ArrayList<>(pendingOrders);
         Comparator<OrderDocument> bySupplierArea = Comparator.comparing(
                 order -> order.getSource().getAreaCode().name());

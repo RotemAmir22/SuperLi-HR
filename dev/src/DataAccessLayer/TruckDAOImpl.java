@@ -5,10 +5,7 @@ import DomainLayer.License;
 import DomainLayer.Truck;
 import DomainLayer.TruckModel;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,6 +54,7 @@ public class TruckDAOImpl implements TruckDAO {
             System.out.println("Error removing truck from database: " + e.getMessage());
         }
     }
+    // TODO verify this function works properly
     @Override
     public void removeTruckFromTrucksLicenses(Truck truck) {
         String deleteTruckLicensesSQL = "DELETE FROM TruckLicenses WHERE plateNumber=?";
@@ -69,6 +67,7 @@ public class TruckDAOImpl implements TruckDAO {
             System.out.println("Error removing truck from database: " + e.getMessage());
         }
     }
+
 
     @Override
     public Truck findTruckByPlateNumber(String tPlateNumber) {
@@ -118,9 +117,24 @@ public class TruckDAOImpl implements TruckDAO {
         }
     }
 
-    //TODO think about this
     @Override
     public Set<Truck> getTrucksSet() {
+        Set<Truck> trucksSet = new HashSet<>();
+        String selectTrucksSQL = "SELECT * FROM trucks";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(selectTrucksSQL);
+
+            while (resultSet.next()) {
+                String plateNumber = resultSet.getString("plateNumber");
+                Truck truck = findTruckByPlateNumber(plateNumber);
+                // TODO main Truck set is getting full also ? thinks about this
+                trucksSet.add(truck);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error retrieving trucks from database: " + e.getMessage());
+        }
+
         return trucksSet;
     }
 }

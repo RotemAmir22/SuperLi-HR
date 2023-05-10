@@ -1,5 +1,7 @@
 package DomainLayer;
 
+import BussinesLogic.BranchStore;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,12 +9,16 @@ public class OrderDocument {
     public static int documentNextId=1;
     private final int documentId;
     private final Supplier source;
-    private final Store destination;
+    //private final Store destination;
+
+    //TODO
+    private final BranchStore destination;
+
     private double totalWeight; //detailed weight ??
     private Map<Product, Double> productsList;
 
 
-    public OrderDocument(Supplier source, Store destination) {
+    public OrderDocument(Supplier source, BranchStore destination) {
         this.documentId = documentNextId;
         documentNextId++;
         this.source = source;
@@ -20,13 +26,23 @@ public class OrderDocument {
         this.totalWeight=0;
         this.productsList = new HashMap<>();
     }
+
+    public OrderDocument(int orderDocId, Supplier sourceSupplier, BranchStore destinationStore, double totalWeight, Map<Product, Double> productsList) {
+        this. documentId = orderDocId;
+        this.source = sourceSupplier;
+        this.destination = destinationStore;
+        this.totalWeight = totalWeight;
+        this.productsList = productsList;
+    }
+
     public int getDocumentId() {
         return documentId;
     }
     public Supplier getSource() {
         return source;
     }
-    public Store getDestination() {
+
+    public BranchStore getDestination() {
         return destination;
     }
     public double getTotalWeight() {
@@ -51,7 +67,7 @@ public class OrderDocument {
     public void printOrder(){
         System.out.println("Document id: " + this.documentId);
         System.out.println("Source: " + source.address);
-        System.out.println("Destination: " + destination.address);
+        System.out.println("Destination: " + destination.getAddress());
         System.out.println("Total weight: " + totalWeight);
         System.out.println("Products in order: ");
         printOrderProductList();
@@ -62,7 +78,7 @@ public class OrderDocument {
         totalWeight-= amountToReduce;
     }
     public void printOrderDestination() {
-        System.out.println("Destination is: " + destination.address);
+        System.out.println("Destination is: " + destination.getAddress());
     }
     public void printOrderSource(){
         System.out.println("Source is: " + source.address);

@@ -14,6 +14,7 @@ public class Transit {
     private Driver driver; // String driverName??
     private Site source;
     private Double ETA;
+    private int transitStatus; // 0
     private final Set<Supplier> destinationSuppliers;
     private final Set<Store> destinationStores;
     private final Set<OrderDocument> ordersDocs;
@@ -125,7 +126,7 @@ public class Transit {
         int count = 0;
         for (OrderDocument orderDoc : ordersDocs)
         {
-            if (orderDoc.getSource().getSupplierID() == dest.getSupplierID())
+            if (orderDoc.getSource().getSupplierId() == dest.getSupplierId())
             {
                 count+=1;
             }

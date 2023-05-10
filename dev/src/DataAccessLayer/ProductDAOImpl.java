@@ -31,7 +31,7 @@ public class ProductDAOImpl implements ProductDAO {
         return productsSet;
     }
     @Override
-    public Product findProductByID(int productID) {
+    public Product findProductById(int productID) {
         for (Product product: productsSet){
             if (product.getProductId() == productID)
                 return product;

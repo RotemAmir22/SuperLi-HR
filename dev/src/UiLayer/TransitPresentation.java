@@ -201,11 +201,11 @@ public class TransitPresentation {
         // drive to suppliers
         for (Supplier supplier : transit.getDestinationSuppliers())
         {
-            System.out.println("Arrived to supplier: " + supplier.getSupplierID());
+            System.out.println("Arrived to supplier: " + supplier.getSupplierId());
             //check all orders that are in the suppliers source
             for(OrderDocument orderDoc : transit.getOrdersDocs())
             {
-                if(supplier.getSupplierID() == orderDoc.getSource().getSupplierID())
+                if(supplier.getSupplierId() == orderDoc.getSource().getSupplierId())
                 {
 
                     System.out.println("Loading order number: " + orderDoc.getDocumentId());
