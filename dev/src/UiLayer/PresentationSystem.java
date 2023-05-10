@@ -50,23 +50,23 @@ public class PresentationSystem {
         TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeTransitCoordinator);
 
 
-        Set<Qualification> s1 = new HashSet<>();
-        Set<Qualification> s2 = new HashSet<>();
-        Set<Qualification> sT3 = new HashSet<>();
-        Set<Qualification> sT4 = new HashSet<>();
-        s1.add(Qualification.C);
-        s1.add(Qualification.C1);
-        s1.add(Qualification.COOLER);
+//        Set<Qualification> s1 = new HashSet<>();
+//        Set<Qualification> s2 = new HashSet<>();
+//        Set<Qualification> sT3 = new HashSet<>();
+//        Set<Qualification> sT4 = new HashSet<>();
+//        s1.add(Qualification.C);
+//        s1.add(Qualification.C1);
+//        s1.add(Qualification.COOLER);
+//
+//        s2.add(Qualification.C1);
+//
+//        sT3.add(Qualification.C);
+//        sT3.add(Qualification.COOLER);
+//
+//        sT4.add(Qualification.C1);
 
-        s2.add(Qualification.C1);
-
-        sT3.add(Qualification.C);
-        sT3.add(Qualification.COOLER);
-
-        sT4.add(Qualification.C1);
-
-        Truck t1 = new Truck("123", TruckModel.LARGETRUCK, 5000, 10000, sT3);
-        Truck t2 = new Truck("321", TruckModel.SMALLTRUCK, 100, 2000, sT4);
+//        Truck t1 = new Truck("123", TruckModel.LARGETRUCK, 5000, 10000, sT3);
+//        Truck t2 = new Truck("321", TruckModel.SMALLTRUCK, 100, 2000, sT4);
 
 //        Driver d1 = new Driver(1, "Moshe Mor",s1);
 //        Driver d2 = new Driver(2, "Dani Lev",s2);
@@ -123,8 +123,8 @@ public class PresentationSystem {
 //        Transit deli1 = new Transit(date, t2, d2);
 //        deli1.addOrderDoc(o22);
 
-        primeTruckDAO.saveTruck(t1);
-        primeTruckDAO.saveTruck(t2);
+//        primeTruckDAO.saveTruck(t1);
+//        primeTruckDAO.saveTruck(t2);
 //        primeOrderDocDAO.saveOrderDocument(o11);
 //        primeOrderDocDAO.saveOrderDocument(o12);
 //        primeOrderDocDAO.saveOrderDocument(o21);

@@ -130,5 +130,4 @@ public class TruckPresentation {
         if (!flag)
             System.out.printf("Truck's plate number: %s not found!%n", tPLateNumber);
     }
-
 }
