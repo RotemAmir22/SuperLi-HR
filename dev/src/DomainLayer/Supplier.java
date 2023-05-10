@@ -9,7 +9,7 @@ public class Supplier extends Site{
         this.supplierID = supplierID;
 
     }
-    public int getSupplierId() {
+    public int getSupplierID() {
         return supplierID;
     }
     public void printSupplier(){

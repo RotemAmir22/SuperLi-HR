@@ -1,5 +1,7 @@
 package ControllerLayer;
 
+import BussinesLogic.Driver;
+import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.TransitDAO;
 import DomainLayer.*;
 import ExceptionsPackage.QualificationsException;
@@ -13,41 +15,42 @@ import java.util.Set;
 public class TransitControllerImpl implements TransitController {
     private final TransitDAO transitDAO;
     private final TruckController truckController;
-    private final DriverController driverController;
+    private final TransitCoordinator transitCoordinator;
     private final OrderDocumentController orderDocController;
     private final TransitRecordController transitRecordController;
 
     public TransitControllerImpl(TransitDAO transitDAO, TruckController truckController,
-                                 DriverController driverController, OrderDocumentController orderDocController,
+                                 TransitCoordinator transitCoordinator, OrderDocumentController orderDocController,
                                  TransitRecordController transitRecordController) {
         this.transitDAO = transitDAO;
         this.truckController = truckController;
-        this.driverController = driverController;
+        this.transitCoordinator = transitCoordinator;
         this.orderDocController = orderDocController;
         this.transitRecordController = transitRecordController;
 
     }
 
     @Override
-    public Transit createTransit(String dateString, String truckPlateNumber, int driverId) throws UiException, QualificationsException {
+    public Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException, QualificationsException {
         Date transitDate;
         try {
             transitDate = createDateObj(dateString);
         } catch (ParseException e) {
             throw new UiException("Invalid date format " + dateString + "\t" + "The correct format is: dd/mm/yyyy ");
         }
+
         Truck truckForTransit = truckController.findTruckByPlate(truckPlateNumber);
         if (truckForTransit == null) {
             throw new UiException("Truck's plate number not found: " + truckPlateNumber);
         }
-        Driver driverForTransit = driverController.findDriverByID(driverId);
+        Driver driverForTransit = transitCoordinator.addDriverToTransit(transitDate,driverId,truckForTransit.getTruckQualification());
         if (driverForTransit == null) {
             throw new UiException("Driver id not found: " + truckPlateNumber);
         }
-        boolean driverCanDriveTruckFlag = isDriverAllowToDriveTruck(truckForTransit, driverForTransit);
-        if (!driverCanDriveTruckFlag){
-            throw new QualificationsException("Driver lack certain qualifications for driving the chosen truck");
-        }
+//        boolean driverCanDriveTruckFlag = isDriverAllowToDriveTruck(truckForTransit, driverForTransit);
+//        if (!driverCanDriveTruckFlag){
+//            throw new QualificationsException("Driver lack certain qualifications for driving the chosen truck");
+//        }
         Transit newTransit = new Transit(transitDate, truckForTransit, driverForTransit);
         return newTransit;
     }
@@ -77,18 +80,20 @@ public class TransitControllerImpl implements TransitController {
         Truck otherTruck = truckController.findTruckByPlate(newTruckPlate);
         if (otherTruck == null) return -1; //truck fail
         Driver currentDriver = transitToUpdate.getDriver();
-        boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(otherTruck,currentDriver);
-        if (!qualifiedDriverFlag) return 0; //driver fail
+        //TODO make sure the driver has qualifications to drive the truck
+
+        //boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(otherTruck,currentDriver);
+        //if (!qualifiedDriverFlag) return 0; //driver fail
         transitToUpdate.setTruck(otherTruck);
         return 1;// successes
     }
-    public int replaceTransitDriver(int transitId, int newDriverId, String truckPlate){
-        Driver otherDriver = driverController.findDriverByID(newDriverId);
-        if (otherDriver == null) return -1; //fail to find driver
+    public int replaceTransitDriver(int transitId, String newDriverId, String truckPlate){
         Truck newTruck = truckController.findTruckByPlate(truckPlate);
         Transit transitToUpdate = findTransitByID(transitId);
-        boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
-        if (!qualifiedDriverFlag) return 0; // driver is not qualified
+        Driver otherDriver = transitCoordinator.SwitchDriverInTransit(transitToUpdate.getTransitDate(),newDriverId,newTruck.getTruckQualification(),transitToUpdate.getDriver().getId());
+        if (otherDriver == null) return -1; //fail to find driver
+        //boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
+        //if (!qualifiedDriverFlag) return 0; // driver is not qualified
         //driver is qualified
         transitToUpdate.setDriver(otherDriver);
         return 1;
@@ -122,11 +127,11 @@ public class TransitControllerImpl implements TransitController {
         return transitDate;
     }
     @Override
-    public boolean isDriverAllowToDriveTruck(Truck truck, Driver driver){
-        Set <Qualification> truckQualiSet = truck.getTruckQualification();
-        Set <Qualification> driverLicenseSet = driver.getLicenses();
-        return (driverLicenseSet.containsAll(truckQualiSet));
-    }
+//    public boolean isDriverAllowToDriveTruck(Truck truck, Driver driver){
+//        Set <Qualification> truckQualiSet = truck.getTruckQualification();
+//        Set <Qualification> driverLicenseSet = driver.getLicenses();
+//        return (driverLicenseSet.containsAll(truckQualiSet));
+//    }
     public void moveTransitToFinished(Transit completedTransit){
         this.transitDAO.moveToCompleted(completedTransit);
     }

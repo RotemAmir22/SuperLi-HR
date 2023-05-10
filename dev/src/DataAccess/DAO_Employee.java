@@ -3,6 +3,7 @@ import BussinesLogic.*;
 import BussinesLogic.Driver;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,10 +11,8 @@ import java.util.Map;
 
 import static BussinesLogic.Role.DRIVER;
 
-/**
- * This DAO is for the employees
- */
-public class DAO_Employee implements IDAO_Entity {
+
+public class DAO_Employee implements DAO{
 
     private Map<String ,Employee> networkEmployees;
 
@@ -123,14 +122,8 @@ public class DAO_Employee implements IDAO_Entity {
         {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
                     "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
-            stmt.executeUpdate();
-            // add to constraints table
-            for(int i=0; i<7; i++) {
-                stmt = conn.prepareStatement("INSERT INTO EmployeeConstriants (employeeId, dayOfWeek)" +
-                        "VALUES (e.getId() , i)");
-                stmt.executeUpdate();
+            stmt.executeQuery();
 
-            }
             //add to the right map
             if(e.canDoRole(DRIVER))
                 newtworkDrivers.put(e.getId(), (Driver) e);
@@ -150,52 +143,41 @@ public class DAO_Employee implements IDAO_Entity {
         if(e != null)
         {
             //set details
-            PreparedStatement stmt = conn.prepareStatement("UPDATE Employees SET firstName = ?, lastName = ?, bankAccount = ?, salary = ?, empTerms = ?, startDate = ?, shiftsLimit = ?, cumulativeSalary = ? WHERE employeeID = ?");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Employees SET firstName = ?, lastName = ?, bankAccount = ?, salary = ?, empTerms = ?, startDate = ?, shiftsLimit = ?, cumulativeSalary = ? WHERE employeeID = e.getId()");
             stmt.setString(1, e.getFirstName());
             stmt.setString(2, e.getLastName());
             stmt.setString(3, e.getBankAccount());
             stmt.setDouble(4, e.getSalary());
             stmt.setString(5, e.getEmpTerms());
-            stmt.setString(6, (e.getStartDate()));
+            stmt.setDate(6, (Date.valueOf(e.getStartDate())));
             stmt.setInt(7, e.getShiftsLimit());
             stmt.setDouble(8, e.getCumulativeSalary());
-            stmt.setString(9, e.getId());
             stmt.executeUpdate();
 
             //set constraints
             for (Days day : Days.values())
             {
-                stmt = conn.prepareStatement("UPDATE EmployeeConstraints SET morningShift = ?, eveningShift = ? WHERE employeeID = ? AND dayOfWeek = ?");
+                stmt = conn.prepareStatement("UPDATE EmployeeConstraints SET morningShift = ?, eveningShift = ? WHERE employeeID = e.getId() AND dayOfWeek = day.ordianl()");
                 stmt.setInt(1, e.getConstraints()[day.ordinal()][0]? 1:0);
                 stmt.setInt(2, e.getConstraints()[day.ordinal()][1]? 1:0);
-                stmt.setString(3, e.getId());
-                stmt.setInt(4,day.ordinal());
-                stmt.executeUpdate();
             }
 
             //set qualifications
             List<Role> roles = e.getQualifications();
-            stmt = conn.prepareStatement("SELECT * FROM EmployeeQualifications WHERE employeeID = ?");
+            stmt = conn.prepareStatement("SELECT * FROM EmployeeQualification WHERE employeeID = ? ");
             stmt.setString(1,e.getId());
             ResultSet rs = stmt.executeQuery();
-            int amount = 0;
-            while(rs.next()) {
-                amount++;
-            }
-            rs = stmt.executeQuery();
+            rs.last();
+            int amount = rs.getRow();
+            rs.beforeFirst();
 
             //remove role from DB
             if(amount > roles.size()){
                 while(rs.next()){
                     int index = rs.getInt("qualificationId");
                     if(!roles.contains(Role.values()[index])) {
-                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualifications WHERE employeeID = ? AND qualificationId = ?");
-                        stmt.setString(1, e.getId());
-                        stmt.setInt(2,index);
-                        int rowsAffected = stmt.executeUpdate();
-                        if (rowsAffected == 0) {
-                            System.out.println("No rows were deleted.");
-                        }
+                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualification WHERE employeeID = e.getId() AND qualificationId = index");
+                        stmt.executeQuery();
                         break;
                     }
                 }
@@ -209,10 +191,8 @@ public class DAO_Employee implements IDAO_Entity {
                 }
                 for(Role role: roles){
                     if(!rolesInDB.contains(role.ordinal())) {
-                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID,qualificationId) VALUES (?,?)");
-                        stmt.setString(1, e.getId());
-                        stmt.setInt(2,role.ordinal());
-                        stmt.executeUpdate();
+                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualification (employeeID,qualificationId) VALUES (e.getId(), role.ordinal())");
+                        stmt.executeQuery();
                         break;
                     }
                 }
@@ -220,80 +200,25 @@ public class DAO_Employee implements IDAO_Entity {
         }
     }
 
-    /**
-     *
-     * @param o employee to remove from database
-     * @throws SQLException
-     */
     @Override
-    public void delete(Object o) throws SQLException {
-        Employee e = (Employee)o;
-        if(e != null) {
-            //delete from employees table
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Employees WHERE employeeID = ?");
-            stmt.setString(1, e.getId());
-            stmt.executeUpdate();
+    public void delete(Object o) {
 
-            //delete from qualification tables
-            stmt = conn.prepareStatement("DELETE FROM EmployeeQualifications WHERE employeeID = ?");
-            stmt.setString(1, e.getId());
-            stmt.executeUpdate();
-
-            //delete from constraints tables
-            stmt = conn.prepareStatement("DELETE FROM EmployeeConstraints WHERE employeeID = ?");
-            stmt.setString(1, e.getId());
-            stmt.executeUpdate();;
-
-            //delete from drivers
-            if(e.canDoRole(DRIVER))
-            {
-                stmt = conn.prepareStatement("DELETE FROM Driver WHERE id = ?");
-                stmt.setString(1, e.getId());
-                stmt.executeUpdate();
-
-                //remove from map
-                newtworkDrivers.remove(e.getId());
-            }
-            else
-                networkEmployees.remove(e.getId());
-        }
     }
 
-    /**
-     *
-     * @return list of all employees-no drivers
-     * @throws SQLException
-     */
     public List<Employee> getNetworkEmployees() throws SQLException {
         if(networkEmployees.isEmpty())
-            ifEmptyMaps();
-
+        {
+            PreparedStatement stmt = conn.prepareStatement("SELECT employeeID FROM Employees");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                findByID(rs.getString("employeeID"));
+            }
+        }
         employeeList.addAll(networkEmployees.values());
         return employeeList;
     }
 
-    /**
-     *
-     * @return list of all network drivers
-     * @throws SQLException
-     */
-    public List<Driver> getNetworkDrivers() throws SQLException {
-        if(newtworkDrivers.isEmpty())
-            ifEmptyMaps();
-
-        driverList.addAll(newtworkDrivers.values());
-        return driverList;
-    }
-
-    /**
-     * uploads the data to the list if they are required
-     * @throws SQLException
-     */
-    private void ifEmptyMaps() throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("SELECT employeeID FROM Employees");
-        ResultSet rs = stmt.executeQuery();
-        while(rs.next()) {
-            findByID(rs.getString("employeeID"));
-        }
+    public List<Driver> getNetworkDrivers(){
+        return (List<Driver>) newtworkDrivers.values();
     }
 }

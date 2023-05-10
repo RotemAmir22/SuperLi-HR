@@ -4,8 +4,8 @@ import ControllerLayer.OrderDocumentController;
 import ControllerLayer.ProductController;
 import DomainLayer.OrderDocument;
 import DomainLayer.Product;
-import java.util.Scanner;
 
+import java.util.Scanner;
 
 public class OrderDocumentPresentation {
     private final OrderDocumentController orderDocumentController;
@@ -22,7 +22,6 @@ public class OrderDocumentPresentation {
      * interfaces to create and save a new Order object to a database.
      */
     public void createNewOrderDocument(Scanner scanner){
-    // TODO change to work with BranchStore
         int storeId;
         int supplierId;
 

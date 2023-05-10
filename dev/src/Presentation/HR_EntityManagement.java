@@ -37,7 +37,7 @@ public class HR_EntityManagement {
         String answer = "y";
         System.out.println("-Add qualification to Employee-");
         //add qualification to employee - only one when it is a new employee
-        while (!Objects.equals(answer, "n"))
+        while (Objects.equals(answer, "y"))
         {
             try{
                 System.out.println("Choose from the following, please enter the number of the role");
@@ -189,7 +189,7 @@ public class HR_EntityManagement {
         {
             try{
                 System.out.println("Enter branch ID: ");
-                String branchNum = scanner.nextLine();
+                int branchNum = scanner.nextInt();
 
                 //find branch in network
                 BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum); // check in DAO
@@ -226,7 +226,7 @@ public class HR_EntityManagement {
             try
             {
                 System.out.println("Enter branch ID: ");
-                String branchNum = scanner.nextLine();
+                int branchNum = scanner.nextInt();
 
                 //find branch in network
                 BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum);
@@ -331,7 +331,8 @@ public class HR_EntityManagement {
      * inside this function it calls a helper function that changes a specific day
      * @param branchStore : store to update
      */
-    public void updateBranchOpenHours(BranchStore branchStore) throws SQLException {
+    public void updateBranchOpenHours(BranchStore branchStore)
+    {
         System.out.println("-Update Branch opening hours-");
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
@@ -362,7 +363,7 @@ public class HR_EntityManagement {
     /**
      * create new branch in system
      */
-    public void newBranchInNetwork() throws SQLException, ClassNotFoundException {
+    public void newBranchInNetwork() throws SQLException {
         System.out.println("-Add Branch to Network-");
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new branch please enter the following details:");
@@ -390,18 +391,20 @@ public class HR_EntityManagement {
      * gets an employee and asks HR manger what details to update
      * @param employee: employee to update
      */
-    public void updateEmployeesDetails(Employee employee) throws SQLException {
+    public void updateEmployeesDetails(Employee employee)
+    {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
-        while (choice != 7) {
+        while (choice != 8) {
             System.out.println("-Update Employees details-");
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
             System.out.println("3. Employment Terms");
-            System.out.println("4. Add qualification");
-            System.out.println("5. Remove qualification");
-            System.out.println("6. Add Bonus");
-            System.out.println("7. Exit");
+            System.out.println("4. Add Employee detail");
+            System.out.println("5. Add qualification");
+            System.out.println("6. Remove qualification");
+            System.out.println("7. Add Bonus");
+            System.out.println("8. Exit");
             try{
                 choice = scanner.nextInt();
                 String temp = scanner.nextLine();
@@ -436,16 +439,19 @@ public class HR_EntityManagement {
                         break;
 
                     case 4:
+                        System.out.println("You chose Option 4.\n This option is in the works");
+                        break;
+                    case 5:
                         System.out.println("You chose Option 5.");
                         addQualificationToEmployee(employee);
                         break;
 
-                    case 5:
+                    case 6:
                         System.out.println("You chose Option 6.");
                         removeQualificationToEmployee(employee);
                         break;
 
-                    case 6 :
+                    case 7 :
                         System.out.println("You chose Option 7.");
                         while (true){
                             System.out.println("How much do you wish to add as a bonus?");
@@ -460,7 +466,7 @@ public class HR_EntityManagement {
                             }
                         }
                         break;
-                    case 7:
+                    case 8:
                         System.out.println("Existing menu....");
                         break;
                     default:
@@ -468,7 +474,6 @@ public class HR_EntityManagement {
                         break;
                 }
                 employeesDAO.update(employee);
-                break;
             }
             catch (Exception e)
             {

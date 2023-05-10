@@ -1,9 +1,7 @@
 package Presentation;
 
 import BussinesLogic.*;
-import DataAccess.DAO_DailyShift;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -25,49 +23,16 @@ public class ShiftOrganizer {
      * @param employee: employee to update
      * @param role: what role he is doing
      */
-    public static void changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role) throws SQLException, ClassNotFoundException {
+    public static void changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role)
+    {
         if(choice == 0)// add employee
-        {
             branchStore.getShiftsHistory().get(date).addEmployeeToShift(employee, role, shift);
-            //if there is a transit
-            //employee is added
-            if(branchStore.getShiftsHistory().get(date).isEmployeeInShift(employee.getId())!= null)
-            {
-                //if the role is storage and there is a transit on the way
-                if(role == Role.STORAGE && branchStore.storekeeperStatusByDate.containsKey(date))
-                {
-                    //there are storekeepers available and need to update the status
-                    if(branchStore.getShiftsHistory().get(date).storeKeepersInDailyShift() && !branchStore.storekeeperStatusByDate.get(date))
-                    {
-                        TransitCoordinator.Alert("Transit can be EXECUTED");
-                        branchStore.storekeeperStatusByDate.put(date,true);
-                    }
-                }
-            }
-        }
 
         else //remove employee
         {
             branchStore.getShiftsHistory().get(date).removeEmployeeFromShift(employee, role, shift);
-            //if there is a transit
-            //employee is removed
-            if(branchStore.getShiftsHistory().get(date).isEmployeeInShift(employee.getId())== null)
-            {
-                //if the role is storage and there is a transit on the way
-                if(role == Role.STORAGE && branchStore.storekeeperStatusByDate.containsKey(date))
-                {
-                    //there are storekeepers available and need to update the status
-                    if(!branchStore.getShiftsHistory().get(date).storeKeepersInDailyShift() && branchStore.storekeeperStatusByDate.get(date))
-                    {
-                        TransitCoordinator.Alert("TRANSIT CANNOT BE COMPLETE!");
-                        //update transit status
-                        branchStore.storekeeperStatusByDate.put(date,false);
-                    }
-                }
-            }
         }
         branchStore.getShiftsHistory().get(date).showMeSchedualing();
-        //TODO: update in data base
     }
 
     /**
@@ -75,7 +40,7 @@ public class ShiftOrganizer {
      * if invalid, sends an alert
      * @param rolesAmount: to check if all are update to 0
      */
-    public static void checkShiftValidation(Map<String, Integer> rolesAmount, Map<LocalDate, Boolean> storekeeperStatusByDate, LocalDate currentDate)
+    public static void checkShiftValidation(Map<String, Integer> rolesAmount, boolean isTransit)
     {
         Scanner scanner = new Scanner(System.in);
         //go over the roles and check if all of them are fulfilled
@@ -84,20 +49,10 @@ public class ShiftOrganizer {
         {
             if(rolesAmount.get(role.toString()) > 0){
                 output.append(role).append(" are missing.\n");
-                if(role.equals(Role.STORAGE) && storekeeperStatusByDate.containsKey(currentDate))
-                {
+                if(role.equals(Role.STORAGE) && isTransit)
                     TransitCoordinator.Alert("TRANSIT CANNOT BE COMPLETE!");
-                    //update transit status
-                    storekeeperStatusByDate.put(currentDate,false);
-                }
+                //TODO: use DAO_TransitRecord to change private boolean transitProblem
             }
-            //if there is a transit and a
-            if(rolesAmount.get(role.toString())==0 && role.equals(Role.STORAGE)&& storekeeperStatusByDate.containsKey(currentDate))
-            {
-                TransitCoordinator.Alert("Transit can be EXECUTED");
-                storekeeperStatusByDate.put(currentDate,true);
-            }
-
         }
         if(!output.toString().equals("")){
             System.out.println("Daily shift is INVALID!!! " + output);
@@ -118,7 +73,7 @@ public class ShiftOrganizer {
      * @param weekDay : what day to schedule the shift
      * @return suggestion of a daily shift for the date requested
      */
-    public static DailyShift DailyShifts(List<Employee> listEmployees,Map<LocalDate,Boolean> storekeeperStatusByDate, int[][] openHours, int shift, DailyShift dailyShift, Days weekDay) {
+    public static DailyShift DailyShifts(List<Employee> listEmployees,Map<LocalDate,Driver> transits, int[][] openHours, int shift, DailyShift dailyShift, Days weekDay) {
        //check if morning or evening shift
        if(shift !=0 && shift != 1){return null;}
        /* Get the current date, and pull the vent date for scheduling */
@@ -168,7 +123,7 @@ public class ShiftOrganizer {
                 //check if there is a transit in this day
                 else if(Objects.equals(roles[i].toString(), "STORAGE"))
                 {
-                    if(storekeeperStatusByDate.containsKey(shiftDate)){
+                    if(transits.containsKey(shiftDate)){
                         numOfStorage = Integer.parseInt(c);
                         if(numOfStorage < 1){
                             System.out.println("There is a transit in this day, please input at least 1.");
@@ -225,7 +180,7 @@ public class ShiftOrganizer {
 
         }
         /* Create and set a new shift */
-        checkShiftValidation(rolesAmount, storekeeperStatusByDate,currentDate); // check if there is a problem
+        checkShiftValidation(rolesAmount, transits.containsKey(shiftDate)); // check if there is a problem
         return dailyShift; //return a new daily shift
     }
 }

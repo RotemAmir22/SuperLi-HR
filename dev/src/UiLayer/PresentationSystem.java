@@ -1,25 +1,32 @@
 package UiLayer;
+import BussinesLogic.TransitCoordinator;
 import ControllerLayer.*;
+import DataAccess.DAO;
+import DataAccess.DAO_Employee;
 import DataAccessLayer.*;
 import DomainLayer.*;
+
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PresentationSystem {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         PresentationSystem ps = new PresentationSystem();
         Scanner scanner = new Scanner(System.in);
 
-        DriverDAO primeDriverDAO = new DriverDAOImpl();
-        DriverController primeDriverController = new DriverControllerImpl(primeDriverDAO);
 
+//        DriverDAO primeDriverDAO = new DriverDAOImpl();
+//        DriverController primeDriverController = new DriverControllerImpl(primeDriverDAO);
+        DAO DriverDAO = new DAO_Employee();
         TruckDAO primeTruckDAO = new TruckDAOImpl();
         TruckController primeTruckController = new TruckControllermpl(primeTruckDAO);
         TruckPresentation truckPresentation = new TruckPresentation(primeTruckController);
-
-        StoreDAO primeStoreDAO = new StoreDAOImpl();
-        StoreController primeStoreController = new StoreControllerImpl(primeStoreDAO);
+        //TODO make sure that storeDAO and StoreController are irrelevent
+//        StoreDAO primeStoreDAO = new StoreDAOImpl();
+//        StoreController primeStoreController = new StoreControllerImpl(primeStoreDAO);
+        TransitCoordinator primeTransitCoordinator = new TransitCoordinator();
 
         SupplierDAO primeSupplierDAO = new SupplierDAOImpl();
         SupplierController primeSupplierController = new SupplierControllerImpl(primeSupplierDAO);
@@ -29,7 +36,7 @@ public class PresentationSystem {
 
         OrderDocumentDAO primeOrderDocDAO = new OrderDocumentDAOImpl();
         OrderDocumentController primeOrderDocController = new OrderDocumentControllerImpl(primeOrderDocDAO,
-                primeSupplierController,primeStoreController,primeProductController);
+                primeSupplierController,primeTransitCoordinator,primeProductController);
         OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(primeOrderDocController,
                 primeProductController);
 
@@ -39,8 +46,8 @@ public class PresentationSystem {
 
         TransitDAO primeTransitDAO = new TransitDAOImpl();
         TransitController primeTransitController = new TransitControllerImpl(primeTransitDAO, primeTruckController,
-                primeDriverController, primeOrderDocController, primeTransitRecordController);
-        TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeDriverController);
+                primeTransitCoordinator, primeOrderDocController, primeTransitRecordController);
+        TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeTransitCoordinator);
 
 
         Set<Qualification> s1 = new HashSet<>();
@@ -61,8 +68,8 @@ public class PresentationSystem {
         Truck t1 = new Truck("123", TruckModel.LARGETRUCK, 5000, 10000, sT3);
         Truck t2 = new Truck("321", TruckModel.SMALLTRUCK, 100, 2000, sT4);
 
-        Driver d1 = new Driver(1, "Moshe Mor",s1);
-        Driver d2 = new Driver(2, "Dani Lev",s2);
+//        Driver d1 = new Driver(1, "Moshe Mor",s1);
+//        Driver d2 = new Driver(2, "Dani Lev",s2);
 
         Product p1 = new Product(1,"Banana");
         Product p2 = new Product(2,"Apple");
@@ -71,16 +78,16 @@ public class PresentationSystem {
         Supplier sup1 = new Supplier("Jerusalem", Area.Center, "David", "0523333333", 1);
         Supplier sup2 = new Supplier("Hiafa", Area.North, "Shlomi", "0524444444", 2);
         Supplier parkSup = new Supplier("Logistical warehouse", Area.Center,"Michael", "0525555555", 50);
+        //TODO make sure created by branchstore
+//        BranchStore parkSro = new BranchStore("Logistical warehouse", Area.Center,"Michael", "0525555555", 50);
+//        BranchStore sro1 = new BranchStore("Bash", Area.South, "Miri", "0526666666", 111);
+//        BranchStore sro2 = new BranchStore("Mevaseret", Area.Center, "Regev", "0527777777", 112);
 
-        Store parkSro = new Store("Logistical warehouse", Area.Center,"Michael", "0525555555", 50);
-        Store sro1 = new Store("Bash", Area.South, "Miri", "0526666666", 111);
-        Store sro2 = new Store("Mevaseret", Area.Center, "Regev", "0527777777", 112);
 
-
-        OrderDocument o11 = new OrderDocument(sup1, sro1);
-        OrderDocument o12 = new OrderDocument(sup1, sro2);
-        OrderDocument o21 = new OrderDocument(sup2, sro1);
-        OrderDocument o22 = new OrderDocument(sup2, sro2);
+//        OrderDocument o11 = new OrderDocument(sup1, sro1);
+//        OrderDocument o12 = new OrderDocument(sup1, sro2);
+//        OrderDocument o21 = new OrderDocument(sup2, sro1);
+//        OrderDocument o22 = new OrderDocument(sup2, sro2);
 
         Map<Product, Double> m1 = new HashMap<>();
         Map<Product, Double> m2 = new HashMap<>();
@@ -89,21 +96,21 @@ public class PresentationSystem {
 
         m1.put(p1, 5000.0);
         m1.put(p2, 5000.0);
-        o11.setProductsList(m1);
-        o11.setWeight(10000);
+//        o11.setProductsList(m1);
+//        o11.setWeight(10000);
 
         m2.put(p2, 2000.0);
-        o12.setProductsList(m2);
-        o12.setWeight(2000);
+//        o12.setProductsList(m2);
+//        o12.setWeight(2000);
 
         m3.put(p1, 1100.0);
         m3.put(p2, 1000.0);
-        o21.setProductsList(m3);
-        o21.setWeight(2100);
+//        o21.setProductsList(m3);
+//        o21.setWeight(2100);
 
         m4.put(p3, 1000.0);
-        o22.setProductsList(m4);
-        o22.setWeight(1000);
+//        o22.setProductsList(m4);
+//        o22.setWeight(1000);
 
         String dateString = "11-04-2023";
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -113,28 +120,26 @@ public class PresentationSystem {
         }catch (ParseException e){
             System.out.println();
         }
-        Transit deli1 = new Transit(date, t2, d2);
-        deli1.addOrderDoc(o22);
+//        Transit deli1 = new Transit(date, t2, d2);
+//        deli1.addOrderDoc(o22);
 
         primeTruckDAO.saveTruck(t1);
         primeTruckDAO.saveTruck(t2);
-        primeOrderDocDAO.saveOrderDocument(o11);
-        primeOrderDocDAO.saveOrderDocument(o12);
-        primeOrderDocDAO.saveOrderDocument(o21);
-        primeOrderDocDAO.saveOrderDocument(o22);
-        primeTransitDAO.saveTransit(deli1);
+//        primeOrderDocDAO.saveOrderDocument(o11);
+//        primeOrderDocDAO.saveOrderDocument(o12);
+//        primeOrderDocDAO.saveOrderDocument(o21);
+//        primeOrderDocDAO.saveOrderDocument(o22);
+//        primeTransitDAO.saveTransit(deli1);
 
-        primeDriverDAO.saveDriver(d1);
-        primeDriverDAO.saveDriver(d2);
         primeProductDAO.saveProduct(p1);
         primeProductDAO.saveProduct(p2);
         primeProductDAO.saveProduct(p3);
         primeSupplierDAO.saveSupplier(sup1);
         primeSupplierDAO.saveSupplier(sup2);
         primeSupplierDAO.saveSupplier(parkSup);
-        primeStoreDAO.saveStore(parkSro);
-        primeStoreDAO.saveStore(sro1);
-        primeStoreDAO.saveStore(sro2);
+//        primeStoreDAO.saveStore(parkSro);
+//        primeStoreDAO.saveStore(sro1);
+//        primeStoreDAO.saveStore(sro2);
 
 
         ps.preRunData(scanner,primeTransitDAO, primeTruckDAO, primeOrderDocDAO);

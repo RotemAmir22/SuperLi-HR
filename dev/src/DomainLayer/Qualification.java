@@ -1,6 +1,6 @@
 package DomainLayer;
 
-public enum License {
+public enum Qualification {
     C1,
     C,
     COOLER

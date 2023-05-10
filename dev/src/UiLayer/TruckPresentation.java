@@ -1,7 +1,7 @@
 package UiLayer;
 
 import ControllerLayer.TruckController;
-import DomainLayer.License;
+import DomainLayer.Qualification;
 import DomainLayer.Truck;
 import DomainLayer.TruckModel;
 import ExceptionsPackage.UiException;
@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 public class TruckPresentation {
     private final TruckController truckController;
+
 
     public TruckPresentation(TruckController truckController) { this.truckController = truckController;}
     /**
@@ -53,7 +54,6 @@ public class TruckPresentation {
         //TODO also print the truck info ?
     }
     public void removeTruckByPlate(Scanner scanner){
-        // TODO think about what to do with this function - verify not in related to existing transit
         String tPlateNumber;
         System.out.println("-----Remove truck-----");
         System.out.println("Enter truck's plate number: ");
@@ -95,7 +95,7 @@ public class TruckPresentation {
      */
     public int[] truckQualificationsHandler(Scanner scanner) throws UiException {
         System.out.println("Choose truck qualification (comma-separated, e.g. 1,3,5): ");
-        for (License ql : License.values()){
+        for (Qualification ql : Qualification.values()){
             System.out.println(ql.ordinal()+1 + ". " + ql);
         }
         String sQuali = scanner.nextLine();
@@ -103,7 +103,7 @@ public class TruckPresentation {
         for (String s : sQualiArr) {
             try {
                 int num = Integer.parseInt(s.trim());
-                if (num < 1 || num > License.values().length) {
+                if (num < 1 || num > Qualification.values().length) {
                     throw new UiException("Invalid qualification number: " + num);
                 }
             } catch (NumberFormatException e) {

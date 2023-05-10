@@ -1,7 +1,10 @@
 package UiLayer;
-import ControllerLayer.DriverController;
+import BussinesLogic.BranchStore;
+import BussinesLogic.Driver;
+import BussinesLogic.TransitCoordinator;
 import ControllerLayer.TransitController;
 import ControllerLayer.TruckController;
+import DataAccess.DAO_Employee;
 import DomainLayer.*;
 import ExceptionsPackage.ModuleException;
 import java.time.LocalDate;
@@ -10,16 +13,17 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.Set;
 
 public class TransitPresentation {
     private final TransitController transitController;
     private final TruckController truckController;
-    private final DriverController driverController;
+    private final TransitCoordinator transitCoordinator;
     public TransitPresentation(TransitController transitController, TruckController truckController,
-                               DriverController driverController) {
+                               TransitCoordinator transitCoordinator) {
         this.transitController = transitController;
         this.truckController = truckController;
-        this.driverController = driverController;
+        this.transitCoordinator = transitCoordinator;
     }
 
 
@@ -30,8 +34,9 @@ public class TransitPresentation {
         System.out.println("Enter truck's plate number: ");
         String truckPLateNumber = scanner.nextLine();
         System.out.println("Enter driver's id: ");
-        int driverId = scanner.nextInt();
-        scanner.nextLine();
+        String driverId = scanner.nextLine();
+//        int driverId = scanner.nextInt();
+//        scanner.nextLine();
         Transit newTransit;
         try {
             newTransit = this.transitController.createTransit(sTransitDate, truckPLateNumber, driverId);
@@ -93,6 +98,8 @@ public class TransitPresentation {
         String truckPlateNumber = scanner.nextLine();
         return truckPlateNumber;
     }
+
+
     private void lookForQualifiedDriver(Scanner scanner, int transitIdToReplace, String newTruckPlate)
     {
         int choice, iFlag=1;
@@ -105,8 +112,7 @@ public class TransitPresentation {
             if (choice==1)break;
             else if (choice==2) {
                 System.out.println("Enter driver id: ");
-                int driverId = scanner.nextInt();
-                scanner.nextLine();
+                String driverId = scanner.nextLine();
                 iFlag = this.transitController.replaceTransitDriver(transitIdToReplace, driverId, newTruckPlate);
                 if (iFlag==-1){
                     System.out.printf("Driver id: %d not found! %n", driverId);
@@ -187,7 +193,7 @@ public class TransitPresentation {
             return;
         }
         transit.setDepartureTime(LocalTime.now());
-
+        System.out.println("ETA in minutes for the transit: " + transit.getETA());
 
         TransitRecord transitRecord = this.transitController.getTransitRecordController().createTransitRecord(transit);
 
@@ -199,11 +205,11 @@ public class TransitPresentation {
         // drive to suppliers
         for (Supplier supplier : transit.getDestinationSuppliers())
         {
-            System.out.println("Arrived to supplier: " + supplier.getSupplierId());
+            System.out.println("Arrived to supplier: " + supplier.getSupplierID());
             //check all orders that are in the suppliers source
             for(OrderDocument orderDoc : transit.getOrdersDocs())
             {
-                if(supplier.getSupplierId() == orderDoc.getSource().getSupplierId())
+                if(supplier.getSupplierID() == orderDoc.getSource().getSupplierID())
                 {
 
                     System.out.println("Loading order number: " + orderDoc.getDocumentId());
@@ -223,11 +229,11 @@ public class TransitPresentation {
 //            transit.addDestinationStore(orderDoc.getDestination());
 //        }
 
-        for (Store store : transit.getDestinationStores()) {
-            System.out.println("Arrived to store: " + store.getStoreId());
+        for (BranchStore branchStore : transit.getDestinationStores()) {
+            System.out.println("Arrived to branchStore: " + branchStore.getBranchID());
             //check all orders that are in the stores destination
             for (OrderDocument orderDoc : transit.getOrdersDocs()) {
-                if (store.getStoreId() == orderDoc.getDestination().getStoreId()) {
+                if (branchStore.getBranchID() == orderDoc.getDestination().getBranchID()) {
 
                     System.out.println("Unloading order number: " + orderDoc.getDocumentId());
                     transit.getTruck().unloadTruck(orderDoc.getTotalWeight());
@@ -285,12 +291,13 @@ public class TransitPresentation {
         // TODO verify truck and driver availability
         Truck biggerTruck = findNewTruck(scanner);
         if (biggerTruck == null)return false;
-        Driver newDriver = findNewDriver(scanner);
+        Driver newDriver = findNewDriver(scanner,transit.getTransitDate(),biggerTruck.getTruckQualification(),transit.getDriver().getId());
         if (newDriver == null)return false;
-        if (!transitController.isDriverAllowToDriveTruck(biggerTruck, newDriver)){
-            System.out.printf("Chosen driver: %d is not qualified to drive the chosen truck %n", newDriver.getDriverId());
-            return false;
-        }
+        //TODO switch to the transitCoordinator driver check
+//        if (!transitController.isDriverAllowToDriveTruck(biggerTruck, newDriver)){
+//            System.out.printf("Chosen driver: %d is not qualified to drive the chosen truck %n", newDriver.getDriverId());
+//            return false;
+//        }
         Truck smallTuck = transit.getTruck();
         if (transitController.transferLoad(smallTuck, biggerTruck))
         {
@@ -322,11 +329,10 @@ public class TransitPresentation {
         }
         return newTruck;
     }
-    public Driver findNewDriver(Scanner scanner){
+    public Driver findNewDriver(Scanner scanner, Date transitDate, Set<Qualification> licenses, String oldDriver ){
         System.out.println("Enter driver's id: ");
-        int driverId = scanner.nextInt();
-        scanner.nextLine();
-        Driver newDriver = driverController.findDriverByID(driverId);
+        String driverId = scanner.nextLine();
+        Driver newDriver = transitCoordinator.SwitchDriverInTransit(transitDate,driverId,licenses,oldDriver);
         if (newDriver == null){
             System.out.printf("Driver's id: %d not found %n", driverId);
         }

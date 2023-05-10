@@ -5,11 +5,11 @@ import DomainLayer.OrderDocument;
 import java.util.Set;
 
 public interface OrderDocumentDAO {
-    void saveOrderDocument(OrderDocument orderDocument);
-
+    Set<OrderDocument> getOrderDocsSet();
+    Set<OrderDocument> getCompletedOrdersSet();
     OrderDocument findOrderDocById(int OrderDocId);
-
+    void saveOrderDocument(OrderDocument orderDocument);
+    void removeOrderDoc(OrderDocument orderDocument);
     void moveToCompleted(OrderDocument completedOrder);
 
-    Set<OrderDocument> getOrderDocsSet(boolean isCompleted);
 }

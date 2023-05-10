@@ -1,58 +1,52 @@
 package BussinesLogic;
 
-import DomainLayer.License;
+import DomainLayer.Qualification;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 public class Driver extends Employee{
     private ArrayList<License> licenses;
-    private ArrayList<LocalDate> transitsDates;
+    private ArrayList<LocalDate> transits;
 
     public Driver(String firstName, String lastName, String id, String bankAccount, double salary, String empTerms, String startDate) {
         super(firstName, lastName, id, bankAccount, salary, empTerms, startDate);
         licenses = new ArrayList<>();
-        transitsDates = new ArrayList<>();
+        transits = new ArrayList<>();
     }
 
     public void addLicense(License newLicense){licenses.add(newLicense);}
-    public void removeLicense(License license){licenses.remove(license);}
+    public void removeLicense(License license){  licenses.remove(license);}
 
     //getters
     public ArrayList<License> getLicenses(){return this.licenses;}
-    public ArrayList<LocalDate> getTransitsDates(){return transitsDates;}
+    public ArrayList<LocalDate> getTransits(){return transits;}
 
     //functions on transit
-
-    /**
-     * add delivery to driver and update salary
-     * @param date of future delivery
-     */
-    public void addTransit(LocalDate date){
-        this.transitsDates.add(date);
-        this.setCumulativeSalary(this.getCumulativeSalary()+this.getSalary());
-    }
-    public void removeTransit(LocalDate date){this.transitsDates.remove(date);}
+    public void addTransit(LocalDate date){this.transits.add(date);}
+    public void removeTransit(LocalDate date){this.transits.remove(date);}
 
     /**
      * if the driver is available on given date, if the driver doesn't have the date in the transit list
      * @param date date to check
      * @return true if available, and false if not
      */
-    public boolean isAvailableOnDate(LocalDate date){return !this.transitsDates.contains(date);}
+    public boolean isAvailableOnDate(LocalDate date){return !this.transits.contains(date);}
 
     /**
      * prints the drivers transits dates that are scheduled
      */
     public void printTransits()
     {
-        System.out.print("Transit scheduled dates are: "+ this.getTransitsDates().toString()+"\n");
+        System.out.printf(this.getName() +" transit schedule is: "+ this.getTransits().toString());
     }
 
     public void printEmployeeDetails()
     {
-        System.out.println("- "+getName()+" -\nID: "+getId()+"\nStart Date: "+getStartDate()+
-                "\nCumulative Salary: "+getCumulativeSalary()+ "\nShift Salary: "+getSalary()+"\nBank account: "+getBankAccount()+"\nQualifications: "+getQualifications().toString());
+        printEmployeeDetails();
         printTransits();
     }
 //    public void printDriver(){

@@ -8,5 +8,5 @@ public interface ProductDAO {
     void saveProduct(Product product);
     void removeProduct(Product product);
     Set<Product> getProductsSet();
-    Product findProductById(int productID);
+    Product findProductByID(int productID);
 }
