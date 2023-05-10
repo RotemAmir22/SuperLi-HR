@@ -78,11 +78,10 @@ public class HR_SchedulingManagement {
 
                 //schedule evening shift
                 newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.storekeeperStatusByDate, branchStore.getOpenHours(), 1, newShift[i],day);
-                branchStoreDAO.getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
                 branchStoreDAO.update(branchStoreDAO.getNetworkBranches().get(i));
                 assert newShift[i] != null;
                 System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
-
+                //TODO: add to database- DAO_DAILYSHIFT
                 newShift[i].showMeSchedualing();
             }
 
@@ -159,6 +158,7 @@ public class HR_SchedulingManagement {
             }
 
         }
+        //TODO: add to database- DAO_DAILYSHIFT
 
     }
 

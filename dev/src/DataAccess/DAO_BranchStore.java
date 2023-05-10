@@ -1,7 +1,6 @@
 package DataAccess;
 
 import BussinesLogic.*;
-import BussinesLogic.Driver;
 
 import java.sql.*;
 import java.sql.Date;
@@ -10,7 +9,10 @@ import java.util.*;
 
 import static BussinesLogic.Role.DRIVER;
 
-public class DAO_BranchStore implements DAO{
+/**
+ * This DAO is for the branchStores
+ */
+public class DAO_BranchStore implements IDAO_Entity {
 
     private Map<Integer,BranchStore> networkBranches;
 
@@ -33,10 +35,11 @@ public class DAO_BranchStore implements DAO{
      * @throws ClassNotFoundException in case of error
      */
     public Object findByID(Object ID) throws SQLException, ClassNotFoundException {
-        if (networkBranches.containsKey(ID))
-            return networkBranches.get(ID);
+        Integer id = Integer.valueOf((String) ID);
+        if (networkBranches.containsKey(id))
+            return networkBranches.get(id);
         else {
-            PreparedStatement stmt = conn.prepareStatement("SELECT name, openingTime, address, areaCode, contactName FROM BranchStore WHERE branchID = ?");stmt.setString(1, (String) ID);
+            PreparedStatement stmt = conn.prepareStatement("SELECT name, openingTime, address, areaCode, contactName FROM BranchStore WHERE branchID = ?");stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             BranchStore branchStore;
             if (rs.next()) {
@@ -48,7 +51,7 @@ public class DAO_BranchStore implements DAO{
                 branchStore = BranchStoreGenerator.CreateBranchStore(name, Area.values()[areaCode], openingTime, address, contractName);
                 // get the openingHours
                 stmt = conn.prepareStatement("SELECT * FROM BranchOpeningHours WHERE branchID = ?");
-                stmt.setString(1, (String) ID);
+                stmt.setInt(1, id);
                 rs = stmt.executeQuery();
                 while (rs.next()){
                     int day = rs.getInt("dayOfWeek");
@@ -59,29 +62,30 @@ public class DAO_BranchStore implements DAO{
                 }
                 // get branch's employees
                 stmt = conn.prepareStatement("SELECT * FROM EmployeeBranches WHERE branchID = ?");
-                stmt.setString(1, (String) ID);
+                stmt.setInt(1, id);
                 rs = stmt.executeQuery();
+                DAO_Employee employeesDAO = DAO_Generator.getEmployeeDAO();
                 while (rs.next()){
                     String employeeId = rs.getString("employeeID");
-                    DAO_Employee employeesDAO = DAO_Generator.getEmployeeDAO();
                     Employee e = (Employee) employeesDAO.findByID(employeeId);
                     branchStore.addEmployee(e);
                 }
                 // get branch's transits
                 stmt = conn.prepareStatement("SELECT * FROM BranchStoreTransits WHERE branchID = ?");
-                stmt.setString(1, (String) ID);
+                stmt.setInt(1, id);
                 rs = stmt.executeQuery();
                 while (rs.next()){
                     LocalDate transitDate = rs.getDate("transitDate").toLocalDate();
                     Boolean transitStatus = rs.getBoolean("status");
                     branchStore.storekeeperStatusByDate.put(transitDate, transitStatus);
                 }
-                networkBranches.put((int) ID, branchStore);
+                networkBranches.put(id, branchStore);
                 return branchStore;
             }
         }
         return null;
     }
+
 
     /**
      * insert new branch
@@ -116,6 +120,11 @@ public class DAO_BranchStore implements DAO{
         }
     }
 
+    /**
+     *  update a branch
+     * @param o : branch to update
+     * @throws SQLException
+     */
     @Override
     public void update(Object o) throws SQLException {
         BranchStore branch = (BranchStore) o;
@@ -217,11 +226,50 @@ public class DAO_BranchStore implements DAO{
         }
     }
 
+    /**
+     *  delete branch from data base
+     * @param o : branch to delete
+     * @throws SQLException
+     */
     @Override
-    public void delete(Object o) {
+    public void delete(Object o) throws SQLException {
+        BranchStore b = (BranchStore) o;
+        if(b != null) {
+            //delete from branch store table
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM BranchStore WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
 
+            //delete from open hours
+            stmt = conn.prepareStatement("DELETE FROM BranchOpeningHours WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
+
+            //delete from BranchStoreTransits
+            stmt = conn.prepareStatement("DELETE FROM BranchStoreTransits WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
+
+            //delete from DailyShifts
+            stmt = conn.prepareStatement("DELETE FROM DailyShifts WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
+
+            //delete from EmployeeBranches
+            stmt = conn.prepareStatement("DELETE FROM EmployeeBranches WHERE branchID = ?");
+            stmt.setInt(1, b.getBranchID());
+            stmt.executeQuery();
+
+            networkBranches.remove(b.getBranchID());
+        }
     }
 
+    /**
+     *
+     * @return returns all the branches
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public List<BranchStore> getNetworkBranches() throws SQLException, ClassNotFoundException {
         if(networkBranches.isEmpty())
             ifEmptyMaps();

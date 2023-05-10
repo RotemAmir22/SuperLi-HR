@@ -186,21 +186,17 @@ public class DailyShift {
      */
     public void showMeSchedualing()
     {
-        int count;
+        int count=0;
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
         System.out.println("Daily shift - "+ dayOfWeek + " " + this.date+"\nMORNING:");
         Map<Role, ArrayList<Employee>> sortedMap = new TreeMap<>(morningShift);
-        for (Map.Entry<Role, ArrayList<Employee>> entry : sortedMap.entrySet()) {
-            Role key = entry.getKey();
-            count = 1;
-            System.out.println(key.name()+":");
-            for (Employee employee : sortedMap.get(key))
-            {
-                System.out.println(count+++". "+employee.getName());
-            }
-        }
+        print(sortedMap,count);
         System.out.println("\nEVENING:");
         sortedMap = eveningShift;
+        print(sortedMap,count);
+    }
+    private void print(Map<Role, ArrayList<Employee>> sortedMap, int count)
+    {
         for (Map.Entry<Role, ArrayList<Employee>> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
             count = 1;
@@ -286,5 +282,14 @@ public class DailyShift {
                     return role;
         }
         return null;
+    }
+
+    /**
+     *
+     * @return if there is a storekeeper in each shift then returns true
+     */
+    public boolean storeKeepersInDailyShift()
+    {
+        return (morningShift.containsKey(Role.STORAGE)&&eveningShift.containsKey(Role.STORAGE));
     }
 }

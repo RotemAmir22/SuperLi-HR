@@ -1,9 +1,8 @@
 package DataAccess;
 
-import java.lang.reflect.GenericDeclaration;
 import java.sql.SQLException;
 
-public interface DAO {
+public interface IDAO_Entity {
     Object findByID(Object ID) throws SQLException, ClassNotFoundException;
 
     void insert(Object o) throws SQLException;
