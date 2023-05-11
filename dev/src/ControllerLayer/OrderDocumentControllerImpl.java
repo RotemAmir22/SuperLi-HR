@@ -1,5 +1,7 @@
 package ControllerLayer;
 
+import BussinesLogic.BranchStore;
+import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.OrderDocumentDAO;
 import DomainLayer.*;
 
@@ -8,16 +10,16 @@ import java.util.*;
 public class OrderDocumentControllerImpl implements OrderDocumentController {
     private final OrderDocumentDAO orderDocumentDAO;
     private final SupplierController supplierController;
-    private final StoreController storeController;
+    private final TransitCoordinator transitCoordinator;
     private final ProductController productController;
 
 
     public OrderDocumentControllerImpl(OrderDocumentDAO orderDocDAO,
-                                       SupplierController supplierController, StoreController storeController,
+                                       SupplierController supplierController, TransitCoordinator transitCoordinator,
                                        ProductController productController) {
         this.orderDocumentDAO = orderDocDAO;
         this.supplierController = supplierController;
-        this.storeController = storeController;
+        this.transitCoordinator = transitCoordinator;
         this.productController = productController;
     }
     public ProductController getProductController() {
@@ -26,8 +28,8 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     public SupplierController getSupplierController() {
         return supplierController;
     }
-    public StoreController getStoreController() {
-        return storeController;
+    public TransitCoordinator getTransitCoordinator() {
+        return transitCoordinator;
     }
     public OrderDocumentDAO getOrderDocumentDAO() { return orderDocumentDAO;}
     @Override
@@ -37,15 +39,16 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     @Override
     public OrderDocument createOrderDoc(int sourceId, int destinationId) {
         Supplier supplier = supplierController.findSupplierById(sourceId) ;
-        Store store = storeController.findStoreById(destinationId) ;
-        if (store == null || supplier == null) return null;
-        OrderDocument orderDoc = new OrderDocument(supplier,store);
+        //TODO find storeById with BranchStore;
+        BranchStore branchStore = transitCoordinator.findStoreById(destinationId) ;
+        if (branchStore == null || supplier == null) return null;
+        OrderDocument orderDoc = new OrderDocument(supplier, branchStore);
         return orderDoc;
     }
-    @Override
-    public Set<OrderDocument> getOrderDocumentsSet() {
-        return orderDocumentDAO.getOrderDocsSet();
-    }
+//    @Override
+//    public Set<OrderDocument> getOrderDocumentsSet() {
+//        return orderDocumentDAO.getPendingOrderDocsSet();
+//    }
     @Override
     public void showAllProductsInDoc(int orderId) {
         OrderDocument orderDoc = findOrderDocById(orderId);
@@ -83,14 +86,14 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     @Override
     public void showCompletedOrderDocs(){
         System.out.println("-----Completed Orders-----");
-        Set<OrderDocument> completedOrders = this.orderDocumentDAO.getCompletedOrdersSet();
+        Set<OrderDocument> completedOrders = this.orderDocumentDAO.getOrderDocsSet(true);
         for (OrderDocument orderDocument : completedOrders){
             orderDocument.printOrder();
         }
     }
     public void showPendingOrderDocs() {
         System.out.println("-----Pending Orders-----");
-        Set<OrderDocument> pendingOrders = this.orderDocumentDAO.getOrderDocsSet();
+        Set<OrderDocument> pendingOrders = this.orderDocumentDAO.getOrderDocsSet(false);
         List<OrderDocument> sortedOrders = new ArrayList<>(pendingOrders);
         Comparator<OrderDocument> bySupplierArea = Comparator.comparing(
                 order -> order.getSource().getAreaCode().name());

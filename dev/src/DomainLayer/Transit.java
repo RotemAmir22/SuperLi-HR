@@ -1,5 +1,8 @@
 package DomainLayer;
 
+import BussinesLogic.BranchStore;
+import BussinesLogic.Driver;
+
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashSet;
@@ -15,7 +18,7 @@ public class Transit {
     private Site source;
     private Double ETA;
     private final Set<Supplier> destinationSuppliers;
-    private final Set<Store> destinationStores;
+    private final Set<BranchStore> destinationBranchStores;
     private final Set<OrderDocument> ordersDocs;
 
 
@@ -26,7 +29,7 @@ public class Transit {
         this.truck = truck;
         this.driver = driver;
         this.ETA = 0.0;
-        this.destinationStores = new HashSet<>();
+        this.destinationBranchStores = new HashSet<>();
         this.destinationSuppliers = new HashSet<>();
         this.ordersDocs = new HashSet<>();
     }
@@ -40,44 +43,43 @@ public class Transit {
     }
 
     public double calculateETA() {
+
+        Supplier previousSupplier = null;
         double eta = 0.0;
-        Area lastSupplierAreaCode = null;
 
-        // Iterate through suppliers
+// Iterate over the suppliers
         for (Supplier supplier : this.getDestinationSuppliers()) {
-            Area supplierAreaCode = supplier.getAreaCode();
-            if (lastSupplierAreaCode != null && supplierAreaCode != lastSupplierAreaCode) {
-                eta += 30.0;
+            // Check if the previous supplier is in the same area code as the current supplier
+            if (previousSupplier != null && previousSupplier.getAreaCode().equals(supplier.getAreaCode())) {
+                eta += 15.0;  // add 15 to the ETA if they are in the same area code
             } else {
-                eta += 15.0;
+                eta += 30.0;  // add 30 to the ETA if they are not in the same area code
             }
-            lastSupplierAreaCode = supplierAreaCode;
+            previousSupplier = supplier;  // update the previous supplier to the current one
         }
 
-        // Check first store against last supplier
-        if (this.getDestinationStores().size() > 0) {
-            Area firstStoreAreaCode = this.getDestinationStores().iterator().next().getAreaCode();
-            if (lastSupplierAreaCode != null && firstStoreAreaCode != lastSupplierAreaCode) {
-                eta += 30.0;
-            } else {
-                eta += 15.0;
-            }
+// Check the first branch store and update the ETA accordingly
+        BranchStore firstBranchStore = this.getDestinationStores().iterator().next();
+        if (previousSupplier != null && previousSupplier.getAreaCode().equals(firstBranchStore.getAreaCode())) {
+            eta += 15.0;  // add 15 to the ETA if the first branch store is in the same area code as the last supplier
+        } else {
+            eta += 30.0;  // add 30 to the ETA if the first branch store is not in the same area code as the last supplier
         }
 
-        // Iterate through stores
-        lastSupplierAreaCode = null;
-        for (Store store : this.getDestinationStores()) {
-            Area storeAreaCode = store.getAreaCode();
-            if (lastSupplierAreaCode != null && storeAreaCode != lastSupplierAreaCode) {
-                eta += 30.0;
-            } else {
-                eta += 15.0;
+        BranchStore previousBranchStore = firstBranchStore;
+        for (BranchStore branchStore : this.getDestinationStores()) {
+            if (branchStore.getBranchID() != firstBranchStore.getBranchID()) {
+                if (previousBranchStore.getAreaCode().equals(branchStore.getAreaCode())) {
+                    eta += 15.0;  // add 15 to the ETA if they are in the same area code
+                } else {
+                    eta += 30.0;  // add 30 to the ETA if they are not in the same area code
+                }
+                previousBranchStore = branchStore;
             }
-            lastSupplierAreaCode = storeAreaCode;
         }
-
         return eta;
     }
+
 
     public int getTransitId() {
         return transitId;
@@ -97,8 +99,8 @@ public class Transit {
     public Set<Supplier> getDestinationSuppliers() {
         return destinationSuppliers;
     }
-    public Set<Store> getDestinationStores() {
-        return destinationStores;
+    public Set<BranchStore> getDestinationStores() {
+        return destinationBranchStores;
     }
     public Set<OrderDocument> getOrdersDocs() {
         return ordersDocs;
@@ -109,13 +111,14 @@ public class Transit {
         System.out.println("Truck Details: ");
         getTruck().printTruck();
         System.out.println("Driver Details: ");
-        getDriver().printDriver();
+        getDriver().printEmployeeDetails();
         for (OrderDocument od : ordersDocs){
             od.printOrder();
         }
+        System.out.println("ETA in minutes for the transit: " + getETA());
     }
-    public void addDestinationStore(Store dest){
-        destinationStores.add(dest);
+    public void addDestinationStore(BranchStore dest){
+        destinationBranchStores.add(dest);
     };
     public void addDestinationSupplier(Supplier dest){
         destinationSuppliers.add(dest);
@@ -133,18 +136,18 @@ public class Transit {
         if (count > 1) return;
         destinationSuppliers.remove(dest);
     }
-    public void removeDestinationStore(Store dest)
+    public void removeDestinationStore(BranchStore dest)
     {
         int count = 0;
         for (OrderDocument orderDoc : ordersDocs)
         {
-            if (orderDoc.getDestination().getStoreId() == dest.getStoreId())
+            if (orderDoc.getDestination().getBranchID() == dest.getBranchID())
             {
                 count+=1;
             }
         }
         if (count > 1) return;
-        destinationStores.remove(dest);
+        destinationBranchStores.remove(dest);
     }
     public void addOrderDoc(OrderDocument orderDocument){
         ordersDocs.add(orderDocument);

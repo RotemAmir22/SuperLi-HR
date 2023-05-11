@@ -4,8 +4,8 @@ import ControllerLayer.OrderDocumentController;
 import ControllerLayer.ProductController;
 import DomainLayer.OrderDocument;
 import DomainLayer.Product;
-import java.util.Scanner;
 
+import java.util.Scanner;
 
 public class OrderDocumentPresentation {
     private final OrderDocumentController orderDocumentController;
@@ -22,7 +22,6 @@ public class OrderDocumentPresentation {
      * interfaces to create and save a new Order object to a database.
      */
     public void createNewOrderDocument(Scanner scanner){
-    // TODO change to work with BranchStore
         int storeId;
         int supplierId;
 
@@ -38,7 +37,7 @@ public class OrderDocumentPresentation {
         System.out.println("Enter destination (store id)  of the order: "); //assuming valid store id
         storeId = scanner.nextInt();
         scanner.nextLine();
-        if(orderDocumentController.getStoreController().findStoreById(storeId) == null)
+        if(orderDocumentController.getTransitCoordinator().findStoreById(storeId) == null)
         {
             System.out.println("that is not an existing id of a store! ");
             return;

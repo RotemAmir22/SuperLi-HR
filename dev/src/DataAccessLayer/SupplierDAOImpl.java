@@ -28,7 +28,7 @@ public class SupplierDAOImpl implements SupplierDAO {
     @Override
     public Supplier findSupplierById(int supplierId){
         for (Supplier supplier : this.findAllSuppliers()) {
-            if (supplier.getSupplierID() == supplierId) {
+            if (supplier.getSupplierId() == supplierId) {
                 return supplier;
             }
         }

@@ -17,7 +17,7 @@ public class TruckControllermpl implements TruckController {
         TruckModel model = TruckModel.values()[iModel];
         Truck truck = new Truck(plateNumber, model, truckWeight, maxWeight);
         for (int i : iQArr) {
-            truck.addQToQSet(License.values()[i]);
+            truck.addLToLSet(License.values()[i]);
         }
         return truck;
     }

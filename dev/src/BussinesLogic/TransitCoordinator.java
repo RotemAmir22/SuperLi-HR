@@ -7,9 +7,7 @@ import Presentation.EmployeeConstraints;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class TransitCoordinator {
 
@@ -25,19 +23,24 @@ public class TransitCoordinator {
         driversDAO = DAO_Generator.getEmployeeDAO();
     }
 
+    public DAO_Employee getDriversDAO() {
+        return driversDAO;
+    }
+
     /**
      * This function help to transit-module to schedule the drivers
      * @param transitDate to schedule
      * @param license of the needed driver
      * @return list of available drivers
      */
-    public List<Driver> getAvailableDrivers(LocalDate transitDate, License license) throws SQLException {
+    public List<Driver> getAvailableDrivers(LocalDate transitDate, License license){
         List<Driver> availableDrivers = new ArrayList<>();
         for(Driver driver : driversDAO.getNetworkDrivers())
             if(driver.getLicenses().contains(license))
                 if(EmployeeConstraints.checkDriverAvailabilityForDate(transitDate, driver))
                     availableDrivers.add(driver);
         return availableDrivers;
+
     }
 
     /**
@@ -45,32 +48,34 @@ public class TransitCoordinator {
      * @param date of the potential transit
      * @param branchID to add the transit
      */
-    public void addTransitInDate(LocalDate date, int branchID) throws SQLException, ClassNotFoundException {
+    public void addTransitInDate(LocalDate date, int branchID){
         if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
         {
             BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
-            branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
-            branchStoreDAO.update(branchStore);
+            branchStore.transits.put(date, Driver);
         }
         else
             System.out.println("Invalid branch ID");
+
     }
 
-//    /**
-//     * Add a driver to a transit
-//     * @param date of the transit
-//     * @param driverID which is going to be added
-//     * @param licenses of the truck that the driver needs to know
-//     */
-//    public Driver addDriverToTransit(LocalDate date, int driverID, ArrayList<License> licenses) {
-//        //need to add function that seeks a driver by id and Date in the DAO
-//        Driver driver = findNewDriver(driverID, date, licenses);
+    /**
+     * Add a driver to a transit
+     * @param date of the transit
+     * @param driverID which is going to be added
+     * @param licenses of the truck that the driver needs to know
+     */
+    public Driver addDriverToTransit(Date date, String driverID, ArrayList<License> licenses) {
+        //need to add function that seeks a driver by id and Date in the DAO
+        Driver driver = null;
+//        addDriverToNewTransit(driverID, date, licenses);
 //        if (driver == null) {
 //            System.out.println("Driver not available");
 //            return null;
 //        }
-//        return driver;
-//    }
+
+        return driver;
+    }
 
 
     /**
@@ -80,17 +85,18 @@ public class TransitCoordinator {
      * @param licenses of the truck that the driver must have
      * @param oldDriverID which needed to be removed from the transit - need to delete its date from transitDate list
      */
-//
-//    public Driver SwitchDriverInTransit(LocalDate date, int newdriverID, ArrayList<License> licenses, int oldDriverID){
-//            //need to add function that seeks a driver by id and Date in the DAO
-//            Driver driver = findNewDriver(newdriverID, date);
+
+    public Driver SwitchDriverInTransit(Date date, String newdriverID, Set<License> licenses, String oldDriverID){
+            //need to add function that seeks a driver by id and Date in the DAO
+            Driver driver = null;
+//            = findNewDriver(newdriverID, date);
 //            if (driver == null) {
 //                System.out.println("Driver not available");
 //                return null;
 //        }
-//
-//            return driver;
-//    }
+
+            return driver;
+    }
 
     /**
      *
@@ -100,6 +106,7 @@ public class TransitCoordinator {
      */
     public boolean StorageWorkersExist(BranchStore store, LocalDate date)
     {
+
         return false;
     }
 
@@ -110,14 +117,25 @@ public class TransitCoordinator {
      * @param date of the transit
      * @return the transits in the branch
      */
-    public Map<LocalDate, Boolean> getTransitsInBranch(int branchID, LocalDate date) throws SQLException, ClassNotFoundException {
+    public Map<LocalDate, Driver> getTransitsInBranch(int branchID, LocalDate date){
         if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-            return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
+            return branchStoreDAO.getNetworkBranches().get(branchID).transits;
         else
             System.out.println("Invalid branch ID");
         return null;
     }
 
+    /**
+     *
+     * @param storeId the store id from the DAO
+     * used in orderDocumentController
+     * @return branchStore
+     */
+    public BranchStore findStoreById(int storeId)
+    {
+        BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(storeId);
+        return branchStore;
+    }
     /**
      * Static function to alert of any change in transit's status
      */

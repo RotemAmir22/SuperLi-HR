@@ -1,5 +1,6 @@
 package ControllerLayer;
 
+import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.OrderDocumentDAO;
 import DomainLayer.OrderDocument;
 
@@ -9,10 +10,8 @@ public interface OrderDocumentController {
     OrderDocument createOrderDoc(int sourceId, int destinationId);
     OrderDocumentDAO getOrderDocumentDAO();
     ProductController getProductController();
-    Set<OrderDocument> getOrderDocumentsSet();
-    OrderDocument findOrderDocById(int orderId);
     SupplierController getSupplierController();
-    StoreController getStoreController();
+    TransitCoordinator getTransitCoordinator();
     void updateWeight(OrderDocument orderDocument, double weight);
     void showAllProductsInDoc(int orderId);
     void updateAmount(int orderId, String productName, double amount);
@@ -21,4 +20,7 @@ public interface OrderDocumentController {
     void moveOrderToFinish(OrderDocument completedOrder);
     void showCompletedOrderDocs();
     void showPendingOrderDocs();
+    OrderDocument findOrderDocById(int orderId);
+
+    //    Set<OrderDocument> getOrderDocumentsSet();
 }

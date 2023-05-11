@@ -61,7 +61,7 @@ public class Truck {
         return this.lSet;
     }
 
-    public void addQToQSet(License qLicense) {
+    public void addLToLSet(License qLicense) {
         this.lSet.add(qLicense);
     }
 
