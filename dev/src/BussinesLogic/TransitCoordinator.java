@@ -48,16 +48,15 @@ public class TransitCoordinator {
      * @param date of the potential transit
      * @param branchID to add the transit
      */
-    public void addTransitInDate(LocalDate date, int branchID){
+    public void addTransitInDate(LocalDate date, int branchID) throws SQLException, ClassNotFoundException {
         if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
         {
             BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
-            branchStore.transits.put(date, Driver);
+            branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
+            branchStoreDAO.update(branchStore);
         }
         else
             System.out.println("Invalid branch ID");
-
-    }
 
     /**
      * Add a driver to a transit
@@ -119,7 +118,7 @@ public class TransitCoordinator {
      */
     public Map<LocalDate, Driver> getTransitsInBranch(int branchID, LocalDate date){
         if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-            return branchStoreDAO.getNetworkBranches().get(branchID).transits;
+            return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
         else
             System.out.println("Invalid branch ID");
         return null;

@@ -331,8 +331,7 @@ public class HR_EntityManagement {
      * inside this function it calls a helper function that changes a specific day
      * @param branchStore : store to update
      */
-    public void updateBranchOpenHours(BranchStore branchStore)
-    {
+    public void updateBranchOpenHours(BranchStore branchStore) throws SQLException {
         System.out.println("-Update Branch opening hours-");
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
@@ -363,7 +362,7 @@ public class HR_EntityManagement {
     /**
      * create new branch in system
      */
-    public void newBranchInNetwork() throws SQLException {
+    public void newBranchInNetwork() throws SQLException, ClassNotFoundException {
         System.out.println("-Add Branch to Network-");
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new branch please enter the following details:");
