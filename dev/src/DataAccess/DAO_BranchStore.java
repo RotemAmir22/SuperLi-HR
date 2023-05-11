@@ -9,6 +9,9 @@ import java.util.*;
 
 import static BussinesLogic.Role.DRIVER;
 
+/**
+ * This DAO is for the branchStores
+ */
 public class DAO_BranchStore implements IDAO_Entity {
 
     private Map<Integer,BranchStore> networkBranches;
@@ -32,10 +35,11 @@ public class DAO_BranchStore implements IDAO_Entity {
      * @throws ClassNotFoundException in case of error
      */
     public Object findByID(Object ID) throws SQLException, ClassNotFoundException {
-        if (networkBranches.containsKey(ID))
-            return networkBranches.get(ID);
+        Integer id = Integer.valueOf((String) ID);
+        if (networkBranches.containsKey(id))
+            return networkBranches.get(id);
         else {
-            PreparedStatement stmt = conn.prepareStatement("SELECT name, openingTime, address, areaCode, contactName FROM BranchStore WHERE branchID = ?");stmt.setString(1, (String) ID);
+            PreparedStatement stmt = conn.prepareStatement("SELECT name, openingTime, address, areaCode, contactName FROM BranchStore WHERE branchID = ?");stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             BranchStore branchStore;
             if (rs.next()) {
@@ -47,7 +51,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                 branchStore = BranchStoreGenerator.CreateBranchStore(name, Area.values()[areaCode], openingTime, address, contractName);
                 // get the openingHours
                 stmt = conn.prepareStatement("SELECT * FROM BranchOpeningHours WHERE branchID = ?");
-                stmt.setString(1, (String) ID);
+                stmt.setInt(1, id);
                 rs = stmt.executeQuery();
                 while (rs.next()){
                     int day = rs.getInt("dayOfWeek");
@@ -58,7 +62,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                 }
                 // get branch's employees
                 stmt = conn.prepareStatement("SELECT * FROM EmployeeBranches WHERE branchID = ?");
-                stmt.setString(1, (String) ID);
+                stmt.setInt(1, id);
                 rs = stmt.executeQuery();
                 DAO_Employee employeesDAO = DAO_Generator.getEmployeeDAO();
                 while (rs.next()){
@@ -68,14 +72,14 @@ public class DAO_BranchStore implements IDAO_Entity {
                 }
                 // get branch's transits
                 stmt = conn.prepareStatement("SELECT * FROM BranchStoreTransits WHERE branchID = ?");
-                stmt.setString(1, (String) ID);
+                stmt.setInt(1, id);
                 rs = stmt.executeQuery();
                 while (rs.next()){
                     LocalDate transitDate = rs.getDate("transitDate").toLocalDate();
                     Boolean transitStatus = rs.getBoolean("status");
                     branchStore.storekeeperStatusByDate.put(transitDate, transitStatus);
                 }
-                networkBranches.put(Integer.parseInt((String) ID), branchStore);
+                networkBranches.put(id, branchStore);
                 return branchStore;
             }
         }
@@ -116,6 +120,11 @@ public class DAO_BranchStore implements IDAO_Entity {
         }
     }
 
+    /**
+     *  update a branch
+     * @param o : branch to update
+     * @throws SQLException
+     */
     @Override
     public void update(Object o) throws SQLException {
         BranchStore branch = (BranchStore) o;
@@ -217,6 +226,11 @@ public class DAO_BranchStore implements IDAO_Entity {
         }
     }
 
+    /**
+     *  delete branch from data base
+     * @param o : branch to delete
+     * @throws SQLException
+     */
     @Override
     public void delete(Object o) throws SQLException {
         BranchStore b = (BranchStore) o;
@@ -250,6 +264,12 @@ public class DAO_BranchStore implements IDAO_Entity {
         }
     }
 
+    /**
+     *
+     * @return returns all the branches
+     * @throws SQLException
+     * @throws ClassNotFoundException
+     */
     public List<BranchStore> getNetworkBranches() throws SQLException, ClassNotFoundException {
         if(networkBranches.isEmpty())
             ifEmptyMaps();

@@ -59,9 +59,9 @@ public class DailyShift {
 
 
     /*change shift
-    * remove from shift
-    * remove from morning shift
-    */
+     * remove from shift
+     * remove from morning shift
+     */
     public boolean removeEmployeeFromMorning(Employee employee, Role role)
     {
         boolean removed = this.morningShift.get(role).remove(employee);
@@ -117,8 +117,8 @@ public class DailyShift {
     }
 
     /* add to shift
-    * remove from morning shift
-    */
+     * remove from morning shift
+     */
     public boolean addEmployeeToMorning(Employee employee, Role role)
     {
         if(!this.morningShift.containsKey(role))
@@ -269,12 +269,12 @@ public class DailyShift {
     public Role getEmployeeRoleInShift(Employee e)
     {
         //go over morning shift
-       for(Role role: this.morningShift.keySet())
-       {
-           for(Employee employee: this.morningShift.get(role))
-               if(employee == e)
-                   return role;
-       }
+        for(Role role: this.morningShift.keySet())
+        {
+            for(Employee employee: this.morningShift.get(role))
+                if(employee == e)
+                    return role;
+        }
         for(Role role: this.eveningShift.keySet())
         {
             for(Employee employee: this.eveningShift.get(role))
@@ -284,6 +284,10 @@ public class DailyShift {
         return null;
     }
 
+    /**
+     *
+     * @return if there is a storekeeper in each shift then returns true
+     */
     public boolean storeKeepersInDailyShift()
     {
         return (morningShift.containsKey(Role.STORAGE)&&eveningShift.containsKey(Role.STORAGE));

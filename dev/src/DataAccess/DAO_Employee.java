@@ -10,7 +10,9 @@ import java.util.Map;
 
 import static BussinesLogic.Role.DRIVER;
 
-
+/**
+ * This DAO is for the employees
+ */
 public class DAO_Employee implements IDAO_Entity {
 
     private Map<String ,Employee> networkEmployees;
@@ -40,10 +42,10 @@ public class DAO_Employee implements IDAO_Entity {
     @Override
     public Object findByID(Object ID) throws SQLException {
         if (networkEmployees != null && networkEmployees.containsKey(ID))
-                return networkEmployees.get(ID);
+            return networkEmployees.get(ID);
         else if(newtworkDrivers != null && newtworkDrivers.containsKey(ID))
             return newtworkDrivers.get(ID);
-        // if the employee not in the MAP
+            // if the employee not in the MAP
         else
         {
             PreparedStatement stmt = conn.prepareStatement("SELECT firstName, lastName, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary FROM Employees WHERE employeeID = ?");stmt.setString(1, (String) ID);
@@ -121,12 +123,12 @@ public class DAO_Employee implements IDAO_Entity {
         {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
                     "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
-            stmt.executeQuery();
+            stmt.executeUpdate();
             // add to constraints table
             for(int i=0; i<7; i++) {
                 stmt = conn.prepareStatement("INSERT INTO EmployeeConstriants (employeeId, dayOfWeek)" +
                         "VALUES (e.getId() , i)");
-                stmt.executeQuery();
+                stmt.executeUpdate();
 
             }
             //add to the right map
@@ -148,41 +150,52 @@ public class DAO_Employee implements IDAO_Entity {
         if(e != null)
         {
             //set details
-            PreparedStatement stmt = conn.prepareStatement("UPDATE Employees SET firstName = ?, lastName = ?, bankAccount = ?, salary = ?, empTerms = ?, startDate = ?, shiftsLimit = ?, cumulativeSalary = ? WHERE employeeID = e.getId()");
+            PreparedStatement stmt = conn.prepareStatement("UPDATE Employees SET firstName = ?, lastName = ?, bankAccount = ?, salary = ?, empTerms = ?, startDate = ?, shiftsLimit = ?, cumulativeSalary = ? WHERE employeeID = ?");
             stmt.setString(1, e.getFirstName());
             stmt.setString(2, e.getLastName());
             stmt.setString(3, e.getBankAccount());
             stmt.setDouble(4, e.getSalary());
             stmt.setString(5, e.getEmpTerms());
-            stmt.setDate(6, (Date.valueOf(e.getStartDate())));
+            stmt.setString(6, (e.getStartDate()));
             stmt.setInt(7, e.getShiftsLimit());
             stmt.setDouble(8, e.getCumulativeSalary());
+            stmt.setString(9, e.getId());
             stmt.executeUpdate();
 
             //set constraints
             for (Days day : Days.values())
             {
-                stmt = conn.prepareStatement("UPDATE EmployeeConstraints SET morningShift = ?, eveningShift = ? WHERE employeeID = e.getId() AND dayOfWeek = day.ordianl()");
+                stmt = conn.prepareStatement("UPDATE EmployeeConstraints SET morningShift = ?, eveningShift = ? WHERE employeeID = ? AND dayOfWeek = ?");
                 stmt.setInt(1, e.getConstraints()[day.ordinal()][0]? 1:0);
                 stmt.setInt(2, e.getConstraints()[day.ordinal()][1]? 1:0);
+                stmt.setString(3, e.getId());
+                stmt.setInt(4,day.ordinal());
+                stmt.executeUpdate();
             }
 
             //set qualifications
             List<Role> roles = e.getQualifications();
-            stmt = conn.prepareStatement("SELECT * FROM EmployeeQualification WHERE employeeID = ? ");
+            stmt = conn.prepareStatement("SELECT * FROM EmployeeQualifications WHERE employeeID = ?");
             stmt.setString(1,e.getId());
             ResultSet rs = stmt.executeQuery();
-            rs.last();
-            int amount = rs.getRow();
-            rs.beforeFirst();
+            int amount = 0;
+            while(rs.next()) {
+                amount++;
+            }
+            rs = stmt.executeQuery();
 
             //remove role from DB
             if(amount > roles.size()){
                 while(rs.next()){
                     int index = rs.getInt("qualificationId");
                     if(!roles.contains(Role.values()[index])) {
-                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualification WHERE employeeID = e.getId() AND qualificationId = index");
-                        stmt.executeQuery();
+                        stmt = conn.prepareStatement("DELETE FROM EmployeeQualifications WHERE employeeID = ? AND qualificationId = ?");
+                        stmt.setString(1, e.getId());
+                        stmt.setInt(2,index);
+                        int rowsAffected = stmt.executeUpdate();
+                        if (rowsAffected == 0) {
+                            System.out.println("No rows were deleted.");
+                        }
                         break;
                     }
                 }
@@ -196,8 +209,10 @@ public class DAO_Employee implements IDAO_Entity {
                 }
                 for(Role role: roles){
                     if(!rolesInDB.contains(role.ordinal())) {
-                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualification (employeeID,qualificationId) VALUES (e.getId(), role.ordinal())");
-                        stmt.executeQuery();
+                        stmt = conn.prepareStatement("INSERT INTO EmployeeQualifications (employeeID,qualificationId) VALUES (?,?)");
+                        stmt.setString(1, e.getId());
+                        stmt.setInt(2,role.ordinal());
+                        stmt.executeUpdate();
                         break;
                     }
                 }
@@ -217,24 +232,24 @@ public class DAO_Employee implements IDAO_Entity {
             //delete from employees table
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Employees WHERE employeeID = ?");
             stmt.setString(1, e.getId());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             //delete from qualification tables
             stmt = conn.prepareStatement("DELETE FROM EmployeeQualifications WHERE employeeID = ?");
             stmt.setString(1, e.getId());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             //delete from constraints tables
             stmt = conn.prepareStatement("DELETE FROM EmployeeConstraints WHERE employeeID = ?");
             stmt.setString(1, e.getId());
-            stmt.executeQuery();
+            stmt.executeUpdate();;
 
             //delete from drivers
             if(e.canDoRole(DRIVER))
             {
                 stmt = conn.prepareStatement("DELETE FROM Driver WHERE id = ?");
                 stmt.setString(1, e.getId());
-                stmt.executeQuery();
+                stmt.executeUpdate();
 
                 //remove from map
                 newtworkDrivers.remove(e.getId());
