@@ -2,6 +2,7 @@ package Presentation;
 
 import BussinesLogic.*;
 import DataAccess.DAO_BranchStore;
+import DataAccess.DAO_DailyShift;
 import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 
@@ -23,10 +24,13 @@ public class HR_SchedulingManagement {
     private DAO_Employee employeesDAO;
     private DAO_BranchStore branchStoreDAO;
 
+    private DAO_DailyShift dailyShiftDAO;
+
     //constructor
     public HR_SchedulingManagement() throws SQLException, ClassNotFoundException {
         employeesDAO = DAO_Generator.getEmployeeDAO();
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
+        dailyShiftDAO=DAO_Generator.getDailyShiftDAO();
     }
 
     /**
@@ -78,10 +82,10 @@ public class HR_SchedulingManagement {
 
                 //schedule evening shift
                 newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.storekeeperStatusByDate, branchStore.getOpenHours(), 1, newShift[i],day);
-                branchStoreDAO.update(branchStoreDAO.getNetworkBranches().get(i));
+
                 assert newShift[i] != null;
                 System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
-                //TODO: add to database- DAO_DAILYSHIFT
+                dailyShiftDAO.update(newShift[i],branchStore.getBranchID());
                 newShift[i].showMeSchedualing();
             }
 
@@ -148,6 +152,8 @@ public class HR_SchedulingManagement {
                 }
                 int qualification = scanner.nextInt();
                 ShiftOrganizer.changeShift(branch,date , shift, choice, employee, roles[qualification]);
+                //update DB
+                dailyShiftDAO.update(branch.getShiftByDate(String.valueOf(date)),branchID);
                 answer = scanner.nextLine();
                 System.out.println("SHIFT UPDATED\n\nDo you wish to update another shift? (enter y/n)");
                 answer = scanner.nextLine();
@@ -158,7 +164,7 @@ public class HR_SchedulingManagement {
             }
 
         }
-        //TODO: add to database- DAO_DAILYSHIFT
+
 
     }
 
@@ -247,6 +253,7 @@ public class HR_SchedulingManagement {
                             }
                             else {
                                 shiftManager.addPermission(permission);
+                                dailyShiftDAO.update(dailyShift,branchNum); // connect to DB
                             }
                         }
                     }
@@ -258,7 +265,7 @@ public class HR_SchedulingManagement {
                     System.out.println("Do you want to add another permission to a shift manager? (enter y/n): ");
                     answer = scanner.nextLine();
                 }
-                branchStoreDAO.update(branch); // connect to DB
+
             }
             catch (Exception e)
             {
@@ -313,6 +320,7 @@ public class HR_SchedulingManagement {
                             }
                             else {
                                 shiftManager.removePermission(shiftManager.findPermission(name));
+                                dailyShiftDAO.update(dailyShift,branchNum); // connect to DB
                             }
                         }
                     }
@@ -324,7 +332,6 @@ public class HR_SchedulingManagement {
                     System.out.println("Do you want to remove another permission from a shift manager? (enter y/n): ");
                     answer = scanner.nextLine();
                 }
-                branchStoreDAO.update(branch); // connect to DB
             }
             catch (Exception e)
             {
