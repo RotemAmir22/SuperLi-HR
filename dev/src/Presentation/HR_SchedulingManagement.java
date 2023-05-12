@@ -32,7 +32,7 @@ public class HR_SchedulingManagement {
     /**
      * once a week the system asks all the network employees for their schedule constraints
      */
-    public void schedulingFromEmployees() throws SQLException {
+    public void schedulingFromEmployees() throws SQLException, ClassNotFoundException {
         /*
          * First function ask all the employees in all branches to give constraints
          */
@@ -54,8 +54,7 @@ public class HR_SchedulingManagement {
     /**
      * daily the system build the shifts for the next week in each branch
      */
-    public void setShift()
-    {
+    public void setShift() throws SQLException, ClassNotFoundException {
         for(int j=0; j<2 ; j++) // two days
         {
             Days day = Days.values()[j];
@@ -73,17 +72,16 @@ public class HR_SchedulingManagement {
                 listEmployees = branchStoreDAO.getNetworkBranches().get(i).getEmployees();
                 BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(i);
                 //schedule morning shift
-                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.transits,branchStore.getOpenHours(), 0, newShift[i],day);
+                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.storekeeperStatusByDate,branchStore.getOpenHours(), 0, newShift[i],day);
                 assert newShift[i] != null;
                 System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Morning);
 
                 //schedule evening shift
-                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.transits, branchStore.getOpenHours(), 1, newShift[i],day);
-                branchStoreDAO.getNetworkBranches().get(i).addShiftToHistory(newShift[i]); // add new shift to branch history
+                newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.storekeeperStatusByDate, branchStore.getOpenHours(), 1, newShift[i],day);
                 branchStoreDAO.update(branchStoreDAO.getNetworkBranches().get(i));
                 assert newShift[i] != null;
                 System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
-
+                //TODO: add to database- DAO_DAILYSHIFT
                 newShift[i].showMeSchedualing();
             }
 
@@ -104,14 +102,14 @@ public class HR_SchedulingManagement {
             try{
                 System.out.println("Hello, please answer the following questions to update a shift:");
                 Scanner scanner = new Scanner(System.in);
-                System.out.println("Enter Branch BranchStore ID that you want to update ");
+                System.out.println("Enter Branch Store ID that you want to update ");
                 int branchID = scanner.nextInt();
 
                 //find branch
                 BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchID);
                 while (branch == null)
                 {
-                    System.out.println("Invalid Branch BranchStore ID, please try again ");
+                    System.out.println("Invalid Branch Store ID, please try again ");
                     branchID = scanner.nextInt();
                     branch = (BranchStore) branchStoreDAO.findByID(branchID);
                 }
@@ -160,6 +158,7 @@ public class HR_SchedulingManagement {
             }
 
         }
+        //TODO: add to database- DAO_DAILYSHIFT
 
     }
 
