@@ -614,8 +614,6 @@ public class HR_EntityManagement {
                 employee.setCumulativeSalary(0);
                 employeesDAO.update(employee);
             }
-
-
         System.out.println("Complete");
     }
 
