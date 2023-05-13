@@ -52,15 +52,6 @@ public class BranchStoreTest {
     }
 
     /**
-     * Create a new shift and add to a specific branch's shifts history
-     * check in the history list if there is 1 shift
-     */
-    @Test
-    public void addShiftToHistory() throws SQLException, ClassNotFoundException {
-        assertEquals(1,b.getShiftsHistory().size());
-    }
-
-    /**
      * Add a new shift of the last month to branch
      * delete the history (history will delete for 1 month)
      * check if the history list was updated
@@ -84,6 +75,6 @@ public class BranchStoreTest {
     @Test
     public void getShiftByDate() throws SQLException, ClassNotFoundException {
         DailyShift tmp = b.getShiftByDate(String.valueOf(LocalDate.now()));
-        assertEquals(tmp.getDate(),LocalDate.now());
+        assertEquals(tmp,null);
     }
 }

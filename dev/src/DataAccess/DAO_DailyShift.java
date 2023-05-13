@@ -51,7 +51,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
         }
         // get the morning employees
         stmt = conn.prepareStatement("SELECT * FROM MorningShiftEmployees WHERE date = ?");
-        stmt.setDate(1, (Date) date);
+        stmt.setString(1, (String) date);
         rs = stmt.executeQuery();
         DAO_Employee employeesDAO = DAO_Generator.getEmployeeDAO();
         while(rs.next()){
@@ -64,7 +64,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
 
         // get the evening employees
         stmt = conn.prepareStatement("SELECT * FROM EveningShiftEmployees WHERE date = ?");
-        stmt.setDate(1, (Date) date);
+        stmt.setString(1, (String) date);
         rs = stmt.executeQuery();
         while(rs.next()){
             String employeeId = rs.getString("employeeID");
@@ -76,7 +76,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
 
         // get shift managers
         stmt = conn.prepareStatement("SELECT * FROM ShiftManagers WHERE shiftDate = ?");
-        stmt.setDate(1, (Date) date);
+        stmt.setString(1, (String) date);
         rs = stmt.executeQuery();
         while(rs.next()) {
             String employeeId = rs.getString("employeeID");
@@ -85,7 +85,8 @@ public class DAO_DailyShift implements IDAO_DailyShift {
             ShiftManager manager = ShiftManagerGenerator.CreateShiftManager(e.getName(), employeeId, ((Date) date).toLocalDate(),shift);
             dailyShift.addShiftManager(manager);
         }
-        networkDailyShift.add(dailyShift);
+        if(dailyShift!=null)
+            networkDailyShift.add(dailyShift);
         return dailyShift;
     }
 
