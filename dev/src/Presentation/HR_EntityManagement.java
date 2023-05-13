@@ -402,7 +402,9 @@ public class HR_EntityManagement {
             System.out.println("4. Add qualification");
             System.out.println("5. Remove qualification");
             System.out.println("6. Add Bonus");
-            System.out.println("7. Exit");
+            System.out.println("--DRIVERS ONLY--\n7. Add licence");
+            System.out.println("8. Remove licence");
+            System.out.println("9. Exit");
             try{
                 choice = scanner.nextInt();
                 String temp = scanner.nextLine();
@@ -437,17 +439,17 @@ public class HR_EntityManagement {
                         break;
 
                     case 4:
-                        System.out.println("You chose Option 5.");
+                        System.out.println("You chose Option 4.");
                         addQualificationToEmployee(employee);
                         break;
 
                     case 5:
-                        System.out.println("You chose Option 6.");
+                        System.out.println("You chose Option 5.");
                         removeQualificationToEmployee(employee);
                         break;
 
                     case 6 :
-                        System.out.println("You chose Option 7.");
+                        System.out.println("You chose Option 6.");
                         while (true){
                             System.out.println("How much do you wish to add as a bonus?");
                             try{
@@ -462,6 +464,18 @@ public class HR_EntityManagement {
                         }
                         break;
                     case 7:
+                        System.out.println("You chose Option 7.");
+                        if(employee.canDoRole(Role.DRIVER))
+                            addLicenceToDriver((Driver) employee);
+                        else System.out.println("Employee is not a driver");
+                        break;
+                    case 8:
+                        System.out.println("You chose Option 8.");
+                        if(employee.canDoRole(Role.DRIVER))
+                            removeLicenceFromDriver((Driver) employee);
+                        else System.out.println("Employee is not a driver");
+                        break;
+                    case 9:
                         System.out.println("Existing menu....");
                         break;
                     default:
@@ -492,10 +506,10 @@ public class HR_EntityManagement {
             System.out.println("1. Bank Account");
             System.out.println("2. Salary");
             System.out.println("3. Employment Terms");
-            System.out.println("4. Employee detail");
-            System.out.println("5. Qualifications");
-            System.out.println("6. Cumulative Salary");
-            System.out.println("7. Start Date");
+            System.out.println("4. Qualifications");
+            System.out.println("5. Cumulative Salary");
+            System.out.println("6. Start Date");
+            System.out.println("--DRIVERS ONLY--\n7. View upcoming Transit dates");
             System.out.println("8. Exit");
             try{
                 choice = scanner.nextInt();
@@ -515,19 +529,22 @@ public class HR_EntityManagement {
                         System.out.println(employee.getName()+" employment terms are:\n "+employee.getSalary());
                         break;
                     case 4:
-                        System.out.println("You chose Option 4.\n This option is in the works");
+                        System.out.println("You chose Option 4.");
+                        System.out.println(employee.getName()+" qualifications are:\n "+employee.getQualifications().toString());
                         break;
                     case 5:
                         System.out.println("You chose Option 5.");
-                        System.out.println(employee.getName()+" qualifications are:\n "+employee.getQualifications().toString());
+                        System.out.println(employee.getName()+" cumulative salary is:\n "+employee.getCumulativeSalary());
                         break;
                     case 6:
                         System.out.println("You chose Option 6.");
-                        System.out.println(employee.getName()+" cumulative salary is:\n "+employee.getCumulativeSalary());
+                        System.out.println(employee.getName()+" start date was:\n "+employee.getStartDate());
                         break;
                     case 7:
                         System.out.println("You chose Option 7.");
-                        System.out.println(employee.getName()+" start date was:\n "+employee.getStartDate());
+                        if(employee.canDoRole(Role.DRIVER))
+                            ((Driver)employee).printTransits();
+                        else System.out.println("Employee is not a driver");
                         break;
                     case 8:
                         System.out.println("Existing menu....");
