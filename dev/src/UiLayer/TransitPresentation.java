@@ -8,6 +8,7 @@ import ControllerLayer.TruckController;
 import DataAccess.DAO_Employee;
 import DomainLayer.*;
 import ExceptionsPackage.ModuleException;
+import ExceptionsPackage.UiException;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -43,7 +44,7 @@ public class TransitPresentation {
         Transit newTransit;
         try {
             newTransit = this.transitController.createTransit(sTransitDate, truckPLateNumber, driverId);
-        } catch (ModuleException | SQLException e) {
+        } catch (UiException e) {
             System.out.println(e.getMessage());
             return;
         }
@@ -181,7 +182,7 @@ public class TransitPresentation {
             System.out.printf("Order Document id: %d not found %n",orderId);
         return orderDocFound;
     }
-    public void beginTransit(Scanner scanner) throws SQLException {
+    public void beginTransit(Scanner scanner) {
         boolean overload = false;
 
         int transitId = getTransitIdHandler(scanner);
@@ -243,7 +244,7 @@ public class TransitPresentation {
     public void printAllTransitRecords(){
         this.transitController.getTransitRecordController().showTransitRecords();
     }
-    public void overweight(Scanner scanner, Transit transit, OrderDocument currentOrder) throws SQLException {
+    public void overweight(Scanner scanner, Transit transit, OrderDocument currentOrder) {
         int choice;
         boolean verifiedFlag = false;
         do{
@@ -280,7 +281,7 @@ public class TransitPresentation {
             }
         } while (!verifiedFlag);
     }
-    private boolean bringBiggerTruck(Scanner scanner, Transit transit) throws SQLException {
+    private boolean bringBiggerTruck(Scanner scanner, Transit transit) {
         // TODO verify truck and driver availability
         Truck biggerTruck = findNewTruck(scanner);
         if (biggerTruck == null)return false;
@@ -322,7 +323,7 @@ public class TransitPresentation {
         }
         return newTruck;
     }
-    public Driver findNewDriver(Scanner scanner, Date transitDate, Set<License> licenses, String oldDriver ) throws SQLException {
+    public Driver findNewDriver(Scanner scanner, Date transitDate, Set<License> licenses, String oldDriver ) {
         System.out.println("Enter driver's id: ");
         String driverId = scanner.nextLine();
         Driver newDriver = transitCoordinator.SwitchDriverInTransit(transitDate,driverId,licenses,oldDriver);

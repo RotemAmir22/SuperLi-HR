@@ -3,12 +3,11 @@ package ControllerLayer;
 import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.OrderDocumentDAO;
 import DomainLayer.OrderDocument;
-
 import java.sql.SQLException;
-import java.util.Set;
+
 
 public interface OrderDocumentController {
-    OrderDocument createOrderDoc(int sourceId, int destinationId) throws SQLException, ClassNotFoundException;
+    OrderDocument createOrderDoc(int sourceId, int destinationId);
     OrderDocumentDAO getOrderDocumentDAO();
     ProductController getProductController();
     SupplierController getSupplierController();

@@ -33,7 +33,7 @@ public class TransitControllerImpl implements TransitController {
     }
 
     @Override
-    public Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException, QualificationsException, SQLException {
+    public Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException {
         Date transitDate;
         try {
             transitDate = createDateObj(dateString);

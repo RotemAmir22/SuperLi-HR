@@ -1,11 +1,10 @@
 package UiLayer;
 
+import BussinesLogic.BranchStore;
 import ControllerLayer.OrderDocumentController;
 import ControllerLayer.ProductController;
 import DomainLayer.OrderDocument;
 import DomainLayer.Product;
-
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class OrderDocumentPresentation {
@@ -22,7 +21,8 @@ public class OrderDocumentPresentation {
      * Once all the required information is gathered, it uses the OrderService and OrderRepository
      * interfaces to create and save a new Order object to a database.
      */
-    public void createNewOrderDocument(Scanner scanner) throws SQLException, ClassNotFoundException {
+
+    public void createNewOrderDocument(Scanner scanner) {
         int storeId;
         int supplierId;
 
@@ -44,7 +44,6 @@ public class OrderDocumentPresentation {
             return;
         }
         System.out.println("This order id is: "+ OrderDocument.documentNextId);
-
 
         OrderDocument newOrderDoc = this.orderDocumentController.createOrderDoc(supplierId,storeId);
         //TODO figure out the correct way of doing this v.

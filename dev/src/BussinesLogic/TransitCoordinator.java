@@ -11,7 +11,6 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class TransitCoordinator {
-
     private DAO_BranchStore branchStoreDAO;
     private DAO_Employee driversDAO;
 
@@ -34,9 +33,17 @@ public class TransitCoordinator {
      * @param license of the needed driver
      * @return list of available drivers
      */
-    public List<Driver> getAvailableDrivers(LocalDate transitDate, Set<License> license) throws SQLException {
+
+    public List<Driver> getAvailableDrivers(LocalDate transitDate, Set<License> license) {
         List<Driver> availableDrivers = new ArrayList<>();
-        for(Driver driver : driversDAO.getNetworkDrivers())
+        List<Driver> netWorkDrivers = null;
+        try {
+            netWorkDrivers = driversDAO.getNetworkDrivers();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        if (netWorkDrivers == null) return null;
+        for(Driver driver : netWorkDrivers)
             if(driver.getLicenses().contains(license))
                 if(EmployeeConstraints.checkDriverAvailabilityForDate(transitDate, driver))
                     availableDrivers.add(driver);
@@ -56,13 +63,14 @@ public class TransitCoordinator {
         } else
             System.out.println("Invalid branch ID");
     }
+
     /**
      * Add a driver to a transit
      * @param date of the transit
      * @param driverID which is going to be added
      * @param licenses of the truck that the driver needs to know
      */
-    public Driver addDriverToTransit(Date date, String driverID, Set<License> licenses) throws SQLException {
+    public Driver addDriverToTransit(Date date, String driverID, Set<License> licenses){
         //need to add function that seeks a driver by id and Date in the DAO
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -86,7 +94,7 @@ public class TransitCoordinator {
      * @param oldDriverID which needed to be removed from the transit - need to delete its date from transitDate list
      */
 
-    public Driver SwitchDriverInTransit(Date date, String newdriverID, Set<License> licenses, String oldDriverID) throws SQLException {
+    public Driver SwitchDriverInTransit(Date date, String newdriverID, Set<License> licenses, String oldDriverID) {
 
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -132,8 +140,14 @@ public class TransitCoordinator {
      * used in orderDocumentController
      * @return branchStore
      */
-    public BranchStore findStoreById(int storeId) throws SQLException, ClassNotFoundException {
-        BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(storeId);
+    public BranchStore findStoreById(int storeId){
+        BranchStore branchStore = null;
+        try {
+            branchStore = branchStoreDAO.getNetworkBranches().get(storeId);
+        } catch (SQLException | ClassNotFoundException s)
+        {
+            s.printStackTrace();
+        }
         return branchStore;
     }
 

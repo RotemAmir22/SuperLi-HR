@@ -28,7 +28,6 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         this.productDAO = productDAO;
     }
 
-
     @Override
     public void saveOrderDocument(OrderDocument orderDocument) {
         String insertOrderDocumentSQL = "INSERT INTO OrderDocuments(orderDocumentId, sourceSupplierId, destinationBranchStoreId, totalWeight) VALUES (?, ?, ?, ?)";

@@ -38,10 +38,10 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         orderDocument.setWeight(weight);
     }
     @Override
-    public OrderDocument createOrderDoc(int sourceId, int destinationId) throws SQLException, ClassNotFoundException {
+    public OrderDocument createOrderDoc(int sourceId, int destinationId) {
         Supplier supplier = supplierController.findSupplierById(sourceId) ;
         //TODO find storeById with BranchStore;
-        BranchStore branchStore = transitCoordinator.findStoreById(destinationId) ;
+       BranchStore branchStore = transitCoordinator.findStoreById(destinationId) ;
         if (branchStore == null || supplier == null) return null;
         OrderDocument orderDoc = new OrderDocument(supplier, branchStore);
         return orderDoc;
