@@ -7,6 +7,7 @@ import Presentation.EmployeeConstraints;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 public class TransitCoordinator {
@@ -33,14 +34,13 @@ public class TransitCoordinator {
      * @param license of the needed driver
      * @return list of available drivers
      */
-    public List<Driver> getAvailableDrivers(LocalDate transitDate, License license) throws SQLException {
+    public List<Driver> getAvailableDrivers(LocalDate transitDate, Set<License> license) throws SQLException {
         List<Driver> availableDrivers = new ArrayList<>();
         for(Driver driver : driversDAO.getNetworkDrivers())
             if(driver.getLicenses().contains(license))
                 if(EmployeeConstraints.checkDriverAvailabilityForDate(transitDate, driver))
                     availableDrivers.add(driver);
         return availableDrivers;
-
     }
 
     /**
@@ -62,15 +62,17 @@ public class TransitCoordinator {
      * @param driverID which is going to be added
      * @param licenses of the truck that the driver needs to know
      */
-    public Driver addDriverToTransit(Date date, String driverID, ArrayList<License> licenses) {
+    public Driver addDriverToTransit(Date date, String driverID, Set<License> licenses) throws SQLException {
         //need to add function that seeks a driver by id and Date in the DAO
-        Driver driver = null;
-//        addDriverToNewTransit(driverID, date, licenses);
-//        if (driver == null) {
-//            System.out.println("Driver not available");
-//            return null;
-//        }
-        return driver;
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        List<Driver> driversList = getAvailableDrivers(localDate,licenses);
+        for (Driver driver : driversList) {
+            if (driver.getId().equalsIgnoreCase(driverID)) {
+                return driver;
+            }
+        }
+        return null;
     }
 
 
@@ -82,16 +84,17 @@ public class TransitCoordinator {
      * @param oldDriverID which needed to be removed from the transit - need to delete its date from transitDate list
      */
 
-    public Driver SwitchDriverInTransit(Date date, String newdriverID, Set<License> licenses, String oldDriverID){
-            //need to add function that seeks a driver by id and Date in the DAO
-            Driver driver = null;
-//            = findNewDriver(newdriverID, date);
-//            if (driver == null) {
-//                System.out.println("Driver not available");
-//                return null;
-//        }
+    public Driver SwitchDriverInTransit(Date date, String newdriverID, Set<License> licenses, String oldDriverID) throws SQLException {
 
-            return driver;
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        List<Driver> driversList = getAvailableDrivers(localDate,licenses);
+        for (Driver driver : driversList) {
+            if (driver.getId().equalsIgnoreCase(newdriverID)) {
+                return driver;
+            }
+        }
+        return null;
     }
 
     /**

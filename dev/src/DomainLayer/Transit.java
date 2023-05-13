@@ -128,7 +128,7 @@ public class Transit {
         int count = 0;
         for (OrderDocument orderDoc : ordersDocs)
         {
-            if (orderDoc.getSource().getSupplierID() == dest.getSupplierID())
+            if (orderDoc.getSource().getSupplierId() == dest.getSupplierId())
             {
                 count+=1;
             }

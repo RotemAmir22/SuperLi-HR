@@ -1,12 +1,15 @@
 package UiLayer;
 import BussinesLogic.BranchStore;
 import BussinesLogic.Driver;
+import BussinesLogic.License;
 import BussinesLogic.TransitCoordinator;
 import ControllerLayer.TransitController;
 import ControllerLayer.TruckController;
 import DataAccess.DAO_Employee;
 import DomainLayer.*;
 import ExceptionsPackage.ModuleException;
+
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -40,7 +43,7 @@ public class TransitPresentation {
         Transit newTransit;
         try {
             newTransit = this.transitController.createTransit(sTransitDate, truckPLateNumber, driverId);
-        } catch (ModuleException e) {
+        } catch (ModuleException | SQLException e) {
             System.out.println(e.getMessage());
             return;
         }
@@ -173,8 +176,7 @@ public class TransitPresentation {
             System.out.printf("Order Document id: %d not found %n",orderId);
         return orderDocFound;
     }
-    public void beginTransit(Scanner scanner)
-    {
+    public void beginTransit(Scanner scanner) throws SQLException {
         boolean overload = false;
         // TODO: validate transit id
         int transitId = getTransitIdHandler(scanner);
@@ -205,11 +207,11 @@ public class TransitPresentation {
         // drive to suppliers
         for (Supplier supplier : transit.getDestinationSuppliers())
         {
-            System.out.println("Arrived to supplier: " + supplier.getSupplierID());
+            System.out.println("Arrived to supplier: " + supplier.getSupplierId());
             //check all orders that are in the suppliers source
             for(OrderDocument orderDoc : transit.getOrdersDocs())
             {
-                if(supplier.getSupplierID() == orderDoc.getSource().getSupplierID())
+                if(supplier.getSupplierId() == orderDoc.getSource().getSupplierId())
                 {
 
                     System.out.println("Loading order number: " + orderDoc.getDocumentId());
@@ -248,8 +250,7 @@ public class TransitPresentation {
     public void printAllTransitRecords(){
         this.transitController.getTransitRecordController().showTransitRecords();
     }
-    public void overweight(Scanner scanner, Transit transit, OrderDocument currentOrder)
-    {
+    public void overweight(Scanner scanner, Transit transit, OrderDocument currentOrder) throws SQLException {
         int choice;
         boolean verifiedFlag = false;
         do{
@@ -286,12 +287,11 @@ public class TransitPresentation {
             }
         } while (!verifiedFlag);
     }
-    private boolean bringBiggerTruck(Scanner scanner, Transit transit)
-    {
+    private boolean bringBiggerTruck(Scanner scanner, Transit transit) throws SQLException {
         // TODO verify truck and driver availability
         Truck biggerTruck = findNewTruck(scanner);
         if (biggerTruck == null)return false;
-        Driver newDriver = findNewDriver(scanner,transit.getTransitDate(),biggerTruck.getTruckQualification(),transit.getDriver().getId());
+        Driver newDriver = findNewDriver(scanner,transit.getTransitDate(),biggerTruck.getTruckLicenses(),transit.getDriver().getId());
         if (newDriver == null)return false;
         //TODO switch to the transitCoordinator driver check
 //        if (!transitController.isDriverAllowToDriveTruck(biggerTruck, newDriver)){
@@ -329,7 +329,7 @@ public class TransitPresentation {
         }
         return newTruck;
     }
-    public Driver findNewDriver(Scanner scanner, Date transitDate, Set<Qualification> licenses, String oldDriver ){
+    public Driver findNewDriver(Scanner scanner, Date transitDate, Set<License> licenses, String oldDriver ) throws SQLException {
         System.out.println("Enter driver's id: ");
         String driverId = scanner.nextLine();
         Driver newDriver = transitCoordinator.SwitchDriverInTransit(transitDate,driverId,licenses,oldDriver);

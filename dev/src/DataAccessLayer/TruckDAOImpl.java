@@ -31,7 +31,7 @@ public class TruckDAOImpl implements TruckDAO {
 
             PreparedStatement insertTruckQualificationStatement = connection.prepareStatement(insertTruckLicensesSQL);
 
-            for (License license : truck.getTruckLicenses()) {
+            for (BussinesLogic.License license : truck.getTruckLicenses()) {
                 insertTruckQualificationStatement.setString(2, license.toString());
                 insertTruckQualificationStatement.executeUpdate();
             }

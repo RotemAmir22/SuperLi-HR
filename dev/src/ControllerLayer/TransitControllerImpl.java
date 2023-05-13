@@ -7,6 +7,7 @@ import DomainLayer.*;
 import ExceptionsPackage.QualificationsException;
 import ExceptionsPackage.UiException;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class TransitControllerImpl implements TransitController {
     }
 
     @Override
-    public Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException, QualificationsException {
+    public Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException, QualificationsException, SQLException {
         Date transitDate;
         try {
             transitDate = createDateObj(dateString);
@@ -43,7 +44,7 @@ public class TransitControllerImpl implements TransitController {
         if (truckForTransit == null) {
             throw new UiException("Truck's plate number not found: " + truckPlateNumber);
         }
-        Driver driverForTransit = transitCoordinator.addDriverToTransit(transitDate,driverId,truckForTransit.getTruckQualification());
+        Driver driverForTransit = transitCoordinator.addDriverToTransit(transitDate,driverId,truckForTransit.getTruckLicenses());
         if (driverForTransit == null) {
             throw new UiException("Driver id not found: " + truckPlateNumber);
         }
@@ -87,10 +88,10 @@ public class TransitControllerImpl implements TransitController {
         transitToUpdate.setTruck(otherTruck);
         return 1;// successes
     }
-    public int replaceTransitDriver(int transitId, String newDriverId, String truckPlate){
+    public int replaceTransitDriver(int transitId, String newDriverId, String truckPlate) throws SQLException {
         Truck newTruck = truckController.findTruckByPlate(truckPlate);
         Transit transitToUpdate = findTransitByID(transitId);
-        Driver otherDriver = transitCoordinator.SwitchDriverInTransit(transitToUpdate.getTransitDate(),newDriverId,newTruck.getTruckQualification(),transitToUpdate.getDriver().getId());
+        Driver otherDriver = transitCoordinator.SwitchDriverInTransit(transitToUpdate.getTransitDate(),newDriverId,newTruck.getTruckLicenses(),transitToUpdate.getDriver().getId());
         if (otherDriver == null) return -1; //fail to find driver
         //boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
         //if (!qualifiedDriverFlag) return 0; // driver is not qualified

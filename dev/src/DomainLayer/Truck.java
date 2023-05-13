@@ -11,7 +11,7 @@ import java.util.Set;
 public class Truck {
     final String plateNumber;
     final TruckModel model;
-    Set<License> lSet;
+    Set<BussinesLogic.License> lSet;
     final double truckWeight;
     double currentLoadWeight;
     final double maxCarryWeight;
@@ -57,7 +57,7 @@ public class Truck {
         currentLoadWeight -= weight;
     }
 
-    public Set<License> getTruckLicenses() {
+    public Set<BussinesLogic.License> getTruckLicenses() {
         return this.lSet;
     }
 
