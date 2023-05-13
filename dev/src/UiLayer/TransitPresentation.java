@@ -63,6 +63,11 @@ public class TransitPresentation {
         int transitId = getTransitIdHandler(scanner);
         printTransitById(transitId);
     }
+    /**
+     * replaceTruck (option 5) not on the fly
+     * @param scanner scanner
+     */
+
     public void replaceTransitTruck(Scanner scanner){
         int transitId = getTransitIdHandler(scanner);
         String newTruckPlate = getTruckPlateHandler(scanner);
@@ -178,15 +183,14 @@ public class TransitPresentation {
     }
     public void beginTransit(Scanner scanner) throws SQLException {
         boolean overload = false;
-        // TODO: validate transit id
+
         int transitId = getTransitIdHandler(scanner);
         Transit transit = findTransitById(transitId);
         if (transit == null) return;
         //check if date is today
-        // TODO: validate date
+
         LocalDateTime presentDate = LocalDate.now().atStartOfDay(); // using java.time.LocalDate
         Date presentDateAlt = Date.from(presentDate.atZone(ZoneId.systemDefault()).toInstant()); // using java.util.Date
-
 
         if (transit.getTransitDate().compareTo(presentDateAlt) != 0)
         {
@@ -199,12 +203,6 @@ public class TransitPresentation {
 
         TransitRecord transitRecord = this.transitController.getTransitRecordController().createTransitRecord(transit);
 
-        //add destinations
-//        for(OrderDocument orderDoc : transit.getOrdersDocs())
-//        {
-//            transit.addDestinationSupplier(orderDoc.getSource());
-//        }
-        // drive to suppliers
         for (Supplier supplier : transit.getDestinationSuppliers())
         {
             System.out.println("Arrived to supplier: " + supplier.getSupplierId());
@@ -225,11 +223,6 @@ public class TransitPresentation {
             }
             transitRecord.addSupWeightExit(supplier,transit.getTruck().getCurrentWeight());
         }
-        //add destinations
-//        for(OrderDocument orderDoc : transit.getOrdersDocs())
-//        {
-//            transit.addDestinationStore(orderDoc.getDestination());
-//        }
 
         for (BranchStore branchStore : transit.getDestinationStores()) {
             System.out.println("Arrived to branchStore: " + branchStore.getBranchID());
@@ -293,11 +286,11 @@ public class TransitPresentation {
         if (biggerTruck == null)return false;
         Driver newDriver = findNewDriver(scanner,transit.getTransitDate(),biggerTruck.getTruckLicenses(),transit.getDriver().getId());
         if (newDriver == null)return false;
-        //TODO switch to the transitCoordinator driver check
-//        if (!transitController.isDriverAllowToDriveTruck(biggerTruck, newDriver)){
-//            System.out.printf("Chosen driver: %d is not qualified to drive the chosen truck %n", newDriver.getDriverId());
-//            return false;
-//        }
+
+        if (!transitController.isDriverAllowToDriveTruck(biggerTruck, newDriver)){
+            System.out.printf("Chosen driver: %s is not qualified to drive the chosen truck %n", newDriver.getId());
+            return false;
+        }
         Truck smallTuck = transit.getTruck();
         if (transitController.transferLoad(smallTuck, biggerTruck))
         {
@@ -334,7 +327,7 @@ public class TransitPresentation {
         String driverId = scanner.nextLine();
         Driver newDriver = transitCoordinator.SwitchDriverInTransit(transitDate,driverId,licenses,oldDriver);
         if (newDriver == null){
-            System.out.printf("Driver's id: %d not found %n", driverId);
+            System.out.printf("Driver's id: %s not found %n", driverId);
         }
         return newDriver;
     }

@@ -78,6 +78,8 @@ public class TransitCoordinator {
 
     /**
      * switch a new driver to a transit instead of the old driver
+     * used both in begin transit (on the fly) and in update transit - switch truck
+     * in case that the old driver is not eligible to drive the new truck
      * @param date of the transit
      * @param newdriverID which is going to be added
      * @param licenses of the truck that the driver must have

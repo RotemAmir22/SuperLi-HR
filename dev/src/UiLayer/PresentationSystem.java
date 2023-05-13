@@ -2,6 +2,7 @@ package UiLayer;
 import BussinesLogic.TransitCoordinator;
 import ControllerLayer.*;
 import DataAccess.DAO;
+import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_Employee;
 import DataAccessLayer.*;
 import DomainLayer.*;
@@ -19,13 +20,10 @@ public class PresentationSystem {
 
 //        DriverDAO primeDriverDAO = new DriverDAOImpl();
 //        DriverController primeDriverController = new DriverControllerImpl(primeDriverDAO);
-        DAO DriverDAO = new DAO_Employee();
         TruckDAO primeTruckDAO = new TruckDAOImpl();
         TruckController primeTruckController = new TruckControllermpl(primeTruckDAO);
         TruckPresentation truckPresentation = new TruckPresentation(primeTruckController);
-        //TODO make sure that storeDAO and StoreController are irrelevent
-//        StoreDAO primeStoreDAO = new StoreDAOImpl();
-//        StoreController primeStoreController = new StoreControllerImpl(primeStoreDAO);
+
         TransitCoordinator primeTransitCoordinator = new TransitCoordinator();
 
         SupplierDAO primeSupplierDAO = new SupplierDAOImpl();
@@ -33,8 +31,8 @@ public class PresentationSystem {
 
         ProductDAO primeProductDAO = new ProductDAOImpl();
         ProductController primeProductController = new ProductControllerImpl(primeProductDAO);
-
-        OrderDocumentDAO primeOrderDocDAO = new OrderDocumentDAOImpl();
+        DAO_BranchStore primeBranchStoreDAO = new DAO_BranchStore();
+        OrderDocumentDAO primeOrderDocDAO = new OrderDocumentDAOImpl(primeSupplierDAO,primeBranchStoreDAO,primeProductDAO);
         OrderDocumentController primeOrderDocController = new OrderDocumentControllerImpl(primeOrderDocDAO,
                 primeSupplierController,primeTransitCoordinator,primeProductController);
         OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(primeOrderDocController,
@@ -315,7 +313,7 @@ public class PresentationSystem {
                 break;
         }
     }
-    public void handleOrderManagerMenu(Scanner scanner, int ch5, OrderDocumentPresentation orderDocC){
+    public void handleOrderManagerMenu(Scanner scanner, int ch5, OrderDocumentPresentation orderDocP){
         switch (ch5) {
             case 1: // create new order
                 orderDocC.createNewOrderDocument(scanner);

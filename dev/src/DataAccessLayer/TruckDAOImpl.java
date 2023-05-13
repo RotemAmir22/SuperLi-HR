@@ -1,7 +1,6 @@
 package DataAccessLayer;
 
 import DataAccess.Database;
-import DomainLayer.License;
 import DomainLayer.Truck;
 import DomainLayer.TruckModel;
 
@@ -97,10 +96,10 @@ public class TruckDAOImpl implements TruckDAO {
                 PreparedStatement selectLicensesStatement = connection.prepareStatement(selectLicensesSQL);
                 selectLicensesStatement.setString(1, plateNumber);
                 ResultSet licensesResult = selectLicensesStatement.executeQuery();
-                Set<License> licensesList = new HashSet<>();
+                Set<BussinesLogic.License> licensesList = new HashSet<>();
                 while (licensesResult.next()) {
                     String licenseStr = licensesResult.getString("licenses");
-                    License license = License.valueOf(licenseStr);
+                    BussinesLogic.License license = BussinesLogic.License.valueOf(licenseStr);
                     licensesList.add(license);
                 }
 

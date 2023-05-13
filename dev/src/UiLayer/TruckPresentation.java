@@ -1,7 +1,6 @@
 package UiLayer;
 
 import ControllerLayer.TruckController;
-import DomainLayer.License;
 import DomainLayer.Truck;
 import DomainLayer.TruckModel;
 import ExceptionsPackage.UiException;
@@ -95,7 +94,7 @@ public class TruckPresentation {
      */
     public int[] truckQualificationsHandler(Scanner scanner) throws UiException {
         System.out.println("Choose truck qualification (comma-separated, e.g. 1,3,5): ");
-        for (License ql : License.values()){
+        for (BussinesLogic.License ql : BussinesLogic.License.values()){
             System.out.println(ql.ordinal()+1 + ". " + ql);
         }
         String sQuali = scanner.nextLine();
@@ -103,7 +102,7 @@ public class TruckPresentation {
         for (String s : sQualiArr) {
             try {
                 int num = Integer.parseInt(s.trim());
-                if (num < 1 || num > License.values().length) {
+                if (num < 1 || num > BussinesLogic.License.values().length) {
                     throw new UiException("Invalid qualification number: " + num);
                 }
             } catch (NumberFormatException e) {

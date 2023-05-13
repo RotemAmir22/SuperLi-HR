@@ -23,16 +23,16 @@ public class Truck {
         this.truckWeight = truckWeight;
         this.currentLoadWeight = 0;
         this.maxCarryWeight = maxWeight;
-        this.lSet = new HashSet<License>();
+        this.lSet = new HashSet<BussinesLogic.License>();
     }
 
-    public Truck(String plateNumber, TruckModel model, double truckWeight, double maxWeight, Set<License> quliSet) {
+    public Truck(String plateNumber, TruckModel model, double truckWeight, double maxWeight, Set<BussinesLogic.License> lSet) {
         this.plateNumber = plateNumber;
         this.model = model;
         this.truckWeight = truckWeight;
         this.currentLoadWeight = 0;
         this.maxCarryWeight = maxWeight;
-        this.lSet = quliSet;
+        this.lSet = lSet;
     }
 
     public double getTruckWeight() {
@@ -61,8 +61,8 @@ public class Truck {
         return this.lSet;
     }
 
-    public void addLToLSet(License qLicense) {
-        this.lSet.add(qLicense);
+    public void addLToLSet(BussinesLogic.License lSet) {
+        this.lSet.add(lSet);
     }
 
     public String getPlateNumber() {
@@ -71,10 +71,6 @@ public class Truck {
 
     public TruckModel getModel() {
         return this.model;
-    }
-
-    public Set<License> getlSet() {
-        return lSet;
     }
 
     public void setCurrentLoadWeight(double currentLoadWeight) {
@@ -89,7 +85,7 @@ public class Truck {
         System.out.println("Max carry weight: " + this.maxCarryWeight);
         if (!lSet.isEmpty()) {
             System.out.println("Licenses: ");
-            for (License l : lSet) {
+            for (BussinesLogic.License l : lSet) {
                 System.out.println("\t" + l);
             }
         }

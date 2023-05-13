@@ -1,6 +1,7 @@
 package ControllerLayer;
 
 import BussinesLogic.Driver;
+import BussinesLogic.License;
 import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.TransitDAO;
 import DomainLayer.*;
@@ -81,20 +82,23 @@ public class TransitControllerImpl implements TransitController {
         Truck otherTruck = truckController.findTruckByPlate(newTruckPlate);
         if (otherTruck == null) return -1; //truck fail
         Driver currentDriver = transitToUpdate.getDriver();
-        //TODO make sure the driver has qualifications to drive the truck
 
-        //boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(otherTruck,currentDriver);
-        //if (!qualifiedDriverFlag) return 0; //driver fail
+        boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(otherTruck,currentDriver);
+        if (!qualifiedDriverFlag) return 0; //driver fail
         transitToUpdate.setTruck(otherTruck);
         return 1;// successes
     }
-    public int replaceTransitDriver(int transitId, String newDriverId, String truckPlate) throws SQLException {
+    /**
+     * replaces transit driver not on the fly, only if we changed a truck for a specific transit.
+     * returns @int based on what the problem is
+     */
+    public int replaceTransitDriver(int transitId, String newDriverId, String truckPlate) {
         Truck newTruck = truckController.findTruckByPlate(truckPlate);
         Transit transitToUpdate = findTransitByID(transitId);
         Driver otherDriver = transitCoordinator.SwitchDriverInTransit(transitToUpdate.getTransitDate(),newDriverId,newTruck.getTruckLicenses(),transitToUpdate.getDriver().getId());
         if (otherDriver == null) return -1; //fail to find driver
-        //boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
-        //if (!qualifiedDriverFlag) return 0; // driver is not qualified
+        boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
+        if (!qualifiedDriverFlag) return 0; // driver is not qualified
         //driver is qualified
         transitToUpdate.setDriver(otherDriver);
         return 1;
@@ -128,11 +132,11 @@ public class TransitControllerImpl implements TransitController {
         return transitDate;
     }
     @Override
-//    public boolean isDriverAllowToDriveTruck(Truck truck, Driver driver){
-//        Set <Qualification> truckQualiSet = truck.getTruckQualification();
-//        Set <Qualification> driverLicenseSet = driver.getLicenses();
-//        return (driverLicenseSet.containsAll(truckQualiSet));
-//    }
+    public boolean isDriverAllowToDriveTruck(Truck truck, Driver driver){
+        Set <BussinesLogic.License> truckLSet = truck.getTruckLicenses();
+        Set <BussinesLogic.License> driverLicenseSet = (Set<License>) driver.getLicenses(); //might be a problem
+        return (driverLicenseSet.containsAll(truckLSet));
+    }
     public void moveTransitToFinished(Transit completedTransit){
         this.transitDAO.moveToCompleted(completedTransit);
     }

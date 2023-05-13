@@ -1,5 +1,6 @@
 package ControllerLayer;
 
+import BussinesLogic.Driver;
 import DataAccessLayer.TransitDAO;
 import DomainLayer.OrderDocument;
 import DomainLayer.Transit;
@@ -21,7 +22,8 @@ public interface TransitController {
     OrderDocumentController getOrderDocController();
     TransitRecordController getTransitRecordController();
     void moveTransitToFinished(Transit transit);
-    boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument);
-    //boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);
     boolean transferLoad(Truck smallTruck, Truck biggerTruck);
+    boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);
+    //TODO belongs to check weight before starting transit.
+    boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument);
 }

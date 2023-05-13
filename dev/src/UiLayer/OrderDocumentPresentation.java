@@ -43,8 +43,6 @@ public class OrderDocumentPresentation {
             System.out.println("that is not an existing id of a store! ");
             return;
         }
-
-        //TODO if we want this last, need to change the constructor
         System.out.println("This order id is: "+ OrderDocument.documentNextId);
 
 

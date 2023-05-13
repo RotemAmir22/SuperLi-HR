@@ -1,7 +1,6 @@
 package ControllerLayer;
 
 import DataAccessLayer.TruckDAO;
-import DomainLayer.License;
 import DomainLayer.Truck;
 import DomainLayer.TruckModel;
 
@@ -17,7 +16,7 @@ public class TruckControllermpl implements TruckController {
         TruckModel model = TruckModel.values()[iModel];
         Truck truck = new Truck(plateNumber, model, truckWeight, maxWeight);
         for (int i : iQArr) {
-            truck.addLToLSet(License.values()[i]);
+            truck.addLToLSet(BussinesLogic.License.values()[i]);
         }
         return truck;
     }
