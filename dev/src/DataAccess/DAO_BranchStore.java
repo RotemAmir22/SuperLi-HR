@@ -37,7 +37,7 @@ public class DAO_BranchStore implements IDAO_Entity {
     public Object findByID(Object ID) throws SQLException, ClassNotFoundException {
         Integer id = 0;
         try {
-            id = (Integer) ID;
+            id = Integer.parseInt((String) ID);
         }
         catch (Exception e){
             System.out.printf(e.getMessage());
