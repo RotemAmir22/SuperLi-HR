@@ -265,7 +265,7 @@ public class DAO_BranchStore implements IDAO_Entity {
     }
 
     /**
-     *
+     * Get the branches in list
      * @return returns all the branches
      * @throws SQLException
      * @throws ClassNotFoundException
