@@ -119,8 +119,7 @@ public class BranchStore extends Site {
      */
     public DailyShift getShiftByDate(String dateString) throws SQLException, ClassNotFoundException {
         //convert string to key type LocalDate
-        LocalDate date = LocalDate.parse(dateString);
-        return (DailyShift) dao_dailyShift.findByKey(date,branchID);
+        return (DailyShift) dao_dailyShift.findByKey(dateString,branchID);
     }
 
     /**

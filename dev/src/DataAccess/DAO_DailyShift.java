@@ -40,7 +40,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
     public Object findByKey(Object date, Object id) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = null;
         PreparedStatement stmt = conn.prepareStatement("SELECT date, branchID, endOfDayReport FROM DailyShifts WHERE date = ? AND branchID = ?");
-        stmt.setDate(1, (Date) date);
+        stmt.setString(1, (String) date);
         stmt.setInt(2, (Integer) id);
         ResultSet rs = stmt.executeQuery();
         if (rs.next()) {

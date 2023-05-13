@@ -45,12 +45,4 @@ public class Driver extends Employee{
                 "\nCumulative Salary: "+getCumulativeSalary()+ "\nShift Salary: "+getSalary()+"\nBank account: "+getBankAccount()+"\nQualifications: "+getQualifications().toString());
         printTransits();
     }
-//    public void printDriver(){
-//        System.out.println("driver's name: "+ this.getName());
-//        System.out.println("driver's id: "+ this.getId());
-//        System.out.println("driver's Licenses: ");
-//        for (License driverLicense : licenses)
-//        {
-//            System.out.println("\t"+driverLicense);
-//        }
 }
