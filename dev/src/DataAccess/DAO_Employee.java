@@ -77,6 +77,7 @@ public class DAO_Employee implements IDAO_Entity {
                 int roleID = rs.getInt("qualificationId");
                 employee.addRole(Role.values()[roleID]);
             }
+            // get constraints
             stmt = conn.prepareStatement("SELECT * FROM EmployeeConstraints ec WHERE ec.employeeID = ?");
             stmt.setString(1, (String) ID);
             rs = stmt.executeQuery();
@@ -280,7 +281,6 @@ public class DAO_Employee implements IDAO_Entity {
     public List<Driver> getNetworkDrivers() throws SQLException {
         if(newtworkDrivers.isEmpty())
             ifEmptyMaps();
-
         driverList.addAll(newtworkDrivers.values());
         return driverList;
     }

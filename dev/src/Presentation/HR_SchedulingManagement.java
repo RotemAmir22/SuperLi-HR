@@ -63,18 +63,19 @@ public class HR_SchedulingManagement {
         {
             Days day = Days.values()[j];
             System.out.println("\n- Set Shift Schedule for "+ LocalDate.now().plusDays(day.ordinal()+2)+" -");
-            DailyShift[] newShift = new DailyShift[branchStoreDAO.getNetworkBranches().size()];
+            List<BranchStore> branchStores = branchStoreDAO.getNetworkBranches();
+            DailyShift[] newShift = new DailyShift[branchStores.size()];
             /*
              * Second function set all branches shifts for one day.
              */
             List<Employee> listEmployees;
-            for(int i = 0; i<branchStoreDAO.getNetworkBranches().size(); i++) // note that it's not all
+            for(int i = 0; i<branchStores.size(); i++) // note that it's not all
             {
-                System.out.println("\nSetting shift for Branch No. "+branchStoreDAO.getNetworkBranches().get(i).getBranchID());
+                System.out.println("\nSetting shift for Branch No. "+ branchStores.get(i).getBranchID());
                 newShift[i] = new DailyShift(LocalDate.now().plusDays(day.ordinal()+2));
                 // get the employees from each branch and set them a new scheduling
-                listEmployees = branchStoreDAO.getNetworkBranches().get(i).getEmployees();
-                BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(i);
+                listEmployees = branchStores.get(i).getEmployees();
+                BranchStore branchStore = branchStores.get(i);
                 //schedule morning shift
                 newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.storekeeperStatusByDate,branchStore.getOpenHours(), 0, newShift[i],day);
                 assert newShift[i] != null;

@@ -273,8 +273,12 @@ public class DAO_BranchStore implements IDAO_Entity {
     public List<BranchStore> getNetworkBranches() throws SQLException, ClassNotFoundException {
         if(networkBranches.isEmpty())
             ifEmptyMaps();
-
-        branchesList.addAll(networkBranches.values());
+        if(branchesList.isEmpty())
+            branchesList.addAll(networkBranches.values());
+        else {
+            branchesList.clear();
+            branchesList.addAll(networkBranches.values());
+        }
         return branchesList;
     }
 
