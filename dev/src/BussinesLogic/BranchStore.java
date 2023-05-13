@@ -166,7 +166,11 @@ public class BranchStore extends Site {
     public void viewTransit(LocalDate date, String employeeID) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = getShiftByDate(date.toString());
         if(dailyShift == null)
+        {
             System.out.println("No shift scheduled..");
+            return;
+        }
+
         //works in the daily shift
         assert dailyShift != null;
         Employee employee = dailyShift.isEmployeeInShift(employeeID);

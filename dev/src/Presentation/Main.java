@@ -129,8 +129,9 @@ public class Main {
                     System.out.println("2. Update an existing branch");
                     System.out.println("3. Add employee to branch");
                     System.out.println("4. Remove employee from branch");
-                    System.out.println("5. Print all Branches");
-                    System.out.println("6. Go Back");
+                    System.out.println("5. View transits for today");
+                    System.out.println("6. Print all Branches");
+                    System.out.println("7. Go Back");
                     c = scanner.nextLine();
                     switch (c)
                     {
@@ -146,12 +147,31 @@ public class Main {
                             entityManagement.removeEmployeeFromBranch(searchAnEmployee(entityManagement));
                             break;
                         case "5":
+                            Employee employee = searchAnEmployee(entityManagement);
+                            BranchStore branch = searchABranchStore(entityManagement);
+                            LocalDate date;
+                            while(true)
+                            {
+                                try{
+                                    System.out.println("Enter the required date (YYYY-MM-DD):");
+                                    String dateString=scanner.nextLine();
+                                    date = LocalDate.parse(dateString);
+                                    branch.viewTransit(date, employee.getId());
+                                    break;
+                                }
+                                catch (Exception e)
+                                {
+                                    System.out.println("Invalid date, Try again");
+                                }
+                            }
+                            break;
+                        case "6":
                             for (BranchStore branchStore : branchStoreDAO.getNetworkBranches())
                             {
                                 branchStore.printBranchDetails();
                                 System.out.println("");
                             }
-                        case "6":
+                        case "7":
                             continue;
                         default:
                             System.out.println("Invalid choice. Please try again.");
