@@ -40,8 +40,7 @@ public class DAO_BranchStore implements IDAO_Entity {
             id = Integer.parseInt((String) ID);
         }
         catch (Exception e){
-            System.out.printf(e.getMessage());
-            return null;
+            id= (Integer) ID;
         }
         if (networkBranches.containsKey(id))
             return networkBranches.get(id);
