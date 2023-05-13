@@ -227,7 +227,6 @@ public class Main {
 
                         case "1":
                             BranchStore b = searchABranchStore(entityManagement);
-                            scanner.nextLine();
                             while (true)
                             {
                                 try

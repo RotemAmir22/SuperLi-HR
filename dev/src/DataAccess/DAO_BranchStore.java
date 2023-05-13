@@ -35,7 +35,14 @@ public class DAO_BranchStore implements IDAO_Entity {
      * @throws ClassNotFoundException in case of error
      */
     public Object findByID(Object ID) throws SQLException, ClassNotFoundException {
-        Integer id = Integer.valueOf((String) ID);
+        Integer id = 0;
+        try {
+            id = (Integer) ID;
+        }
+        catch (Exception e){
+            System.out.printf(e.getMessage());
+            return null;
+        }
         if (networkBranches.containsKey(id))
             return networkBranches.get(id);
         else {
