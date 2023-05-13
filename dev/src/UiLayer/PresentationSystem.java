@@ -1,15 +1,9 @@
 package UiLayer;
 import BussinesLogic.TransitCoordinator;
 import ControllerLayer.*;
-import DataAccess.DAO;
 import DataAccess.DAO_BranchStore;
-import DataAccess.DAO_Employee;
 import DataAccessLayer.*;
-import DomainLayer.*;
-
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PresentationSystem {
@@ -51,7 +45,7 @@ public class PresentationSystem {
         ps.switchMenu(scanner, truckPresentation,orderDocumentPresentation, transitPresentation);
     }
 
-    public void switchMenu(Scanner scanner, TruckPresentation truckC, OrderDocumentPresentation orderDocC, TransitPresentation transitC){
+    public void switchMenu(Scanner scanner, TruckPresentation truckP, OrderDocumentPresentation orderDocP, TransitPresentation transitP){
 //        Scanner scanner = new Scanner(System.in);
         int choice;
         do {
@@ -60,7 +54,7 @@ public class PresentationSystem {
             if (scanner.hasNextLine()) scanner.nextLine();
             switch (choice) {
                 case 1: // create new transit
-                    transitC.createNewTransit(scanner);
+                    transitP.createNewTransit(scanner);
                     break;
                 case 2: // open update transit menu
                     int ch2;
@@ -68,7 +62,7 @@ public class PresentationSystem {
                         displayUpdateTransitMenu();
                         ch2 = scanner.nextInt();
                         if (scanner.hasNextLine()) scanner.nextLine();
-                        handleUpdateTransitMenu(ch2, scanner, transitC, orderDocC);
+                        handleUpdateTransitMenu(ch2, scanner, transitP, orderDocP);
                     } while (ch2<0 || ch2>6);
                     break;
                 case 3: // open manage truck menu
@@ -77,7 +71,7 @@ public class PresentationSystem {
                     displayTruckManagerMenu();
                     ch3 = scanner.nextInt();
                     if (scanner.hasNextLine()) scanner.nextLine();
-                    handleTruckManagerMenu(ch3, scanner, truckC);
+                    handleTruckManagerMenu(ch3, scanner, truckP);
                 } while (ch3<0 || ch3>3);
                     break;
                 case 4: //manage documents
@@ -86,7 +80,7 @@ public class PresentationSystem {
                         displayDocumentManagerMenu();
                         ch4 = scanner.nextInt();
                         if (scanner.hasNextLine()) scanner.nextLine();
-                        handleDocumentManagerMenu(ch4, transitC, orderDocC);
+                        handleDocumentManagerMenu(ch4, transitP, orderDocP);
                     } while (ch4<0 || ch4>3);
                     break;
                 case 5: //manage orders
@@ -95,7 +89,7 @@ public class PresentationSystem {
                         displayOrderManagerMenu();
                         ch5 = scanner.nextInt();
                         if (scanner.hasNextLine()) scanner.nextLine();
-                        handleOrderManagerMenu(scanner, ch5, orderDocC);
+                        handleOrderManagerMenu(scanner, ch5, orderDocP);
                     } while (ch5<0 || ch5>3);
                     break;
                 case 0:

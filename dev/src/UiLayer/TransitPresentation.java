@@ -5,12 +5,8 @@ import BussinesLogic.License;
 import BussinesLogic.TransitCoordinator;
 import ControllerLayer.TransitController;
 import ControllerLayer.TruckController;
-import DataAccess.DAO_Employee;
 import DomainLayer.*;
-import ExceptionsPackage.ModuleException;
 import ExceptionsPackage.UiException;
-
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
