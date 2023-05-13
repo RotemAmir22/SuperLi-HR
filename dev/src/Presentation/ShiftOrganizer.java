@@ -81,7 +81,7 @@ public class ShiftOrganizer {
         StringBuilder output = new StringBuilder();
         for(Role role: Role.values())
         {
-            if(rolesAmount.get(role.toString()) > 0){
+            if(rolesAmount.containsKey(role.toString()) && rolesAmount.get(role.toString()) > 0){
                 output.append(role).append(" are missing.\n");
                 if(role.equals(Role.STORAGE) && storekeeperStatusByDate.containsKey(currentDate))
                 {
@@ -91,7 +91,7 @@ public class ShiftOrganizer {
                 }
             }
             //if there is a transit and a
-            if(rolesAmount.get(role.toString())==0 && role.equals(Role.STORAGE)&& storekeeperStatusByDate.containsKey(currentDate))
+            if(rolesAmount.containsKey(role.toString()) && rolesAmount.get(role.toString())==0 && role.equals(Role.STORAGE)&& storekeeperStatusByDate.containsKey(currentDate))
             {
                 TransitCoordinator.Alert("Transit can be EXECUTED");
                 storekeeperStatusByDate.put(currentDate,true);
@@ -150,6 +150,11 @@ public class ShiftOrganizer {
         int i = 0;
         while(i < roles.length)
         {
+            // skip on driver
+            if(Objects.equals(roles[i].toString(), "DRIVER")) {
+                i++;
+                continue;
+            }
             try{
                 System.out.println("How much "+ roles[i] + " do you need for " + shiftDate + " "+Shift.values()[shift].toString()+" shift?");
                 c = scanner.nextLine();
