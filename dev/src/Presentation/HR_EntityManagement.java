@@ -310,6 +310,7 @@ public class HR_EntityManagement {
             {
                 Driver driver = employeeGenerator.CreateDriver(employee);
                 addLicenceToDriver(driver);
+                break;
             }
             else if (ans.equals("n")) //employee
             {

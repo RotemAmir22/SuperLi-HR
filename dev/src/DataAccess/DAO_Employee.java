@@ -77,7 +77,6 @@ public class DAO_Employee implements IDAO_Entity {
                 int roleID = rs.getInt("qualificationId");
                 employee.addRole(Role.values()[roleID]);
             }
-            // get constraints
             stmt = conn.prepareStatement("SELECT * FROM EmployeeConstraints ec WHERE ec.employeeID = ?");
             stmt.setString(1, (String) ID);
             rs = stmt.executeQuery();
@@ -122,21 +121,26 @@ public class DAO_Employee implements IDAO_Entity {
         Employee e = (Employee)o;
         if(e != null)
         {
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary)" +
-                    "VALUES (e.getFirstName(), e.getLastName(), e.getId(), e.getBankAccount(), e.getSalary(), e.getEmpTerms(), e.getStartDate(), e.getShiftsLimit(), e.getCumulativeSalary())");
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Employees (firstName, lastName, employeeID, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            stmt.setString(1, e.getFirstName());
+            stmt.setString(2, e.getLastName());
+            stmt.setString(3, e.getId());
+            stmt.setString(4, e.getBankAccount());
+            stmt.setDouble(5, e.getSalary());
+            stmt.setString(6, e.getEmpTerms());
+            stmt.setString(7, e.getStartDate());
+            stmt.setInt(8, e.getShiftsLimit());
+            stmt.setDouble(9, e.getCumulativeSalary());
             stmt.executeUpdate();
             // add to constraints table
             for(int i=0; i<7; i++) {
-                stmt = conn.prepareStatement("INSERT INTO EmployeeConstriants (employeeId, dayOfWeek)" +
-                        "VALUES (e.getId() , i)");
+                stmt = conn.prepareStatement("INSERT INTO EmployeeConstraints (employeeId, dayOfWeek)" +
+                        "VALUES (? , ?)");
+                stmt.setString(1, e.getId());
+                stmt.setInt(2, i);
                 stmt.executeUpdate();
-
             }
-            //add to the right map
-            if(e.canDoRole(DRIVER))
-                newtworkDrivers.put(e.getId(), (Driver) e);
-            else
-                networkEmployees.put(e.getId(),e);
+
         }
     }
 
@@ -219,6 +223,11 @@ public class DAO_Employee implements IDAO_Entity {
                 }
             }
         }
+        //add to the right map
+        if(e.canDoRole(DRIVER))
+            newtworkDrivers.put(e.getId(), (Driver) e);
+        else
+            networkEmployees.put(e.getId(),e);
     }
 
     /**
@@ -269,6 +278,7 @@ public class DAO_Employee implements IDAO_Entity {
         if(networkEmployees.isEmpty())
             ifEmptyMaps();
 
+        employeeList.clear();
         employeeList.addAll(networkEmployees.values());
         return employeeList;
     }
@@ -281,6 +291,7 @@ public class DAO_Employee implements IDAO_Entity {
     public List<Driver> getNetworkDrivers() throws SQLException {
         if(newtworkDrivers.isEmpty())
             ifEmptyMaps();
+        driverList.clear();
         driverList.addAll(newtworkDrivers.values());
         return driverList;
     }
