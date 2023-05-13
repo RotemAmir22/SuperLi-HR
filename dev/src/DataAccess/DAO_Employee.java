@@ -140,7 +140,6 @@ public class DAO_Employee implements IDAO_Entity {
                 stmt.setInt(2, i);
                 stmt.executeUpdate();
             }
-
         }
     }
 
@@ -225,7 +224,15 @@ public class DAO_Employee implements IDAO_Entity {
         }
         //add to the right map
         if(e.canDoRole(DRIVER))
+        {
             newtworkDrivers.put(e.getId(), (Driver) e);
+            for(License license: ((Driver) e).getLicenses()){
+                PreparedStatement stmt = conn.prepareStatement("INSERT INTO Drivers (employeeID,licenseId) VALUES (?,?)");
+                stmt.setString(1, e.getId());
+                stmt.setInt(2, license.ordinal());
+                stmt.executeUpdate();
+            }
+        }
         else
             networkEmployees.put(e.getId(),e);
     }
