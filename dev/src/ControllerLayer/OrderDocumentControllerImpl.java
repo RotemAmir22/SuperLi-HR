@@ -5,6 +5,7 @@ import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.OrderDocumentDAO;
 import DomainLayer.*;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class OrderDocumentControllerImpl implements OrderDocumentController {
@@ -37,7 +38,7 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         orderDocument.setWeight(weight);
     }
     @Override
-    public OrderDocument createOrderDoc(int sourceId, int destinationId) {
+    public OrderDocument createOrderDoc(int sourceId, int destinationId) throws SQLException, ClassNotFoundException {
         Supplier supplier = supplierController.findSupplierById(sourceId) ;
         //TODO find storeById with BranchStore;
         BranchStore branchStore = transitCoordinator.findStoreById(destinationId) ;

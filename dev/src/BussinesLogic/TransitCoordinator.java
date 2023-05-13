@@ -33,7 +33,7 @@ public class TransitCoordinator {
      * @param license of the needed driver
      * @return list of available drivers
      */
-    public List<Driver> getAvailableDrivers(LocalDate transitDate, License license){
+    public List<Driver> getAvailableDrivers(LocalDate transitDate, License license) throws SQLException {
         List<Driver> availableDrivers = new ArrayList<>();
         for(Driver driver : driversDAO.getNetworkDrivers())
             if(driver.getLicenses().contains(license))
@@ -49,15 +49,13 @@ public class TransitCoordinator {
      * @param branchID to add the transit
      */
     public void addTransitInDate(LocalDate date, int branchID) throws SQLException, ClassNotFoundException {
-        if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-        {
+        if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {
             BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
             branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
             branchStoreDAO.update(branchStore);
-        }
-        else
+        } else
             System.out.println("Invalid branch ID");
-
+    }
     /**
      * Add a driver to a transit
      * @param date of the transit
@@ -72,7 +70,6 @@ public class TransitCoordinator {
 //            System.out.println("Driver not available");
 //            return null;
 //        }
-
         return driver;
     }
 
@@ -116,13 +113,13 @@ public class TransitCoordinator {
      * @param date of the transit
      * @return the transits in the branch
      */
-    public Map<LocalDate, Driver> getTransitsInBranch(int branchID, LocalDate date){
-        if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-            return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
-        else
-            System.out.println("Invalid branch ID");
-        return null;
-    }
+//    public Map<LocalDate, Driver> getTransitsInBranch(int branchID, LocalDate date){
+//        if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
+//            return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
+//        else
+//            System.out.println("Invalid branch ID");
+//        return null;
+//    }
 
     /**
      *
@@ -130,11 +127,11 @@ public class TransitCoordinator {
      * used in orderDocumentController
      * @return branchStore
      */
-    public BranchStore findStoreById(int storeId)
-    {
+    public BranchStore findStoreById(int storeId) throws SQLException, ClassNotFoundException {
         BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(storeId);
         return branchStore;
     }
+
     /**
      * Static function to alert of any change in transit's status
      */

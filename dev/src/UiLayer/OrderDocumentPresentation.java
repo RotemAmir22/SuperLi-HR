@@ -5,6 +5,7 @@ import ControllerLayer.ProductController;
 import DomainLayer.OrderDocument;
 import DomainLayer.Product;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class OrderDocumentPresentation {
@@ -21,7 +22,7 @@ public class OrderDocumentPresentation {
      * Once all the required information is gathered, it uses the OrderService and OrderRepository
      * interfaces to create and save a new Order object to a database.
      */
-    public void createNewOrderDocument(Scanner scanner){
+    public void createNewOrderDocument(Scanner scanner) throws SQLException, ClassNotFoundException {
         int storeId;
         int supplierId;
 
