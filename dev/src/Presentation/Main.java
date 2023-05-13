@@ -75,7 +75,7 @@ public class Main {
             System.out.println("3. Constraints");
             System.out.println("4. Shifts");
             System.out.println("5. History");
-            System.out.println("6. ManageShift - TEMPORARY MAIN");
+            System.out.println("6. ManageShift");
             System.out.println("7. Exit");
 
             choice = scanner.nextLine();
