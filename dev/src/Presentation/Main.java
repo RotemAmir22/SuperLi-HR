@@ -111,6 +111,11 @@ public class Main {
                                 employee.printEmployeeDetails();
                                 System.out.println("");
                             }
+                            for (Driver driver : employeesDAO.getNetworkDrivers())
+                            {
+                                driver.printEmployeeDetails();
+                                System.out.println("");
+                            }
                         case "6":
                             continue;
                         default:
