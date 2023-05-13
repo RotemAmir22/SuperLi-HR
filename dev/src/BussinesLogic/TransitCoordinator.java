@@ -115,7 +115,8 @@ public class TransitCoordinator {
      */
     public boolean StorageWorkersExist(BranchStore store, LocalDate date)
     {
-
+        if(store.storekeeperStatusByDate.containsKey(date))
+            return store.storekeeperStatusByDate.get(date);
         return false;
     }
 
@@ -126,13 +127,13 @@ public class TransitCoordinator {
      * @param date of the transit
      * @return the transits in the branch
      */
-//    public Map<LocalDate, Driver> getTransitsInBranch(int branchID, LocalDate date){
-//        if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-//            return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
-//        else
-//            System.out.println("Invalid branch ID");
-//        return null;
-//    }
+    public Map<LocalDate, Boolean> getTransitsInBranch(int branchID, LocalDate date) throws SQLException, ClassNotFoundException {
+        if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
+            return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
+        else
+            System.out.println("Invalid branch ID");
+        return null;
+    }
 
     /**
      *
@@ -140,10 +141,10 @@ public class TransitCoordinator {
      * used in orderDocumentController
      * @return branchStore
      */
-    public BranchStore findStoreById(int storeId){
+    public BranchStore findStoreById(int storeId) {
         BranchStore branchStore = null;
         try {
-            branchStore = branchStoreDAO.getNetworkBranches().get(storeId);
+            branchStore = (BranchStore) branchStoreDAO.findByID(storeId);
         } catch (SQLException | ClassNotFoundException s)
         {
             s.printStackTrace();
