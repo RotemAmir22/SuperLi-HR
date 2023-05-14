@@ -2,6 +2,7 @@ package UiLayer;
 import BussinesLogic.TransitCoordinator;
 import ControllerLayer.*;
 import DataAccess.DAO_BranchStore;
+import DataAccess.DAO_Employee;
 import DataAccessLayer.*;
 import java.sql.SQLException;
 import java.util.*;
@@ -24,6 +25,7 @@ public class PresentationSystem {
         ProductController primeProductController = new ProductControllerImpl(primeProductDAO);
 
         DAO_BranchStore primeBranchStoreDAO = new DAO_BranchStore();
+        DAO_Employee primeEmployeeDAO = new DAO_Employee();
 
         OrderDocumentDAO primeOrderDocDAO = new OrderDocumentDAOImpl(primeSupplierDAO,primeBranchStoreDAO,primeProductDAO);
         OrderDocumentController primeOrderDocController = new OrderDocumentControllerImpl(primeOrderDocDAO,
@@ -34,7 +36,7 @@ public class PresentationSystem {
         TransitRecordDAO primeTransitRecordDAO = new TransitRecordsDAOImpl();
         TransitRecordController primeTransitRecordController = new TransitRecordControllerImpl(primeTransitRecordDAO);
 
-        TransitDAO primeTransitDAO = new TransitDAOImpl();
+        TransitDAO primeTransitDAO = new TransitDAOImpl(primeTruckDAO,primeEmployeeDAO,primeOrderDocDAO,primeSupplierDAO,primeBranchStoreDAO);
         TransitController primeTransitController = new TransitControllerImpl(primeTransitDAO, primeTruckController,
                 primeTransitCoordinator, primeOrderDocController, primeTransitRecordController);
         TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeTransitCoordinator);

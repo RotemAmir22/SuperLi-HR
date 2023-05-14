@@ -3,6 +3,7 @@ package DataAccessLayer;
 import BussinesLogic.BranchStore;
 import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_Employee;
+import DataAccess.Database;
 import DomainLayer.OrderDocument;
 import DomainLayer.Supplier;
 import DomainLayer.Transit;
@@ -26,8 +27,8 @@ public class TransitDAOImpl implements TransitDAO {
     private final OrderDocumentDAO orderDocumentDAO;
     private final SupplierDAO supplierDAO; // TODO when merge with suppliers module see also branch store
     private final DAO_BranchStore branchStoreDAO; //TODO check if can create here instead of passing as parameter
-    public TransitDAOImpl(Connection connection,TruckDAO truckDAO, DAO_Employee daoEmployee,OrderDocumentDAO orderDocumentDAO ,SupplierDAO supplierDAO , DAO_BranchStore branchStoreDAO) {
-        this.connection = connection;
+    public TransitDAOImpl(TruckDAO truckDAO, DAO_Employee daoEmployee,OrderDocumentDAO orderDocumentDAO ,SupplierDAO supplierDAO , DAO_BranchStore branchStoreDAO) throws SQLException, ClassNotFoundException {
+        this.connection = Database.connect();
         this.truckDAO = truckDAO;
         this.driverDAO = daoEmployee;
         this.orderDocumentDAO = orderDocumentDAO;
