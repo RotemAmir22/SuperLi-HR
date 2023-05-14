@@ -190,7 +190,6 @@ public class HR_EntityManagement {
             try{
                 System.out.println("Enter branch ID: ");
                 String branchNum = scanner.nextLine();
-
                 //find branch in network
                 BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum); // check in DAO
                 if(branch== null){
@@ -199,7 +198,6 @@ public class HR_EntityManagement {
                 else {
                     branch.addEmployee(employee);
                     branchStoreDAO.update(branch); // connect to DB
-                    answer=scanner.nextLine();
                     System.out.println("Do you want to add the employee to another branch? (enter y/n): ");
                     answer = scanner.nextLine();
                 }
@@ -607,6 +605,7 @@ public class HR_EntityManagement {
                         break;
                 }
                 branchStoreDAO.update(branch);
+                break;
             }
             catch (Exception e)
             {

@@ -61,9 +61,9 @@ public class Main {
      * Main
      */
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
-
-        employeesDAO = DAO_Generator.getEmployeeDAO();
-        branchStoreDAO = DAO_Generator.getBranchStoreDAO();
+        DAO_Generator generator = new DAO_Generator();
+        employeesDAO = generator.getEmployeeDAO();
+        branchStoreDAO = generator.getBranchStoreDAO();
         /* The main object "HR" control */
         HR_EntityManagement entityManagement = new HR_EntityManagement();
         HR_SchedulingManagement schedulingManager = new HR_SchedulingManagement();
@@ -143,6 +143,7 @@ public class Main {
                             break;
                         case "2":
                             entityManagement.updateBranchDetails(searchABranchStore(entityManagement));
+                            break;
                         case "3":
                             entityManagement.addEmployeeToBranch(searchAnEmployee(entityManagement));
                             break;
@@ -169,7 +170,8 @@ public class Main {
                             }
                             break;
                         case "6":
-                            for (BranchStore branchStore : branchStoreDAO.getNetworkBranches())
+                            ArrayList<BranchStore> branchStores = new ArrayList<>(branchStoreDAO.getNetworkBranches());
+                            for (BranchStore branchStore :branchStores )
                             {
                                 branchStore.printBranchDetails();
                                 System.out.println("");

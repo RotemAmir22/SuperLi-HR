@@ -2,6 +2,7 @@ package UiLayer;
 import BussinesLogic.TransitCoordinator;
 import ControllerLayer.*;
 import DataAccess.DAO_BranchStore;
+import DataAccess.DAO_Generator;
 import DataAccessLayer.*;
 import java.sql.SQLException;
 import java.util.*;
@@ -25,7 +26,7 @@ public class PresentationSystem {
 
         ProductDAO primeProductDAO = new ProductDAOImpl();
         ProductController primeProductController = new ProductControllerImpl(primeProductDAO);
-        DAO_BranchStore primeBranchStoreDAO = new DAO_BranchStore();
+        DAO_BranchStore primeBranchStoreDAO = DAO_Generator.getBranchStoreDAO();
         OrderDocumentDAO primeOrderDocDAO = new OrderDocumentDAOImpl(primeSupplierDAO,primeBranchStoreDAO,primeProductDAO);
         OrderDocumentController primeOrderDocController = new OrderDocumentControllerImpl(primeOrderDocDAO,
                 primeSupplierController,primeTransitCoordinator,primeProductController);

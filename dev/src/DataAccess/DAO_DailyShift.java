@@ -22,8 +22,8 @@ public class DAO_DailyShift implements IDAO_DailyShift {
 
 
     // constructor
-    public DAO_DailyShift() throws SQLException, ClassNotFoundException {
-        conn = Database.connect();
+    public DAO_DailyShift(Connection connection) throws SQLException, ClassNotFoundException {
+        conn = connection;
         networkDailyShift = new ArrayList<>();
         daoBranchStore = DAO_Generator.getBranchStoreDAO();
     }

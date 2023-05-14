@@ -20,11 +20,14 @@ public class DAO_BranchStore implements IDAO_Entity {
 
     private Connection conn;
 
+    private DAO_Employee employeesDAO;
+
     // constructor
-    public DAO_BranchStore() throws SQLException, ClassNotFoundException {
-        conn = Database.connect();
+    public DAO_BranchStore(Connection connection) throws SQLException, ClassNotFoundException {
+        conn = connection;
         networkBranches = new HashMap<>();
         branchesList = new ArrayList<>();
+        employeesDAO = DAO_Generator.getEmployeeDAO();
     }
 
     /**
@@ -44,17 +47,26 @@ public class DAO_BranchStore implements IDAO_Entity {
         }
         if (networkBranches.containsKey(id))
             return networkBranches.get(id);
-        else {
-            PreparedStatement stmt = conn.prepareStatement("SELECT name, openingTime, address, areaCode, contactName FROM BranchStore WHERE branchID = ?");stmt.setInt(1, id);
+        else
+        {
+            PreparedStatement stmt = conn.prepareStatement("SELECT name, openingTime, address, areaCode, contactName FROM BranchStore WHERE branchID = ?");
+            stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             BranchStore branchStore;
-            if (rs.next()) {
+            if (rs.next())
+            {
                 String name = rs.getString("name");
                 String openingTime = rs.getString("openingTime");
                 String address = rs.getString("address");
                 int areaCode = rs.getInt("areaCode");
                 String contractName = rs.getString("contactName");
                 branchStore = BranchStoreGenerator.CreateBranchStore(name, Area.values()[areaCode], openingTime, address, contractName);
+                stmt.close();
+                rs.close();
+            }
+            else
+                return null;
+
                 // get the openingHours
                 stmt = conn.prepareStatement("SELECT * FROM BranchOpeningHours WHERE branchID = ?");
                 stmt.setInt(1, id);
@@ -66,20 +78,17 @@ public class DAO_BranchStore implements IDAO_Entity {
                     branchStore.setOpenHours(day, 0, morning);
                     branchStore.setOpenHours(day, 1, evening);
                 }
-                stmt.close();
-                rs.close();
+
                 // get branch's employees
                 stmt = conn.prepareStatement("SELECT * FROM EmployeeBranches WHERE branchID = ?");
                 stmt.setInt(1, id);
                 rs = stmt.executeQuery();
-                DAO_Employee employeesDAO = DAO_Generator.getEmployeeDAO();
                 while (rs.next()){
                     String employeeId = rs.getString("employeeID");
                     Employee e = (Employee) employeesDAO.findByID(employeeId);
                     branchStore.addEmployee(e);
                 }
-                stmt.close();
-                rs.close();
+
                 // get branch's transits
                 stmt = conn.prepareStatement("SELECT * FROM BranchStoreTransits WHERE branchID = ?");
                 stmt.setInt(1, id);
@@ -91,12 +100,11 @@ public class DAO_BranchStore implements IDAO_Entity {
                 }
                 stmt.close();
                 rs.close();
-                networkBranches.put(id, branchStore);
-                return branchStore;
-            }
+               networkBranches.put(branchStore.getBranchID(), branchStore);
+               return branchStore;
         }
-        return null;
-    }
+
+}
 
 
     /**
@@ -148,7 +156,8 @@ public class DAO_BranchStore implements IDAO_Entity {
             stmt.setString(3, branch.getAddress());
             stmt.setString(4, branch.getArea().toString());
             stmt.setString(5, branch.getContactName());
-            stmt.setString(6, branch.getContactNumber());
+            stmt.setString(6, branch.getPhoneNum());
+            stmt.setInt(7,branch.getBranchID());
             stmt.executeUpdate();
 
             // set opening hours
@@ -157,6 +166,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                 stmt.setInt(1, i);
                 stmt.setInt(2, branch.getOpenHours()[i][0]);
                 stmt.setInt(3, branch.getOpenHours()[i][1]);
+                stmt.setInt(4,branch.getBranchID());
                 stmt.executeUpdate();
             }
 
@@ -169,27 +179,31 @@ public class DAO_BranchStore implements IDAO_Entity {
                 workersInDB.add(rs.getString("employeeID"));
             }
             // add employee to DB
-            ArrayList<String> workersIdInbranch = new ArrayList<>();
-            for(Employee e : branch.getEmployees())
+            if(workersInDB.size()<branch.getEmployees().size())
             {
-                workersIdInbranch.add(e.getId());
-                if(!workersInDB.contains(e.getId())){
-                    stmt = conn.prepareStatement("INSERT INTO EmployeeBranches (employeeID,branchID)" + "VALUES (?,?)");
-                    stmt.setString(1,e.getId());
-                    stmt.setInt(2, branch.getBranchID());
-                    stmt.executeUpdate();
-                    break;
+                for(Employee e : branch.getEmployees())
+                {
+                    if(!workersInDB.contains(e.getId())){
+                        stmt = conn.prepareStatement("INSERT INTO EmployeeBranches (employeeID,branchID)" + "VALUES (?,?)");
+                        stmt.setString(1,e.getId());
+                        stmt.setInt(2, branch.getBranchID());
+                        stmt.executeUpdate();
+                        break;
+                    }
                 }
             }
-            // remove from DB
-            for(String workerID : workersInDB){
-                if(!workersIdInbranch.contains(workerID))
-                {
-                    stmt = conn.prepareStatement("DELETE FROM EmployeeBranches WHERE employeeID = ? AND branchID = ? ;VALUES (?,?)");
-                    stmt.setString(1,workerID);
-                    stmt.setInt(2, branch.getBranchID());
-                    stmt.executeUpdate();
-                    break;
+            if(workersInDB.size()>branch.getEmployees().size())
+            {
+                // remove from DB
+                for(String workerID : workersInDB){
+                    if(!branch.getEmployees().contains(workerID))
+                    {
+                        stmt = conn.prepareStatement("DELETE FROM EmployeeBranches WHERE employeeID = ? AND branchID = ? ;VALUES (?,?)");
+                        stmt.setString(1,workerID);
+                        stmt.setInt(2, branch.getBranchID());
+                        stmt.executeUpdate();
+                        break;
+                    }
                 }
             }
 
@@ -198,9 +212,11 @@ public class DAO_BranchStore implements IDAO_Entity {
             stmt.setInt(1, branch.getBranchID());
             rs = stmt.executeQuery();
             // get last date to count the transits
-            rs.last();
-            int amount = rs.getRow();
-            rs.beforeFirst();
+            int amount = 0;
+            while(rs.next()) {
+                amount++;
+            }
+            rs = stmt.executeQuery();
             // remove transit from branch
             if(branch.storekeeperStatusByDate.size() < amount){
                 while(rs.next()) {
