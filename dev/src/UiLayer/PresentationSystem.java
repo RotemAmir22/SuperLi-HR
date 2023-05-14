@@ -36,7 +36,7 @@ public class PresentationSystem {
         TransitRecordDAO primeTransitRecordDAO = new TransitRecordsDAOImpl();
         TransitRecordController primeTransitRecordController = new TransitRecordControllerImpl(primeTransitRecordDAO);
 
-        TransitDAO primeTransitDAO = new TransitDAOImpl(primeTruckDAO,primeEmployeeDAO,primeOrderDocDAO,primeSupplierDAO,primeBranchStoreDAO);
+        TransitDAO primeTransitDAO = new TransitDAOImpl(primeTruckDAO, primeEmployeeDAO, primeOrderDocDAO, primeSupplierDAO, primeBranchStoreDAO);
         TransitController primeTransitController = new TransitControllerImpl(primeTransitDAO, primeTruckController,
                 primeTransitCoordinator, primeOrderDocController, primeTransitRecordController);
         TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeTransitCoordinator);
