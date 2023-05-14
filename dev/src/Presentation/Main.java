@@ -9,6 +9,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.Scanner;
 
 /**
@@ -106,7 +107,8 @@ public class Main {
                             entityManagement.calculateSalary();
                             break;
                         case "5":
-                            for (Employee employee : employeesDAO.getNetworkEmployees())
+                            ArrayList<Employee> employees = new ArrayList<>(employeesDAO.getNetworkEmployees());
+                            for (Employee employee : employees)
                             {
                                 employee.printEmployeeDetails();
                                 System.out.println("");
