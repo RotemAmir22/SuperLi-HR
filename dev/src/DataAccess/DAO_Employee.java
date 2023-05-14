@@ -235,103 +235,103 @@ public class DAO_Employee implements IDAO_Entity {
                 }
             }
 
-        //if it is a driver
-        if(e.canDoRole(DRIVER))
-        {
-            //set licences
-            List<License> licenses = ((Driver) e).getLicenses();
-            stmt = conn.prepareStatement("SELECT * FROM Drivers WHERE employeeID = ?");
-            stmt.setString(1,e.getId());
-            rs = stmt.executeQuery();
-            amount = 0;
-            while(rs.next()) {
-                amount++;
-            }
-            rs = stmt.executeQuery();
-
-            //remove licence from DB
-            if(amount > licenses.size()){
-                while(rs.next()){
-                    int index = rs.getInt("licenseId");
-                    if(!licenses.contains(License.values()[index])) {
-                        stmt = conn.prepareStatement("DELETE FROM Drivers WHERE employeeID = ? AND licenseId = ?");
-                        stmt.setString(1, e.getId());
-                        stmt.setInt(2,index);
-                        int rowsAffected = stmt.executeUpdate();
-                        if (rowsAffected == 0) {
-                            System.out.println("No rows were deleted.");
-                        }
-                        break;
-                    }
-                }
-            }
-
-            //add licence to DB
-            else if(amount < licenses.size()){
-                ArrayList<Integer> rolesInDB = new ArrayList<>();
+            //if it is a driver
+            if(e.canDoRole(DRIVER))
+            {
+                //set licences
+                List<License> licenses = ((Driver) e).getLicenses();
+                stmt = conn.prepareStatement("SELECT * FROM Drivers WHERE employeeID = ?");
+                stmt.setString(1,e.getId());
+                rs = stmt.executeQuery();
+                amount = 0;
                 while(rs.next()) {
-                    rolesInDB.add(rs.getInt("licenseId"));
+                    amount++;
                 }
-                for(License license: licenses){
-                    if(!rolesInDB.contains(license.ordinal())) {
-                        stmt = conn.prepareStatement("INSERT INTO Drivers (employeeID,licenseId) VALUES (?,?)");
-                        stmt.setString(1, e.getId());
-                        stmt.setInt(2,license.ordinal());
-                        stmt.executeUpdate();
-                        break;
-                    }
-                }
-            }
+                rs = stmt.executeQuery();
 
-            //transit dates
-            List<LocalDate> transits = ((Driver) e).getTransitsDates();
-            stmt = conn.prepareStatement("SELECT * FROM DriversTransitsDates WHERE driverID = ?");
-            stmt.setString(1,e.getId());
-            rs = stmt.executeQuery();
-            amount = 0;
-            while(rs.next()) {
-                amount++;
-            }
-            rs = stmt.executeQuery();
-
-            //remove transit date from DB
-            if(amount > transits.size()){
-                while(rs.next()){
-                    LocalDate date = LocalDate.ofEpochDay(rs.getInt("transitDate"));
-                    if(!transits.contains(date)) {
-                        stmt = conn.prepareStatement("DELETE FROM DriversTransitsDates WHERE driverID = ? AND transitDate = ?");
-                        stmt.setString(1, e.getId());
-                        stmt.setString(2, String.valueOf(date));
-                        int rowsAffected = stmt.executeUpdate();
-                        if (rowsAffected == 0) {
-                            System.out.println("No rows were deleted.");
+                //remove licence from DB
+                if(amount > licenses.size()){
+                    while(rs.next()){
+                        int index = rs.getInt("licenseId");
+                        if(!licenses.contains(License.values()[index])) {
+                            stmt = conn.prepareStatement("DELETE FROM Drivers WHERE employeeID = ? AND licenseId = ?");
+                            stmt.setString(1, e.getId());
+                            stmt.setInt(2,index);
+                            int rowsAffected = stmt.executeUpdate();
+                            if (rowsAffected == 0) {
+                                System.out.println("No rows were deleted.");
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
-            }
-            //add transit date to DB
-            else if(amount < transits.size()){
-                ArrayList<Integer> rolesInDB = new ArrayList<>();
-                while(rs.next()) {
-                    rolesInDB.add(rs.getInt("qualificationId"));
-                }
-                for(LocalDate date: transits){
-                    if(!rolesInDB.contains(date)) {
-                        stmt = conn.prepareStatement("INSERT INTO Drivers (employeeID,licenseId) VALUES (?,?)");
-                        stmt.setString(1, e.getId());
-                        stmt.setString(2, String.valueOf(date));
-                        stmt.executeUpdate();
-                        break;
-                    }
-                }
-            }
 
-            //add to map
-            newtworkDrivers.put(e.getId(), (Driver) e);
-        }
-        else //if not a driver add to other map
-            networkEmployees.put(e.getId(),e);
+                //add licence to DB
+                else if(amount < licenses.size()){
+                    ArrayList<Integer> rolesInDB = new ArrayList<>();
+                    while(rs.next()) {
+                        rolesInDB.add(rs.getInt("licenseId"));
+                    }
+                    for(License license: licenses){
+                        if(!rolesInDB.contains(license.ordinal())) {
+                            stmt = conn.prepareStatement("INSERT INTO Drivers (employeeID,licenseId) VALUES (?,?)");
+                            stmt.setString(1, e.getId());
+                            stmt.setInt(2,license.ordinal());
+                            stmt.executeUpdate();
+                            break;
+                        }
+                    }
+                }
+
+                //transit dates
+                List<LocalDate> transits = ((Driver) e).getTransitsDates();
+                stmt = conn.prepareStatement("SELECT * FROM DriversTransitsDates WHERE driverID = ?");
+                stmt.setString(1,e.getId());
+                rs = stmt.executeQuery();
+                amount = 0;
+                while(rs.next()) {
+                    amount++;
+                }
+                rs = stmt.executeQuery();
+
+                //remove transit date from DB
+                if(amount > transits.size()){
+                    while(rs.next()){
+                        LocalDate date = LocalDate.ofEpochDay(rs.getInt("transitDate"));
+                        if(!transits.contains(date)) {
+                            stmt = conn.prepareStatement("DELETE FROM DriversTransitsDates WHERE driverID = ? AND transitDate = ?");
+                            stmt.setString(1, e.getId());
+                            stmt.setString(2, String.valueOf(date));
+                            int rowsAffected = stmt.executeUpdate();
+                            if (rowsAffected == 0) {
+                                System.out.println("No rows were deleted.");
+                            }
+                            break;
+                        }
+                    }
+                }
+                //add transit date to DB
+                else if(amount < transits.size()){
+                    ArrayList<Integer> rolesInDB = new ArrayList<>();
+                    while(rs.next()) {
+                        rolesInDB.add(rs.getInt("qualificationId"));
+                    }
+                    for(LocalDate date: transits){
+                        if(!rolesInDB.contains(date)) {
+                            stmt = conn.prepareStatement("INSERT INTO Drivers (employeeID,licenseId) VALUES (?,?)");
+                            stmt.setString(1, e.getId());
+                            stmt.setString(2, String.valueOf(date));
+                            stmt.executeUpdate();
+                            break;
+                        }
+                    }
+                }
+
+                //add to map
+                newtworkDrivers.put(e.getId(), (Driver) e);
+            }
+            else //if not a driver add to other map
+                networkEmployees.put(e.getId(),e);
         }
     }
 
