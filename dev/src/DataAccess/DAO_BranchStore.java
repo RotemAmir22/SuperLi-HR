@@ -114,6 +114,7 @@ public class DAO_BranchStore implements IDAO_Entity {
      */
     @Override
     public void insert(Object o) throws SQLException {
+
         BranchStore branch = (BranchStore)o;
         if(branch != null) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO BranchStore (branchID, name, openingTime, address, areaCode, contactName, contactNumber)" +
