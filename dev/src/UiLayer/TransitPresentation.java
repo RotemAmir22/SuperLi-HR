@@ -209,7 +209,7 @@ public class TransitPresentation {
                 if(supplier.getSupplierId() == orderDoc.getSource().getSupplierId())
                 {
 
-                    System.out.println("Loading order number: " + orderDoc.getDocumentId());
+                    System.out.println("Loading order number: " + orderDoc.getOrderDocumentId());
                     transit.getTruck().loadTruck(orderDoc.getTotalWeight());
                     if (transit.getTruck().getMaxCarryWeight()<transit.getTruck().getCurrentWeight())
                     {
@@ -227,7 +227,7 @@ public class TransitPresentation {
             for (OrderDocument orderDoc : transit.getOrdersDocs()) {
                 if (branchStore.getBranchID() == orderDoc.getDestination().getBranchID()) {
 
-                    System.out.println("Unloading order number: " + orderDoc.getDocumentId());
+                    System.out.println("Unloading order number: " + orderDoc.getOrderDocumentId());
                     transit.getTruck().unloadTruck(orderDoc.getTotalWeight());
                     this.transitController.getOrderDocController().moveOrderToFinish(orderDoc);
                 }
@@ -262,7 +262,7 @@ public class TransitPresentation {
                     }
                     else {
                         currentOrder.printOrder();
-                        System.out.println("Order id: " + currentOrder.getDocumentId() + " contains only one product, removing order ");
+                        System.out.println("Order id: " + currentOrder.getOrderDocumentId() + " contains only one product, removing order ");
                     }
                 case 3:// delete order
                     // update weight

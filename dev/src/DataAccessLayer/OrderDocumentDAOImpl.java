@@ -33,7 +33,7 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         String insertOrderDocumentSQL = "INSERT INTO OrderDocuments(orderDocumentId, sourceSupplierId, destinationBranchStoreId, totalWeight) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement insertOrderDocumentStatement = connection.prepareStatement(insertOrderDocumentSQL, Statement.RETURN_GENERATED_KEYS);
-            insertOrderDocumentStatement.setInt(1, orderDocument.getDocumentId());
+            insertOrderDocumentStatement.setInt(1, orderDocument.getOrderDocumentId());
             insertOrderDocumentStatement.setInt(2, orderDocument.getSource().getSupplierId());
             insertOrderDocumentStatement.setInt(3, orderDocument.getDestination().getBranchID());
             insertOrderDocumentStatement.setDouble(4, orderDocument.getTotalWeight());
@@ -61,18 +61,18 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
     public OrderDocument findOrderDocById(int orderDocId) {
         // Check if the order document is in the pendingOrdersDocumentsSet
         for (OrderDocument pendingDoc : pendingOrdersDocumentsSet) {
-            if (pendingDoc.getDocumentId() == orderDocId) {
+            if (pendingDoc.getOrderDocumentId() == orderDocId) {
                 return pendingDoc;
             }
         }
 
         for (OrderDocument completedDoc : completedOrdersDocumentsSet) {
-            if (completedDoc.getDocumentId() == orderDocId) {
+            if (completedDoc.getOrderDocumentId() == orderDocId) {
                 return completedDoc;
             }
         }
 
-        // If the order document isn't in the pendingOrdersDocumentsSet, query the database
+        // If the order document isn't in the pendingOrdersDocumentsSet nor in completedOrdersDocumentsSet, query the database
         String query = "SELECT * FROM OrderDocuments WHERE orderDocumentId = ?";
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -121,12 +121,12 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         try {
             // Update the OrderDocuments table to set the status to "completed"
             PreparedStatement updateOrderDocStatement = connection.prepareStatement(updateOrderDocSQL);
-            updateOrderDocStatement.setInt(1, completedOrder.getDocumentId());
+            updateOrderDocStatement.setInt(1, completedOrder.getOrderDocumentId());
             updateOrderDocStatement.executeUpdate();
             // Remove the order document from the pendingOrdersDocumentsSet in memory
-            this.pendingOrdersDocumentsSet.remove(completedOrder);
+            pendingOrdersDocumentsSet.remove(completedOrder);
             // Add the order document to the completedOrdersDocumentsSet in memory
-            this.completedOrdersDocumentsSet.add(completedOrder);
+            completedOrdersDocumentsSet.add(completedOrder);
         } catch (SQLException e) {
             System.out.println("Error moving order document to completed: " + e.getMessage());
         }

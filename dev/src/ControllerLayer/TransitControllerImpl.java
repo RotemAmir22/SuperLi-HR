@@ -5,10 +5,8 @@ import BussinesLogic.License;
 import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.TransitDAO;
 import DomainLayer.*;
-import ExceptionsPackage.QualificationsException;
 import ExceptionsPackage.UiException;
 
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,10 +58,10 @@ public class TransitControllerImpl implements TransitController {
     public Transit findTransitByID(int transitId) {
         return this.transitDAO.findTransitByID(transitId);
     }
-    @Override
-    public Set<Transit> getTransitsSet() {
-        return this.transitDAO.getTransitsSet();
-    }
+//    @Override
+//    public Set<Transit> getTransitsSet() {
+//        return this.transitDAO.getTransitsSet();
+//    }
     @Override
     public TransitDAO getTransitDAO() {
         return this.transitDAO;
@@ -85,7 +83,9 @@ public class TransitControllerImpl implements TransitController {
 
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(otherTruck,currentDriver);
         if (!qualifiedDriverFlag) return 0; //driver fail
-        transitToUpdate.setTruck(otherTruck);
+        // TODO q:does this update also the cache in the transitDAO ?
+        transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, otherTruck, currentDriver);
+        //transitToUpdate.setTruck(otherTruck);
         return 1;// successes
     }
     /**
@@ -100,7 +100,9 @@ public class TransitControllerImpl implements TransitController {
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
         if (!qualifiedDriverFlag) return 0; // driver is not qualified
         //driver is qualified
-        transitToUpdate.setDriver(otherDriver);
+        // TODO q:does this update also the cache in the transitDAO ?
+        transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, newTruck, otherDriver);
+        //transitToUpdate.setDriver(otherDriver);
         return 1;
     }
     @Override

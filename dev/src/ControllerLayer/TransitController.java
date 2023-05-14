@@ -11,7 +11,6 @@ import java.util.Set;
 public interface TransitController {
     Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException;
     Transit findTransitByID(int transitId);
-    Set<Transit> getTransitsSet();
     TransitDAO getTransitDAO();
     boolean showTransitByID(int transitId);
     int replaceTransitTruck(int transitId, String truckPlate);
@@ -21,6 +20,8 @@ public interface TransitController {
     void moveTransitToFinished(Transit transit);
     boolean transferLoad(Truck smallTruck, Truck biggerTruck);
     boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);
+
+//    Set<Transit> getTransitsSet();
     //TODO belongs to check weight before starting transit.
     boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument);
 }

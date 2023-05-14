@@ -11,9 +11,6 @@ public class PresentationSystem {
         PresentationSystem ps = new PresentationSystem();
         Scanner scanner = new Scanner(System.in);
 
-
-//        DriverDAO primeDriverDAO = new DriverDAOImpl();
-//        DriverController primeDriverController = new DriverControllerImpl(primeDriverDAO);
         TruckDAO primeTruckDAO = new TruckDAOImpl();
         TruckController primeTruckController = new TruckControllermpl(primeTruckDAO);
         TruckPresentation truckPresentation = new TruckPresentation(primeTruckController);
@@ -25,13 +22,14 @@ public class PresentationSystem {
 
         ProductDAO primeProductDAO = new ProductDAOImpl();
         ProductController primeProductController = new ProductControllerImpl(primeProductDAO);
+
         DAO_BranchStore primeBranchStoreDAO = new DAO_BranchStore();
+
         OrderDocumentDAO primeOrderDocDAO = new OrderDocumentDAOImpl(primeSupplierDAO,primeBranchStoreDAO,primeProductDAO);
         OrderDocumentController primeOrderDocController = new OrderDocumentControllerImpl(primeOrderDocDAO,
                 primeSupplierController,primeTransitCoordinator,primeProductController);
         OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(primeOrderDocController,
                 primeProductController);
-
 
         TransitRecordDAO primeTransitRecordDAO = new TransitRecordsDAOImpl();
         TransitRecordController primeTransitRecordController = new TransitRecordControllerImpl(primeTransitRecordDAO);
@@ -42,11 +40,10 @@ public class PresentationSystem {
         TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeTransitCoordinator);
 
 
-        ps.switchMenu(scanner, truckPresentation,orderDocumentPresentation, transitPresentation);
+        ps.switchMenu(scanner, truckPresentation, orderDocumentPresentation, transitPresentation);
     }
 
     public void switchMenu(Scanner scanner, TruckPresentation truckP, OrderDocumentPresentation orderDocP, TransitPresentation transitP){
-//        Scanner scanner = new Scanner(System.in);
         int choice;
         do {
             displayMainMenu();

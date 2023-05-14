@@ -35,7 +35,7 @@ public class OrderDocument {
         this.productsList = productsList;
     }
 
-    public int getDocumentId() {
+    public int getOrderDocumentId() {
         return documentId;
     }
     public Supplier getSource() {

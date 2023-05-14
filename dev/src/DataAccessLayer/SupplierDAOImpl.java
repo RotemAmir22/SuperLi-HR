@@ -13,7 +13,7 @@ public class SupplierDAOImpl implements SupplierDAO {
         Supplier sup1 = new Supplier("Jerusalem", Area.Center, "David", "0523333333", 1);
         Supplier sup2 = new Supplier("Hiafa", Area.North, "Shlomi", "0524444444", 2);
         Supplier sup3 = new Supplier("TelAviv", Area.Center, "Tomer", "0525555555", 3);
-        Supplier parkSup = new Supplier("Logistical warehouse", Area.Center,"Michael", "0525555555", 50);
+        Supplier parkSup = new Supplier("Logistical Warehouse", Area.Center, "Amitai", "031000778", 0);
         suppliersSet.add(sup1);
         suppliersSet.add(sup2);
         suppliersSet.add(sup3);

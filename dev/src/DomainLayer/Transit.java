@@ -10,16 +10,18 @@ import java.util.Set;
 
 public class Transit {
     public static int nextId=1;
+
+    // TODO changed to static !
+    private static final Site source = new Supplier("Logistical Warehouse", Area.Center, "Amitai", "031000778", 0);
     private final int transitId;
     private final Date transitDate;
     private LocalTime departureTime;
     private Truck truck;
-    private Driver driver; // String driverName??
-    private Site source;
+    private Driver driver;
     private Double ETA;
-    private final Set<Supplier> destinationSuppliers;
-    private final Set<BranchStore> destinationBranchStores;
     private final Set<OrderDocument> ordersDocs;
+    private  Set<Supplier> destinationSuppliers;
+    private Set<BranchStore> destinationBranchStores;
 
 
     public Transit(Date transitDate, Truck truck, Driver driver) {
@@ -34,14 +36,33 @@ public class Transit {
         this.ordersDocs = new HashSet<>();
     }
 
+    public Transit(int transitId, Date transitDate, Truck truck, Driver driver){
+        this.transitId = transitId;
+        this.transitDate = transitDate;
+        this.truck = truck;
+        this.driver = driver;
+        this.destinationBranchStores = new HashSet<>();
+        this.destinationSuppliers = new HashSet<>();
+        this.ordersDocs = new HashSet<>();
+    }
+    public Transit(int transitId, Date transitDate, Truck truck, Driver driver, double eta, Set<Supplier> destinationSuppliers,
+                   Set<BranchStore> destinationBranchStores,Set<OrderDocument> ordersDocs) {
+        this.transitId = transitId;
+        this.transitDate = transitDate;
+        this.truck = truck;
+        this.driver = driver;
+        this.ETA = eta;
+        this.destinationBranchStores = destinationBranchStores;
+        this.destinationSuppliers = destinationSuppliers;
+        this.ordersDocs = ordersDocs;}
+
+
     public Double getETA() {
         return ETA;
     }
-
     public void setETA() {
         this.ETA = calculateETA();
     }
-
     public double calculateETA() {
 
         Supplier previousSupplier = null;
@@ -79,7 +100,6 @@ public class Transit {
         }
         return eta;
     }
-
 
     public int getTransitId() {
         return transitId;
@@ -162,19 +182,25 @@ public class Transit {
         this.ordersDocs.remove(orderDocument);
     }
     public double calcOrdersWeight(){
+        // TODO why there currentWeight is not an attribute?
         double currentWeight = 0;
         for (OrderDocument od : ordersDocs){
             currentWeight += od.getTotalWeight();
         }
         return currentWeight;
     }
-    public Site getSource() {
+    public static Site getSource() {
         return source;
-    }
-    public void setSource(Site source) {
-        this.source = source;
     }
     public LocalTime getDepartureTime() {
         return departureTime;
+    }
+
+    public void setDestinationSuppliers(Set<Supplier> destinationSuppliers) {
+        this.destinationSuppliers = destinationSuppliers;
+    }
+
+    public void setDestinationBranchStores(Set<BranchStore> destinationBranchStores) {
+        this.destinationBranchStores = destinationBranchStores;
     }
 }
