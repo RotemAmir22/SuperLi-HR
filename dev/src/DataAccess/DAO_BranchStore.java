@@ -157,7 +157,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                 stmt.setInt(1, i);
                 stmt.setInt(2, branch.getOpenHours()[i][0]);
                 stmt.setInt(3, branch.getOpenHours()[i][1]);
-                stmt.executeQuery();
+                stmt.executeUpdate();
             }
 
             // set Employees
@@ -177,7 +177,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                     stmt = conn.prepareStatement("INSERT INTO EmployeeBranches (employeeID,branchID)" + "VALUES (?,?)");
                     stmt.setString(1,e.getId());
                     stmt.setInt(2, branch.getBranchID());
-                    stmt.executeQuery();
+                    stmt.executeUpdate();
                     break;
                 }
             }
@@ -188,7 +188,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                     stmt = conn.prepareStatement("DELETE FROM EmployeeBranches WHERE employeeID = ? AND branchID = ? ;VALUES (?,?)");
                     stmt.setString(1,workerID);
                     stmt.setInt(2, branch.getBranchID());
-                    stmt.executeQuery();
+                    stmt.executeUpdate();
                     break;
                 }
             }
@@ -208,7 +208,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                         stmt = conn.prepareStatement("DELETE FROM BranchStoreTransits WHERE branchID = ? AND transitDate = ?");
                         stmt.setInt(1, branch.getBranchID());
                         stmt.setDate(2, rs.getDate("transitDate"));
-                        stmt.executeQuery();
+                        stmt.executeUpdate();
                         break;
                     }
                 }
@@ -225,7 +225,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                         stmt.setInt(1,branch.getBranchID());
                         stmt.setDate(2, Date.valueOf(transitDate));
                         stmt.setBoolean(3,branch.storekeeperStatusByDate.get(transitDate));
-                        stmt.executeQuery();
+                        stmt.executeUpdate();
                         break;
                     }
                 }
@@ -247,27 +247,27 @@ public class DAO_BranchStore implements IDAO_Entity {
             //delete from branch store table
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM BranchStore WHERE branchID = ?");
             stmt.setInt(1, b.getBranchID());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             //delete from open hours
             stmt = conn.prepareStatement("DELETE FROM BranchOpeningHours WHERE branchID = ?");
             stmt.setInt(1, b.getBranchID());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             //delete from BranchStoreTransits
             stmt = conn.prepareStatement("DELETE FROM BranchStoreTransits WHERE branchID = ?");
             stmt.setInt(1, b.getBranchID());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             //delete from DailyShifts
             stmt = conn.prepareStatement("DELETE FROM DailyShifts WHERE branchID = ?");
             stmt.setInt(1, b.getBranchID());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             //delete from EmployeeBranches
             stmt = conn.prepareStatement("DELETE FROM EmployeeBranches WHERE branchID = ?");
             stmt.setInt(1, b.getBranchID());
-            stmt.executeQuery();
+            stmt.executeUpdate();
 
             networkBranches.remove(b.getBranchID());
         }
