@@ -7,7 +7,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
 
-import static BussinesLogic.Role.DRIVER;
 
 /**
  * This DAO is for the branchStores
@@ -49,7 +48,7 @@ public class DAO_BranchStore implements IDAO_Entity {
             return networkBranches.get(id);
         else
         {
-            PreparedStatement stmt = conn.prepareStatement("SELECT name, openingTime, address, areaCode, contactName FROM BranchStore WHERE branchID = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT name, openingTime, address, areaCode, contactNumber FROM BranchStore WHERE branchID = ?");
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             BranchStore branchStore;
@@ -59,8 +58,8 @@ public class DAO_BranchStore implements IDAO_Entity {
                 String openingTime = rs.getString("openingTime");
                 String address = rs.getString("address");
                 int areaCode = rs.getInt("areaCode");
-                String contractName = rs.getString("contactName");
-                branchStore = BranchStoreGenerator.CreateBranchStore(name, Area.values()[areaCode], openingTime, address, contractName);
+                String contactNum = rs.getString("contactNumber");
+                branchStore = BranchStoreGenerator.CreateBranchStore(name, Area.values()[areaCode], address, contactNum, openingTime,id);
                 stmt.close();
                 rs.close();
             }
@@ -134,7 +133,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                 stmt.setInt(2, i);
                 stmt.setInt(3, branch.getOpenHours()[i][0]);
                 stmt.setInt(4, branch.getOpenHours()[i][1]);
-                stmt.executeQuery();
+                stmt.executeUpdate();
 
             }
             networkBranches.put(branch.getBranchID(), branch);

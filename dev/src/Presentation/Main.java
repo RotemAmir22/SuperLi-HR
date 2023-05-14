@@ -9,7 +9,6 @@ import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.Scanner;
 
 /**
@@ -22,10 +21,9 @@ public class Main {
 
     /**
      * Search an employee by id
-     * @param system user
      * @return the required employee
      */
-    public static Employee searchAnEmployee(HR_EntityManagement system) throws SQLException {
+    public static Employee searchAnEmployee() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         while(true)
         {
@@ -41,10 +39,9 @@ public class Main {
 
     /**
      * Search a branch by id
-     * @param system user
      * @return the required branch
      */
-    public static BranchStore searchABranchStore(HR_EntityManagement system) throws SQLException, ClassNotFoundException {
+    public static BranchStore searchABranchStore() throws SQLException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
         while(true) {
             System.out.println("Enter the Branch ID please");
@@ -98,10 +95,10 @@ public class Main {
                             entityManagement.newEmployeeInNetwork();
                             break;
                         case "2":
-                            entityManagement.updateEmployeesDetails(searchAnEmployee(entityManagement));
+                            entityManagement.updateEmployeesDetails(searchAnEmployee());
                             break;
                         case "3":
-                            entityManagement.getEmployeesDetails(searchAnEmployee(entityManagement));
+                            entityManagement.getEmployeesDetails(searchAnEmployee());
                             break;
                         case "4":
                             entityManagement.calculateSalary();
@@ -142,17 +139,17 @@ public class Main {
                             entityManagement.newBranchInNetwork();
                             break;
                         case "2":
-                            entityManagement.updateBranchDetails(searchABranchStore(entityManagement));
+                            entityManagement.updateBranchDetails(searchABranchStore());
                             break;
                         case "3":
-                            entityManagement.addEmployeeToBranch(searchAnEmployee(entityManagement));
+                            entityManagement.addEmployeeToBranch(searchAnEmployee());
                             break;
                         case "4":
-                            entityManagement.removeEmployeeFromBranch(searchAnEmployee(entityManagement));
+                            entityManagement.removeEmployeeFromBranch(searchAnEmployee());
                             break;
                         case "5":
-                            Employee employee = searchAnEmployee(entityManagement);
-                            BranchStore branch = searchABranchStore(entityManagement);
+                            Employee employee = searchAnEmployee();
+                            BranchStore branch = searchABranchStore();
                             LocalDate date;
                             while(true)
                             {
@@ -200,7 +197,7 @@ public class Main {
                             schedulingManager.updateEmployeeConstrainsByID();
                             break;
                         case "3":
-                            Employee employee = searchAnEmployee(entityManagement);
+                            Employee employee = searchAnEmployee();
                             System.out.println(employee.getName()+ "constraints are: ");
                             employee.printEmployeesConstraints();
 
@@ -251,7 +248,7 @@ public class Main {
                     switch (c) {
 
                         case "1":
-                            BranchStore b = searchABranchStore(entityManagement);
+                            BranchStore b = searchABranchStore();
                             while (true)
                             {
                                 try
@@ -278,7 +275,7 @@ public class Main {
 
                     break;
                 case "6":
-                    BranchStore branch_ = searchABranchStore(entityManagement);
+                    BranchStore branch_ = searchABranchStore();
                     DailyShift s = branch_.getShiftByDate(LocalDate.now().plusDays(2).toString());
                     scanner.nextLine();
                     if(s == null)
