@@ -37,7 +37,7 @@ public class TransitDAOImpl implements TransitDAO {
     }
 
     public void saveTransit(Transit transit) {
-        String insertTransitQuery = "INSERT INTO Transits (transitDate, truckId, driverId) VALUES (?, ?, ?)";
+        String insertTransitQuery = "INSERT INTO Transits (transitDate, truckPlateNumber, driverId) VALUES (?, ?, ?)";
         try {
             // Insert the transit data into the Transits table
             PreparedStatement insertTransitStmt = connection.prepareStatement(insertTransitQuery);
@@ -219,7 +219,7 @@ public class TransitDAOImpl implements TransitDAO {
     @Override
     public void updateTruckAndDriverOfTransit(Transit transit, Truck newTruck, Driver driver) {
         // Update the transit in the database
-        String updateTransitQuery = "UPDATE Transits SET truckId = ?, driverId = ? WHERE transitId = ?";
+        String updateTransitQuery = "UPDATE Transits SET truckPlateNumber = ?, driverId = ? WHERE transitId = ?";
         try {
             PreparedStatement updateTransitStmt = connection.prepareStatement(updateTransitQuery);
             updateTransitStmt.setString(1, newTruck.getPlateNumber());
