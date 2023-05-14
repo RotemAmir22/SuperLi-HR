@@ -46,7 +46,7 @@ public class DAO_Employee implements IDAO_Entity {
             return networkEmployees.get(ID);
         else if(newtworkDrivers != null && newtworkDrivers.containsKey(ID))
             return newtworkDrivers.get(ID);
-            // if the employee not in the MAP
+//             if the employee not in the MAP
         else
         {
             PreparedStatement stmt = conn.prepareStatement("SELECT firstName, lastName, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary FROM Employees WHERE employeeID = ?");stmt.setString(1, (String) ID);
@@ -95,10 +95,9 @@ public class DAO_Employee implements IDAO_Entity {
                 stmt = conn.prepareStatement("SELECT d.licenseId FROM Drivers d WHERE d.employeeID = ?");
                 stmt.setString(1, (String) ID);
                 rs = stmt.executeQuery();
-                Driver driver = null;
+                Driver driver = generator.CreateDriver(employee);
                 while (rs.next()) {
                     int license = rs.getInt("licenseId");
-                    driver = generator.CreateDriver(employee);
                     driver.addLicense(License.values()[license]);
                 }
 

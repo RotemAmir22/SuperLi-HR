@@ -66,6 +66,8 @@ public class DAO_BranchStore implements IDAO_Entity {
                     branchStore.setOpenHours(day, 0, morning);
                     branchStore.setOpenHours(day, 1, evening);
                 }
+                stmt.close();
+                rs.close();
                 // get branch's employees
                 stmt = conn.prepareStatement("SELECT * FROM EmployeeBranches WHERE branchID = ?");
                 stmt.setInt(1, id);
@@ -76,6 +78,8 @@ public class DAO_BranchStore implements IDAO_Entity {
                     Employee e = (Employee) employeesDAO.findByID(employeeId);
                     branchStore.addEmployee(e);
                 }
+                stmt.close();
+                rs.close();
                 // get branch's transits
                 stmt = conn.prepareStatement("SELECT * FROM BranchStoreTransits WHERE branchID = ?");
                 stmt.setInt(1, id);
@@ -85,6 +89,8 @@ public class DAO_BranchStore implements IDAO_Entity {
                     Boolean transitStatus = rs.getBoolean("status");
                     branchStore.storekeeperStatusByDate.put(transitDate, transitStatus);
                 }
+                stmt.close();
+                rs.close();
                 networkBranches.put(id, branchStore);
                 return branchStore;
             }
@@ -136,31 +142,28 @@ public class DAO_BranchStore implements IDAO_Entity {
         BranchStore branch = (BranchStore) o;
         if (branch != null) {
             //set details
-            ResultSet rs;
-            PreparedStatement stmt = conn.prepareStatement("UPDATE BranchStore SET branchID = ?, name = ?, openingTime = ?, address = ?, areaCode = ?, contactName = ?, contactNumber = ? WHERE branchID = ?");
-            stmt.setInt(1, branch.getBranchID());
-            stmt.setString(2, branch.getName());
-            stmt.setString(3, branch.getOpeningTime());
-            stmt.setString(4, branch.getAddress());
-            stmt.setString(5, branch.getArea().toString());
-            stmt.setString(6, branch.getContactName());
-            stmt.setString(7, branch.getContactNumber());
+            PreparedStatement stmt = conn.prepareStatement("UPDATE BranchStore SET name = ?, openingTime = ?, address = ?, areaCode = ?, contactName = ?, contactNumber = ? WHERE branchID = ?");
+            stmt.setString(1, branch.getName());
+            stmt.setString(2, branch.getOpeningTime());
+            stmt.setString(3, branch.getAddress());
+            stmt.setString(4, branch.getArea().toString());
+            stmt.setString(5, branch.getContactName());
+            stmt.setString(6, branch.getContactNumber());
             stmt.executeUpdate();
 
             // set opening hours
             for(int i=0; i<7; i++) {
-                stmt = conn.prepareStatement("UPDATE BranchOpeningHours SET branchID = ?, dayOfWeek = ?, morningOpen = ?, eveningOpen = ? WHERE branchID = ?");
-                stmt.setInt(1, branch.getBranchID());
-                stmt.setInt(2, i);
-                stmt.setInt(3, branch.getOpenHours()[i][0]);
-                stmt.setInt(4, branch.getOpenHours()[i][1]);
+                stmt = conn.prepareStatement("UPDATE BranchOpeningHours SET dayOfWeek = ?, morningOpen = ?, eveningOpen = ? WHERE branchID = ?");
+                stmt.setInt(1, i);
+                stmt.setInt(2, branch.getOpenHours()[i][0]);
+                stmt.setInt(3, branch.getOpenHours()[i][1]);
                 stmt.executeQuery();
             }
 
             // set Employees
             stmt = conn.prepareStatement("SELECT * FROM EmployeeBranches WHERE branchID = ?");
             stmt.setInt(1, branch.getBranchID());
-            rs = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery();
             ArrayList<String> workersInDB = new ArrayList<>();
             while(rs.next()) {
                 workersInDB.add(rs.getString("employeeID"));
@@ -182,7 +185,7 @@ public class DAO_BranchStore implements IDAO_Entity {
             for(String workerID : workersInDB){
                 if(!workersIdInbranch.contains(workerID))
                 {
-                    stmt = conn.prepareStatement("DELETE FROM EmployeeBranches (employeeID,branchID)" + "VALUES (?,?)");
+                    stmt = conn.prepareStatement("DELETE FROM EmployeeBranches WHERE employeeID = ? AND branchID = ? ;VALUES (?,?)");
                     stmt.setString(1,workerID);
                     stmt.setInt(2, branch.getBranchID());
                     stmt.executeQuery();

@@ -8,6 +8,7 @@ import DataAccess.DAO_Generator;
 import java.io.File;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -111,11 +112,12 @@ public class Main {
                                 employee.printEmployeeDetails();
                                 System.out.println("");
                             }
-                            for (Driver driver : employeesDAO.getNetworkDrivers())
-                            {
+                            ArrayList<Driver> drivers = new ArrayList<>(employeesDAO.getNetworkDrivers());
+                            for (Driver driver : drivers) {
                                 driver.printEmployeeDetails();
                                 System.out.println("");
                             }
+
                         case "6":
                             continue;
                         default:
