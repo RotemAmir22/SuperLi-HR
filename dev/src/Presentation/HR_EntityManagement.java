@@ -376,12 +376,10 @@ public class HR_EntityManagement {
         System.out.println("Enter branch's phone number: ");
         String phone = scanner.nextLine();
         BranchStore branchStore = BranchStoreGenerator.CreateBranchStore(name,area,address,phone, "24/7",id);
-
-        branchStoreDAO.insert(branchStore);
-
         System.out.println("Please update the open hours in according to the opening time for scheduling purposes\nthe default is that the branch store is open 24/7");
         updateBranchOpenHours(branchStore);
 
+        branchStoreDAO.insert(branchStore);
         System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
     }
 
