@@ -23,6 +23,7 @@ public class DailyShift {
         this.morningShift = new HashMap<Role,ArrayList<Employee>>();
         this.eveningShift = new HashMap<Role,ArrayList<Employee>>();
         this.shiftManagers= new ArrayList<ShiftManager>();
+        this.endOfDayReport = new File("");
     }
 
     //getters

@@ -162,7 +162,7 @@ public class DAO_BranchStore implements IDAO_Entity {
 
             // set opening hours
             for(int i=0; i<7; i++) {
-                stmt = conn.prepareStatement("INSERT OR REPLACE INTO BranchOpeningHours (dayOfWeek, morningOpen, eveningOpen, branchID)" + "VALUES (?,?,?,?)");
+                stmt = conn.prepareStatement("UPDATE BranchOpeningHours SET morningOpen=?, eveningOpen=? WHERE branchID=? AND dayOfWeek=?");
                 stmt.setInt(1, i);
                 stmt.setInt(2, branch.getOpenHours()[i][0]);
                 stmt.setInt(3, branch.getOpenHours()[i][1]);
@@ -296,10 +296,12 @@ public class DAO_BranchStore implements IDAO_Entity {
      * @throws ClassNotFoundException
      */
     public List<BranchStore> getNetworkBranches() throws SQLException, ClassNotFoundException {
-        if(networkBranches.isEmpty())
+        if(networkBranches.isEmpty()||branchesList.isEmpty()||branchesList.size() <= nextID())
+        {
             ifEmptyMaps();
-        if(branchesList.isEmpty())
+            branchesList.clear();
             branchesList.addAll(networkBranches.values());
+        }
         else {
             branchesList.clear();
             branchesList.addAll(networkBranches.values());
@@ -317,5 +319,14 @@ public class DAO_BranchStore implements IDAO_Entity {
         while(rs.next()) {
             findByID(rs.getString("branchID"));
         }
+    }
+
+    public int nextID() throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM BranchStore");
+        ResultSet rs = stmt.executeQuery();
+        int amount = 1;
+        while(rs.next())
+            amount++;
+        return amount;
     }
 }

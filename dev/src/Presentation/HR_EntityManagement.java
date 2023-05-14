@@ -364,9 +364,7 @@ public class HR_EntityManagement {
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new branch please enter the following details:");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter branch's ID (integer): ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        int id = branchStoreDAO.nextID();
         System.out.println("Enter branch's name: ");
         String name = scanner.nextLine();
         System.out.println("Enter branch's address: ");
@@ -376,13 +374,11 @@ public class HR_EntityManagement {
         System.out.println("Enter branch's phone number: ");
         String phone = scanner.nextLine();
         BranchStore branchStore = BranchStoreGenerator.CreateBranchStore(name,area,address,phone, "24/7",id);
+        branchStoreDAO.insert(branchStore);
         System.out.println("Please update the open hours in according to the opening time for scheduling purposes\nthe default is that the branch store is open 24/7");
         updateBranchOpenHours(branchStore);
-
-        branchStoreDAO.insert(branchStore);
         System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
     }
-
 
     /**
      * gets an employee and asks HR manger what details to update

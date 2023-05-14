@@ -131,9 +131,9 @@ public class ShiftOrganizer {
         /* Get the day by index (0-6) */
         int day = shiftDate.getDayOfWeek().ordinal();
         /* Check if the branch is open this day */
-        if(openHours[day][0] == 1 && openHours[day][1] == 1)
+        if(openHours[day][shift] == 1)
         {
-            System.out.println("On "+ shiftDate.plusDays(1).getDayOfWeek().toString() +" this branch is close.");
+            System.out.println("On "+ shiftDate.plusDays(1).getDayOfWeek().toString() +" this branch is closed in the "+ Shift.values()[shift] );
             return null;
         }
         //get information from manager
