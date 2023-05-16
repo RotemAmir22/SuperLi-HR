@@ -1,12 +1,10 @@
 package ControllerLayer;
 
 import BussinesLogic.Driver;
-import DataAccessLayer.TransitDAO;
 import DomainLayer.OrderDocument;
 import DomainLayer.Transit;
 import DomainLayer.Truck;
 import ExceptionsPackage.UiException;
-import java.util.Set;
 
 public interface TransitController {
     Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException;
@@ -17,6 +15,7 @@ public interface TransitController {
     void moveTransitToFinished(Transit transit);
     boolean transferLoad(Truck smallTruck, Truck biggerTruck);
     boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);
+    public void updateOrderDocumentOfTransit(Transit transit, OrderDocument orderDocument, String addOrRemoveFlag);
 
 //    Set<Transit> getTransitsSet();
     //TODO belongs to check weight before starting transit.

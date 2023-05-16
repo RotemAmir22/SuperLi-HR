@@ -145,6 +145,9 @@ public class TransitPresentation {
 //        this is for checking weight before we start the transit.
 //        boolean validWeight = transitService.isValidWeight(currentTransit, orderDocument);
 //        if (!validWeight) return;
+        //TODO add updateorderdocsintransit
+        transitController.updateOrderDocumentOfTransit(currentTransit,orderDocument,"-1");
+
         currentTransit.addOrderDoc(orderDocument);
         currentTransit.addDestinationStore(orderDocument.getDestination());
         currentTransit.addDestinationSupplier(orderDocument.getSource());
@@ -159,8 +162,11 @@ public class TransitPresentation {
         int orderId = getOrderIdHandler(scanner);
         OrderDocument orderDocument = findOrderById(orderId);
         if (orderDocument == null) return;
-        currenTransit.removeOrderDoc(orderDocument);
 
+        //TODO add updateorderdocsintransit
+        //TODO the next line should be inside the function
+        transitController.updateOrderDocumentOfTransit(currenTransit,orderDocument,"-1");
+        currenTransit.removeOrderDoc(orderDocument);
         currenTransit.removeDestinationSupplier(orderDocument.getSource());
         currenTransit.removeDestinationStore(orderDocument.getDestination());
         currenTransit.setETA();

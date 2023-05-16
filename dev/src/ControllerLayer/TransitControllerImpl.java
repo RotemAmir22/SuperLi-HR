@@ -4,7 +4,9 @@ import BussinesLogic.Driver;
 import BussinesLogic.License;
 import BussinesLogic.TransitCoordinator;
 import DataAccessLayer.TransitDAO;
-import DomainLayer.*;
+import DomainLayer.OrderDocument;
+import DomainLayer.Transit;
+import DomainLayer.Truck;
 import ExceptionsPackage.UiException;
 
 import java.text.ParseException;
@@ -143,5 +145,11 @@ public class TransitControllerImpl implements TransitController {
         }
         return true;
     }
+
+    public void updateOrderDocumentOfTransit(Transit transit, OrderDocument orderDocument, String addOrRemoveFlag)
+    {
+        transitDAO.updateOrderDocumentOfTransit(transit,orderDocument,addOrRemoveFlag);
+    }
+
 
 }
