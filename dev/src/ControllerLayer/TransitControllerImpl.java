@@ -47,7 +47,7 @@ public class TransitControllerImpl implements TransitController {
         }
         Driver driverForTransit = transitCoordinator.addDriverToTransit(transitDate,driverId,truckForTransit.getTruckLicenses());
         if (driverForTransit == null) {
-            throw new UiException("Driver id not found: " + truckPlateNumber);
+            throw new UiException("Driver id not found: " + driverId);
         }
 //        boolean driverCanDriveTruckFlag = isDriverAllowToDriveTruck(truckForTransit, driverForTransit);
 //        if (!driverCanDriveTruckFlag){

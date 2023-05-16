@@ -22,9 +22,6 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         this.transitCoordinator = transitCoordinator;
         this.productController = productController;
     }
-    public TransitCoordinator getTransitCoordinator() {
-        return transitCoordinator;
-    }
     @Override
     public OrderDocument createOrderDoc(int sourceId, int destinationId) {
         Supplier supplier = supplierController.findSupplierById(sourceId) ;
@@ -48,11 +45,15 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     }
     @Override
     public void updateWeight(OrderDocument orderDocument, double weight) {
-        orderDocument.setWeight(weight);
+        orderDocument.setTotalWeight(weight);
         orderDocumentDAO.updateOrderDocumentWeight(orderDocument.getOrderDocumentId(),weight);
     }
 
-    // TODO think about DB approach
+    @Override
+    public void addProductToOrderDoc(int orderDocumentId, int productId, double productAmount) {
+        orderDocumentDAO.addProductToOrderDocument(orderDocumentId,productId, productAmount);
+    }
+
     @Override
     public void updateAmount(int orderId, String productName, double amount) {
         Product product = productController.findProductByName(productName);
@@ -61,7 +62,7 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         orderDocument.getProductsList().replace(product,amount);
         orderDocumentDAO.updateProductAmount(orderId, productId, amount);
     }
-    // TODO think about DB approach
+
     @Override
     public void removeProductFromOrderDoc(int orderDocumentId, String productName) {
         Product productToRemove = productController.findProductByName(productName);
@@ -69,6 +70,8 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         OrderDocument orderDocument = this.orderDocumentDAO.findOrderDocumentById(orderDocumentId);
         if(orderDocument == null) return;
         orderDocument.removeProductFromOrder(productToRemove);
+        orderDocumentDAO.removeProductFromOrder(orderDocumentId, productToRemove.getProductId());
+        orderDocumentDAO.updateOrderDocumentWeight(orderDocument.getOrderDocumentId(),orderDocument.getTotalWeight());
     }
     @Override
     public OrderDocument findOrderDocById(int orderId) {

@@ -54,7 +54,7 @@ public class OrderDocument {
     public void setProductsList(Map<Product, Double> newProductsList) {
         productsList = newProductsList;
     }
-    public void setWeight(double weight) {
+    public void setTotalWeight(double weight) {
         totalWeight=weight;
     }
     public void printOrderProductList() {

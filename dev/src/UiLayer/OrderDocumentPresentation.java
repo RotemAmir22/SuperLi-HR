@@ -28,12 +28,9 @@ public class OrderDocumentPresentation {
      */
 
     public void createNewOrderDocument(Scanner scanner) {
-        int storeId;
-        int supplierId;
-
         System.out.println("-----Create new Order-----");
         System.out.println("Enter source (supplier id) of the order: "); // assuming valid supplier id
-        supplierId = scanner.nextInt();
+        int supplierId = scanner.nextInt();
         scanner.nextLine();
         if(supplierController.findSupplierById(supplierId) == null)
         {
@@ -41,7 +38,7 @@ public class OrderDocumentPresentation {
             return;
         }
         System.out.println("Enter destination (store id)  of the order: "); //assuming valid store id
-        storeId = scanner.nextInt();
+        int storeId = scanner.nextInt();
         scanner.nextLine();
         if(transitCoordinator.findStoreById(storeId) == null)
         {
@@ -51,19 +48,23 @@ public class OrderDocumentPresentation {
         System.out.println("This order id is: "+ OrderDocument.documentNextId);
         OrderDocument newOrderDoc = orderDocumentController.createOrderDoc(supplierId,storeId);
         //TODO also print the docs info ?
-        addProductToOrder(scanner);
+        addProductToOrder(scanner, newOrderDoc.getOrderDocumentId());
     }
     /**
      * responsible on adding products to an existing orderDocument
      **/
-    public void addProductToOrder(Scanner scanner) {
-        int orderDocId;
-        orderDocId = orderDocChoice(scanner);
-        if (orderDocId ==-1) // order id not found
+    public void addProductToOrder(Scanner scanner, int orderDocId) {
+        if (orderDocId == -2)
         {
-            System.out.println("The order id does not exist! ");
-            return;
+            orderDocId = orderDocChoice(scanner);
+            if (orderDocId ==-1) // order id not found
+            {
+                System.out.println("The order id does not exist! ");
+                return;
+            }
         }
+        //int orderDocId;
+
         OrderDocument orderDocument = orderDocumentController.findOrderDocById(orderDocId);
 
         double weight = 0;
@@ -83,6 +84,7 @@ public class OrderDocumentPresentation {
                 weight += inAmount;
                 // TODO also add in DB
                 orderDocument.getProductsList().put(newProduct, inAmount);
+                orderDocumentController.addProductToOrderDoc(orderDocId, newProduct.getProductId(), inAmount);
                 // TODO also add in DB
                 System.out.println("Would you like to add more products? ");
                 System.out.println(("Y/N "));
@@ -131,12 +133,6 @@ public class OrderDocumentPresentation {
         orderDocumentController.removeProductFromOrderDoc(orderDocumentId,productName);
         System.out.println("product: "+ productName + " has been removed");
     };
-    public void printPendingOrderDocs() {
-        orderDocumentController.showPendingOrderDocs();
-    }
-    public void printCompletedOrderDocs(){
-        orderDocumentController.showCompletedOrderDocs();
-    }
     public int orderDocChoice(Scanner scanner)
     {
         int orderId;
@@ -146,5 +142,11 @@ public class OrderDocumentPresentation {
         if(orderDocumentController.orderDocumentChooser(orderId)){
             return orderId;}
         return -1;
+    }
+    public void printPendingOrderDocs() {
+        orderDocumentController.showPendingOrderDocs();
+    }
+    public void printCompletedOrderDocs(){
+        orderDocumentController.showCompletedOrderDocs();
     }
 }

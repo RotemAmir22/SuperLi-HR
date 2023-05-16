@@ -28,6 +28,7 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         this.productDAO = productDAO;
     }
 
+
     @Override
     public void saveOrderDocument(OrderDocument orderDocument) {
         String insertOrderDocumentSQL = "INSERT INTO OrderDocuments(orderDocumentId, sourceSupplierId, destinationBranchStoreId, totalWeight) VALUES (?, ?, ?, ?)";
@@ -38,24 +39,45 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
             insertOrderDocumentStatement.setInt(3, orderDocument.getDestination().getBranchID());
             insertOrderDocumentStatement.setDouble(4, orderDocument.getTotalWeight());
             insertOrderDocumentStatement.executeUpdate();
-
-            ResultSet generatedKeys = insertOrderDocumentStatement.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                int orderId = generatedKeys.getInt(1);
-                String insertOrderDocumentProductSQL = "INSERT INTO OrderDocumentProducts (orderDocumentId, productId, productAmount) VALUES (?, ?, ?)";
-                PreparedStatement insertOrderDocumentProductStatement = connection.prepareStatement(insertOrderDocumentProductSQL);
-                for (Map.Entry<Product, Double> entry : orderDocument.getProductsList().entrySet()) {
-                    insertOrderDocumentProductStatement.setInt(1, orderId);
-                    insertOrderDocumentProductStatement.setInt(2, entry.getKey().getProductId());
-                    insertOrderDocumentProductStatement.setDouble(3, entry.getValue());
-                    insertOrderDocumentProductStatement.executeUpdate();
-                }
-            }
             pendingOrdersDocumentsSet.add(orderDocument);
         } catch (SQLException e) {
             System.out.println("Error saving order document to database: " + e.getMessage());
         }
     }
+
+    @Override
+    public void addProductToOrderDocument(int orderDocumentId, int productId, double productAmount) {
+        OrderDocument orderDocument = findOrderDocumentById(orderDocumentId);
+        Product product = productDAO.findProductById(productId);
+
+        if (orderDocument != null && product != null) {
+            String insertProductQuery = "INSERT INTO OrderDocumentProducts (orderDocumentId, productId, productAmount) VALUES (?, ?, ?)";
+            try {
+                PreparedStatement insertProductStmt = connection.prepareStatement(insertProductQuery);
+                insertProductStmt.setInt(1, orderDocumentId);
+                insertProductStmt.setInt(2, productId);
+                insertProductStmt.setDouble(3, productAmount);
+                insertProductStmt.executeUpdate();
+            } catch (SQLException e) {
+                System.out.println("Error adding product to order document in the database: " + e.getMessage());
+            }
+        }
+    }
+
+
+    @Override
+    public void removeProductFromOrder(int orderDocumentId, int productId) {
+        String deleteProductQuery = "DELETE FROM OrderDocumentProducts WHERE orderDocumentId = ? AND productId = ?";
+        try {
+            PreparedStatement deleteProductStmt = connection.prepareStatement(deleteProductQuery);
+            deleteProductStmt.setInt(1, orderDocumentId);
+            deleteProductStmt.setInt(2, productId);
+            deleteProductStmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error removing product from order in the database: " + e.getMessage());
+        }
+    }
+
 
     @Override
     public OrderDocument findOrderDocumentById(int orderDocId) {
@@ -186,5 +208,7 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
             System.out.println("Error updating product amount in the database: " + e.getMessage());
         }
     }
+
+
 
 }

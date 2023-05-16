@@ -11,6 +11,8 @@ public class TruckControllermpl implements TruckController {
     public TruckControllermpl(TruckDAO truckDAO){
         this.truckDAO = truckDAO;
     }
+
+    // TODO change to saveTruck - setup creation of a truck only in the DB !!
     @Override
     public Truck createTruck(String plateNumber, int iModel, int[] iQArr, double truckWeight, double maxWeight) {
         TruckModel model = TruckModel.values()[iModel];
