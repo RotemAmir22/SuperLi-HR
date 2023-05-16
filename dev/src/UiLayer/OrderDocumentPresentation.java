@@ -64,7 +64,7 @@ public class OrderDocumentPresentation {
             System.out.println("The order id does not exist! ");
             return;
         }
-        OrderDocument orderDocument = this.orderDocumentController.findOrderDocById(orderDocId);
+        OrderDocument orderDocument = orderDocumentController.findOrderDocById(orderDocId);
 
         double weight = 0;
         boolean flag = false;
@@ -81,7 +81,9 @@ public class OrderDocumentPresentation {
                 Double inAmount = scanner.nextDouble();
                 scanner.nextLine();
                 weight += inAmount;
+                // TODO also add in DB
                 orderDocument.getProductsList().put(newProduct, inAmount);
+                // TODO also add in DB
                 System.out.println("Would you like to add more products? ");
                 System.out.println(("Y/N "));
                 input = scanner.nextLine();
@@ -93,6 +95,8 @@ public class OrderDocumentPresentation {
             else { System.out.println("Not a valid product name! ");}
         }
         orderDocumentController.updateWeight(orderDocument,weight);
+        //TODO orderDocumentController.updateOrderDocument(updatedOrderDocument)
+
     }
     public void updateProductAmount(Scanner scanner){
         int orderDocumentId;

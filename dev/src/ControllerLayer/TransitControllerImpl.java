@@ -80,6 +80,9 @@ public class TransitControllerImpl implements TransitController {
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(otherTruck,currentDriver);
         if (!qualifiedDriverFlag) return 0; //driver fail
         transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, otherTruck, currentDriver);
+        //updating transit object
+        transitToUpdate.setTruck(otherTruck);
+        transitToUpdate.setDriver(currentDriver);
         //transitToUpdate.setTruck(otherTruck);
         return 1;// successes
     }
@@ -96,7 +99,9 @@ public class TransitControllerImpl implements TransitController {
         if (!qualifiedDriverFlag) return 0; // driver is not qualified
         //driver is qualified
         transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, newTruck, otherDriver);
-        //transitToUpdate.setDriver(otherDriver);
+        //updating transit object
+        transitToUpdate.setTruck(newTruck);
+        transitToUpdate.setDriver(otherDriver);
         return 1;
     }
     public Date createDateObj(String dateString) throws ParseException {

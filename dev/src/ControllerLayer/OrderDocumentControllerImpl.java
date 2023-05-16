@@ -46,18 +46,20 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
             System.out.println("Product Name: "+ productName + " amount: " +amount);
         }
     }
-    // TODO think about DB approach
-
     @Override
     public void updateWeight(OrderDocument orderDocument, double weight) {
         orderDocument.setWeight(weight);
+        orderDocumentDAO.updateOrderDocumentWeight(orderDocument.getOrderDocumentId(),weight);
     }
+
     // TODO think about DB approach
     @Override
     public void updateAmount(int orderId, String productName, double amount) {
         Product product = productController.findProductByName(productName);
-        OrderDocument orderDocument = this.orderDocumentDAO.findOrderDocumentById(orderId);
+        int productId = product.getProductId();
+        OrderDocument orderDocument = orderDocumentDAO.findOrderDocumentById(orderId);
         orderDocument.getProductsList().replace(product,amount);
+        orderDocumentDAO.updateProductAmount(orderId, productId, amount);
     }
     // TODO think about DB approach
     @Override

@@ -159,6 +159,7 @@ public class TransitDAOImpl implements TransitDAO {
 //        }
 //    }
 
+
     @Override
     public void updateOrderDocumentOfTransit(Transit transit, OrderDocument orderDocument, String addOrRemoveFlag) {
         if (!addOrRemoveFlag.equals("+1") && !addOrRemoveFlag.equals("-1"))
@@ -177,13 +178,13 @@ public class TransitDAOImpl implements TransitDAO {
             orderDocumentQuery =  "INSERT INTO TransitOrderDocuments (transitId, orderDocumentId) VALUES (?, ?)";
             supplierRouteQuery = "INSERT INTO TransitSuppliersRoute (transitId, orderDocumentId, supplierId) VALUES (?, ? ,?)";
             branchStoreRouteQuery = "INSERT INTO TransitBranchStoresRoute (transitId, orderDocumentId, branchStoreId) VALUES (?, ? ,?)";
-            transit.addOrderDoc(orderDocument);
+            //transit.addOrderDoc(orderDocument);
         }
         else { // addOrRemoveFlag.equals("-1")
             orderDocumentQuery = "DELETE FROM TransitOrderDocuments WHERE transitId = ? AND orderDocumentId = ?";
             supplierRouteQuery = "DELETE FROM TransitSuppliersRoute WHERE transitId = ? AND orderDocumentId = ?";
             branchStoreRouteQuery = "DELETE FROM TransitBranchStoresRoute WHERE transitId = ? AND orderDocumentId = ?";
-            transit.removeOrderDoc(orderDocument);
+            //transit.removeOrderDoc(orderDocument);
         }
 
         try {
@@ -207,8 +208,8 @@ public class TransitDAOImpl implements TransitDAO {
 
             Set<Supplier> updatedSuppliersRoute = retrieveSupplierForTransit(transitId);
             Set<BranchStore> updatedBranchStoreRoute = retrieveBranchStoresForTransit(transitId);
-            transit.setDestinationSuppliers(updatedSuppliersRoute);
-            transit.setDestinationBranchStores(updatedBranchStoreRoute);
+//            transit.setDestinationSuppliers(updatedSuppliersRoute);
+//            transit.setDestinationBranchStores(updatedBranchStoreRoute);
 
         } catch (SQLException e)
         {
@@ -225,9 +226,6 @@ public class TransitDAOImpl implements TransitDAO {
             updateTransitStmt.setString(1, newTruck.getPlateNumber());
             updateTransitStmt.setInt(2,Integer.parseInt(driver.getId()));
             updateTransitStmt.executeUpdate();
-            //updating transit object
-            transit.setTruck(newTruck);
-            transit.setDriver(driver);
         } catch (SQLException e) {
             System.out.println("Error updating transit in the database: " + e.getMessage());
         }

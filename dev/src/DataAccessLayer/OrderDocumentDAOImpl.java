@@ -158,6 +158,33 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         return orderDocs;
     }
 
-    // TODO thinks how to approach
-    public void removeProductFromOrder(OrderDocument orderDocument){}
+    @Override
+    public void updateOrderDocumentWeight(int orderDocumentId, double weight) {
+        String updateWeightQuery = "UPDATE OrderDocuments SET totalWeight = ? WHERE orderDocumentId = ?";
+        try {
+            PreparedStatement updateWeightStmt = connection.prepareStatement(updateWeightQuery);
+            updateWeightStmt.setDouble(1, weight);
+            updateWeightStmt.setInt(2, orderDocumentId);
+            updateWeightStmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating weight in the database: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void updateProductAmount(int orderDocumentId, int productId, double weight) {
+
+        String updateProductAmountQuery = "UPDATE OrderDocumentProducts SET productAmount = ? WHERE orderDocumentId = ? AND productId = ?";
+        try {
+            PreparedStatement updateProductAmountStmt = connection.prepareStatement(updateProductAmountQuery);
+            updateProductAmountStmt.setDouble(1, weight);
+            updateProductAmountStmt.setInt(2, orderDocumentId);
+            updateProductAmountStmt.setInt(3, productId); // Assuming you have a function to find the product ID by name
+
+            updateProductAmountStmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating product amount in the database: " + e.getMessage());
+        }
+    }
+
 }
