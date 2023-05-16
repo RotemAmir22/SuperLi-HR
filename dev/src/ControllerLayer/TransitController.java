@@ -11,12 +11,9 @@ import java.util.Set;
 public interface TransitController {
     Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException;
     Transit findTransitByID(int transitId);
-    TransitDAO getTransitDAO();
     boolean showTransitByID(int transitId);
     int replaceTransitTruck(int transitId, String truckPlate);
     int replaceTransitDriver(int transitId, String driverId, String truckPlate);
-    OrderDocumentController getOrderDocController();
-    TransitRecordController getTransitRecordController();
     void moveTransitToFinished(Transit transit);
     boolean transferLoad(Truck smallTruck, Truck biggerTruck);
     boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);

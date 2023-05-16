@@ -58,7 +58,7 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
     }
 
     @Override
-    public OrderDocument findOrderDocById(int orderDocId) {
+    public OrderDocument findOrderDocumentById(int orderDocId) {
         // Check if the order document is in the pendingOrdersDocumentsSet
         for (OrderDocument pendingDoc : pendingOrdersDocumentsSet) {
             if (pendingDoc.getOrderDocumentId() == orderDocId) {
@@ -149,7 +149,7 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 int orderDocId = resultSet.getInt("orderDocumentId");
-                OrderDocument orderDoc = findOrderDocById(orderDocId);
+                OrderDocument orderDoc = findOrderDocumentById(orderDocId);
                 orderDocs.add(orderDoc);
             }
         } catch (SQLException e) {
@@ -157,4 +157,7 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         }
         return orderDocs;
     }
+
+    // TODO thinks how to approach
+    public void removeProductFromOrder(OrderDocument orderDocument){}
 }

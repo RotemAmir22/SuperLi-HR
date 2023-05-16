@@ -46,8 +46,6 @@ public class TruckPresentation {
             return;
         }
         Truck newTruck = this.truckController.createTruck(plateNumber, iModel, iQArr, truckWeight, maxWeight);
-        // TODO figure out the correct way of doing this v.
-        this.truckController.getTruckDAO().saveTruck(newTruck);
         System.out.println("Truck added successfully!");
         //TODO also print the truck info ?
     }
@@ -57,14 +55,14 @@ public class TruckPresentation {
         System.out.println("-----Remove truck-----");
         System.out.println("Enter truck's plate number: ");
         tPlateNumber = scanner.nextLine();
-        boolean flag = this.truckController.removeTruckByPlateNumber(tPlateNumber);
+        boolean flag = truckController.removeTruckByPlateNumber(tPlateNumber);
         if (flag) System.out.printf("Truck with plate number: %s deleted successfully!%n", tPlateNumber);
         else {
             System.out.println("There is no truck with given plate number: " + tPlateNumber);
         }
     }
     public void printAllTrucks(){
-        this.truckController.showAllTrucks();
+        truckController.showAllTrucks();
     }
     /**
      * Handles the user input for choosing a truck model from the available options.
@@ -125,7 +123,7 @@ public class TruckPresentation {
         return intArr;
     }
     void printTruckByPlate(String tPLateNumber){
-        boolean flag = this.truckController.showTruckByPlate(tPLateNumber);
+        boolean flag = truckController.showTruckByPlate(tPLateNumber);
         if (!flag)
             System.out.printf("Truck's plate number: %s not found!%n", tPLateNumber);
     }

@@ -8,7 +8,7 @@ public interface OrderDocumentDAO {
 
     void saveOrderDocument(OrderDocument orderDocument);
 
-    OrderDocument findOrderDocById(int OrderDocId);
+    OrderDocument findOrderDocumentById(int OrderDocId);
 
     void moveToCompleted(OrderDocument completedOrder);
 

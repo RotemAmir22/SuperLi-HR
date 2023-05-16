@@ -22,6 +22,10 @@ public class TransitRecordControllerImpl implements TransitRecordController {
         return transitRecordDAO;
     }
     @Override
+    public void saveTransitRecord(TransitRecord transitRecord) {
+        transitRecordDAO.saveTransitRecord(transitRecord);
+    }
+    @Override
     public void showTransitRecords(){
         System.out.println("-----Transit Records-----");
         Set<TransitRecord> transitRecordSet = transitRecordDAO.getTransitRecordsSet();

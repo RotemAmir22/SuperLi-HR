@@ -31,7 +31,7 @@ public class PresentationSystem {
         OrderDocumentController primeOrderDocController = new OrderDocumentControllerImpl(primeOrderDocDAO,
                 primeSupplierController,primeTransitCoordinator,primeProductController);
         OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(primeOrderDocController,
-                primeProductController);
+                primeProductController, primeSupplierController, primeTransitCoordinator);
 
         TransitRecordDAO primeTransitRecordDAO = new TransitRecordsDAOImpl();
         TransitRecordController primeTransitRecordController = new TransitRecordControllerImpl(primeTransitRecordDAO);
@@ -39,7 +39,7 @@ public class PresentationSystem {
         TransitDAO primeTransitDAO = new TransitDAOImpl(primeTruckDAO, primeEmployeeDAO, primeOrderDocDAO, primeSupplierDAO, primeBranchStoreDAO);
         TransitController primeTransitController = new TransitControllerImpl(primeTransitDAO, primeTruckController,
                 primeTransitCoordinator, primeOrderDocController, primeTransitRecordController);
-        TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeTransitCoordinator);
+        TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeTransitCoordinator, primeOrderDocController, primeTransitRecordController);
 
 
         ps.switchMenu(scanner, truckPresentation, orderDocumentPresentation, transitPresentation);

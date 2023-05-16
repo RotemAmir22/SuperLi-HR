@@ -52,6 +52,7 @@ public class TransitControllerImpl implements TransitController {
 //            throw new QualificationsException("Driver lack certain qualifications for driving the chosen truck");
 //        }
         Transit newTransit = new Transit(transitDate, truckForTransit, driverForTransit);
+        transitDAO.saveTransit(newTransit);
         return newTransit;
     }
     @Override
@@ -62,10 +63,6 @@ public class TransitControllerImpl implements TransitController {
 //    public Set<Transit> getTransitsSet() {
 //        return this.transitDAO.getTransitsSet();
 //    }
-    @Override
-    public TransitDAO getTransitDAO() {
-        return this.transitDAO;
-    }
     @Override
     public boolean showTransitByID(int transitId) {
         Transit transitToShow = findTransitByID(transitId);
@@ -80,10 +77,8 @@ public class TransitControllerImpl implements TransitController {
         Truck otherTruck = truckController.findTruckByPlate(newTruckPlate);
         if (otherTruck == null) return -1; //truck fail
         Driver currentDriver = transitToUpdate.getDriver();
-
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(otherTruck,currentDriver);
         if (!qualifiedDriverFlag) return 0; //driver fail
-        // TODO q:does this update also the cache in the transitDAO ?
         transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, otherTruck, currentDriver);
         //transitToUpdate.setTruck(otherTruck);
         return 1;// successes
@@ -100,33 +95,9 @@ public class TransitControllerImpl implements TransitController {
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
         if (!qualifiedDriverFlag) return 0; // driver is not qualified
         //driver is qualified
-        // TODO q:does this update also the cache in the transitDAO ?
         transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, newTruck, otherDriver);
         //transitToUpdate.setDriver(otherDriver);
         return 1;
-    }
-    @Override
-    public OrderDocumentController getOrderDocController() {
-        return orderDocController;
-    }
-    @Override
-    public TransitRecordController getTransitRecordController() {
-        return transitRecordController;
-    }
-    @Override
-    public boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument) {
-        Truck currentTruck = currentTransit.getTruck();
-        double maxCarry = currentTruck.getMaxCarryWeight();
-        double currentTransitWeight = currentTransit.calcOrdersWeight();
-        double weightToAdd = orderDocument.getTotalWeight();
-        double newCapacity = maxCarry-(currentTransitWeight+weightToAdd);
-        if (newCapacity < 0){
-            System.out.println("Exceeding truck's max weight");
-            System.out.printf("available capacity is: %.2f %n", (maxCarry-currentTransitWeight));
-            System.out.println("Order was not added to transit");
-            return false;
-        }
-        return true;
     }
     public Date createDateObj(String dateString) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -151,4 +122,21 @@ public class TransitControllerImpl implements TransitController {
         System.out.println("Chosen truck is too small, please try again.. ");
         return false;
     }
+
+    @Override
+    public boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument) {
+        Truck currentTruck = currentTransit.getTruck();
+        double maxCarry = currentTruck.getMaxCarryWeight();
+        double currentTransitWeight = currentTransit.calcOrdersWeight();
+        double weightToAdd = orderDocument.getTotalWeight();
+        double newCapacity = maxCarry-(currentTransitWeight+weightToAdd);
+        if (newCapacity < 0){
+            System.out.println("Exceeding truck's max weight");
+            System.out.printf("available capacity is: %.2f %n", (maxCarry-currentTransitWeight));
+            System.out.println("Order was not added to transit");
+            return false;
+        }
+        return true;
+    }
+
 }

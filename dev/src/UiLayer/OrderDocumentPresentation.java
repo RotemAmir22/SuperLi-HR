@@ -1,7 +1,9 @@
 package UiLayer;
 
+import BussinesLogic.TransitCoordinator;
 import ControllerLayer.OrderDocumentController;
 import ControllerLayer.ProductController;
+import ControllerLayer.SupplierController;
 import DomainLayer.OrderDocument;
 import DomainLayer.Product;
 import java.util.Scanner;
@@ -9,11 +11,15 @@ import java.util.Scanner;
 public class OrderDocumentPresentation {
     private final OrderDocumentController orderDocumentController;
     private final ProductController productController;
+    private final SupplierController supplierController;
+    private final TransitCoordinator transitCoordinator;
 
 
-    public OrderDocumentPresentation(OrderDocumentController orderDocumentController, ProductController productController) {
+    public OrderDocumentPresentation(OrderDocumentController orderDocumentController, ProductController productController, SupplierController supplierController, TransitCoordinator transitCoordinator) {
         this.orderDocumentController = orderDocumentController;
         this.productController = productController;
+        this.supplierController = supplierController;
+        this.transitCoordinator = transitCoordinator;
     }
     /**
      * This function interacts with the user to collect information about a new orderdocs:
@@ -29,24 +35,21 @@ public class OrderDocumentPresentation {
         System.out.println("Enter source (supplier id) of the order: "); // assuming valid supplier id
         supplierId = scanner.nextInt();
         scanner.nextLine();
-        if(orderDocumentController.getSupplierController().findSupplierById(supplierId) == null)
+        if(supplierController.findSupplierById(supplierId) == null)
         {
-            System.out.println("that is not an existing id of a supplier! ");
+            System.out.println("That is not an existing id of a supplier! ");
             return;
         }
         System.out.println("Enter destination (store id)  of the order: "); //assuming valid store id
         storeId = scanner.nextInt();
         scanner.nextLine();
-        if(orderDocumentController.getTransitCoordinator().findStoreById(storeId) == null)
+        if(transitCoordinator.findStoreById(storeId) == null)
         {
-            System.out.println("that is not an existing id of a store! ");
+            System.out.println("That is not an existing id of a store! ");
             return;
         }
         System.out.println("This order id is: "+ OrderDocument.documentNextId);
-
-        OrderDocument newOrderDoc = this.orderDocumentController.createOrderDoc(supplierId,storeId);
-        //TODO figure out the correct way of doing this v.
-        this.orderDocumentController.getOrderDocumentDAO().saveOrderDocument(newOrderDoc);
+        OrderDocument newOrderDoc = orderDocumentController.createOrderDoc(supplierId,storeId);
         //TODO also print the docs info ?
         addProductToOrder(scanner);
     }
@@ -61,7 +64,7 @@ public class OrderDocumentPresentation {
             System.out.println("The order id does not exist! ");
             return;
         }
-        OrderDocument orderDocument = this.orderDocumentController.getOrderDocumentDAO().findOrderDocById(orderDocId);
+        OrderDocument orderDocument = this.orderDocumentController.findOrderDocById(orderDocId);
 
         double weight = 0;
         boolean flag = false;
@@ -70,7 +73,7 @@ public class OrderDocumentPresentation {
             //function that prints all products instead of what there is now
             this.productController.showAllProducts();
             String input = scanner.nextLine(); //assuming valid input
-            Product newProduct = orderDocumentController.getProductController().findProductByName(input);
+            Product newProduct = productController.findProductByName(input);
 
             if(newProduct != null) //product exist
             {
@@ -107,8 +110,7 @@ public class OrderDocumentPresentation {
         double amount = scanner.nextDouble();
         scanner.nextLine();
 
-        OrderDocument orderDoc= this.orderDocumentController.getOrderDocumentDAO().findOrderDocById(orderDocumentId);
-        this.orderDocumentController.updateAmount(orderDocumentId,productName,amount);
+        orderDocumentController.updateAmount(orderDocumentId,productName,amount);
         System.out.println("Amount has changed to: "+ amount);
     }
     public void removeProductFromOrder(Scanner scanner){
@@ -119,18 +121,17 @@ public class OrderDocumentPresentation {
             System.out.println("The order id does not exist! ");
             return;
         }
-        this.orderDocumentController.showAllProductsInDoc(orderDocumentId);
+        orderDocumentController.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to remove: ");
         String productName = scanner.nextLine();
-        OrderDocument orderDoc= this.orderDocumentController.getOrderDocumentDAO().findOrderDocById(orderDocumentId);
-        this.orderDocumentController.removeProduct(orderDocumentId,productName);
+        orderDocumentController.removeProductFromOrderDoc(orderDocumentId,productName);
         System.out.println("product: "+ productName + " has been removed");
     };
     public void printPendingOrderDocs() {
-        this.orderDocumentController.showPendingOrderDocs();
+        orderDocumentController.showPendingOrderDocs();
     }
     public void printCompletedOrderDocs(){
-        this.orderDocumentController.showCompletedOrderDocs();
+        orderDocumentController.showCompletedOrderDocs();
     }
     public int orderDocChoice(Scanner scanner)
     {

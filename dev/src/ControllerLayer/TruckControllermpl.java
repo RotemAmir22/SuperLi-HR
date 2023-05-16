@@ -18,6 +18,7 @@ public class TruckControllermpl implements TruckController {
         for (int i : iQArr) {
             truck.addLToLSet(BussinesLogic.License.values()[i]);
         }
+        truckDAO.saveTruck(truck);
         return truck;
     }
     @Override
@@ -31,19 +32,15 @@ public class TruckControllermpl implements TruckController {
     public Truck findTruckByPlate(String tPlateNumber) {
         return this.truckDAO.findTruckByPlateNumber(tPlateNumber);
     }
-    @Override
-    public TruckDAO getTruckDAO() {
-        return this.truckDAO;
-    }
 
     @Override
-    // TODO what to do about this function ?
     public void showAllTrucks() {
         Set<Truck> trucks = truckDAO.getTrucksSet();
         for (Truck t : trucks){
             t.printTruck();
         }
     }
+
     @Override
     public boolean showTruckByPlate(String tPlateNumber) {
         Truck truckToShow = findTruckByPlate(tPlateNumber);
@@ -51,11 +48,6 @@ public class TruckControllermpl implements TruckController {
         truckToShow.printTruck();
         return true;
         }
-    @Override
-    public void transferLoad(Truck smallerTruck, Truck biggerTruck){
-        biggerTruck.loadTruck(smallerTruck.getCurrentWeight());
-        smallerTruck.setCurrentLoadWeight(0);
-    }
     @Override
     public boolean transferLoadV2(Truck smallerTruck, Truck biggerTruck){
         if (biggerTruck.getMaxCarryWeight() >= smallerTruck.getCurrentWeight())
@@ -65,5 +57,17 @@ public class TruckControllermpl implements TruckController {
             return true;
         }
         return false;
+    }
+
+    //TODO delete this method.
+    @Override
+    public void transferLoad(Truck smallerTruck, Truck biggerTruck){
+        biggerTruck.loadTruck(smallerTruck.getCurrentWeight());
+        smallerTruck.setCurrentLoadWeight(0);
+    }
+    //TODO better practice is not to use this method.
+    @Override
+    public TruckDAO getTruckDAO() {
+        return this.truckDAO;
     }
 }

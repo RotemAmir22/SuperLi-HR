@@ -3,7 +3,9 @@ import BussinesLogic.BranchStore;
 import BussinesLogic.Driver;
 import BussinesLogic.License;
 import BussinesLogic.TransitCoordinator;
+import ControllerLayer.OrderDocumentController;
 import ControllerLayer.TransitController;
+import ControllerLayer.TransitRecordController;
 import ControllerLayer.TruckController;
 import DomainLayer.*;
 import ExceptionsPackage.UiException;
@@ -18,12 +20,16 @@ import java.util.Set;
 public class TransitPresentation {
     private final TransitController transitController;
     private final TruckController truckController;
+    private final OrderDocumentController orderDocumentController;
     private final TransitCoordinator transitCoordinator;
+    private final TransitRecordController transitRecordController;
     public TransitPresentation(TransitController transitController, TruckController truckController,
-                               TransitCoordinator transitCoordinator) {
+                               TransitCoordinator transitCoordinator, OrderDocumentController orderDocumentController, TransitRecordController transitRecordController) {
         this.transitController = transitController;
         this.truckController = truckController;
         this.transitCoordinator = transitCoordinator;
+        this.orderDocumentController = orderDocumentController;
+        this.transitRecordController = transitRecordController;
     }
 
 
@@ -39,13 +45,11 @@ public class TransitPresentation {
 //        scanner.nextLine();
         Transit newTransit;
         try {
-            newTransit = this.transitController.createTransit(sTransitDate, truckPLateNumber, driverId);
+            newTransit = transitController.createTransit(sTransitDate, truckPLateNumber, driverId);
         } catch (UiException e) {
             System.out.println(e.getMessage());
             return;
         }
-        // TODO figure out the correct way of doing this v.
-        this.transitController.getTransitDAO().saveTransit(newTransit);
         newTransit.printTransit();
         System.out.println("Transit added successfully!");
 
@@ -118,7 +122,7 @@ public class TransitPresentation {
             else if (choice==2) {
                 System.out.println("Enter driver id: ");
                 String driverId = scanner.nextLine();
-                iFlag = this.transitController.replaceTransitDriver(transitIdToReplace, driverId, newTruckPlate);
+                iFlag = transitController.replaceTransitDriver(transitIdToReplace, driverId, newTruckPlate);
                 if (iFlag==-1){
                     System.out.printf("Driver id: %d not found! %n", driverId);
                 } else if (iFlag==0) {
@@ -173,7 +177,7 @@ public class TransitPresentation {
         return productName;
     }
     public OrderDocument findOrderById(int orderId){
-        OrderDocument orderDocFound = transitController.getOrderDocController().findOrderDocById(orderId);
+        OrderDocument orderDocFound = orderDocumentController.findOrderDocById(orderId);
         if (orderDocFound == null)
             System.out.printf("Order Document id: %d not found %n",orderId);
         return orderDocFound;
@@ -198,7 +202,7 @@ public class TransitPresentation {
         transit.setDepartureTime(LocalTime.now());
         System.out.println("ETA in minutes for the transit: " + transit.getETA());
 
-        TransitRecord transitRecord = this.transitController.getTransitRecordController().createTransitRecord(transit);
+        TransitRecord transitRecord = transitRecordController.createTransitRecord(transit);
 
         for (Supplier supplier : transit.getDestinationSuppliers())
         {
@@ -229,16 +233,16 @@ public class TransitPresentation {
 
                     System.out.println("Unloading order number: " + orderDoc.getOrderDocumentId());
                     transit.getTruck().unloadTruck(orderDoc.getTotalWeight());
-                    this.transitController.getOrderDocController().moveOrderToFinish(orderDoc);
+                    orderDocumentController.moveOrderToFinish(orderDoc);
                 }
             }
         }
-        this.transitController.getTransitRecordController().getTransitRecordDAO().saveTransitRecord(transitRecord);
+        transitRecordController.saveTransitRecord(transitRecord);
         System.out.println("finished transit ");
-        this.transitController.moveTransitToFinished(transit);
+        transitController.moveTransitToFinished(transit);
     }
     public void printAllTransitRecords(){
-        this.transitController.getTransitRecordController().showTransitRecords();
+        transitRecordController.showTransitRecords();
     }
     public void overweight(Scanner scanner, Transit transit, OrderDocument currentOrder) {
         int choice;
@@ -304,7 +308,7 @@ public class TransitPresentation {
         System.out.println("Reduce at least: " + overWeightAmount + " kg");
         orderDocument.printOrder();
         String sProductName = getProductNameHandler(scanner);
-        transitController.getOrderDocController().removeProduct(transit.getTransitId(), sProductName);
+        orderDocumentController.removeProductFromOrderDoc(transit.getTransitId(), sProductName);
         double updatedOrderWeight = orderDocument.getTotalWeight();
         double newCurrentWeight = truckCurrentWeight - (originalOrderWeight - updatedOrderWeight);
         transit.getTruck().setCurrentLoadWeight(newCurrentWeight);

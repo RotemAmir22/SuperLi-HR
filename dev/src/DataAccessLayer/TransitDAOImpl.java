@@ -163,7 +163,7 @@ public class TransitDAOImpl implements TransitDAO {
     public void updateOrderDocumentOfTransit(Transit transit, OrderDocument orderDocument, String addOrRemoveFlag) {
         if (!addOrRemoveFlag.equals("+1") && !addOrRemoveFlag.equals("-1"))
         {
-            System.out.println("Invalid addOrRemoveFlag value: " + addOrRemoveFlag + "Must be +1 or -1");
+            System.out.println("Invalid addOrRemoveFlag value: " + addOrRemoveFlag + "Must be: +1 or -1");
             return;
         }
         String orderDocumentQuery;
@@ -225,6 +225,7 @@ public class TransitDAOImpl implements TransitDAO {
             updateTransitStmt.setString(1, newTruck.getPlateNumber());
             updateTransitStmt.setInt(2,Integer.parseInt(driver.getId()));
             updateTransitStmt.executeUpdate();
+            //updating transit object
             transit.setTruck(newTruck);
             transit.setDriver(driver);
         } catch (SQLException e) {
@@ -255,7 +256,7 @@ public class TransitDAOImpl implements TransitDAO {
                 //TODO make sure this works BussinesLogic.Driver
                 Driver driver = (Driver) driverDAO.findByID(driverIdResult);
 
-                // TODO high coupling with ETA
+                // TODO pay-attention: high coupling with ETA
                 if (etaResult == 0){
                     // that means that there are not orderDocuments related to this driver
                     // Create a new Transit object with the retrieved data
@@ -315,7 +316,7 @@ public class TransitDAOImpl implements TransitDAO {
                 // Retrieve order document data from the result set
                 int orderDocumentId = resultSet.getInt("orderDocumentId");
                 // TODO: Retrieve order document object based on the retrieved ID
-                OrderDocument orderDocument = orderDocumentDAO.findOrderDocById(orderDocumentId);
+                OrderDocument orderDocument = orderDocumentDAO.findOrderDocumentById(orderDocumentId);
 
                 if (orderDocument != null) {
                     orderDocuments.add(orderDocument);
