@@ -16,7 +16,6 @@ import java.util.*;
  */
 public class BranchStore extends Site {
     private static DAO_DailyShift dao_dailyShift;
-    private static int serialNumCounter=0;
     private int branchID; //cannot change to ID once created
     private String name;
     private List<Employee> employees;
@@ -30,11 +29,10 @@ public class BranchStore extends Site {
      * Constructor
      * @param openingtime: description
      */
-    public BranchStore(String name,Area area, String address, String phoneNum, String openingtime) throws SQLException, ClassNotFoundException {
+    public BranchStore(String name,Area area, String address, String phoneNum, String openingtime, int id) throws SQLException, ClassNotFoundException {
         super(address, area, name, phoneNum);
         this.name = name;
-        serialNumCounter++;
-        this.branchID = serialNumCounter;
+        this.branchID = id;
         this.employees = new ArrayList<Employee>();
         this.openHours = new int[7][2]; //default value is 0 means open 24/7
         //this.shiftsHistory = new HashMap<LocalDate, DailyShift>();

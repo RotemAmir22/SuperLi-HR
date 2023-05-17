@@ -14,7 +14,6 @@ import java.util.*;
  * This class will help HR user to manage the system:
  * - create new employees and branches
  * - update employees and branches
- * We assume there is one user at this point.
  */
 public class HR_EntityManagement {
 
@@ -28,11 +27,10 @@ public class HR_EntityManagement {
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
     }
 
-
     /**
      * @param employee: gets employee and adds a qualification to the employee
      */
-    public void addQualificationToEmployee(Employee employee) throws SQLException {
+    public void addQualificationToEmployee(Employee employee) {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         System.out.println("-Add qualification to Employee-");
@@ -69,7 +67,7 @@ public class HR_EntityManagement {
     /**
      * @param employee: gets employee and removes a role qualification
      */
-    public void removeQualificationToEmployee(Employee employee) throws SQLException {
+    public void removeQualificationToEmployee(Employee employee) {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         System.out.println("-Remove qualification from Employee-");
@@ -106,7 +104,7 @@ public class HR_EntityManagement {
      * add a licence to a driver
      * @param driver to update
      */
-    public void addLicenceToDriver(Driver driver) throws SQLException {
+    public void addLicenceToDriver(Driver driver) {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         System.out.println("-Add licence to Driver-");
@@ -142,7 +140,7 @@ public class HR_EntityManagement {
     /**
      * @param driver: gets driver and removes a licence
      */
-    public void removeLicenceFromDriver(Driver driver) throws SQLException {
+    public void removeLicenceFromDriver(Driver driver) {
         Scanner scanner = new Scanner(System.in);
         String answer = "y";
         System.out.println("-Remove Licence from Driver-");
@@ -190,7 +188,6 @@ public class HR_EntityManagement {
             try{
                 System.out.println("Enter branch ID: ");
                 String branchNum = scanner.nextLine();
-
                 //find branch in network
                 BranchStore branch = (BranchStore) branchStoreDAO.findByID(branchNum); // check in DAO
                 if(branch== null){
@@ -199,7 +196,6 @@ public class HR_EntityManagement {
                 else {
                     branch.addEmployee(employee);
                     branchStoreDAO.update(branch); // connect to DB
-                    answer=scanner.nextLine();
                     System.out.println("Do you want to add the employee to another branch? (enter y/n): ");
                     answer = scanner.nextLine();
                 }
@@ -368,6 +364,7 @@ public class HR_EntityManagement {
         //get from HR manager all the details to create a new employee in the system
         System.out.println("Hello HR manager, to add a new branch please enter the following details:");
         Scanner scanner = new Scanner(System.in);
+        int id = branchStoreDAO.nextID();
         System.out.println("Enter branch's name: ");
         String name = scanner.nextLine();
         System.out.println("Enter branch's address: ");
@@ -376,22 +373,18 @@ public class HR_EntityManagement {
         Area area = Area.valueOf(scanner.nextLine());
         System.out.println("Enter branch's phone number: ");
         String phone = scanner.nextLine();
-        BranchStore branchStore = BranchStoreGenerator.CreateBranchStore(name,area,address,phone, "24/7");
-
+        BranchStore branchStore = BranchStoreGenerator.CreateBranchStore(name,area,address,phone, "24/7",id);
         branchStoreDAO.insert(branchStore);
-
         System.out.println("Please update the open hours in according to the opening time for scheduling purposes\nthe default is that the branch store is open 24/7");
         updateBranchOpenHours(branchStore);
-
         System.out.println("Branch successfully added to system, ID number is: "+ branchStore.getBranchID());
     }
-
 
     /**
      * gets an employee and asks HR manger what details to update
      * @param employee: employee to update
      */
-    public void updateEmployeesDetails(Employee employee) throws SQLException {
+    public void updateEmployeesDetails(Employee employee) {
         int choice = 0;
         Scanner scanner = new Scanner(System.in);
         while (choice != 7) {
@@ -607,6 +600,7 @@ public class HR_EntityManagement {
                         break;
                 }
                 branchStoreDAO.update(branch);
+                break;
             }
             catch (Exception e)
             {

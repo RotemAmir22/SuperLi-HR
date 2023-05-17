@@ -26,8 +26,8 @@ public class DAO_Employee implements IDAO_Entity {
     private Connection conn;
 
     // constructor
-    public DAO_Employee() throws SQLException, ClassNotFoundException {
-        conn = Database.connect();
+    public DAO_Employee(Connection connection) throws SQLException, ClassNotFoundException {
+        conn = connection;
         networkEmployees = new HashMap<>();
         newtworkDrivers = new HashMap<>();
         employeeList = new ArrayList<>();
@@ -49,7 +49,8 @@ public class DAO_Employee implements IDAO_Entity {
 //             if the employee not in the MAP
         else
         {
-            PreparedStatement stmt = conn.prepareStatement("SELECT firstName, lastName, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary FROM Employees WHERE employeeID = ?");stmt.setString(1, (String) ID);
+            PreparedStatement stmt = conn.prepareStatement("SELECT firstName, lastName, bankAccount, salary, empTerms, startDate, shiftsLimit, cumulativeSalary FROM Employees WHERE employeeID = ?");
+            stmt.setString(1, (String) ID);
             ResultSet rs = stmt.executeQuery();
             Employee employee;
             EmployeeGenerator generator;
@@ -111,11 +112,15 @@ public class DAO_Employee implements IDAO_Entity {
                     driver.addTransitDate(date);
                 }
                 //add to map
+                stmt.close();
+                rs.close();
                 newtworkDrivers.put((String) ID,driver);
                 return driver;
             }
             else {
                 //add to map
+                stmt.close();
+                rs.close();
                 networkEmployees.put((String) ID,employee);
                 return employee;
             }

@@ -78,16 +78,18 @@ public class HR_SchedulingManagement {
                 BranchStore branchStore = branchStores.get(i);
                 //schedule morning shift
                 newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.storekeeperStatusByDate,branchStore.getOpenHours(), 0, newShift[i],day);
-                assert newShift[i] != null;
-                System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Morning);
+                if(newShift[i] != null)
+                    System.out.println("This shift is set for: "+ newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Morning);
 
                 //schedule evening shift
                 newShift[i] = ShiftOrganizer.DailyShifts(listEmployees,branchStore.storekeeperStatusByDate, branchStore.getOpenHours(), 1, newShift[i],day);
 
-                assert newShift[i] != null;
-                System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
-                dailyShiftDAO.update(newShift[i],branchStore.getBranchID());
-                newShift[i].showMeSchedualing();
+                if(newShift[i] != null)
+                {
+                    System.out.println("This shift is set for: "+newShift[i].getDate().toString()+" in the "+ShiftOrganizer.Shift.Evening+"\n");
+                    dailyShiftDAO.insert(newShift[i],branchStore.getBranchID());
+                    newShift[i].showMeSchedualing();
+                }
             }
 
         }
