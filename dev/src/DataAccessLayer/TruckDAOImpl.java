@@ -12,8 +12,8 @@ public class TruckDAOImpl implements TruckDAO {
     private final Set<Truck> trucksSet = new HashSet<>();
     private final Connection connection;
 
-    public TruckDAOImpl() throws SQLException, ClassNotFoundException {
-        connection = Database.connect();
+    public TruckDAOImpl(Connection connection) throws SQLException, ClassNotFoundException {
+        this.connection = connection;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class TruckDAOImpl implements TruckDAO {
             while (resultSet.next()) {
                 String plateNumber = resultSet.getString("plateNumber");
                 Truck truck = findTruckByPlateNumber(plateNumber);
-                // TODO main Truck set is getting full also ? thinks about this
+                // TODO main Truck set is getting full also ? yes - thinks about this
                 trucksSet.add(truck);
             }
         } catch (SQLException e) {

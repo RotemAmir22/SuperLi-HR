@@ -21,8 +21,8 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
     private final ProductDAO productDAO;
     private final DAO_BranchStore branchStoreDAO; //TODO check if can create here instead of passing as parameter
 
-    public OrderDocumentDAOImpl(SupplierDAO supplierDAO, DAO_BranchStore branchStoreDAO, ProductDAO productDAO) throws SQLException, ClassNotFoundException {
-        connection = Database.connect();
+    public OrderDocumentDAOImpl(Connection connection,SupplierDAO supplierDAO, DAO_BranchStore branchStoreDAO, ProductDAO productDAO) throws SQLException, ClassNotFoundException {
+        this.connection = connection;
         this.supplierDAO = supplierDAO;
         this.branchStoreDAO = branchStoreDAO;
         this.productDAO = productDAO;
@@ -31,17 +31,14 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
 
     @Override
     public void saveOrderDocument(OrderDocument orderDocument) {
-        System.out.println("---debug: 2---");
         String insertOrderDocumentSQL = "INSERT INTO OrderDocuments(orderDocumentId, sourceSupplierId, destinationBranchStoreId, totalWeight) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement insertOrderDocumentStatement = connection.prepareStatement(insertOrderDocumentSQL);
             insertOrderDocumentStatement.setInt(1, orderDocument.getOrderDocumentId());
             insertOrderDocumentStatement.setInt(2, orderDocument.getSource().getSupplierId());
             insertOrderDocumentStatement.setInt(3, orderDocument.getDestination().getBranchID());
-            insertOrderDocumentStatement.setDouble(4, 0);
-            System.out.println("---debug: 3---");
+            insertOrderDocumentStatement.setDouble(4, orderDocument.getTotalWeight());
             insertOrderDocumentStatement.executeUpdate();
-            System.out.println("---debug: 4---");
             pendingOrdersDocumentsSet.add(orderDocument);
         } catch (SQLException e) {
             System.out.println("Error saving order document to database: " + e.getMessage());

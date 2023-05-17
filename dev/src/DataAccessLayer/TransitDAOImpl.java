@@ -27,8 +27,8 @@ public class TransitDAOImpl implements TransitDAO {
     private final OrderDocumentDAO orderDocumentDAO;
     private final SupplierDAO supplierDAO; // TODO when merge with suppliers module see also branch store
     private final DAO_BranchStore branchStoreDAO; //TODO check if can create here instead of passing as parameter
-    public TransitDAOImpl(TruckDAO truckDAO, DAO_Employee daoEmployee,OrderDocumentDAO orderDocumentDAO ,SupplierDAO supplierDAO , DAO_BranchStore branchStoreDAO) throws SQLException, ClassNotFoundException {
-        this.connection = Database.connect();
+    public TransitDAOImpl(Connection connection, TruckDAO truckDAO, DAO_Employee daoEmployee,OrderDocumentDAO orderDocumentDAO ,SupplierDAO supplierDAO , DAO_BranchStore branchStoreDAO) throws SQLException, ClassNotFoundException {
+        this.connection = connection;
         this.truckDAO = truckDAO;
         this.driverDAO = daoEmployee;
         this.orderDocumentDAO = orderDocumentDAO;

@@ -1,9 +1,6 @@
 package DataAccess;
 
-import DataAccessLayer.OrderDocumentDAO;
-import DataAccessLayer.ProductDAO;
-import DataAccessLayer.TransitDAO;
-import DataAccessLayer.TruckDAO;
+import DataAccessLayer.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,6 +14,12 @@ public class DAO_Generator {
     private static DAO_BranchStore BranchStoreDAO;
     private static DAO_Employee EmployeeDAO;
     private static DAO_DailyShift DailyShiftDAO;
+    private static TruckDAO truckDAO;
+    private static SupplierDAO supplierDAO;
+    private static ProductDAO productDAO;
+    private static OrderDocumentDAO orderDocumentDAO;
+    private static TransitDAO transitDAO;
+
 
     private static Connection connection;
 
@@ -58,7 +61,7 @@ public class DAO_Generator {
 
     public static TruckDAO getTruckDAO() throws SQLException, ClassNotFoundException {
         if (truckDAO == null) {
-            truckDAO = new TruckDAOImpl();
+            truckDAO = new TruckDAOImpl(connection);
         }
         return truckDAO;
     }
@@ -77,14 +80,14 @@ public class DAO_Generator {
 
     public static OrderDocumentDAO getOrderDocumentDAO() throws SQLException, ClassNotFoundException {
         if (orderDocumentDAO == null) {
-            orderDocumentDAO = new OrderDocumentDAOImpl(getSupplierDAO(), getBranchStoreDAO(), getProductDAO());
+            orderDocumentDAO = new OrderDocumentDAOImpl(connection, getSupplierDAO(), getBranchStoreDAO(), getProductDAO());
         }
         return orderDocumentDAO;
     }
 
     public static TransitDAO getTransitDAO() throws SQLException, ClassNotFoundException {
         if (transitDAO == null) {
-            transitDAO = new TransitDAOImpl(getTruckDAO(), getEmployeeDAO(), getOrderDocumentDAO(), getSupplierDAO(), getBranchStoreDAO());
+            transitDAO = new TransitDAOImpl(connection, getTruckDAO(), getEmployeeDAO(), getOrderDocumentDAO(), getSupplierDAO(), getBranchStoreDAO());
         }
         return transitDAO;
     }

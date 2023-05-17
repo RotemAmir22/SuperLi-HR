@@ -37,12 +37,6 @@ public class DAO_BranchStore implements IDAO_Entity {
      * @throws ClassNotFoundException in case of error
      */
 
-    /** TODO: GPT:
-     * Resource management: The PreparedStatement and ResultSet objects are not properly closed after their usage.
-     * It's important to close these resources to release database connections and prevent resource leaks.
-     * You should use try-with-resources or explicitly close them in a finally block.
-     */
-
     public Object findByID(Object ID) throws SQLException, ClassNotFoundException {
         Integer id = 0;
         try {

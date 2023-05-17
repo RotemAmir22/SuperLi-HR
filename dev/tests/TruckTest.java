@@ -1,3 +1,5 @@
+import DataAccess.DAO_Generator;
+import DataAccessLayer.TruckDAO;
 import DataAccessLayer.TruckDAOImpl;
 import DomainLayer.Truck;
 import DomainLayer.TruckModel;
@@ -8,12 +10,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TruckTest {
-    private TruckDAOImpl truckDAO;
+    private TruckDAO truckDAO;
     private Truck truck;
 
     @Before
     public void setUp() throws Exception {
-        truckDAO = new TruckDAOImpl();
+        truckDAO = DAO_Generator.getTruckDAO();
         // Generate a random plate number for the test truck
         truck = new Truck("IT54432AI", TruckModel.LARGETRUCK, 2000.0, 15000.0);
     }
