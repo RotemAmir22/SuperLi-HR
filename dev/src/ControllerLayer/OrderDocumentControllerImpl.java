@@ -29,9 +29,9 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         BranchStore branchStore = transitCoordinator.findStoreById(destinationId) ;
         if (branchStore == null || supplier == null) return null;
         OrderDocument orderDoc = new OrderDocument(supplier, branchStore);
+        System.out.println("---debug: 1---");
         orderDocumentDAO.saveOrderDocument(orderDoc);
         return orderDoc;
-
     }
     @Override
     public void showAllProductsInDoc(int orderId) {

@@ -1,5 +1,8 @@
 package DataAccess;
 
+import BussinesLogic.TransitCoordinator;
+import DataAccessLayer.*;
+
 import java.sql.SQLException;
 
 /**
@@ -11,6 +14,12 @@ public class DAO_Generator {
     private static DAO_BranchStore BranchStoreDAO;
     private static DAO_Employee EmployeeDAO;
     private static DAO_DailyShift DailyShiftDAO;
+
+    private static OrderDocumentDAO orderDocumentDAO;
+    private static SupplierDAO supplierDAO;
+    private static ProductDAO productDAO;
+    private static TruckDAO truckDAO;
+    private static TransitDAO transitDAO;
 
     private DAO_Generator() {
         // Private constructor to prevent instantiation from outside the class
@@ -38,6 +47,37 @@ public class DAO_Generator {
         return DailyShiftDAO;
     }
 
+    public static TruckDAO getTruckDAO() throws SQLException, ClassNotFoundException {
+        if (truckDAO == null) {
+            truckDAO = new TruckDAOImpl();
+        }
+        return truckDAO;
+    }
+    public static SupplierDAO getSupplierDAO() throws SQLException, ClassNotFoundException {
+        if (supplierDAO == null) {
+            supplierDAO = new SupplierDAOImpl();
+        }
+        return supplierDAO;
+    }
+    public static ProductDAO getProductDAO() throws SQLException, ClassNotFoundException {
+        if (productDAO == null) {
+            productDAO = new ProductDAOImpl();
+        }
+        return productDAO;
+    }
 
+    public static OrderDocumentDAO getOrderDocumentDAO() throws SQLException, ClassNotFoundException {
+        if (orderDocumentDAO == null) {
+            orderDocumentDAO = new OrderDocumentDAOImpl(getSupplierDAO(), getBranchStoreDAO(), getProductDAO());
+        }
+        return orderDocumentDAO;
+    }
+
+    public static TransitDAO getTransitDAO() throws SQLException, ClassNotFoundException {
+        if (transitDAO == null) {
+            transitDAO = new TransitDAOImpl(getTruckDAO(), getEmployeeDAO(), getOrderDocumentDAO(), getSupplierDAO(), getBranchStoreDAO());
+        }
+        return transitDAO;
+    }
 
 }

@@ -48,20 +48,17 @@ public class OrderDocumentPresentation {
         System.out.println("This order id is: "+ OrderDocument.documentNextId);
         OrderDocument newOrderDoc = orderDocumentController.createOrderDoc(supplierId,storeId);
         //TODO also print the docs info ?
-        addProductToOrder(scanner, newOrderDoc.getOrderDocumentId());
+        addProductToOrder(scanner);
     }
     /**
      * responsible on adding products to an existing orderDocument
      **/
-    public void addProductToOrder(Scanner scanner, int orderDocId) {
-        if (orderDocId == -2)
+    public void addProductToOrder(Scanner scanner) {
+        int orderDocId = orderDocChoice(scanner);
+        if (orderDocId ==-1) // order id not found
         {
-            orderDocId = orderDocChoice(scanner);
-            if (orderDocId ==-1) // order id not found
-            {
-                System.out.println("The order id does not exist! ");
-                return;
-            }
+            System.out.println("The order id does not exist! ");
+            return;
         }
         //int orderDocId;
 

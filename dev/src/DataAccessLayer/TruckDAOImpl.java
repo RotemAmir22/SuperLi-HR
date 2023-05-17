@@ -20,15 +20,17 @@ public class TruckDAOImpl implements TruckDAO {
     public void saveTruck(Truck truck) {
         String insertTruckSQL = "INSERT INTO trucks (plateNumber, model, truckWeight, maxCarryWeight) VALUES (?, ?, ?, ?)";
         String insertTruckLicensesSQL = "INSERT INTO TruckLicenses (plateNumber, licenses) VALUES (?, ?)";
+        PreparedStatement insertTruckStatement = null;
+        PreparedStatement insertTruckQualificationStatement = null;
         try {
-            PreparedStatement insertTruckStatement = connection.prepareStatement(insertTruckSQL);
+            insertTruckStatement = connection.prepareStatement(insertTruckSQL);
             insertTruckStatement.setString(1, truck.getPlateNumber());
             insertTruckStatement.setString(2, truck.getModel().toString());
             insertTruckStatement.setDouble(3, truck.getTruckWeight());
             insertTruckStatement.setDouble(4, truck.getMaxCarryWeight());
             insertTruckStatement.executeUpdate();
 
-            PreparedStatement insertTruckQualificationStatement = connection.prepareStatement(insertTruckLicensesSQL);
+            insertTruckQualificationStatement = connection.prepareStatement(insertTruckLicensesSQL);
 
             for (BussinesLogic.License license : truck.getTruckLicenses()) {
                 insertTruckQualificationStatement.setString(1, truck.getPlateNumber());
@@ -38,6 +40,21 @@ public class TruckDAOImpl implements TruckDAO {
             trucksSet.add(truck);
         } catch (SQLException e) {
             System.out.println("Error saving truck to database: " + e.getMessage());
+        } finally {
+            if (insertTruckStatement != null) {
+                try {
+                    insertTruckStatement.close();
+                } catch (SQLException e) {
+                    System.out.println("Error closing insertTruckStatement: " + e.getMessage());
+                }
+            }
+            if (insertTruckQualificationStatement != null) {
+                try {
+                    insertTruckQualificationStatement.close();
+                } catch (SQLException e) {
+                    System.out.println("Error closing insertTruckQualificationStatement: " + e.getMessage());
+                }
+            }
         }
     }
     @Override

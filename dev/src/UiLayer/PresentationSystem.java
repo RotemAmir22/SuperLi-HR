@@ -241,7 +241,7 @@ public class PresentationSystem {
     public void handleEditOrderMenu(Scanner scanner, int ch53, OrderDocumentPresentation orderDocP){
         switch (ch53) {
             case 1:
-                orderDocP.addProductToOrder(scanner, -2);
+                orderDocP.addProductToOrder(scanner);
                 break;
             case 2:
                 orderDocP.updateProductAmount(scanner);

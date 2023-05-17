@@ -31,14 +31,17 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
 
     @Override
     public void saveOrderDocument(OrderDocument orderDocument) {
+        System.out.println("---debug: 2---");
         String insertOrderDocumentSQL = "INSERT INTO OrderDocuments(orderDocumentId, sourceSupplierId, destinationBranchStoreId, totalWeight) VALUES (?, ?, ?, ?)";
         try {
-            PreparedStatement insertOrderDocumentStatement = connection.prepareStatement(insertOrderDocumentSQL, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement insertOrderDocumentStatement = connection.prepareStatement(insertOrderDocumentSQL);
             insertOrderDocumentStatement.setInt(1, orderDocument.getOrderDocumentId());
             insertOrderDocumentStatement.setInt(2, orderDocument.getSource().getSupplierId());
             insertOrderDocumentStatement.setInt(3, orderDocument.getDestination().getBranchID());
-            insertOrderDocumentStatement.setDouble(4, orderDocument.getTotalWeight());
+            insertOrderDocumentStatement.setDouble(4, 0);
+            System.out.println("---debug: 3---");
             insertOrderDocumentStatement.executeUpdate();
+            System.out.println("---debug: 4---");
             pendingOrdersDocumentsSet.add(orderDocument);
         } catch (SQLException e) {
             System.out.println("Error saving order document to database: " + e.getMessage());

@@ -41,123 +41,17 @@ public class TransitDAOImpl implements TransitDAO {
         try {
             // Insert the transit data into the Transits table
             PreparedStatement insertTransitStmt = connection.prepareStatement(insertTransitQuery);
-            insertTransitStmt.setString(1, transit.getTransitDate().toString());
+            insertTransitStmt.setDate(1, (java.sql.Date) transit.getTransitDate());
             insertTransitStmt.setString(2, transit.getTruck().getPlateNumber());
             //TODO driverID is String - decide on convention! - at Drivers table is int.
             // TODO also what was decided about driver? is chosen in the creation of a new transit?
             insertTransitStmt.setInt(3, Integer.parseInt(transit.getDriver().getId()));
             insertTransitStmt.executeUpdate();
-            // Get the generated transitId
-//            int transitId = 0;
-//            String getTransitIdQuery = "SELECT LAST_INSERT_ID()";
-//            PreparedStatement getTransitIdStmt = connection.prepareStatement(getTransitIdQuery);
-//            ResultSet resultSet = getTransitIdStmt.executeQuery();
-//            if (resultSet.next()) {
-//                transitId = resultSet.getInt(1);
-//            }
-
-            // Insert transitId and orderDocumentId into TransitOrderDocuments table
-//            String insertTransitOrderDocQuery = "INSERT INTO TransitOrderDocuments (transitId, orderDocumentId) VALUES (?, ?)";
-//            PreparedStatement insertTransitOrderDocStmt = connection.prepareStatement(insertTransitOrderDocQuery);
-//            insertTransitOrderDocStmt.setInt(1, transitId);
-//            insertTransitOrderDocStmt.setInt(2, transit.getOrderDocumentId());
-//            insertTransitOrderDocStmt.executeUpdate();
-//
-//            // Insert transitId, supplierId, and orderDocumentId into TransitSuppliersRoute table
-//            String insertTransitSuppliersRouteQuery = "INSERT INTO TransitSuppliersRoute (transitId, supplierId, orderDocumentId) VALUES (?, ?, ?)";
-//            PreparedStatement insertTransitSuppliersRouteStmt = connection.prepareStatement(insertTransitSuppliersRouteQuery);
-//            insertTransitSuppliersRouteStmt.setInt(1, transitId);
-//            insertTransitSuppliersRouteStmt.setInt(2, transit.getSupplierId());
-//            insertTransitSuppliersRouteStmt.setInt(3, transit.getOrderDocumentId());
-//            insertTransitSuppliersRouteStmt.executeUpdate();
-//
-//            // Insert transitId, branchStoreId, and orderDocumentId into TransitBranchStoresRoute table
-//            String insertTransitBranchStoresRouteQuery = "INSERT INTO TransitBranchStoresRoute (transitId, branchStoreId, orderDocumentId) VALUES (?, ?, ?)";
-//            PreparedStatement insertTransitBranchStoresRouteStmt = connection.prepareStatement(insertTransitBranchStoresRouteQuery);
-//            insertTransitBranchStoresRouteStmt.setInt(1, transitId);
-//            insertTransitBranchStoresRouteStmt.setInt(2, transit.getBranchStoreId());
-//            insertTransitBranchStoresRouteStmt.setInt(3, transit.getOrderDocumentId());
-//            insertTransitBranchStoresRouteStmt.executeUpdate();
             pendingTransitsSet.add(transit);
         } catch (SQLException e) {
             System.out.println("Error saving transit to database: " + e.getMessage());
         }
     }
-
-//    //TODO figure out what to do with the supplier and the branch store ???
-//    @Override
-//    public void addOrderDocumentToTransit(Transit transit, OrderDocument orderDocument){
-//        String insertOrderDocumentQuery =  "INSERT INTO TransitOrderDocuments (transitId, orderDocumentId) VALUES (?, ?)";
-//        String insertSupplierToRouteQuery = "INSERT INTO TransitSuppliersRoute (transitId, orderDocumentId, supplierId) VALUES (?, ? ,?)";
-//        String insertBranchStoreToRouteQuery = "INSERT INTO TransitBranchStoresRoute (transitId, orderDocumentId, branchStoreId) VALUES (?, ? ,?)";
-//        int transitId = transit.getTransitId();
-//        int orderDocumentId = orderDocument.getOrderDocumentId();
-//        try {
-//            PreparedStatement insertOrderDocumentStmt = connection.prepareStatement(insertOrderDocumentQuery);
-//            insertOrderDocumentStmt.setInt(1, transitId);
-//            insertOrderDocumentStmt.setInt(2, orderDocumentId);
-//            insertOrderDocumentStmt.executeUpdate();
-//
-//            //TODO q: maybe in a separate function ??
-//            PreparedStatement insertSupplierToRouteStmt = connection.prepareStatement(insertSupplierToRouteQuery);
-//            insertSupplierToRouteStmt.setInt(1, transitId);
-//            insertSupplierToRouteStmt.setInt(2, orderDocumentId);
-//            insertSupplierToRouteStmt.setInt(3, orderDocument.getSource().getSupplierId());
-//            insertSupplierToRouteStmt.executeUpdate();
-//
-//            //TODO q: maybe in a separate function ??
-//            PreparedStatement insertBranchStoreToRouteStmt = connection.prepareStatement(insertBranchStoreToRouteQuery);
-//            insertBranchStoreToRouteStmt.setInt(1, transitId);
-//            insertBranchStoreToRouteStmt.setInt(2, orderDocumentId);
-//            insertBranchStoreToRouteStmt.setInt(3, orderDocument.getDestination().getBranchID());
-//            insertBranchStoreToRouteStmt.executeUpdate();
-//
-//            transit.addOrderDoc(orderDocument); //TODO update upperLevel
-//            Set<Supplier> updatedSuppliersRoute = retrieveSupplierForTransit(transitId);
-//            Set<BranchStore> updatedBranchStoreRoute = retrieveBranchStoresForTransit(transitId);
-//            transit.setDestinationSuppliers(updatedSuppliersRoute);
-//            transit.setDestinationBranchStores(updatedBranchStoreRoute);
-//
-//        } catch (SQLException e)
-//        {
-//            System.out.println("Error saving order document to transit: " + e.getMessage());
-//        }
-//    }
-//
-//    //TODO figure out what to do with the supplier and the branch store ???
-//    @Override
-//    public void removeOrderDocumentFromTransit(Transit transit, OrderDocument orderDocument) {
-//        String deleteOrderDocumentQuery = "DELETE FROM TransitOrderDocuments WHERE transitId = ? AND orderDocumentId = ?";
-//        String deleteSupplierFromRouteQuery = "DELETE FROM TransitSuppliersRoute WHERE transitId = ? AND orderDocumentId = ?";
-//        String deleteBranchStoreFromRouteQuery = "DELETE FROM TransitBranchStoresRoute WHERE transitId = ? AND orderDocumentId = ?";
-//        int transitId = transit.getTransitId();
-//        int orderDocumentId = orderDocument.getOrderDocumentId();
-//        try {
-//            PreparedStatement deleteOrderDocumentStmt = connection.prepareStatement(deleteOrderDocumentQuery);
-//            deleteOrderDocumentStmt.setInt(1, transitId);
-//            deleteOrderDocumentStmt.setInt(2, orderDocumentId);
-//            deleteOrderDocumentStmt.executeUpdate();
-//
-//            PreparedStatement deleteSupplierFromRouteStmt = connection.prepareStatement(deleteSupplierFromRouteQuery);
-//            deleteOrderDocumentStmt.setInt(1, transitId);
-//            deleteOrderDocumentStmt.setInt(2, orderDocumentId);
-//            deleteSupplierFromRouteStmt.executeUpdate();
-//
-//            PreparedStatement deleteBranchStoreFromRouteStmt = connection.prepareStatement(deleteBranchStoreFromRouteQuery);
-//            deleteOrderDocumentStmt.setInt(1, transitId);
-//            deleteOrderDocumentStmt.setInt(2, orderDocumentId);
-//            deleteBranchStoreFromRouteStmt.executeUpdate();
-//
-//            transit.removeOrderDoc(orderDocument); //TODO update upperLevel
-//            Set<Supplier> updatedSuppliersRoute = retrieveSupplierForTransit(transitId);
-//            Set<BranchStore> updatedBranchStoreRoute = retrieveBranchStoresForTransit(transitId);
-//            transit.setDestinationSuppliers(updatedSuppliersRoute);
-//            transit.setDestinationBranchStores(updatedBranchStoreRoute);
-//
-//        } catch (SQLException e) {
-//            System.out.println("Error removing order document from transit: " + e.getMessage());
-//        }
-//    }
 
 
     @Override
@@ -243,16 +137,16 @@ public class TransitDAOImpl implements TransitDAO {
             if (resultSet.next()) {
                 // Retrieve the transit data from the result set
                 int transitIdResult = resultSet.getInt("transitId");
+
                 Date transitDateResult = resultSet.getDate("transitDate");
-                String truckPlateNumberResult = resultSet.getString("truckId");
+                String truckPlateNumberResult = resultSet.getString("truckPlateNumber");
                 int driverIdResult = resultSet.getInt("driverId");
-                double etaResult = resultSet.getDouble("eta");
+                double etaResult = resultSet.getDouble("ETA");
                 Time departureTimeResult = resultSet.getTime("departureTime");
                 boolean isCompletedStatusResult = resultSet.getBoolean("isCompletedStatus");
-                // TODO: Retrieve the truck and driver objects based on the retrieved IDs
+                // Retrieve the truck and driver objects based on the retrieved IDs
                 Truck truck = truckDAO.findTruckByPlateNumber(truckPlateNumberResult);
-                //TODO make sure this works BussinesLogic.Driver
-                Driver driver = (Driver) driverDAO.findByID(driverIdResult);
+                Driver driver = (Driver) driverDAO.findByID(Integer.toString(driverIdResult));
 
                 // TODO pay-attention: high coupling with ETA
                 if (etaResult == 0){
@@ -260,24 +154,24 @@ public class TransitDAOImpl implements TransitDAO {
                     // Create a new Transit object with the retrieved data
                     transit = new Transit(transitIdResult, transitDateResult, truck, driver);
                 }
-                else {
+                else { //there is at least one orderDocument in this transit
                     Set<OrderDocument> orderDocumentSet = retrieveOrderDocumentsForTransit(transitId);
                     Set<Supplier> suppliersRoute = retrieveSupplierForTransit(transitId);
                     Set<BranchStore> branchStoresRoute = retrieveBranchStoresForTransit(transitId);
-                    transit = new Transit(transitIdResult, transitDateResult, truck, driver, etaResult,suppliersRoute,
+                    transit = new Transit(transitIdResult, transitDateResult, truck, driver, etaResult, suppliersRoute,
                             branchStoresRoute, orderDocumentSet);
 
-                    if (departureTimeResult != null){
+                    if (departureTimeResult != null) {
                         LocalTime departureTime = departureTimeResult.toLocalTime();
                         transit.setDepartureTime(departureTime);
                     }
-                    if (isCompletedStatusResult)
-                    {
-                        completedTransitsSet.add(transit);
-                    }
-                    else {
-                        pendingTransitsSet.add(transit);
-                    }
+                }
+                if (isCompletedStatusResult)
+                {
+                    completedTransitsSet.add(transit);
+                }
+                else {
+                    pendingTransitsSet.add(transit);
                 }
             }
 
@@ -285,7 +179,6 @@ public class TransitDAOImpl implements TransitDAO {
         } catch (SQLException e) {
             System.out.println("Error finding transit in the database: " + e.getMessage());
         }
-
         return transit;
     }
     private Transit lookForTransitInCache(int transitId){
