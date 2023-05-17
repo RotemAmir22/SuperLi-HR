@@ -20,9 +20,10 @@ public class OrderDocumentTest {
         daoBranchStore = DAO_Generator.getBranchStoreDAO();
         orderDocumentDAO = DAO_Generator.getOrderDocumentDAO();
         // Generate a random plate number for the test truck
-        Supplier s1 = supplierDAO.findSupplierById(1);
         BranchStore b1 = (BranchStore) daoBranchStore.findByID(1);
+        Supplier s1 = supplierDAO.findSupplierById(1);
         od1 = new OrderDocument(s1, b1);
+
         BranchStore b2 = new BranchStore("a", Area.East,"aa","0", "1-1-1");
         od2 = new OrderDocument(s1, b2);
     }
@@ -34,6 +35,7 @@ public class OrderDocumentTest {
 
     @Test
     public void testSaveOrderDoc() {
+
         orderDocumentDAO.saveOrderDocument(od1);
 //        OrderDocument Sod = orderDocumentDAO.findOrderDocumentById(od1.getOrderDocumentId());
 //        assertNotNull(Sod);
