@@ -34,14 +34,12 @@ public class OrderDocument {
         this.totalWeight = totalWeight;
         this.productsList = productsList;
     }
-
     public int getOrderDocumentId() {
         return documentId;
     }
     public Supplier getSource() {
         return source;
     }
-
     public BranchStore getDestination() {
         return destination;
     }
@@ -50,9 +48,6 @@ public class OrderDocument {
     }
     public Map<Product, Double> getProductsList() {
         return productsList;
-    }
-    public void setProductsList(Map<Product, Double> newProductsList) {
-        productsList = newProductsList;
     }
     public void setTotalWeight(double weight) {
         totalWeight=weight;
@@ -79,6 +74,9 @@ public class OrderDocument {
     }
     public void printOrderDestination() {
         System.out.println("Destination is: " + destination.getAddress());
+    }
+    public void setProductsList(Map<Product, Double> newProductsList) {
+        productsList = newProductsList;
     }
     public void printOrderSource(){
         System.out.println("Source is: " + source.address);

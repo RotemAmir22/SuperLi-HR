@@ -14,10 +14,10 @@ public class TruckControllermpl implements TruckController {
 
     // TODO change to saveTruck - setup creation of a truck only in the DB !!
     @Override
-    public Truck createTruck(String plateNumber, int iModel, int[] iQArr, double truckWeight, double maxWeight) {
+    public Truck createTruck(String plateNumber, int iModel, int[] iLArr, double truckWeight, double maxWeight) {
         TruckModel model = TruckModel.values()[iModel];
         Truck truck = new Truck(plateNumber, model, truckWeight, maxWeight);
-        for (int i : iQArr) {
+        for (int i : iLArr) {
             truck.addLToLSet(BussinesLogic.License.values()[i]);
         }
         truckDAO.saveTruck(truck);

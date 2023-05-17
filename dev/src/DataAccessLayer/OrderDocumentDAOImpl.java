@@ -6,6 +6,7 @@ import DataAccess.Database;
 import DomainLayer.OrderDocument;
 import DomainLayer.Product;
 import DomainLayer.Supplier;
+import DomainLayer.Truck;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -39,7 +40,8 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
             insertOrderDocumentStatement.setInt(3, orderDocument.getDestination().getBranchID());
             insertOrderDocumentStatement.setDouble(4, orderDocument.getTotalWeight());
             insertOrderDocumentStatement.executeUpdate();
-            pendingOrdersDocumentsSet.add(orderDocument);
+            // mute for test
+            //pendingOrdersDocumentsSet.add(orderDocument);
         } catch (SQLException e) {
             System.out.println("Error saving order document to database: " + e.getMessage());
         }
@@ -154,6 +156,34 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         }
     }
 
+    @Override
+    public void removeOrder(OrderDocument orderDocument) {
+        String deleteOrderQuery = "DELETE FROM OrderDocuments WHERE orderDocumentId=?";
+        try {
+            PreparedStatement deleteOrderStatement = connection.prepareStatement(deleteOrderQuery);
+            deleteOrderStatement.setInt(1, orderDocument.getOrderDocumentId());
+            deleteOrderStatement.executeUpdate();
+            removeOrderDocumentFromODP(orderDocument);
+
+            pendingOrdersDocumentsSet.remove(orderDocument);
+            completedOrdersDocumentsSet.remove(orderDocument);
+        } catch (SQLException e) {
+            System.out.println("Error removing truck from database: " + e.getMessage());
+        }
+    }
+
+    private void removeOrderDocumentFromODP(OrderDocument orderDocument) {
+        String deleteOrderDocumentProductsQuery = "DELETE FROM OrderDocumentProducts WHERE orderDocumentId=?";
+        try {
+            PreparedStatement deleteOrderDocumentProductsStatement = connection.prepareStatement(deleteOrderDocumentProductsQuery);
+            deleteOrderDocumentProductsStatement.setInt(1, orderDocument.getOrderDocumentId());
+            deleteOrderDocumentProductsStatement.executeUpdate();
+            pendingOrdersDocumentsSet.remove(orderDocument);
+            completedOrdersDocumentsSet.remove(orderDocument);
+        } catch (SQLException e) {
+            System.out.println("Error removing OrderDocumentAndProducts from database: " + e.getMessage());
+        }
+    }
     @Override
     public Set<OrderDocument> getOrderDocsSet(boolean isCompleted) {
         Set<OrderDocument> orderDocs = new HashSet<>();

@@ -3,7 +3,6 @@ package DataAccessLayer;
 import DataAccess.Database;
 import DomainLayer.Truck;
 import DomainLayer.TruckModel;
-
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,6 +36,7 @@ public class TruckDAOImpl implements TruckDAO {
                 insertTruckQualificationStatement.setString(2, license.toString());
                 insertTruckQualificationStatement.executeUpdate();
             }
+            // unmute after test
             trucksSet.add(truck);
         } catch (SQLException e) {
             System.out.println("Error saving truck to database: " + e.getMessage());
@@ -72,16 +72,14 @@ public class TruckDAOImpl implements TruckDAO {
         }
     }
     // TODO verify this function works properly
-    @Override
-    public void removeTruckFromTrucksLicenses(Truck truck) {
+    private void removeTruckFromTrucksLicenses(Truck truck) {
         String deleteTruckLicensesSQL = "DELETE FROM TruckLicenses WHERE plateNumber=?";
         try {
             PreparedStatement deleteTruckLicensesStatement = connection.prepareStatement(deleteTruckLicensesSQL);
             deleteTruckLicensesStatement.setString(1, truck.getPlateNumber());
             deleteTruckLicensesStatement.executeUpdate();
-            trucksSet.remove(truck);
         } catch (SQLException e) {
-            System.out.println("Error removing truck from database: " + e.getMessage());
+            System.out.println("Error removing truckLicenses from database: " + e.getMessage());
         }
     }
 
