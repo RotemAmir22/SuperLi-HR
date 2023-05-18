@@ -21,7 +21,7 @@ public class BranchStoreTest {
     public static void setup() throws SQLException, ClassNotFoundException {
         e = new Employee("Yossi", "Cohen", "1111", "098762",500,"Salary: 500 per shift", "2022-11-12");
         e1 = new Employee("Shula", "Cohen", "2222", "098763",500,"Salary: 500 per shift", "2022-11-12");
-        b = new BranchStore("Super", Area.East,"Hayarkon-17","08-689534","24/7");
+        b = new BranchStore("Super", Area.East,"Hayarkon-17","08-689534","24/7", 11111117);
         b.addEmployee(e);
         b.addEmployee(e1);
         DailyShift shift = new DailyShift(LocalDate.now());

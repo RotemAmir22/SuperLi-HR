@@ -19,6 +19,7 @@ public class DAO_Generator {
     private static ProductDAO productDAO;
     private static OrderDocumentDAO orderDocumentDAO;
     private static TransitDAO transitDAO;
+    private static TransitRecordDAO tRecordDAO;
 
 
     private static Connection connection;
@@ -90,6 +91,13 @@ public class DAO_Generator {
             transitDAO = new TransitDAOImpl(connection, getTruckDAO(), getEmployeeDAO(), getOrderDocumentDAO(), getSupplierDAO(), getBranchStoreDAO());
         }
         return transitDAO;
+    }
+
+    public static TransitRecordDAO getTransitRecordDAO() throws SQLException, ClassNotFoundException {
+        if ( tRecordDAO == null) {
+            tRecordDAO = new TransitRecordsDAOImpl(connection, transitDAO, supplierDAO);
+        }
+        return tRecordDAO;
     }
 
 }

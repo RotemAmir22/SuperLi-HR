@@ -107,8 +107,6 @@ public class TransitPresentation {
         String truckPlateNumber = scanner.nextLine();
         return truckPlateNumber;
     }
-
-
     private void lookForQualifiedDriver(Scanner scanner, int transitIdToReplace, String newTruckPlate)
     {
         int choice, iFlag=1;

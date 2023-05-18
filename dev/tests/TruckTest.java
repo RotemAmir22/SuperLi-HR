@@ -8,8 +8,6 @@ import DomainLayer.TruckModel;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-
 import static org.junit.Assert.*;
 
 public class TruckTest {
@@ -28,10 +26,25 @@ public class TruckTest {
         truck.addLToLSet(License.C);
         truck.addLToLSet(License.COOLER);
     }
-
     @After
     public void tearDown() throws Exception {
         truckDAO.removeTruck(truck);
+    }
+
+    @Test
+    public void testAddLicense()
+    {
+        truck.addLToLSet(License.C1);
+        assertEquals(3, truck.getTruckLicenses().size());
+    }
+
+    @Test
+    public void testLoadTruck()
+    {
+        truck.loadTruck(777);
+        assertEquals(777, truck.getCurrentWeight(), 0.01);
+        truck.setCurrentLoadWeight(999);
+        assertEquals(999, truck.getCurrentWeight(), 0.01);
     }
 
     @Test
@@ -39,12 +52,12 @@ public class TruckTest {
         truckDAO.saveTruck(truck);
         Truck savedTruck = truckDAO.findTruckByPlateNumber(truck.getPlateNumber());
         assertNotNull(savedTruck);
-        assertEquals(savedTruck.getPlateNumber(), truck.getPlateNumber());
-        assertEquals(savedTruck.getModel(), truck.getModel());
-        assertTrue(savedTruck.getTruckLicenses().containsAll(truck.getTruckLicenses()));
+        assertEquals(truck.getPlateNumber(), savedTruck.getPlateNumber());
+        assertEquals(truck.getModel(), savedTruck.getModel());
         assertTrue(truck.getTruckLicenses().containsAll(savedTruck.getTruckLicenses()));
-        assertEquals(savedTruck.getTruckWeight(), truck.getTruckWeight(), 0.01);
-        assertEquals(savedTruck.getMaxCarryWeight(), truck.getMaxCarryWeight(), 0.01);
+        assertTrue(savedTruck.getTruckLicenses().containsAll(truck.getTruckLicenses()));
+        assertEquals(truck.getTruckWeight(), savedTruck.getTruckWeight(), 0.01);
+        assertEquals(truck.getMaxCarryWeight(), savedTruck.getMaxCarryWeight(), 0.01);
     }
 
     @Test

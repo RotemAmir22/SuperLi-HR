@@ -1,49 +1,23 @@
 package UiLayer;
-import BussinesLogic.TransitCoordinator;
 import ControllerLayer.*;
-import DataAccess.DAO_BranchStore;
-import DataAccess.DAO_Employee;
-import DataAccessLayer.*;
+
 import java.sql.SQLException;
 import java.util.*;
 
 public class PresentationSystem {
-//    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-//        PresentationSystem ps = new PresentationSystem();
-//        Scanner scanner = new Scanner(System.in);
-//
-//        TruckDAO primeTruckDAO = new TruckDAOImpl();
-//        TruckController primeTruckController = new TruckControllermpl(primeTruckDAO);
-//        TruckPresentation truckPresentation = new TruckPresentation(primeTruckController);
-//
-//        TransitCoordinator primeTransitCoordinator = new TransitCoordinator();
-//
-//        SupplierDAO primeSupplierDAO = new SupplierDAOImpl();
-//        SupplierController primeSupplierController = new SupplierControllerImpl(primeSupplierDAO);
-//
-//        ProductDAO primeProductDAO = new ProductDAOImpl();
-//        ProductController primeProductController = new ProductControllerImpl(primeProductDAO);
-//
-//        DAO_BranchStore primeBranchStoreDAO = new DAO_BranchStore();
-//        DAO_Employee primeEmployeeDAO = new DAO_Employee();
-//
-//        OrderDocumentDAO primeOrderDocDAO = new OrderDocumentDAOImpl(primeSupplierDAO,primeBranchStoreDAO,primeProductDAO);
-//        OrderDocumentController primeOrderDocController = new OrderDocumentControllerImpl(primeOrderDocDAO,
-//                primeSupplierController,primeTransitCoordinator,primeProductController);
-//        OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(primeOrderDocController,
-//                primeProductController, primeSupplierController, primeTransitCoordinator);
-//
-//        TransitRecordDAO primeTransitRecordDAO = new TransitRecordsDAOImpl(transitDAO, supplierDAO);
-//        TransitRecordController primeTransitRecordController = new TransitRecordControllerImpl(primeTransitRecordDAO);
-//
-//        TransitDAO primeTransitDAO = new TransitDAOImpl(primeTruckDAO, primeEmployeeDAO, primeOrderDocDAO, primeSupplierDAO, primeBranchStoreDAO);
-//        TransitController primeTransitController = new TransitControllerImpl(primeTransitDAO, primeTruckController,
-//                primeTransitCoordinator, primeOrderDocController, primeTransitRecordController);
-//        TransitPresentation transitPresentation = new TransitPresentation(primeTransitController, primeTruckController, primeTransitCoordinator, primeOrderDocController, primeTransitRecordController);
-//
-//
-//        ps.switchMenu(scanner, truckPresentation, orderDocumentPresentation, transitPresentation);
-//    }
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        PresentationSystem ps = new PresentationSystem();
+        Scanner scanner = new Scanner(System.in);
+
+        TruckPresentation truckPresentation = new TruckPresentation(ControlllerGen.getTruckController());
+        OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(ControlllerGen.getOrderDocumentController(),
+                ControlllerGen.getProductController(), ControlllerGen.getSupplierController(), ControlllerGen.getTransitCoordinator());
+        TransitPresentation transitPresentation = new TransitPresentation(ControlllerGen.getTransitController(),ControlllerGen.getTruckController(),
+                ControlllerGen.getTransitCoordinator(),ControlllerGen.getOrderDocumentController(), ControlllerGen.getTransitRecordController());
+
+
+        ps.switchMenu(scanner, truckPresentation, orderDocumentPresentation, transitPresentation);
+    }
 
     public void switchMenu(Scanner scanner, TruckPresentation truckP, OrderDocumentPresentation orderDocP, TransitPresentation transitP){
         int choice;

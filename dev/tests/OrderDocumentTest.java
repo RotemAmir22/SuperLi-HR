@@ -54,7 +54,7 @@ public class OrderDocumentTest {
         assertTrue(savedOrderDoc.getProductsList().containsValue(5000.0));
     }
     @Test
-    public void testRemoveProductFromOrderDoc() {
+    public void testRemoveProductFromOrderDocDAO() {
         orderDocumentDAO.saveOrderDocument(orderDocument);
         orderDocumentDAO.removeProductFromOrder(orderDocument.getOrderDocumentId(), 1);
         OrderDocument savedOrderDoc = orderDocumentDAO.findOrderDocumentById(orderDocument.getOrderDocumentId());
