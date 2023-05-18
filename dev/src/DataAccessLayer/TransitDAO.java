@@ -14,6 +14,9 @@ public interface TransitDAO {
     Transit findTransitByID(int transitId);
     void moveToCompleted(Transit completedTransit);
     Set<Transit> getTransitsSet(boolean isCompleted);
+
+
+
     void removeTransit(Transit transit);
 
 

@@ -8,6 +8,7 @@ public interface TransitRecordController {
     TransitRecord createTransitRecord(Transit transit);
     TransitRecordDAO getTransitRecordDAO();
     void saveTransitRecord(TransitRecord transitRecord);
+    void removeTransitRecordCompletely(TransitRecord transitRecord);
     void showTransitRecords();
 
 }

@@ -1,6 +1,6 @@
 import BussinesLogic.License;
+import ControllerLayer.ControllerGen;
 import ControllerLayer.TruckController;
-import ControllerLayer.TruckControllermpl;
 import DataAccess.DAO_Generator;
 import DataAccessLayer.TruckDAO;
 import DomainLayer.Truck;
@@ -18,7 +18,7 @@ public class TruckTest {
     public void setUp() throws Exception {
         truckDAO = DAO_Generator.getTruckDAO();
         // Generate a random plate number for the test truck
-        truckController = new TruckControllermpl(truckDAO);
+        truckController = ControllerGen.getTruckController();
         int[] iLarr = {0,2};
 
         //truck = truckController.createTruck("IT54432AI", 1, iLarr ,9000, 30000);

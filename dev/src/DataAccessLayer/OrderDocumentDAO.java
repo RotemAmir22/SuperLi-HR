@@ -12,6 +12,7 @@ public interface OrderDocumentDAO {
     void updateProductAmount(int orderDocumentId, int productId, double weight);
     OrderDocument findOrderDocumentById(int OrderDocId);
     void moveToCompleted(OrderDocument completedOrder);
-    void removeOrder(OrderDocument orderDocument);
     Set<OrderDocument> getOrderDocsSet(boolean isCompleted);
+
+    void removeOrder(OrderDocument orderDocument);
 }

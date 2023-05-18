@@ -112,5 +112,29 @@ public class TransitRecordsDAOImpl implements TransitRecordDAO {
         return recordsSet;
     }
 
+    public void removeTransitRecord(TransitRecord transitRecord) {
+        int transitRecordId = transitRecord.getTransitRecordId();
+
+        String deleteTransitRecordQuery = "DELETE FROM TransitRecords WHERE transitRecordId = ?";
+        String deleteWeightAtExitQuery = "DELETE FROM TransitRecordsWeightAtExitSupplier WHERE transitRecordId = ?";
+
+        try {
+            PreparedStatement transitRecordStatement = connection.prepareStatement(deleteTransitRecordQuery);
+            transitRecordStatement.setInt(1, transitRecordId);
+            int deletedTransitRecords = transitRecordStatement.executeUpdate();
+
+            PreparedStatement weightAtExitStatement = connection.prepareStatement(deleteWeightAtExitQuery);
+            weightAtExitStatement.setInt(1, transitRecordId);
+            int deletedWeightAtExitRecords = weightAtExitStatement.executeUpdate();
+
+            recordsSet.remove(transitRecord);
+            System.out.println("Transit record successfully removed.");
+        } catch (SQLException e) {
+            System.out.println("Error removing transit record from the database: " + e.getMessage());
+        }
+    }
+
+
+
 
 }

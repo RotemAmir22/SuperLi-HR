@@ -104,4 +104,9 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         }
     }
 
+    public void removeOrderCompletely(OrderDocument orderDocument)
+    {
+        orderDocumentDAO.removeOrder(orderDocument);
+    }
+
 }

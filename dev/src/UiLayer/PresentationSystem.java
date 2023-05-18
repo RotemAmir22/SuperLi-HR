@@ -9,11 +9,11 @@ public class PresentationSystem {
         PresentationSystem ps = new PresentationSystem();
         Scanner scanner = new Scanner(System.in);
 
-        TruckPresentation truckPresentation = new TruckPresentation(ControlllerGen.getTruckController());
-        OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(ControlllerGen.getOrderDocumentController(),
-                ControlllerGen.getProductController(), ControlllerGen.getSupplierController(), ControlllerGen.getTransitCoordinator());
-        TransitPresentation transitPresentation = new TransitPresentation(ControlllerGen.getTransitController(),ControlllerGen.getTruckController(),
-                ControlllerGen.getTransitCoordinator(),ControlllerGen.getOrderDocumentController(), ControlllerGen.getTransitRecordController());
+        TruckPresentation truckPresentation = new TruckPresentation(ControllerGen.getTruckController());
+        OrderDocumentPresentation orderDocumentPresentation = new OrderDocumentPresentation(ControllerGen.getOrderDocumentController(),
+                ControllerGen.getProductController(), ControllerGen.getSupplierController(), ControllerGen.getTransitCoordinator());
+        TransitPresentation transitPresentation = new TransitPresentation(ControllerGen.getTransitController(), ControllerGen.getTruckController(),
+                ControllerGen.getTransitCoordinator(), ControllerGen.getOrderDocumentController(), ControllerGen.getTransitRecordController());
 
 
         ps.switchMenu(scanner, truckPresentation, orderDocumentPresentation, transitPresentation);

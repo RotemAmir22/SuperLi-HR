@@ -3,7 +3,7 @@ import BussinesLogic.TransitCoordinator;
 import DataAccess.DAO_Generator;
 import java.sql.SQLException;
 
-public class ControlllerGen {
+public class ControllerGen {
     private static TruckController truckController;
     private static ProductController productController;
     private static SupplierController supplierController;
@@ -49,7 +49,7 @@ public class ControlllerGen {
         if (orderDocumentController == null)
         {
             orderDocumentController = new OrderDocumentControllerImpl(DAO_Generator.getOrderDocumentDAO(),
-                    supplierController,transitCoordinator,productController);
+                    getSupplierController(),getTransitCoordinator(),getProductController());
         }
         return orderDocumentController;
     }
@@ -65,8 +65,8 @@ public class ControlllerGen {
     public static TransitController getTransitController() throws SQLException, ClassNotFoundException {
         if (transitController == null)
         {
-            transitController = new TransitControllerImpl(DAO_Generator.getTransitDAO(), truckController,
-                    transitCoordinator, orderDocumentController, transitRecordController);
+            transitController = new TransitControllerImpl(DAO_Generator.getTransitDAO(), getTruckController(),
+                    getTransitCoordinator(), getOrderDocumentController(), getTransitRecordController());
         }
         return transitController;
     }

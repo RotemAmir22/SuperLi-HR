@@ -17,6 +17,7 @@ public interface TransitController {
     boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);
     void updateOrderDocumentOfTransit(Transit transit, OrderDocument orderDocument, String addOrRemoveFlag);
 
+    void removeTransitCompletely(Transit transit);
 //    Set<Transit> getTransitsSet();
     //TODO belongs to check weight before starting transit.
     boolean isValidWeight(Transit currentTransit, OrderDocument orderDocument);

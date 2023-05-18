@@ -33,4 +33,8 @@ public class TransitRecordControllerImpl implements TransitRecordController {
             transitRecord.printTransitRecord();
         }
     }
+
+    public void removeTransitRecordCompletely(TransitRecord transitRecord){
+        transitRecordDAO.removeTransitRecord(transitRecord);
+    }
 }

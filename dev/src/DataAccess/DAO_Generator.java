@@ -95,7 +95,7 @@ public class DAO_Generator {
 
     public static TransitRecordDAO getTransitRecordDAO() throws SQLException, ClassNotFoundException {
         if ( tRecordDAO == null) {
-            tRecordDAO = new TransitRecordsDAOImpl(connection, transitDAO, supplierDAO);
+            tRecordDAO = new TransitRecordsDAOImpl(connection, getTransitDAO(), getSupplierDAO());
         }
         return tRecordDAO;
     }

@@ -312,10 +312,23 @@ public class TransitDAOImpl implements TransitDAO {
         return transits;
     }
 
-
     @Override
-    //TODO q: can delete???
     public void removeTransit(Transit transit) {
-        pendingTransitsSet.remove(transit);
+        int transitId = transit.getTransitId();
+        String deleteTransitQuery = "DELETE FROM Transits WHERE transitId = ?";
+
+        try {
+            PreparedStatement deleteTransitStmt = connection.prepareStatement(deleteTransitQuery);
+            deleteTransitStmt.setInt(1, transitId);
+            deleteTransitStmt.executeUpdate();
+            pendingTransitsSet.remove(transit);
+            completedTransitsSet.remove(transit);
+            System.out.println("Transit removed successfully.");
+        } catch (SQLException e) {
+            System.out.println("Error removing transit from the database: " + e.getMessage());
+        }
     }
+
+
+
 }

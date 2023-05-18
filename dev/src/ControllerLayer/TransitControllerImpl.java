@@ -152,4 +152,8 @@ public class TransitControllerImpl implements TransitController {
     }
 
 
+    public void removeTransitCompletely(Transit transit)
+    {
+        transitDAO.removeTransit(transit);
+    }
 }

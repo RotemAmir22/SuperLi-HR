@@ -15,6 +15,7 @@ public interface OrderDocumentController {
     void showCompletedOrderDocs();
     void showPendingOrderDocs();
     OrderDocument findOrderDocById(int orderId);
+    void removeOrderCompletely(OrderDocument orderDocument);
 
     //    Set<OrderDocument> getOrderDocumentsSet();
 }
