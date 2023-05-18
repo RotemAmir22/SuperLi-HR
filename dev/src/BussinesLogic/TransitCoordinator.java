@@ -43,8 +43,9 @@ public class TransitCoordinator {
             s.printStackTrace();
         }
         if (netWorkDrivers == null) return null;
+        System.out.println("debug: 1");
         for(Driver driver : netWorkDrivers)
-            if(driver.getLicenses().contains(license))
+            if(driver.getLicenses().containsAll(license))
                 if(EmployeeConstraints.checkDriverAvailabilityForDate(transitDate, driver))
                     availableDrivers.add(driver);
         return availableDrivers;

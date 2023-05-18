@@ -49,7 +49,7 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     }
 
     @Override
-    public void addProductToOrderDoc(int orderDocumentId, int productId, double productAmount) {
+    public void addProductToOrderDocDB(int orderDocumentId, int productId, double productAmount) {
         orderDocumentDAO.addProductToOrderDocument(orderDocumentId,productId, productAmount);
     }
 

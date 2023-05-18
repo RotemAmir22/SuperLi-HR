@@ -49,10 +49,6 @@ public class TransitControllerImpl implements TransitController {
         if (driverForTransit == null) {
             throw new UiException("Driver id not found: " + driverId);
         }
-//        boolean driverCanDriveTruckFlag = isDriverAllowToDriveTruck(truckForTransit, driverForTransit);
-//        if (!driverCanDriveTruckFlag){
-//            throw new QualificationsException("Driver lack certain qualifications for driving the chosen truck");
-//        }
         Transit newTransit = new Transit(transitDate, truckForTransit, driverForTransit);
         transitDAO.saveTransit(newTransit);
         return newTransit;

@@ -37,15 +37,17 @@ public class TransitDAOImpl implements TransitDAO {
     }
 
     public void saveTransit(Transit transit) {
-        String insertTransitQuery = "INSERT INTO Transits (transitDate, truckPlateNumber, driverId) VALUES (?, ?, ?)";
+        String insertTransitQuery = "INSERT INTO Transits (transitId, transitDate, truckPlateNumber, driverId) VALUES (?, ?, ?, ?)";
         try {
             // Insert the transit data into the Transits table
             PreparedStatement insertTransitStmt = connection.prepareStatement(insertTransitQuery);
-            insertTransitStmt.setDate(1, (java.sql.Date) transit.getTransitDate());
-            insertTransitStmt.setString(2, transit.getTruck().getPlateNumber());
+            insertTransitStmt.setInt(1, transit.getTransitId());
+            // TODO change DATE format
+            insertTransitStmt.setDate(2, new java.sql.Date(transit.getTransitDate().getTime()));
+            insertTransitStmt.setString(3, transit.getTruck().getPlateNumber());
             //TODO driverID is String - decide on convention! - at Drivers table is int.
             // TODO also what was decided about driver? is chosen in the creation of a new transit?
-            insertTransitStmt.setInt(3, Integer.parseInt(transit.getDriver().getId()));
+            insertTransitStmt.setInt(4, Integer.parseInt(transit.getDriver().getId()));
             insertTransitStmt.executeUpdate();
             pendingTransitsSet.add(transit);
         } catch (SQLException e) {

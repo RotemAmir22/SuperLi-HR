@@ -81,7 +81,7 @@ public class OrderDocumentPresentation {
                 weight += inAmount;
                 // TODO also add in DB
                 orderDocument.getProductsList().put(newProduct, inAmount);
-                orderDocumentController.addProductToOrderDoc(orderDocId, newProduct.getProductId(), inAmount);
+                orderDocumentController.addProductToOrderDocDB(orderDocId, newProduct.getProductId(), inAmount);
                 // TODO also add in DB
                 System.out.println("Would you like to add more products? ");
                 System.out.println(("Y/N "));
