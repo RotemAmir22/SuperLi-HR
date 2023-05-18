@@ -23,9 +23,6 @@ public class TransitCoordinator {
         driversDAO = DAO_Generator.getEmployeeDAO();
     }
 
-    public DAO_Employee getDriversDAO() {
-        return driversDAO;
-    }
 
     /**
      * This function help to transit-module to schedule the drivers
@@ -114,6 +111,8 @@ public class TransitCoordinator {
      * @param date date of transit
      * @return true if there are 2 storageWorkers, else false
      */
+
+    //TODO q: relevant to beginTransit ?
     public boolean StorageWorkersExist(BranchStore store, LocalDate date)
     {
         if(store.storekeeperStatusByDate.containsKey(date))
@@ -122,6 +121,7 @@ public class TransitCoordinator {
     }
 
 
+    //TODO q: relevant to addOrderDocumentToTransit ?
     /**
      * Get the map of date and driver's transits from a branch
      * @param branchID of the branch

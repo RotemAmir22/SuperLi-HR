@@ -12,7 +12,7 @@ public interface TransitController {
     boolean showTransitByID(int transitId);
     int replaceTransitTruck(int transitId, String truckPlate);
     int replaceTransitDriver(int transitId, String driverId, String truckPlate);
-    void moveTransitToFinished(Transit transit);
+    void moveTransitToFinishedDB(Transit transit);
     boolean transferLoad(Truck smallTruck, Truck biggerTruck);
     boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);
     void updateOrderDocumentOfTransit(Transit transit, OrderDocument orderDocument, String addOrRemoveFlag);

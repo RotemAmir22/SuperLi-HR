@@ -18,11 +18,7 @@ public class TransitRecordControllerImpl implements TransitRecordController {
         return newTransitRecord;
     }
     @Override
-    public TransitRecordDAO getTransitRecordDAO() {
-        return transitRecordDAO;
-    }
-    @Override
-    public void saveTransitRecord(TransitRecord transitRecord) {
+    public void saveTransitRecordDB(TransitRecord transitRecord) {
         transitRecordDAO.saveTransitRecord(transitRecord);
     }
     @Override

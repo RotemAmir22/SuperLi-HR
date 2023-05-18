@@ -102,8 +102,8 @@ public class TransitDAOImpl implements TransitDAO {
             branchStoreRouteStmt.executeUpdate();
 
 
-            Set<Supplier> updatedSuppliersRoute = retrieveSupplierForTransit(transitId);
-            Set<BranchStore> updatedBranchStoreRoute = retrieveBranchStoresForTransit(transitId);
+//            Set<Supplier> updatedSuppliersRoute = retrieveSupplierForTransit(transitId);
+//            Set<BranchStore> updatedBranchStoreRoute = retrieveBranchStoresForTransit(transitId);
 //            transit.setDestinationSuppliers(updatedSuppliersRoute);
 //            transit.setDestinationBranchStores(updatedBranchStoreRoute);
 

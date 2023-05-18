@@ -23,7 +23,7 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         this.productController = productController;
     }
     @Override
-    public OrderDocument createOrderDoc(int sourceId, int destinationId) {
+    public OrderDocument createOrderDocDBD(int sourceId, int destinationId) {
         Supplier supplier = supplierController.findSupplierById(sourceId) ;
         //TODO find storeById with BranchStore;
         BranchStore branchStore = transitCoordinator.findStoreById(destinationId) ;
@@ -43,7 +43,7 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         }
     }
     @Override
-    public void updateWeight(OrderDocument orderDocument, double weight) {
+    public void updateWeightDB(OrderDocument orderDocument, double weight) {
         orderDocument.setTotalWeight(weight);
         orderDocumentDAO.updateOrderDocumentWeight(orderDocument.getOrderDocumentId(),weight);
     }
@@ -54,7 +54,7 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     }
 
     @Override
-    public void updateAmount(int orderId, String productName, double amount) {
+    public void updateAmountDBD(int orderId, String productName, double amount) {
         Product product = productController.findProductByName(productName);
         int productId = product.getProductId();
         OrderDocument orderDocument = orderDocumentDAO.findOrderDocumentById(orderId);
@@ -63,7 +63,7 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     }
 
     @Override
-    public void removeProductFromOrderDoc(int orderDocumentId, String productName) {
+    public void removeProductFromOrderDocDBD(int orderDocumentId, String productName) {
         Product productToRemove = productController.findProductByName(productName);
         if(productToRemove == null) return;
         OrderDocument orderDocument = this.orderDocumentDAO.findOrderDocumentById(orderDocumentId);
@@ -79,7 +79,7 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
     public boolean orderDocumentChooser(int orderId){
         return orderDocumentDAO.findOrderDocumentById(orderId) != null;
     }
-    public void moveOrderToFinish(OrderDocument completedOrder){
+    public void moveOrderToFinishDB(OrderDocument completedOrder){
         orderDocumentDAO.moveToCompleted(completedOrder);
     }
     @Override

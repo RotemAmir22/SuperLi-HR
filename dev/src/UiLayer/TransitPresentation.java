@@ -144,12 +144,7 @@ public class TransitPresentation {
 //        boolean validWeight = transitService.isValidWeight(currentTransit, orderDocument);
 //        if (!validWeight) return;
         //TODO add updateorderdocsintransit
-        transitController.updateOrderDocumentOfTransit(currentTransit,orderDocument,"-1");
-
-        currentTransit.addOrderDoc(orderDocument);
-        currentTransit.addDestinationStore(orderDocument.getDestination());
-        currentTransit.addDestinationSupplier(orderDocument.getSource());
-        currentTransit.setETA();
+        transitController.updateOrderDocumentOfTransit(currentTransit,orderDocument,"+1");
         System.out.println("Order document added successfully");
     }
     public void removeOrderFromTransit(Scanner scanner)
@@ -164,12 +159,9 @@ public class TransitPresentation {
         //TODO add updateorderdocsintransit
         //TODO the next line should be inside the function
         transitController.updateOrderDocumentOfTransit(currenTransit,orderDocument,"-1");
-        currenTransit.removeOrderDoc(orderDocument);
-        currenTransit.removeDestinationSupplier(orderDocument.getSource());
-        currenTransit.removeDestinationStore(orderDocument.getDestination());
-        currenTransit.setETA();
         System.out.println("Document removed successfully");
     }
+
     public int getOrderIdHandler(Scanner scanner){
         System.out.println("Enter order id: ");
         int orderId = scanner.nextInt();
@@ -203,6 +195,7 @@ public class TransitPresentation {
             System.out.println("Back to main menu ");
             return;
         }
+        // TODO StorageWorkersExist()
         transit.setDepartureTime(LocalTime.now());
         System.out.println("ETA in minutes for the transit: " + transit.getETA());
 
@@ -237,13 +230,13 @@ public class TransitPresentation {
 
                     System.out.println("Unloading order number: " + orderDoc.getOrderDocumentId());
                     transit.getTruck().unloadTruck(orderDoc.getTotalWeight());
-                    orderDocumentController.moveOrderToFinish(orderDoc);
+                    orderDocumentController.moveOrderToFinishDB(orderDoc);
                 }
             }
         }
-        transitRecordController.saveTransitRecord(transitRecord);
+        transitRecordController.saveTransitRecordDB(transitRecord);
         System.out.println("finished transit ");
-        transitController.moveTransitToFinished(transit);
+        transitController.moveTransitToFinishedDB(transit);
     }
     public void printAllTransitRecords(){
         transitRecordController.showTransitRecords();
@@ -277,6 +270,7 @@ public class TransitPresentation {
                     double updatedLoadWeight =  transit.getTruck().getCurrentWeight() - currentOrder.getTotalWeight();
                     transit.getTruck().setCurrentLoadWeight(updatedLoadWeight);
                     transit.getOrdersDocs().remove(currentOrder);
+                    transitController.updateOrderDocumentOfTransit(transit, currentOrder, "-1");
                     // TODO if need to remove
                     verifiedFlag = true;
                     break;
@@ -299,8 +293,9 @@ public class TransitPresentation {
         Truck smallTuck = transit.getTruck();
         if (transitController.transferLoad(smallTuck, biggerTruck))
         {
-            transit.setDriver(newDriver);
-            transit.setTruck(biggerTruck);
+//            transit.setDriver(newDriver);
+//            transit.setTruck(biggerTruck);
+            transitController.replaceTransitDriver(transit.getTransitId(), newDriver.getId(), biggerTruck.getPlateNumber());
             return true;
         }
         return false;
@@ -312,7 +307,7 @@ public class TransitPresentation {
         System.out.println("Reduce at least: " + overWeightAmount + " kg");
         orderDocument.printOrder();
         String sProductName = getProductNameHandler(scanner);
-        orderDocumentController.removeProductFromOrderDoc(transit.getTransitId(), sProductName);
+        orderDocumentController.removeProductFromOrderDocDBD(transit.getTransitId(), sProductName);
         double updatedOrderWeight = orderDocument.getTotalWeight();
         double newCurrentWeight = truckCurrentWeight - (originalOrderWeight - updatedOrderWeight);
         transit.getTruck().setCurrentLoadWeight(newCurrentWeight);

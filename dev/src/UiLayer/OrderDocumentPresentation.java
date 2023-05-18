@@ -46,7 +46,7 @@ public class OrderDocumentPresentation {
             return;
         }
         System.out.println("This order id is: "+ OrderDocument.documentNextId);
-        OrderDocument newOrderDoc = orderDocumentController.createOrderDoc(supplierId,storeId);
+        OrderDocument newOrderDoc = orderDocumentController.createOrderDocDBD(supplierId,storeId);
         //TODO also print the docs info ?
         addProductToOrder(scanner);
     }
@@ -93,7 +93,7 @@ public class OrderDocumentPresentation {
             }
             else { System.out.println("Not a valid product name! ");}
         }
-        orderDocumentController.updateWeight(orderDocument,weight);
+        orderDocumentController.updateWeightDB(orderDocument,weight);
         //TODO orderDocumentController.updateOrderDocument(updatedOrderDocument)
 
     }
@@ -113,7 +113,7 @@ public class OrderDocumentPresentation {
         double amount = scanner.nextDouble();
         scanner.nextLine();
 
-        orderDocumentController.updateAmount(orderDocumentId,productName,amount);
+        orderDocumentController.updateAmountDBD(orderDocumentId,productName,amount);
         System.out.println("Amount has changed to: "+ amount);
     }
     public void removeProductFromOrder(Scanner scanner){
@@ -127,7 +127,7 @@ public class OrderDocumentPresentation {
         orderDocumentController.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to remove: ");
         String productName = scanner.nextLine();
-        orderDocumentController.removeProductFromOrderDoc(orderDocumentId,productName);
+        orderDocumentController.removeProductFromOrderDocDBD(orderDocumentId,productName);
         System.out.println("product: "+ productName + " has been removed");
     };
     public int orderDocChoice(Scanner scanner)

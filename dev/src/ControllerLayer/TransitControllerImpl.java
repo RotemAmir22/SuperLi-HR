@@ -113,8 +113,8 @@ public class TransitControllerImpl implements TransitController {
         Set <BussinesLogic.License> driverLicenseSet = (Set<License>) driver.getLicenses(); //might be a problem
         return (driverLicenseSet.containsAll(truckLSet));
     }
-    public void moveTransitToFinished(Transit completedTransit){
-        this.transitDAO.moveToCompleted(completedTransit);
+    public void moveTransitToFinishedDB(Transit completedTransit){
+        transitDAO.moveToCompleted(completedTransit);
     }
     public boolean transferLoad(Truck smallTruck, Truck biggerTruck){
         boolean validTransfer = truckController.transferLoadV2(smallTruck, biggerTruck);
@@ -145,6 +145,19 @@ public class TransitControllerImpl implements TransitController {
     public void updateOrderDocumentOfTransit(Transit transit, OrderDocument orderDocument, String addOrRemoveFlag)
     {
         transitDAO.updateOrderDocumentOfTransit(transit,orderDocument,addOrRemoveFlag);
+        if (addOrRemoveFlag.equals("+1"))
+        {
+            transit.addOrderDoc(orderDocument);
+            transit.addDestinationStore(orderDocument.getDestination());
+            transit.addDestinationSupplier(orderDocument.getSource());
+            transit.setETA();
+        }
+        else{
+            transit.removeOrderDoc(orderDocument);
+            transit.removeDestinationSupplier(orderDocument.getSource());
+            transit.removeDestinationStore(orderDocument.getDestination());
+            transit.setETA();
+        }
     }
 
 
