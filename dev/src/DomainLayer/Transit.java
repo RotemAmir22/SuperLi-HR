@@ -3,6 +3,7 @@ package DomainLayer;
 import BussinesLogic.BranchStore;
 import BussinesLogic.Driver;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashSet;
@@ -11,10 +12,10 @@ import java.util.Set;
 public class Transit {
     public static int nextId=1;
 
-    // TODO changed to static !
+    // changed to static !
     private static final Site source = new Supplier("Logistical Warehouse", Area.Center, "Amitai", "031000778", 0);
     private final int transitId;
-    private final Date transitDate;
+    private final LocalDate transitDate;
     private LocalTime departureTime;
     private Truck truck;
     private Driver driver;
@@ -24,7 +25,7 @@ public class Transit {
     private Set<BranchStore> destinationBranchStores;
 
 
-    public Transit(Date transitDate, Truck truck, Driver driver) {
+    public Transit(LocalDate transitDate, Truck truck, Driver driver) {
         transitId = nextId;
         nextId++;
         this.transitDate = transitDate;
@@ -36,7 +37,7 @@ public class Transit {
         this.ordersDocs = new HashSet<>();
     }
 
-    public Transit(int transitId, Date transitDate, Truck truck, Driver driver){
+    public Transit(int transitId, LocalDate transitDate, Truck truck, Driver driver){
         this.transitId = transitId;
         this.transitDate = transitDate;
         this.truck = truck;
@@ -45,7 +46,7 @@ public class Transit {
         this.destinationSuppliers = new HashSet<>();
         this.ordersDocs = new HashSet<>();
     }
-    public Transit(int transitId, Date transitDate, Truck truck, Driver driver, double eta, Set<Supplier> destinationSuppliers,
+    public Transit(int transitId, LocalDate transitDate, Truck truck, Driver driver, double eta, Set<Supplier> destinationSuppliers,
                    Set<BranchStore> destinationBranchStores,Set<OrderDocument> ordersDocs) {
         this.transitId = transitId;
         this.transitDate = transitDate;
@@ -107,7 +108,7 @@ public class Transit {
     public void setDepartureTime(LocalTime departureTime) {
         this.departureTime = departureTime;
     }
-    public Date getTransitDate() {
+    public LocalDate getTransitDate() {
         return transitDate;
     }
     public Truck getTruck() {

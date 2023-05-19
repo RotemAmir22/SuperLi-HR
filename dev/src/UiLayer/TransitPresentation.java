@@ -35,7 +35,7 @@ public class TransitPresentation {
 
     public void createNewTransit(Scanner scanner) {
         System.out.println("-----Create new transit-----");
-        System.out.println("Enter transit Date: (dd-mm-yyyy) ");
+        System.out.println("Enter transit Date: (yyyy-MM-dd) ");
         String sTransitDate = scanner.nextLine();
         System.out.println("Enter truck's plate number: ");
         String truckPLateNumber = scanner.nextLine();
@@ -187,9 +187,9 @@ public class TransitPresentation {
         //check if date is today
 
         LocalDateTime presentDate = LocalDate.now().atStartOfDay(); // using java.time.LocalDate
-        Date presentDateAlt = Date.from(presentDate.atZone(ZoneId.systemDefault()).toInstant()); // using java.util.Date
+        //Date presentDateAlt = Date.from(presentDate.atZone(ZoneId.systemDefault()).toInstant()); // using java.util.Date
 
-        if (transit.getTransitDate().compareTo(presentDateAlt) != 0)
+        if (!transit.getTransitDate().isEqual(presentDate.toLocalDate()))
         {
             System.out.println("Warning, the date of transaction is not today ");
             System.out.println("Back to main menu ");
@@ -322,7 +322,7 @@ public class TransitPresentation {
         }
         return newTruck;
     }
-    public Driver findNewDriver(Scanner scanner, Date transitDate, Set<License> licenses, String oldDriver ) {
+    public Driver findNewDriver(Scanner scanner, LocalDate transitDate, Set<License> licenses, String oldDriver ) {
         System.out.println("Enter driver's id: ");
         String driverId = scanner.nextLine();
         Driver newDriver = transitCoordinator.SwitchDriverInTransit(transitDate,driverId,licenses,oldDriver);

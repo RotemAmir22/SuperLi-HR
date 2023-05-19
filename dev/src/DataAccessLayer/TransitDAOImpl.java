@@ -10,6 +10,7 @@ import DomainLayer.Transit;
 import DomainLayer.Truck;
 import BussinesLogic.Driver;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashSet;
@@ -43,7 +44,8 @@ public class TransitDAOImpl implements TransitDAO {
             PreparedStatement insertTransitStmt = connection.prepareStatement(insertTransitQuery);
             insertTransitStmt.setInt(1, transit.getTransitId());
             // TODO change DATE format
-            insertTransitStmt.setDate(2, new java.sql.Date(transit.getTransitDate().getTime()));
+//            insertTransitStmt.setDate(2, new java.sql.Date(transit.getTransitDate().getTime()));
+            insertTransitStmt.setDate(2, java.sql.Date.valueOf(transit.getTransitDate()));
             insertTransitStmt.setString(3, transit.getTruck().getPlateNumber());
             //TODO driverID is String - decide on convention! - at Drivers table is int.
             // TODO also what was decided about driver? is chosen in the creation of a new transit?
@@ -140,7 +142,7 @@ public class TransitDAOImpl implements TransitDAO {
                 // Retrieve the transit data from the result set
                 int transitIdResult = resultSet.getInt("transitId");
 
-                Date transitDateResult = resultSet.getDate("transitDate");
+                LocalDate transitDateResult = resultSet.getDate("transitDate").toLocalDate();
                 String truckPlateNumberResult = resultSet.getString("truckPlateNumber");
                 int driverIdResult = resultSet.getInt("driverId");
                 double etaResult = resultSet.getDouble("ETA");

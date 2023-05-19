@@ -11,6 +11,8 @@ import ExceptionsPackage.UiException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Set;
 
@@ -34,11 +36,11 @@ public class TransitControllerImpl implements TransitController {
 
     @Override
     public Transit createTransit(String dateString, String truckPlateNumber, String driverId) throws UiException {
-        Date transitDate;
+        LocalDate transitDate;
         try {
-            transitDate = createDateObj(dateString);
-        } catch (ParseException e) {
-            throw new UiException("Invalid date format " + dateString + "\t" + "The correct format is: dd/mm/yyyy ");
+        transitDate = LocalDate.parse(dateString);
+        } catch (DateTimeParseException e) {
+            throw new UiException("Invalid date format " + dateString + "\t" + "The correct format is: yyyy-MM-dd ");
         }
 
         Truck truckForTransit = truckController.findTruckByPlate(truckPlateNumber);
@@ -102,11 +104,10 @@ public class TransitControllerImpl implements TransitController {
         transitToUpdate.setDriver(otherDriver);
         return 1;
     }
-    public Date createDateObj(String dateString) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date transitDate = dateFormat.parse(dateString);
-        return transitDate;
-    }
+//    public Date createDateObj(String dateString) throws ParseException {
+//        //SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//        return new Date(dateString);
+//    }
     @Override
     public boolean isDriverAllowToDriveTruck(Truck truck, Driver driver){
         Set <BussinesLogic.License> truckLSet = truck.getTruckLicenses();

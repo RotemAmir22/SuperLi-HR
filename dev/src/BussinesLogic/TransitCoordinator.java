@@ -64,13 +64,13 @@ public class TransitCoordinator {
 
     /**
      * Add a driver to a transit
-     * @param date of the transit
+     * @param localDate of the transit
      * @param driverID which is going to be added
      * @param licenses of the truck that the driver needs to know
      */
-    public Driver addDriverToTransit(Date date, String driverID, Set<License> licenses){
+    public Driver addDriverToTransit(LocalDate localDate, String driverID, Set<License> licenses){
         //need to add function that seeks a driver by id and Date in the DAO
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+//        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         List<Driver> driversList = getAvailableDrivers(localDate,licenses);
         for (Driver driver : driversList) {
@@ -86,17 +86,14 @@ public class TransitCoordinator {
      * switch a new driver to a transit instead of the old driver
      * used both in begin transit (on the fly) and in update transit - switch truck
      * in case that the old driver is not eligible to drive the new truck
-     * @param date of the transit
+     * @param localDate of the transit
      * @param newdriverID which is going to be added
      * @param licenses of the truck that the driver must have
      * @param oldDriverID which needed to be removed from the transit - need to delete its date from transitDate list
      */
 
-    public Driver SwitchDriverInTransit(Date date, String newdriverID, Set<License> licenses, String oldDriverID) {
-
-        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        List<Driver> driversList = getAvailableDrivers(localDate,licenses);
+    public Driver SwitchDriverInTransit(LocalDate localDate, String newdriverID, Set<License> licenses, String oldDriverID) {
+                List<Driver> driversList = getAvailableDrivers(localDate,licenses);
         for (Driver driver : driversList) {
             if (driver.getId().equalsIgnoreCase(newdriverID)) {
                 return driver;
