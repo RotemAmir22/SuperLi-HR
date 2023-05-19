@@ -204,53 +204,58 @@ public class DAO_DailyShift implements IDAO_DailyShift {
     public void update(Object o, Object id) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = (DailyShift) o;
         if (dailyShift != null) {
-            PreparedStatement stmt = conn.prepareStatement("UPDATE DailyShifts SET date = ?, branchID = ?, endOfDayReport = ?");
-            stmt.setString(1, dailyShift.getDate().toString());
+            PreparedStatement stmt = conn.prepareStatement("UPDATE DailyShifts SET endOfDayReport = ? WHERE branchID = ? AND date = ?");
+            stmt.setString(1, dailyShift.getEndOfDayReport().toString());
             stmt.setInt(2, (Integer) id);
-            stmt.setString(3, dailyShift.getEndOfDayReport().toString());
+            stmt.setString(3, dailyShift.getDate().toString());
             stmt.executeUpdate();
 
             // update employees
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getMorningShift().entrySet()) {
                 for (Employee e : shift.getValue()) {
-                    stmt = conn.prepareStatement("UPDATE MorningShiftEmployees SET date = ?, employeeID = ?, role = ?");
-                    stmt.setString(1, dailyShift.getDate().toString());
-                    stmt.setString(2, e.getId());
-                    stmt.setInt(3, shift.getKey().ordinal());
+                    stmt = conn.prepareStatement("UPDATE MorningShiftEmployees SET role = ? WHERE date = ?AND employeeID = ? AND branchID = ?");
+                    stmt.setInt(1, shift.getKey().ordinal());
+                    stmt.setString(2, dailyShift.getDate().toString());
+                    stmt.setString(3, e.getId());
+                    stmt.setInt(4, (Integer) id);
                     stmt.executeUpdate();
                 }
             }
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getEveningShift().entrySet()) {
                 for (Employee e : shift.getValue()) {
-                    stmt = conn.prepareStatement("UPDATE EveningShiftEmployees SET date = ?, employeeID = ?, role = ?");
-                    stmt.setString(1, dailyShift.getDate().toString());
-                    stmt.setString(2, e.getId());
-                    stmt.setInt(3, shift.getKey().ordinal());
+                    stmt = conn.prepareStatement("UPDATE MorningShiftEmployees SET role = ? WHERE date = ?AND employeeID = ? AND branchID = ?");
+                    stmt.setInt(1, shift.getKey().ordinal());
+                    stmt.setString(2, dailyShift.getDate().toString());
+                    stmt.setString(3, e.getId());
+                    stmt.setInt(4, (Integer) id);
                     stmt.executeUpdate();
                 }
             }
             // update shift managers
             for (ShiftManager shiftManager : dailyShift.getShiftManagers()) {
-                stmt = conn.prepareStatement("UPDATE ShiftManagers SET shiftDate = ?, shiftManagerID = ?, fullName = ?, shiftSlot = ?");
-                stmt.setString(1, dailyShift.getDate().toString());
-                stmt.setString(2, shiftManager.getId());
-                stmt.setString(3, shiftManager.getFullName());
-                stmt.setInt(4, shiftManager.getShiftSlot());
+                stmt = conn.prepareStatement("UPDATE ShiftManagers SET fullName = ?, shiftSlot = ? WHERE shiftDate = ? AND shiftManagerID = ? AND branchID = ?");
+                stmt.setString(1, shiftManager.getFullName());
+                stmt.setInt(2, shiftManager.getShiftSlot());
+                stmt.setString(3, dailyShift.getDate().toString());
+                stmt.setString(4, shiftManager.getId());
+                stmt.setInt(5, (Integer) id);
                 stmt.executeUpdate();
 
                 // update permissions
                 for (ShiftM_Permissions perm : shiftManager.getPermissions()) {
-                    stmt = conn.prepareStatement("UPDATE ShiftM_Permissions SET shiftDate = ?, shiftManagerID = ?, permissionName = ?, permissionDescription = ?");
-                    stmt.setString(1, dailyShift.getDate().toString());
-                    stmt.setString(2, shiftManager.getId());
-                    stmt.setString(3, perm.getName());
-                    stmt.setInt(4, shiftManager.getShiftSlot());
+                    stmt = conn.prepareStatement("UPDATE ShiftM_Permissions SET permissionDescription = ? WHERE shiftDate = ? AND shiftSlot = ? AND branchID = ? AND shiftManagerID = ? AND permissionName = ?");
+                    stmt.setString(1, perm.getDescription());
+                    stmt.setString(2, dailyShift.getDate().toString());
+                    stmt.setInt(3, shiftManager.getShiftSlot());
+                    stmt.setInt(4, (Integer) id);
+                    stmt.setString(5, shiftManager.getId());
+                    stmt.setString(6, perm.getName());
                     stmt.executeUpdate();
                 }
 
                 // update cancellations
                 for (Cancellation cancel : shiftManager.getCancelations()) {
-                    stmt = conn.prepareStatement("UPDATE Cancellations SET shiftDate = ?, shiftManagerID = ?, cancelID = ?, item = ?, amount = ?");
+                    stmt = conn.prepareStatement("INSERT INTO Cancellations (shiftDate, shiftManagerId, cancelID, item, amount) VALUES (?,?,?,?,?)");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, shiftManager.getId());
                     stmt.setInt(3, cancel.getCancelID());

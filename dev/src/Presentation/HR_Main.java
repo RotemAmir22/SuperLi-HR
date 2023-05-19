@@ -43,9 +43,15 @@ public class HR_Main {
      */
     public static BranchStore searchABranchStore() throws SQLException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
+        int id;
         while(true) {
             System.out.println("Enter the Branch ID please");
-            int id = scanner.nextInt();
+            try {
+                id = scanner.nextInt();
+            }catch (Exception e){
+                System.out.println("Invalid input. Please try again");
+                continue;
+            }
             BranchStore b = (BranchStore) branchStoreDAO.findByID(id);
             if (b == null)
                 System.out.println("Invalid ID. Please try again");
@@ -277,7 +283,7 @@ public class HR_Main {
                 case "6":
                     BranchStore branch_ = searchABranchStore();
                     DailyShift s = branch_.getShiftByDate(LocalDate.now().plusDays(2).toString());
-                    scanner.nextLine();
+
                     if(s == null)
                         System.out.println("NO SHIFT YET");
                     else
@@ -285,7 +291,7 @@ public class HR_Main {
                         System.out.println("Enter an employee ID");
                         String ans = scanner.nextLine();
                         ShiftManager shiftm = s.findEmployeeInShiftManager(ans);
-                        ManageShift manageShift = new ManageShift(shiftm, s, LocalDate.now().plusDays(2));
+                        ManageShift manageShift = new ManageShift(shiftm, s, LocalDate.now().plusDays(2), branch_.getBranchID());
                         System.out.println("Choose an option:");
                         System.out.println("1. Cancel an item");
                         System.out.println("2. Get Cancellation details");

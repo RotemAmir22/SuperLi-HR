@@ -66,7 +66,6 @@ public class ShiftOrganizer {
             }
         }
         branchStore.getShiftsHistory().get(date).showMeSchedualing();
-        //TODO: update in data base
     }
 
     /**
@@ -133,7 +132,7 @@ public class ShiftOrganizer {
         /* Check if the branch is open this day */
         if(openHours[day][shift] == 1)
         {
-            System.out.println("On "+ shiftDate.plusDays(1).getDayOfWeek().toString() +" this branch is closed in the "+ Shift.values()[shift] );
+            System.out.println("On "+ shiftDate.getDayOfWeek() +" this branch is closed in the "+ Shift.values()[shift] );
             return null;
         }
         //get information from manager
