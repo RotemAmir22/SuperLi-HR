@@ -9,11 +9,8 @@ import DomainLayer.Transit;
 import DomainLayer.Truck;
 import ExceptionsPackage.UiException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.Set;
 
 public class TransitControllerImpl implements TransitController {
@@ -53,7 +50,7 @@ public class TransitControllerImpl implements TransitController {
         }
         Transit newTransit = new Transit(transitDate, truckForTransit, driverForTransit);
         transitDAO.saveTransit(newTransit);
-        // ADD DRIVER TO db from DAO_Employee
+        transitCoordinator.addDriverToDriverTransitsDates(driverForTransit.getId(), newTransit.getTransitDate());
         return newTransit;
     }
     @Override
@@ -91,7 +88,7 @@ public class TransitControllerImpl implements TransitController {
      * replaces transit driver not on the fly, only if we changed a truck for a specific transit.
      * returns @int based on what the problem is
      */
-    public int replaceTransitDriver(int transitId, String newDriverId, String truckPlate) {
+    public int replaceTransitDriver(int transitId, String newDriverId, String truckPlate, String callingFlag) {
         Truck newTruck = truckController.findTruckByPlate(truckPlate);
         Transit transitToUpdate = findTransitByID(transitId);
         Driver otherDriver = transitCoordinator.SwitchDriverInTransit(transitToUpdate.getTransitDate(),newDriverId,newTruck.getTruckLicenses(),transitToUpdate.getDriver().getId());
@@ -99,10 +96,19 @@ public class TransitControllerImpl implements TransitController {
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
         if (!qualifiedDriverFlag) return 0; // driver is not qualified
         //driver is qualified
+        if (callingFlag.equals("notOnTheFly"))
+        {   transitCoordinator.removeDriverFromDriverTransitsDates(transitToUpdate.getDriver().getId(), transitToUpdate.getTransitDate());
+            transitToUpdate.getDriver().removeTransitDate(transitToUpdate.getTransitDate());
+            transitCoordinator.addDriverToDriverTransitsDates(otherDriver.getId(), transitToUpdate.getTransitDate());
+        }
+        else {
+            transitCoordinator.addDriverToDriverTransitsDates(otherDriver.getId(), transitToUpdate.getTransitDate());
+        }
         transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, newTruck, otherDriver);
         //updating transit object
         transitToUpdate.setTruck(newTruck);
         transitToUpdate.setDriver(otherDriver);
+
         return 1;
     }
 //    public Date createDateObj(String dateString) throws ParseException {

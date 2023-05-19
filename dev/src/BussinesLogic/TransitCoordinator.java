@@ -7,7 +7,6 @@ import Presentation.EmployeeConstraints;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 public class TransitCoordinator {
@@ -53,13 +52,18 @@ public class TransitCoordinator {
      * @param branchID to add the transit
      */
     // add order to transit
-    public void addTransitInDate(LocalDate date, int branchID) throws SQLException, ClassNotFoundException {
-        if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {
-            BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
-            branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
-            branchStoreDAO.update(branchStore);
-        } else
-            System.out.println("Invalid branch ID");
+    public void addTransitInDate(LocalDate date, int branchID){
+        try {
+            if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {
+                BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
+                branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
+                branchStoreDAO.update(branchStore);}
+            else
+                System.out.println("Invalid branch ID");
+            } catch (SQLException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -105,33 +109,35 @@ public class TransitCoordinator {
      * @param date date of transit
      * @return true if there are 2 storageWorkers, else false
      */
-
-    //TODO q: relevant to beginTransit ?
     public boolean StorageWorkersExist(Set<BranchStore> stores, LocalDate date)
     {
         for(BranchStore store : stores)
             if(store.storekeeperStatusByDate.containsKey(date))
-                if(! store.storekeeperStatusByDate.get(date))
+                if(!store.storekeeperStatusByDate.get(date))
                     return false;
         return true;
     }
 
 
-    //TODO q: relevant to addOrderDocumentToTransit ?
     /**
      * Get the map of date and driver's transits from a branch
      * @param branchID of the branch
-     * @param date of the transit
      * @return the transits in the branch
      */
     // use before start transit
-    public Map<LocalDate, Boolean> getTransitsInBranch(int branchID, LocalDate date) throws SQLException, ClassNotFoundException {
-        if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-            return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
-        else
-            System.out.println("Invalid branch ID");
+    public Map<LocalDate, Boolean> getTransitsInBranch(int branchID){
+        try{
+            if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
+                return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
+            else
+                System.out.println("Invalid branch ID");
+        }catch (SQLException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
         return null;
     }
+
 
     /**
      *
@@ -155,5 +161,13 @@ public class TransitCoordinator {
      */
     public static void Alert(String message){
         System.out.println(message);
+    }
+
+
+    public void removeDriverFromDriverTransitsDates(String driverId, LocalDate transitDate) {
+
+    }
+
+    public void addDriverToDriverTransitsDates(String driverId, LocalDate transitDate) {
     }
 }

@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -120,7 +121,7 @@ public class TransitPresentation {
             else if (choice==2) {
                 System.out.println("Enter driver id: ");
                 String driverId = scanner.nextLine();
-                iFlag = transitController.replaceTransitDriver(transitIdToReplace, driverId, newTruckPlate);
+                iFlag = transitController.replaceTransitDriver(transitIdToReplace, driverId, newTruckPlate, "notOnTheFly");
                 if (iFlag==-1){
                     System.out.printf("Driver id: %d not found! %n", driverId);
                 } else if (iFlag==0) {
@@ -128,6 +129,7 @@ public class TransitPresentation {
                 }
                 else if (iFlag == 1){
                     System.out.println("Transit's driver updated successfully");
+
                 }
             }
         }while (choice != 2 || iFlag != 1);
@@ -145,6 +147,7 @@ public class TransitPresentation {
 //        if (!validWeight) return;
         //TODO add updateorderdocsintransit
         transitController.updateOrderDocumentOfTransit(currentTransit,orderDocument,"+1");
+        transitCoordinator.addTransitInDate(currentTransit.getTransitDate(), orderDocument.getDestination().getBranchID());
         System.out.println("Order document added successfully");
     }
     public void removeOrderFromTransit(Scanner scanner)
@@ -187,15 +190,19 @@ public class TransitPresentation {
         //check if date is today
 
         LocalDateTime presentDate = LocalDate.now().atStartOfDay(); // using java.time.LocalDate
-        //Date presentDateAlt = Date.from(presentDate.atZone(ZoneId.systemDefault()).toInstant()); // using java.util.Date
 
         if (!transit.getTransitDate().isEqual(presentDate.toLocalDate()))
         {
             System.out.println("Warning, the date of transaction is not today ");
-            System.out.println("Back to main menu ");
+            System.out.println("Back to transit menu ");
             return;
         }
-        // TODO StorageWorkersExist()
+        if (!transitCoordinator.StorageWorkersExist(transit.getDestinationStores(), transit.getTransitDate()))
+        {
+            System.out.println("One or more of branchStore on route does not have storage workers ");
+            System.out.println("Back to transit menu ");
+            return;
+        }
         transit.setDepartureTime(LocalTime.now());
         System.out.println("ETA in minutes for the transit: " + transit.getETA());
 
@@ -295,7 +302,7 @@ public class TransitPresentation {
         {
 //            transit.setDriver(newDriver);
 //            transit.setTruck(biggerTruck);
-            transitController.replaceTransitDriver(transit.getTransitId(), newDriver.getId(), biggerTruck.getPlateNumber());
+            transitController.replaceTransitDriver(transit.getTransitId(), newDriver.getId(), biggerTruck.getPlateNumber(), "onTheFly");
             return true;
         }
         return false;
@@ -330,6 +337,15 @@ public class TransitPresentation {
             System.out.printf("Driver's id: %s not found %n", driverId);
         }
         return newDriver;
+    }
+    public void printStoreExistingStorageDates(Scanner scanner){
+        System.out.println("Enter Store Id: ");
+        int storeId = scanner.nextInt();
+        scanner.nextLine();
+        Map<LocalDate, Boolean> map = transitCoordinator.getTransitsInBranch(storeId);
+        for (Map.Entry<LocalDate, Boolean> entry : map.entrySet()) {
+            System.out.println("Date: " + entry.getKey() + ": " + entry.getValue());
+        }
     }
 
 }

@@ -77,28 +77,28 @@ public class PresentationSystem {
         scanner.close();
     }
     public void displayMainMenu(){
-        System.out.println("-----Main Menu-----");
+        System.out.println("-----Delivery System Menu-----");
         System.out.println("Please select an option: ");
         System.out.println("1. Create new transit ");
         System.out.println("2. Update transit ");
         System.out.println("3. Manage trucks ");
         System.out.println("4. Manage documents ");
         System.out.println("5. Manage orders ");
-        System.out.println("0. Exit");
+        System.out.println("0. Back To main menu");
     }
     public void displayTruckManagerMenu(){
         System.out.println("-----Truck Manager-----");
         System.out.println("1. Add a new truck ");
         System.out.println("2. Remove truck ");
         System.out.println("3. Show all trucks ");
-        System.out.println("0. Back to main menu ");
+        System.out.println("0. Back to Delivery System Menu ");
     }
     public void displayOrderManagerMenu(){
         System.out.println("-----Manage Orders-----");
         System.out.println("1. Create a new Order ");
         System.out.println("2. Show pending orders (by area) ");
         System.out.println("3. Edit order ");
-        System.out.println("0. Back to main menu");
+        System.out.println("0. Back to Delivery System Menu");
     }
     public void displayUpdateTransitMenu(){
         System.out.println("-----Update Transit-----");
@@ -108,21 +108,22 @@ public class PresentationSystem {
         System.out.println("4. Remove order from transit ");
         System.out.println("5. Replace truck ");
         System.out.println("6. Start transit ");
-        System.out.println("0. Back to main menu ");
+        System.out.println("7. Print store availability dates for receiving transit ");
+        System.out.println("0. Back to Delivery System Menu ");
     }
     public void displayEditOrderMenu(){
         System.out.println("-----Edit Order-----");
         System.out.println("1. Add products to an order ");
         System.out.println("2. Change the amount of a product ");
         System.out.println("3. Remove products ");
-        System.out.println("0. Back to main menu");
+        System.out.println("0. Back to Delivery System Menu ");
     }
     public void displayDocumentManagerMenu(){
         System.out.println("-----Manage Documents-----");
         System.out.println("1. Show pending orders (by area) ");
         System.out.println("2. Show completed orders ");
         System.out.println("3. Show Transit records ");
-        System.out.println("0. Back to main menu");
+        System.out.println("0. Back to Delivery System Menu");
     }
     public void handleDocumentManagerMenu(int ch4, TransitPresentation transitP, OrderDocumentPresentation orderDocP){
         switch (ch4) {
@@ -179,6 +180,9 @@ public class PresentationSystem {
                 transitP.replaceTransitTruck(scanner);
             case 6:
                 transitP.beginTransit(scanner);
+                break;
+            case 7:
+                transitP.printStoreExistingStorageDates(scanner);
                 break;
             case 0:
                 System.out.println("Going back...");

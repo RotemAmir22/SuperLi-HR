@@ -1,8 +1,12 @@
 //import BussinesLogic.TransitCoordinator;
 //import ControllerLayer.*;
+//import DataAccess.DAO_Employee;
 //import DomainLayer.Transit;
 //import ExceptionsPackage.UiException;
 //import org.junit.*;
+//
+//import static org.junit.Assert.assertNull;
+//
 //public class TryUnitTestCreateTransit {
 //    private TruckController truckController;
 //    private ProductController productController;
@@ -10,6 +14,7 @@
 //    private OrderDocumentController orderDocumentController;
 //    private TransitController transitController;
 //    private TransitRecordController transitRecordController;
+//    private DAO_Employee daoEmployee;
 //    private Transit transit;
 //
 //
@@ -23,15 +28,15 @@
 //        transitController = ControllerGen.getTransitController();
 //    }
 //
-////    @After
-////    public void tearDown() throws Exception {
-////        transitController.removeTransitCompletely();
-////    }
+//    @After
+//    public void tearDown() throws Exception {
+//        transitController.removeTransitCompletely(transit);
+//    }
 //
 //    @Test
 //    public void testCreateTransit() throws UiException {
-//        transit = transitController.createTransit("18-05-2023", "123", "888888");
-//
+//        transit = transitController.createTransit("2023-05-21", "123", "888888");
+//        assertNull(transitController.findTransitByID(transit.getTransitId()));
 //    }
 //
 //    @Test

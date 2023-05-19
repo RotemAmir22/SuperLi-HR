@@ -11,7 +11,7 @@ public interface TransitController {
     Transit findTransitByID(int transitId);
     boolean showTransitByID(int transitId);
     int replaceTransitTruck(int transitId, String truckPlate);
-    int replaceTransitDriver(int transitId, String driverId, String truckPlate);
+    int replaceTransitDriver(int transitId, String driverId, String truckPlate, String callingFlag);
     void moveTransitToFinishedDB(Transit transit);
     boolean transferLoad(Truck smallTruck, Truck biggerTruck);
     boolean isDriverAllowToDriveTruck(Truck truck, Driver driver);
