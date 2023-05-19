@@ -40,7 +40,6 @@ public class TransitCoordinator {
             s.printStackTrace();
         }
         if (netWorkDrivers == null) return null;
-        System.out.println("debug: 1");
         for(Driver driver : netWorkDrivers)
             if(driver.getLicenses().containsAll(license))
                 if(EmployeeConstraints.checkDriverAvailabilityForDate(transitDate, driver))
@@ -53,6 +52,7 @@ public class TransitCoordinator {
      * @param date of the potential transit
      * @param branchID to add the transit
      */
+    // add order to transit
     public void addTransitInDate(LocalDate date, int branchID) throws SQLException, ClassNotFoundException {
         if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {
             BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
@@ -69,9 +69,6 @@ public class TransitCoordinator {
      * @param licenses of the truck that the driver needs to know
      */
     public Driver addDriverToTransit(LocalDate localDate, String driverID, Set<License> licenses){
-        //need to add function that seeks a driver by id and Date in the DAO
-//        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
         List<Driver> driversList = getAvailableDrivers(localDate,licenses);
         for (Driver driver : driversList) {
             if (driver.getId().equalsIgnoreCase(driverID)) {
@@ -104,17 +101,19 @@ public class TransitCoordinator {
 
     /**
      *
-     * @param store the store that we need to check if there are workers there
+     * @param stores the stores that we need to check if there are workers there
      * @param date date of transit
      * @return true if there are 2 storageWorkers, else false
      */
 
     //TODO q: relevant to beginTransit ?
-    public boolean StorageWorkersExist(BranchStore store, LocalDate date)
+    public boolean StorageWorkersExist(Set<BranchStore> stores, LocalDate date)
     {
-        if(store.storekeeperStatusByDate.containsKey(date))
-            return store.storekeeperStatusByDate.get(date);
-        return false;
+        for(BranchStore store : stores)
+            if(store.storekeeperStatusByDate.containsKey(date))
+                if(! store.storekeeperStatusByDate.get(date))
+                    return false;
+        return true;
     }
 
 
@@ -125,6 +124,7 @@ public class TransitCoordinator {
      * @param date of the transit
      * @return the transits in the branch
      */
+    // use before start transit
     public Map<LocalDate, Boolean> getTransitsInBranch(int branchID, LocalDate date) throws SQLException, ClassNotFoundException {
         if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
             return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;

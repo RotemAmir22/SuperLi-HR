@@ -323,7 +323,7 @@ public class DAO_Employee implements IDAO_Entity {
                     }
                     for(LocalDate date: transits){
                         if(!rolesInDB.contains(date)) {
-                            stmt = conn.prepareStatement("INSERT INTO Drivers (employeeID,licenseId) VALUES (?,?)");
+                            stmt = conn.prepareStatement("INSERT INTO DriversTransitsDates (driverID,transitDate) VALUES (?,?)");
                             stmt.setString(1, e.getId());
                             stmt.setString(2, String.valueOf(date));
                             stmt.executeUpdate();

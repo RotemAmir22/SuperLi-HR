@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class PresentationSystem {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void transitSystem() throws SQLException, ClassNotFoundException {
         PresentationSystem ps = new PresentationSystem();
         Scanner scanner = new Scanner(System.in);
 
@@ -68,7 +68,7 @@ public class PresentationSystem {
                     break;
                 case 0:
                     System.out.println("Exiting...");
-                    break;
+                    return;
                 default:
                     System.out.println("Invalid input");
                     break;

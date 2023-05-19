@@ -2,6 +2,8 @@ package BussinesLogic;
 
 import DataAccess.DAO_DailyShift;
 import DataAccess.DAO_Generator;
+import DomainLayer.Area;
+import DomainLayer.Site;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -29,7 +31,7 @@ public class BranchStore extends Site {
      * Constructor
      * @param openingtime: description
      */
-    public BranchStore(String name,Area area, String address, String phoneNum, String openingtime, int id) throws SQLException, ClassNotFoundException {
+    public BranchStore(String name, Area area, String address, String phoneNum, String openingtime, int id) throws SQLException, ClassNotFoundException {
         super(address, area, name, phoneNum);
         this.name = name;
         this.branchID = id;

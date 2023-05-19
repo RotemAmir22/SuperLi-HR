@@ -21,8 +21,15 @@ public class Driver extends Employee{
     public ArrayList<LocalDate> getTransitsDates(){return transitsDates;}
 
     //functions on transit
-    public void addTransitDate(LocalDate date){this.transitsDates.add(date);}
-    public void removeTransitDate(LocalDate date){this.transitsDates.remove(date);}
+    public void addTransitDate(LocalDate date){
+        this.setShiftsLimit(this.getShiftsLimit() + 1);
+        this.setCumulativeSalary(this.getCumulativeSalary() + getSalary());
+        this.transitsDates.add(date);
+    }
+    public void removeTransitDate(LocalDate date){
+        this.setShiftsLimit(this.getShiftsLimit() - 1);
+        this.transitsDates.remove(date);
+    }
 
     /**
      * if the driver is available on given date, if the driver doesn't have the date in the transit list

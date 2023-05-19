@@ -53,6 +53,7 @@ public class TransitControllerImpl implements TransitController {
         }
         Transit newTransit = new Transit(transitDate, truckForTransit, driverForTransit);
         transitDAO.saveTransit(newTransit);
+        // ADD DRIVER TO db from DAO_Employee
         return newTransit;
     }
     @Override

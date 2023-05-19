@@ -4,6 +4,7 @@ import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 import BussinesLogic.*;
+import DomainLayer.Area;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

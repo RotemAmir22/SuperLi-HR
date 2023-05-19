@@ -1,8 +1,8 @@
 
-import BussinesLogic.Area;
 import BussinesLogic.BranchStore;
 import BussinesLogic.DailyShift;
 import BussinesLogic.Employee;
+import DomainLayer.Area;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

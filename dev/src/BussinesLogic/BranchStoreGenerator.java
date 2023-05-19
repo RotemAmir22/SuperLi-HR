@@ -1,5 +1,7 @@
 package BussinesLogic;
 
+import DomainLayer.Area;
+
 import java.sql.SQLException;
 
 public class BranchStoreGenerator {

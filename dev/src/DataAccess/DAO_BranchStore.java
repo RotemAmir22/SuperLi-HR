@@ -1,6 +1,7 @@
 package DataAccess;
 
 import BussinesLogic.*;
+import DomainLayer.Area;
 
 import java.sql.*;
 import java.sql.Date;
