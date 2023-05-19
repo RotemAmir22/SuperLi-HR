@@ -157,6 +157,7 @@ public class HR_SchedulingManagement {
                 ShiftOrganizer.changeShift(branch,date , shift, choice, employee, roles[qualification]);
                 //update DB
                 dailyShiftDAO.update(branch.getShiftByDate(String.valueOf(date)),branchID);
+                branchStoreDAO.update(branch);
                 answer = scanner.nextLine();
                 System.out.println("SHIFT UPDATED\n\nDo you wish to update another shift? (enter y/n)");
                 answer = scanner.nextLine();
