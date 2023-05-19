@@ -49,8 +49,9 @@ public class TransitControllerImpl implements TransitController {
             throw new UiException("Driver id not found: " + driverId);
         }
         Transit newTransit = new Transit(transitDate, truckForTransit, driverForTransit);
+        driverForTransit.addTransitDate(transitDate);
         transitDAO.saveTransit(newTransit);
-        transitCoordinator.addDriverToDriverTransitsDates(driverForTransit.getId(), newTransit.getTransitDate());
+        transitCoordinator.addDriverToDriverTransitsDates(driverForTransit, newTransit.getTransitDate());
         return newTransit;
     }
     @Override
@@ -81,6 +82,7 @@ public class TransitControllerImpl implements TransitController {
         //updating transit object
         transitToUpdate.setTruck(otherTruck);
         transitToUpdate.setDriver(currentDriver);
+        currentDriver.addTransitDate(transitToUpdate.getTransitDate());
         //transitToUpdate.setTruck(otherTruck);
         return 1;// successes
     }
@@ -99,10 +101,13 @@ public class TransitControllerImpl implements TransitController {
         if (callingFlag.equals("notOnTheFly"))
         {   transitCoordinator.removeDriverFromDriverTransitsDates(transitToUpdate.getDriver().getId(), transitToUpdate.getTransitDate());
             transitToUpdate.getDriver().removeTransitDate(transitToUpdate.getTransitDate());
-            transitCoordinator.addDriverToDriverTransitsDates(otherDriver.getId(), transitToUpdate.getTransitDate());
+            otherDriver.addTransitDate(transitToUpdate.getTransitDate());
+            transitCoordinator.addDriverToDriverTransitsDates(otherDriver, transitToUpdate.getTransitDate());
         }
         else {
-            transitCoordinator.addDriverToDriverTransitsDates(otherDriver.getId(), transitToUpdate.getTransitDate());
+            transitToUpdate.getDriver().removeTransitDate(transitToUpdate.getTransitDate());
+            otherDriver.addTransitDate(transitToUpdate.getTransitDate());
+            transitCoordinator.addDriverToDriverTransitsDates(otherDriver, transitToUpdate.getTransitDate());
         }
         transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, newTruck, otherDriver);
         //updating transit object

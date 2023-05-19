@@ -3,6 +3,8 @@ package BussinesLogic;
 import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
+import DataAccessLayer.TransitDAO;
+import DomainLayer.Transit;
 import Presentation.EmployeeConstraints;
 
 import java.sql.SQLException;
@@ -13,6 +15,7 @@ public class TransitCoordinator {
     private DAO_BranchStore branchStoreDAO;
     private DAO_Employee driversDAO;
 
+
     /**
      * Using DAO's of branchStore and drivers
      * this class will let you manage a transit include add drivers
@@ -21,7 +24,6 @@ public class TransitCoordinator {
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         driversDAO = DAO_Generator.getEmployeeDAO();
     }
-
 
     /**
      * This function help to transit-module to schedule the drivers
@@ -165,9 +167,18 @@ public class TransitCoordinator {
 
 
     public void removeDriverFromDriverTransitsDates(String driverId, LocalDate transitDate) {
-
+        try{
+            driversDAO.update(driverId);
+        }catch (SQLException s){
+            s.printStackTrace();
+        }
     }
 
-    public void addDriverToDriverTransitsDates(String driverId, LocalDate transitDate) {
+    public void addDriverToDriverTransitsDates(Driver driver, LocalDate transitDate) {
+        try{
+            driversDAO.update(driver);
+        }catch (SQLException s){
+            s.printStackTrace();
+        }
     }
 }
