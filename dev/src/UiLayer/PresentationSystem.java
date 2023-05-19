@@ -68,7 +68,7 @@ public class PresentationSystem {
                     break;
                 case 0:
                     System.out.println("Exiting...");
-                    return;
+                    break;
                 default:
                     System.out.println("Invalid input");
                     break;
