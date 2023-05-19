@@ -50,7 +50,7 @@ public class TransitControllerImpl implements TransitController {
         }
         Transit newTransit = new Transit(transitDate, truckForTransit, driverForTransit);
         transitDAO.saveTransit(newTransit);
-        transitCoordinator.addDriverToDriverTransitsDates(driverForTransit.getId(), newTransit.getTransitDate());
+        transitCoordinator.addDriverToDriverTransitsDates(driverForTransit, newTransit.getTransitDate());
         return newTransit;
     }
     @Override
@@ -99,10 +99,10 @@ public class TransitControllerImpl implements TransitController {
         if (callingFlag.equals("notOnTheFly"))
         {   transitCoordinator.removeDriverFromDriverTransitsDates(transitToUpdate.getDriver().getId(), transitToUpdate.getTransitDate());
             transitToUpdate.getDriver().removeTransitDate(transitToUpdate.getTransitDate());
-            transitCoordinator.addDriverToDriverTransitsDates(otherDriver.getId(), transitToUpdate.getTransitDate());
+            transitCoordinator.addDriverToDriverTransitsDates(otherDriver, transitToUpdate.getTransitDate());
         }
         else {
-            transitCoordinator.addDriverToDriverTransitsDates(otherDriver.getId(), transitToUpdate.getTransitDate());
+            transitCoordinator.addDriverToDriverTransitsDates(otherDriver, transitToUpdate.getTransitDate());
         }
         transitDAO.updateTruckAndDriverOfTransit(transitToUpdate, newTruck, otherDriver);
         //updating transit object
