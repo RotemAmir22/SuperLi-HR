@@ -22,7 +22,7 @@ public class EmployeeConstraints {
      * @return true or false depends on his answer
      */
     public static boolean checkDriverAvailabilityForDate(LocalDate date, Driver d){
-        if(d != null && d.getShiftsLimit() < 6)
+        if(d != null && 0< d.getShiftsLimit() && d.getShiftsLimit() <= 6)
             return !d.getTransitsDates().contains(date);
         return false;
     }
