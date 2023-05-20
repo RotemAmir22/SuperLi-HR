@@ -346,7 +346,7 @@ public class TransitDAOImpl implements TransitDAO {
         {
             e.getMessage();
         }
-        if (maxTransitId != 1){
+        if (maxTransitId > 1){
             maxTransitId++;
         }
         return maxTransitId;
