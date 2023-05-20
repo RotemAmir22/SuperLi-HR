@@ -27,7 +27,7 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         this.supplierDAO = supplierDAO;
         this.branchStoreDAO = branchStoreDAO;
         this.productDAO = productDAO;
-        OrderDocument.documentNextId = getMaxTransitIdFromOrderDocumentsTable();
+        OrderDocument.documentNextId = getNextOrderId();
     }
 
 
@@ -240,21 +240,18 @@ public class OrderDocumentDAOImpl implements OrderDocumentDAO {
         }
     }
 
-    private int getMaxTransitIdFromOrderDocumentsTable() {
-        int maxOrderDocumentId = 1;
+    private int getNextOrderId() {
+        int maxOrderDocumentId = 0;
         String query = "SELECT MAX(orderDocumentId) AS maxId FROM OrderDocuments";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
             if (resultSet.next()) {
                 maxOrderDocumentId = resultSet.getInt("maxId");
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.getMessage();
         }
-        if (maxOrderDocumentId != 1){
-            maxOrderDocumentId++;
-        }
+        maxOrderDocumentId++;
         return maxOrderDocumentId;
     }
 }
