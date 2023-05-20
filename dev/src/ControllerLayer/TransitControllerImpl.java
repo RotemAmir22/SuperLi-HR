@@ -157,20 +157,19 @@ public class TransitControllerImpl implements TransitController {
 
     public void updateOrderDocumentOfTransit(Transit transit, OrderDocument orderDocument, String addOrRemoveFlag)
     {
-        transitDAO.updateOrderDocumentOfTransit(transit,orderDocument,addOrRemoveFlag);
         if (addOrRemoveFlag.equals("+1"))
         {
             transit.addOrderDoc(orderDocument);
             transit.addDestinationStore(orderDocument.getDestination());
             transit.addDestinationSupplier(orderDocument.getSource());
-            transit.setETA();
         }
         else{
             transit.removeOrderDoc(orderDocument);
             transit.removeDestinationSupplier(orderDocument.getSource());
             transit.removeDestinationStore(orderDocument.getDestination());
-            transit.setETA();
         }
+        transit.setETA();
+        transitDAO.updateOrderDocumentOfTransit(transit,orderDocument,addOrRemoveFlag);
     }
 
 
