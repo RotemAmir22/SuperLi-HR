@@ -108,7 +108,6 @@ public class DAO_Employee implements IDAO_Entity {
                 rs = stmt.executeQuery();
                 while (rs.next()) {
                     LocalDate date = LocalDate.parse(rs.getString("transitDate"));
-                    driver = generator.CreateDriver(employee);
                     driver.addTransitDate(date);
                 }
                 //add to map
@@ -317,12 +316,12 @@ public class DAO_Employee implements IDAO_Entity {
                 }
                 //add transit date to DB
                 else if(amount < transits.size()){
-                    ArrayList<Integer> rolesInDB = new ArrayList<>();
+                    ArrayList<LocalDate> dates = new ArrayList<>();
                     while(rs.next()) {
-                        rolesInDB.add(rs.getInt("qualificationId"));
+                        dates.add(LocalDate.parse(rs.getString("transitDate")));
                     }
                     for(LocalDate date: transits){
-                        if(!rolesInDB.contains(date)) {
+                        if(!dates.contains(date)) {
                             stmt = conn.prepareStatement("INSERT INTO DriversTransitsDates (driverID,transitDate) VALUES (?,?)");
                             stmt.setString(1, e.getId());
                             stmt.setString(2, String.valueOf(date));
