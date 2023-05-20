@@ -241,7 +241,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                     if(!datesInDB.contains(transitDate)) {
                         stmt = conn.prepareStatement("INSERT INTO BranchStoreTransits (branchID,transitDate, status)" + "VALUES (?,?,?)");
                         stmt.setInt(1,branch.getBranchID());
-                        stmt.setDate(2, Date.valueOf(transitDate));
+                        stmt.setString(2, String.valueOf(transitDate));
                         stmt.setBoolean(3,branch.storekeeperStatusByDate.get(transitDate));
                         stmt.executeUpdate();
                         break;
