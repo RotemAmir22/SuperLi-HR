@@ -235,8 +235,8 @@ public class DAO_BranchStore implements IDAO_Entity {
             else if(branch.storekeeperStatusByDate.size() > amount){
                 ArrayList<LocalDate> datesInDB = new ArrayList<>();
                 while(rs.next()) {
-                    datesInDB.add(rs.getDate("transitDate").toLocalDate());
-                }
+                    datesInDB.add(LocalDate.parse(rs.getString("transitDate")));
+                } //LocalDate date = LocalDate.parse(rs.getString("transitDate"));
                 for(LocalDate transitDate: branch.storekeeperStatusByDate.keySet()){
                     if(!datesInDB.contains(transitDate)) {
                         stmt = conn.prepareStatement("INSERT INTO BranchStoreTransits (branchID,transitDate, status)" + "VALUES (?,?,?)");
@@ -298,7 +298,7 @@ public class DAO_BranchStore implements IDAO_Entity {
      * @throws ClassNotFoundException
      */
     public List<BranchStore> getNetworkBranches() throws SQLException, ClassNotFoundException {
-        if(networkBranches.isEmpty()||branchesList.isEmpty()||branchesList.size() <= nextID())
+        if(networkBranches.isEmpty()||branchesList.isEmpty()||branchesList.size() < nextID())
         {
             ifEmptyMaps();
             branchesList.clear();

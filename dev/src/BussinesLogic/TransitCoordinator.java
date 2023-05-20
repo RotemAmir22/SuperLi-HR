@@ -57,9 +57,10 @@ public class TransitCoordinator {
     public void addTransitInDate(LocalDate date, int branchID){
         try {
             if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {
-                BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
+                BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
+                System.out.println("branchId: "+branchStore.getBranchID());
+
                 branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
-//                branchStore.printBranchDetails();
                 branchStoreDAO.update(branchStore);}
             else
                 System.out.println("Invalid branch ID");
