@@ -123,7 +123,7 @@ public class TransitPresentation {
                 String driverId = scanner.nextLine();
                 iFlag = transitController.replaceTransitDriver(transitIdToReplace, driverId, newTruckPlate, "notOnTheFly");
                 if (iFlag==-1){
-                    System.out.printf("Driver id: %d not found! %n", driverId);
+                    System.out.println("Driver id: " + driverId + " not found ");
                 } else if (iFlag==0) {
                     System.out.println("Current driver is not qualified to drive the chosen truck");
                 }
