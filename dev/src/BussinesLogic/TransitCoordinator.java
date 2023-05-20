@@ -41,10 +41,10 @@ public class TransitCoordinator {
             s.printStackTrace();
         }
         if (netWorkDrivers == null) return null;
-        for(Driver driver : netWorkDrivers)
+        for(Driver driver : netWorkDrivers){
             if(driver.getLicenses().containsAll(license))
                 if(EmployeeConstraints.checkDriverAvailabilityForDate(transitDate, driver))
-                    availableDrivers.add(driver);
+                    availableDrivers.add(driver);}
         return availableDrivers;
     }
 
@@ -59,6 +59,7 @@ public class TransitCoordinator {
             if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {
                 BranchStore branchStore = branchStoreDAO.getNetworkBranches().get(branchID);
                 branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
+//                branchStore.printBranchDetails();
                 branchStoreDAO.update(branchStore);}
             else
                 System.out.println("Invalid branch ID");
@@ -75,8 +76,12 @@ public class TransitCoordinator {
      * @param licenses of the truck that the driver needs to know
      */
     public Driver addDriverToTransit(LocalDate localDate, String driverID, Set<License> licenses){
+//        System.out.println("d: addDriverToTransit ");
         List<Driver> driversList = getAvailableDrivers(localDate,licenses);
         for (Driver driver : driversList) {
+//            driver.printEmployeeDetails();
+//            System.out.println(" ");
+//            driver.printEmployeesConstraints();
             if (driver.getId().equalsIgnoreCase(driverID)) {
                 return driver;
             }

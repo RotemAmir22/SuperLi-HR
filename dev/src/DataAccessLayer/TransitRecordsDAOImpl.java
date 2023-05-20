@@ -20,6 +20,7 @@ public class TransitRecordsDAOImpl implements TransitRecordDAO {
         this.connection = connection;
         this.transitDAO = transitDAO;
         this.supplierDAO = supplierDAO;
+        TransitRecord.recordNextId = getNextTransitRecordId();
     }
 
     public void saveTransitRecord(TransitRecord transitRecord) {
@@ -134,7 +135,20 @@ public class TransitRecordsDAOImpl implements TransitRecordDAO {
         }
     }
 
-
+    private int getNextTransitRecordId() {
+        int maxTransitRecordId = 0;
+        String query = "SELECT MAX(transitRecordId) AS maxId FROM TransitRecords";
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+            if (resultSet.next()) {
+                maxTransitRecordId = resultSet.getInt("maxId");
+            }
+        } catch (SQLException e) {
+            e.getMessage();
+        }
+        maxTransitRecordId++;
+        return maxTransitRecordId;
+    }
 
 
 }

@@ -35,7 +35,7 @@ public class TransitDAOImpl implements TransitDAO {
         this.orderDocumentDAO = orderDocumentDAO;
         this.supplierDAO = supplierDAO;
         this.branchStoreDAO = branchStoreDAO;
-        Transit.nextId = getMaxTransitIdFromOrderDocumentsTable();
+        Transit.nextId = getNextTransitId();
     }
 
     public void saveTransit(Transit transit) {
@@ -50,7 +50,7 @@ public class TransitDAOImpl implements TransitDAO {
             insertTransitStmt.setString(3, transit.getTruck().getPlateNumber());
             //TODO driverID is String - decide on convention! - at Drivers table is int.
             // TODO also what was decided about driver? is chosen in the creation of a new transit?
-            insertTransitStmt.setInt(4, Integer.parseInt(transit.getDriver().getId()));
+            insertTransitStmt.setString(4, transit.getDriver().getId());
             insertTransitStmt.executeUpdate();
             pendingTransitsSet.add(transit);
         } catch (SQLException e) {
@@ -123,7 +123,7 @@ public class TransitDAOImpl implements TransitDAO {
         try {
             PreparedStatement updateTransitStmt = connection.prepareStatement(updateTransitQuery);
             updateTransitStmt.setString(1, newTruck.getPlateNumber());
-            updateTransitStmt.setInt(2,Integer.parseInt(driver.getId()));
+            updateTransitStmt.setString(2,driver.getId());
             updateTransitStmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error updating transit in the database: " + e.getMessage());
@@ -145,13 +145,13 @@ public class TransitDAOImpl implements TransitDAO {
 
                 LocalDate transitDateResult = resultSet.getDate("transitDate").toLocalDate();
                 String truckPlateNumberResult = resultSet.getString("truckPlateNumber");
-                int driverIdResult = resultSet.getInt("driverId");
+                String driverIdResult = resultSet.getString("driverId");
                 double etaResult = resultSet.getDouble("ETA");
                 Time departureTimeResult = resultSet.getTime("departureTime");
                 boolean isCompletedStatusResult = resultSet.getBoolean("isCompletedStatus");
                 // Retrieve the truck and driver objects based on the retrieved IDs
                 Truck truck = truckDAO.findTruckByPlateNumber(truckPlateNumberResult);
-                Driver driver = (Driver) driverDAO.findByID(Integer.toString(driverIdResult));
+                Driver driver = (Driver) driverDAO.findByID(driverIdResult);
 
                 // TODO pay-attention: high coupling with ETA
                 if (etaResult == 0){
@@ -334,21 +334,21 @@ public class TransitDAOImpl implements TransitDAO {
         }
     }
 
-    private int getMaxTransitIdFromOrderDocumentsTable() {
-        int maxTransitId = 1;
+
+
+
+    private int getNextTransitId() {
+        int maxTransitId = 0;
         String query = "SELECT MAX(transitId) AS maxId FROM Transits";
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
             if (resultSet.next()) {
                 maxTransitId = resultSet.getInt("maxId");
             }
-        } catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.getMessage();
         }
-        if (maxTransitId != 1){
-            maxTransitId++;
-        }
+        maxTransitId++;
         return maxTransitId;
     }
 }
