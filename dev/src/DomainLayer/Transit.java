@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Transit {
-    public static int nextId=1;
+    public static int nextId;
 
     // changed to static !
     private static final Site source = new Supplier("Logistical Warehouse", Area.Center, "Amitai", "031000778", 0);

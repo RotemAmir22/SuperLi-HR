@@ -146,8 +146,8 @@ public class TransitPresentation {
 //        boolean validWeight = transitService.isValidWeight(currentTransit, orderDocument);
 //        if (!validWeight) return;
         //TODO add updateorderdocsintransit
-        transitController.updateOrderDocumentOfTransit(currentTransit,orderDocument,"+1");
         transitCoordinator.addTransitInDate(currentTransit.getTransitDate(), orderDocument.getDestination().getBranchID());
+        transitController.updateOrderDocumentOfTransit(currentTransit,orderDocument,"+1");
         System.out.println("Order document added successfully");
     }
     public void removeOrderFromTransit(Scanner scanner)

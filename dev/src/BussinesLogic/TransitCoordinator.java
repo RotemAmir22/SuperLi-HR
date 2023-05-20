@@ -53,7 +53,7 @@ public class TransitCoordinator {
      * @param date of the potential transit
      * @param branchID to add the transit
      */
-    // add order to transit
+    // TODO - fails when trying to add order to transit
     public void addTransitInDate(LocalDate date, int branchID){
         try {
             if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {

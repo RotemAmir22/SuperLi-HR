@@ -6,12 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OrderDocument {
-    public static int documentNextId=1;
+    public static int documentNextId;
     private final int documentId;
     private final Supplier source;
     //private final Store destination;
 
-    //TODO
     private final BranchStore destination;
 
     private double totalWeight; //detailed weight ??
@@ -83,5 +82,13 @@ public class OrderDocument {
     }
     public void printOrderId() {
         System.out.println("Order Id is: " + documentId);
+    }
+    public void updateProductAmount(double amount,Product product)
+    {
+        double newTotalWeight;
+        double oldProductAmount = getProductsList().get(product);
+        productsList.replace(product,amount);
+        this.totalWeight = this.totalWeight - oldProductAmount + amount;
+
     }
 }
