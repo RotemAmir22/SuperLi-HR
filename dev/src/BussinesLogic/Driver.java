@@ -22,12 +22,10 @@ public class Driver extends Employee{
 
     //functions on transit
     public void addTransitDate(LocalDate date){
-        this.setShiftsLimit(this.getShiftsLimit() - 1);
         this.setCumulativeSalary(this.getCumulativeSalary() + getSalary());
         this.transitsDates.add(date);
     }
     public void removeTransitDate(LocalDate date){
-        this.setShiftsLimit(this.getShiftsLimit() + 1);
         this.transitsDates.remove(date);
     }
 

@@ -96,7 +96,7 @@ public class TransitCoordinator {
      */
 
     public Driver SwitchDriverInTransit(LocalDate localDate, String newdriverID, Set<License> licenses, String oldDriverID) {
-                List<Driver> driversList = getAvailableDrivers(localDate,licenses);
+        List<Driver> driversList = getAvailableDrivers(localDate,licenses);
         for (Driver driver : driversList) {
             if (driver.getId().equalsIgnoreCase(newdriverID)) {
                 return driver;
@@ -168,7 +168,8 @@ public class TransitCoordinator {
 
     public void removeDriverFromDriverTransitsDates(String driverId, LocalDate transitDate) {
         try{
-            driversDAO.update(driverId);
+            Driver tmpDriver = (Driver) driversDAO.findByID(driverId);
+            driversDAO.update(tmpDriver);
         }catch (SQLException s){
             s.printStackTrace();
         }
