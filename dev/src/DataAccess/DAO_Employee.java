@@ -107,7 +107,7 @@ public class DAO_Employee implements IDAO_Entity {
                 stmt.setString(1, (String) ID);
                 rs = stmt.executeQuery();
                 while (rs.next()) {
-                    LocalDate date = LocalDate.ofEpochDay(rs.getInt("transitDate"));
+                    LocalDate date = (rs.getDate("transitDate")).toLocalDate();
                     driver = generator.CreateDriver(employee);
                     driver.addTransitDate(date);
                 }
