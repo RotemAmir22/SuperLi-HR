@@ -112,7 +112,6 @@ public class OrderDocumentPresentation {
         System.out.println("Please enter the new amount: ");
         double amount = scanner.nextDouble();
         scanner.nextLine();
-
         orderDocumentController.updateAmountDBD(orderDocumentId,productName,amount);
         System.out.println("Amount has changed to: "+ amount);
     }

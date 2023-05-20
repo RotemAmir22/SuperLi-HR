@@ -164,7 +164,6 @@ public class TransitPresentation {
         transitController.updateOrderDocumentOfTransit(currenTransit,orderDocument,"-1");
         System.out.println("Document removed successfully");
     }
-
     public int getOrderIdHandler(Scanner scanner){
         System.out.println("Enter order id: ");
         int orderId = scanner.nextInt();
