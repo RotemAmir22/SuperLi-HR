@@ -81,8 +81,8 @@ public class TransitDAOImpl implements TransitDAO {
         }
         else { // addOrRemoveFlag.equals("-1")
             orderDocumentQuery = "DELETE FROM TransitOrderDocuments WHERE transitId = ? AND orderDocumentId = ?";
-            supplierRouteQuery = "DELETE FROM TransitSuppliersRoute WHERE transitId = ? AND orderDocumentId = ?";
-            branchStoreRouteQuery = "DELETE FROM TransitBranchStoresRoute WHERE transitId = ? AND orderDocumentId = ?";
+            supplierRouteQuery = "DELETE FROM TransitSuppliersRoute WHERE transitId = ? AND orderDocumentId = ? AND supplierId = ?";
+            branchStoreRouteQuery = "DELETE FROM TransitBranchStoresRoute WHERE transitId = ? AND orderDocumentId = ? AND branchStoreId = ?";
             //transit.removeOrderDoc(orderDocument);
         }
 
@@ -115,6 +115,20 @@ public class TransitDAOImpl implements TransitDAO {
             System.out.println("Error related to order document of transit: " + e.getMessage());
         }
     }
+
+    @Override
+    public void updateETA(Transit transit) {
+        String updateETAQuery = "UPDATE Transits SET ETA = ? WHERE transitId = ?";
+        try {
+            PreparedStatement updateETAStmt = connection.prepareStatement(updateETAQuery);
+            updateETAStmt.setDouble(1, transit.getETA());
+            updateETAStmt.setInt(2, transit.getTransitId());
+            updateETAStmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error updating ETA in the database: " + e.getMessage());
+        }
+    }
+
 
     @Override
     public void updateTruckAndDriverOfTransit(Transit transit, Truck newTruck, Driver driver) {

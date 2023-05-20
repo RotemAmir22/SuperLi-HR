@@ -162,14 +162,16 @@ public class TransitControllerImpl implements TransitController {
             transit.addOrderDoc(orderDocument);
             transit.addDestinationStore(orderDocument.getDestination());
             transit.addDestinationSupplier(orderDocument.getSource());
+            transitDAO.updateOrderDocumentOfTransit(transit,orderDocument,addOrRemoveFlag);
         }
         else{
+            transitDAO.updateOrderDocumentOfTransit(transit,orderDocument,addOrRemoveFlag);
             transit.removeOrderDoc(orderDocument);
             transit.removeDestinationSupplier(orderDocument.getSource());
             transit.removeDestinationStore(orderDocument.getDestination());
         }
         transit.setETA();
-        transitDAO.updateOrderDocumentOfTransit(transit,orderDocument,addOrRemoveFlag);
+        transitDAO.updateETA(transit);
     }
 
 

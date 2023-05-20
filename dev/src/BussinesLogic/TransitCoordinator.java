@@ -58,8 +58,6 @@ public class TransitCoordinator {
         try {
             if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {
                 BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
-                System.out.println("branchId: "+branchStore.getBranchID());
-
                 branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
                 branchStoreDAO.update(branchStore);}
             else

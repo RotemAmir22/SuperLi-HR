@@ -14,6 +14,7 @@ public interface TransitDAO {
     void moveToCompleted(Transit completedTransit);
     Set<Transit> getTransitsSet(boolean isCompleted);
     void removeTransit(Transit transit);
+    void updateETA(Transit transit);
 
 //    void addOrderDocumentToTransit(Transit transit, OrderDocument orderDocument);
 //    void removeOrderDocumentFromTransit(Transit transit, OrderDocument orderDocument);

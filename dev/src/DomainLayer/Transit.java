@@ -69,6 +69,11 @@ public class Transit {
         Supplier previousSupplier = null;
         double eta = 0.0;
 
+        if (destinationBranchStores.isEmpty()){
+            eta = 0;
+            return eta;
+        }
+
 // Iterate over the suppliers
         for (Supplier supplier : this.getDestinationSuppliers()) {
             // Check if the previous supplier is in the same area code as the current supplier
@@ -81,7 +86,9 @@ public class Transit {
         }
 
 // Check the first branch store and update the ETA accordingly
-        BranchStore firstBranchStore = this.getDestinationStores().iterator().next();
+
+        BranchStore firstBranchStore = getDestinationStores().iterator().next();
+
         if (previousSupplier != null && previousSupplier.getAreaCode().equals(firstBranchStore.getAreaCode())) {
             eta += 15.0;  // add 15 to the ETA if the first branch store is in the same area code as the last supplier
         } else {
@@ -180,7 +187,12 @@ public class Transit {
         this.driver = driver;
     }
     public void removeOrderDoc(OrderDocument orderDocument) {
-        this.ordersDocs.remove(orderDocument);
+        for (OrderDocument od : ordersDocs){
+            if(od.getOrderDocumentId() == orderDocument.getOrderDocumentId())
+            {ordersDocs.remove(od);
+                return;}
+
+        }
     }
     public double calcOrdersWeight(){
         // TODO why there currentWeight is not an attribute?
