@@ -95,7 +95,7 @@ public class DAO_BranchStore implements IDAO_Entity {
                 stmt.setInt(1, id);
                 rs = stmt.executeQuery();
                 while (rs.next()){
-                    LocalDate transitDate = rs.getDate("transitDate").toLocalDate();
+                    LocalDate transitDate = LocalDate.parse(rs.getString("transitDate"));
                     Boolean transitStatus = rs.getBoolean("status");
                     branchStore.storekeeperStatusByDate.put(transitDate, transitStatus);
                 }
