@@ -195,7 +195,8 @@ public class HR_EntityManagement {
                     System.out.println("ID entered does not exist, please try again: ");
                 }
                 else {
-                    branch.addEmployee(employee);
+                    if(!branch.getEmployees().contains(employee))
+                        branch.addEmployee(employee);
                     branchStoreDAO.update(branch); // connect to DB
                     System.out.println("Do you want to add the employee to another branch? (enter y/n): ");
                     answer = scanner.nextLine();

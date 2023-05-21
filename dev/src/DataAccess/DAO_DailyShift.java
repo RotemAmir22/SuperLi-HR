@@ -113,8 +113,8 @@ public class DAO_DailyShift implements IDAO_DailyShift {
         statement.setInt(1, (Integer) ID);
         ResultSet rs = statement.executeQuery();
         while (rs.next()){
-            LocalDate date = rs.getDate("date").toLocalDate();
-            dailyShifts.put(date,(DailyShift) findByKey(rs.getDate("date"), ID));
+            LocalDate date = LocalDate.parse(rs.getString("date"));
+            dailyShifts.put(date,(DailyShift) findByKey(date, ID));
         }
         return dailyShifts;
     }

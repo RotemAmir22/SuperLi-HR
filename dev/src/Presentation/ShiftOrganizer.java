@@ -25,18 +25,20 @@ public class ShiftOrganizer {
      * @param role: what role he is doing
      */
     public static void changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role) throws SQLException, ClassNotFoundException {
+        DailyShift dailyShift = branchStore.getShiftsHistory().get(date);
         if(choice == 0)// add employee
         {
-            branchStore.getShiftsHistory().get(date).addEmployeeToShift(employee, role, shift);
+
+            dailyShift.addEmployeeToShift(employee, role, shift);
             //if there is a transit
             //employee is added
-            if(branchStore.getShiftsHistory().get(date).isEmployeeInShift(employee.getId())!= null)
+            if(dailyShift.isEmployeeInShift(employee.getId())!= null)
             {
                 //if the role is storage and there is a transit on the way
                 if(role == Role.STORAGE && branchStore.storekeeperStatusByDate.containsKey(date))
                 {
                     //there are storekeepers available and need to update the status
-                    if(branchStore.getShiftsHistory().get(date).storeKeepersInDailyShift() && !branchStore.storekeeperStatusByDate.get(date))
+                    if(dailyShift.storeKeepersInDailyShift() && !branchStore.storekeeperStatusByDate.get(date))
                     {
                         TransitCoordinator.Alert("Transit can be EXECUTED");
                         branchStore.storekeeperStatusByDate.put(date,true);
@@ -47,16 +49,16 @@ public class ShiftOrganizer {
 
         else //remove employee
         {
-            branchStore.getShiftsHistory().get(date).removeEmployeeFromShift(employee, role, shift);
+            dailyShift.removeEmployeeFromShift(employee, role, shift);
             //if there is a transit
             //employee is removed
-            if(branchStore.getShiftsHistory().get(date).isEmployeeInShift(employee.getId())== null)
+            if(dailyShift.isEmployeeInShift(employee.getId())== null)
             {
                 //if the role is storage and there is a transit on the way
                 if(role == Role.STORAGE && branchStore.storekeeperStatusByDate.containsKey(date))
                 {
                     //there are storekeepers available and need to update the status
-                    if(!branchStore.getShiftsHistory().get(date).storeKeepersInDailyShift() && branchStore.storekeeperStatusByDate.get(date))
+                    if(!dailyShift.storeKeepersInDailyShift() && branchStore.storekeeperStatusByDate.get(date))
                     {
                         TransitCoordinator.Alert("TRANSIT CANNOT BE COMPLETE!");
                         //update transit status
@@ -65,7 +67,7 @@ public class ShiftOrganizer {
                 }
             }
         }
-        branchStore.getShiftsHistory().get(date).showMeSchedualing();
+        dailyShift.showMeSchedualing();
     }
 
     /**
