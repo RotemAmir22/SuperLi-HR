@@ -188,7 +188,11 @@ public class TransitCoordinator {
         }
     }
 
-
+    /**
+     * prints all transits in a specific date for the manager of the store to know which transits arrive today
+     * @param branchStore the store that you want to know the incoming transits to
+     * @param date the date of the manager shift
+     */
     public void printArrivalDay(BranchStore branchStore,LocalDate date)
     {
         Set<Transit> transitSet = transitDAO.getTransitsSet(false);

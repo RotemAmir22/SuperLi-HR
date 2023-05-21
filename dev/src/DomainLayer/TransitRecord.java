@@ -24,6 +24,7 @@ public class TransitRecord {
         this.transitRecordId = transitRecordId;
         this.transit = transit;
         this.transitProblem = isOverWeight;
+        this.weightAtExit = new HashMap<>();
     }
     public int getTransitRecordId() {
         return transitRecordId;

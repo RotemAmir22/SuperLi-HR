@@ -182,6 +182,8 @@ public class BranchStore extends Site {
             {
                 if(Objects.equals(role.toString(), "SHIFTMANAGER") || Objects.equals(role.toString(), "STORAGE"))
                 {
+                    TransitCoordinator tC = new TransitCoordinator();
+                    tC.printArrivalDay(this, date);
                     //TODO: getTransit(LocalDate date, String branchStoreID) the function already prints the details
                     // get ETA of transit - add to the print
                 }

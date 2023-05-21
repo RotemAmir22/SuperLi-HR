@@ -388,9 +388,8 @@ public class DAO_Employee implements IDAO_Entity {
      * @throws SQLException
      */
     public List<Employee> getNetworkEmployees() throws SQLException {
-        if(networkEmployees.isEmpty())
-            ifEmptyMaps();
-
+        //if(networkEmployees.isEmpty())
+        ifEmptyMaps();
         employeeList.clear();
         employeeList.addAll(networkEmployees.values());
         return employeeList;
@@ -402,8 +401,8 @@ public class DAO_Employee implements IDAO_Entity {
      * @throws SQLException
      */
     public List<Driver> getNetworkDrivers() throws SQLException {
-        if(newtworkDrivers.isEmpty())
-            ifEmptyMaps();
+        //if(newtworkDrivers.isEmpty())
+        ifEmptyMaps();
         driverList.clear();
         driverList.addAll(newtworkDrivers.values());
         return driverList;
