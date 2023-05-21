@@ -299,7 +299,8 @@ public class TransitDAOImpl implements TransitDAO {
         String updateStatusQuery = "UPDATE Transits SET isCompletedStatus = true, departureTime = ? WHERE transitId = ?";
         try {
             PreparedStatement updateStatusStmt = connection.prepareStatement(updateStatusQuery);
-            updateStatusStmt.setObject(1, completedTransit.getDepartureTime());
+            java.sql.Time sqlTime = java.sql.Time.valueOf(completedTransit.getDepartureTime());
+            updateStatusStmt.setObject(1, sqlTime);
             updateStatusStmt.setInt(2, completedTransit.getTransitId());
             updateStatusStmt.executeUpdate();
             pendingTransitsSet.remove(completedTransit);
