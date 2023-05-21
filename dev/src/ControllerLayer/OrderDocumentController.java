@@ -9,7 +9,7 @@ public interface OrderDocumentController {
     void addProductToOrderDocDB(int orderDocumentId, int productId, double productAmount);
     void showAllProductsInDoc(int orderId);
     void updateAmountDBD(int orderId, String productName, double amount);
-    void removeProductFromOrderDocDBD(int orderDocumentId, String productName);
+    OrderDocument removeProductFromOrderDocDBdP(int orderDocumentId, String productName);
     boolean orderDocumentChooser(int orderId);
     void moveOrderToFinishDB(OrderDocument completedOrder);
     void showCompletedOrderDocs();

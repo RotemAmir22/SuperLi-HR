@@ -67,8 +67,16 @@ public class OrderDocument {
         printOrderProductList();
     }
     public void removeProductFromOrder(Product product){
-        double amountToReduce = productsList.get(product);
-        productsList.remove(product);
+        double amountToReduce = 0.33;// = productsList.get(product);
+        Product product1 = null;
+        for (Map.Entry<Product, Double> entry : getProductsList().entrySet()) {
+            if (entry.getKey().getProductId() == product.getProductId()) {
+                amountToReduce = entry.getValue();
+                product1 = entry.getKey();
+                break;
+            }
+        }
+        productsList.remove(product1);
         totalWeight-= amountToReduce;
     }
     public void printOrderDestination() {
@@ -85,10 +93,9 @@ public class OrderDocument {
     }
     public void updateProductAmount(double amount,Product product)
     {
-        double newTotalWeight;
         double oldProductAmount = getProductsList().get(product);
         productsList.replace(product,amount);
-        this.totalWeight = this.totalWeight - oldProductAmount + amount;
+        totalWeight = totalWeight - oldProductAmount + amount;
 
     }
 }

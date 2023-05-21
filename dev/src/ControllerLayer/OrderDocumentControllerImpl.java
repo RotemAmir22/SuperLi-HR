@@ -63,14 +63,15 @@ public class OrderDocumentControllerImpl implements OrderDocumentController {
         orderDocumentDAO.updateOrderDocumentWeight(orderId,orderDocument.getTotalWeight());
     }
     @Override
-    public void removeProductFromOrderDocDBD(int orderDocumentId, String productName) {
+    public OrderDocument removeProductFromOrderDocDBdP(int orderDocumentId, String productName) {
         Product productToRemove = productController.findProductByName(productName);
-        if(productToRemove == null) return;
-        OrderDocument orderDocument = this.orderDocumentDAO.findOrderDocumentById(orderDocumentId);
-        if(orderDocument == null) return;
+        if(productToRemove == null) return null;
+        OrderDocument orderDocument = orderDocumentDAO.findOrderDocumentById(orderDocumentId);
+        if(orderDocument == null) return null;
         orderDocument.removeProductFromOrder(productToRemove);
         orderDocumentDAO.removeProductFromOrder(orderDocumentId, productToRemove.getProductId());
         orderDocumentDAO.updateOrderDocumentWeight(orderDocument.getOrderDocumentId(),orderDocument.getTotalWeight());
+        return orderDocument;
     }
     @Override
     public OrderDocument findOrderDocById(int orderId) {

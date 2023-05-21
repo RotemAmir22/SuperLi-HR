@@ -185,6 +185,7 @@ public class BranchStore extends Site {
                     //TODO: getTransit(LocalDate date, String branchStoreID) the function already prints the details
                     // get ETA of transit - add to the print
                 }
+
             }
         }
         System.out.println("You cannot view the transit information");

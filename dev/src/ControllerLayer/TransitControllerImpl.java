@@ -11,6 +11,7 @@ import ExceptionsPackage.UiException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.HashSet;
 import java.util.Set;
 
 public class TransitControllerImpl implements TransitController {
@@ -93,7 +94,7 @@ public class TransitControllerImpl implements TransitController {
     public int replaceTransitDriver(int transitId, String newDriverId, String truckPlate, String callingFlag) {
         Truck newTruck = truckController.findTruckByPlate(truckPlate);
         Transit transitToUpdate = findTransitByID(transitId);
-        Driver otherDriver = transitCoordinator.SwitchDriverInTransit(transitToUpdate.getTransitDate(),newDriverId,newTruck.getTruckLicenses(),transitToUpdate.getDriver().getId());
+        Driver otherDriver = transitCoordinator.SwitchDriverInTransit(transitToUpdate.getTransitDate(),newDriverId,newTruck.getTruckLicenses());
         if (otherDriver == null) return -1; //fail to find driver
         boolean qualifiedDriverFlag = isDriverAllowToDriveTruck(newTruck,otherDriver);
         if (!qualifiedDriverFlag) return 0; // driver is not qualified
@@ -123,7 +124,8 @@ public class TransitControllerImpl implements TransitController {
     @Override
     public boolean isDriverAllowToDriveTruck(Truck truck, Driver driver){
         Set <BussinesLogic.License> truckLSet = truck.getTruckLicenses();
-        Set <BussinesLogic.License> driverLicenseSet = (Set<License>) driver.getLicenses(); //might be a problem
+        Set <License> driverLicenses = new HashSet<>(driver.getLicenses());
+        Set <BussinesLogic.License> driverLicenseSet = driverLicenses; //might be a problem
         return (driverLicenseSet.containsAll(truckLSet));
     }
     public void moveTransitToFinishedDB(Transit completedTransit){

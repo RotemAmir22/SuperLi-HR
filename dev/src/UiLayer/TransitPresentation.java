@@ -12,8 +12,6 @@ import ExceptionsPackage.UiException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
@@ -290,7 +288,7 @@ public class TransitPresentation {
         // TODO verify truck and driver availability
         Truck biggerTruck = findNewTruck(scanner);
         if (biggerTruck == null)return false;
-        Driver newDriver = findNewDriver(scanner,transit.getTransitDate(),biggerTruck.getTruckLicenses(),transit.getDriver().getId());
+        Driver newDriver = findNewDriver(scanner,transit.getTransitDate(),biggerTruck.getTruckLicenses());
         if (newDriver == null)return false;
 
         if (!transitController.isDriverAllowToDriveTruck(biggerTruck, newDriver)){
@@ -314,7 +312,7 @@ public class TransitPresentation {
         System.out.println("Reduce at least: " + overWeightAmount + " kg");
         orderDocument.printOrder();
         String sProductName = getProductNameHandler(scanner);
-        orderDocumentController.removeProductFromOrderDocDBD(transit.getTransitId(), sProductName);
+        orderDocument = orderDocumentController.removeProductFromOrderDocDBdP(orderDocument.getOrderDocumentId(), sProductName);
         double updatedOrderWeight = orderDocument.getTotalWeight();
         double newCurrentWeight = truckCurrentWeight - (originalOrderWeight - updatedOrderWeight);
         transit.getTruck().setCurrentLoadWeight(newCurrentWeight);
@@ -329,10 +327,10 @@ public class TransitPresentation {
         }
         return newTruck;
     }
-    public Driver findNewDriver(Scanner scanner, LocalDate transitDate, Set<License> licenses, String oldDriver ) {
+    public Driver findNewDriver(Scanner scanner, LocalDate transitDate, Set<License> licenses) {
         System.out.println("Enter driver's id: ");
         String driverId = scanner.nextLine();
-        Driver newDriver = transitCoordinator.SwitchDriverInTransit(transitDate,driverId,licenses,oldDriver);
+        Driver newDriver = transitCoordinator.SwitchDriverInTransit(transitDate,driverId,licenses);
         if (newDriver == null){
             System.out.printf("Driver's id: %s not found %n", driverId);
         }

@@ -95,7 +95,7 @@ public class TransitCoordinatorTest {
         // Create a Transit instance
         Transit transit = new Transit(transitDate,truck, e1);
 
-        t.SwitchDriverInTransit(transitDate,"2222",licenses,e.getId());
+        t.SwitchDriverInTransit(transitDate,"2222",licenses);
         // Verify the result
         assertEquals("2222", transit.getDriver().getId());
         assertEquals("Shula Cohen", transit.getDriver().getName());

@@ -14,7 +14,7 @@ import java.util.*;
 public class TransitCoordinator {
     private DAO_BranchStore branchStoreDAO;
     private DAO_Employee driversDAO;
-
+    private TransitDAO transitDAO;
 
     /**
      * Using DAO's of branchStore and drivers
@@ -23,6 +23,7 @@ public class TransitCoordinator {
     public TransitCoordinator() throws SQLException, ClassNotFoundException {
         branchStoreDAO = DAO_Generator.getBranchStoreDAO();
         driversDAO = DAO_Generator.getEmployeeDAO();
+        transitDAO = DAO_Generator.getTransitDAO();
     }
 
     /**
@@ -56,8 +57,9 @@ public class TransitCoordinator {
     // TODO - fails when trying to add order to transit
     public void addTransitInDate(LocalDate date, int branchID){
         try {
-            if (branchStoreDAO.getNetworkBranches().get(branchID) != null) {
-                BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
+            BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
+            if (branchStore != null) {
+                //BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
                 branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
                 branchStoreDAO.update(branchStore);}
             else
@@ -94,15 +96,14 @@ public class TransitCoordinator {
      * used both in begin transit (on the fly) and in update transit - switch truck
      * in case that the old driver is not eligible to drive the new truck
      * @param localDate of the transit
-     * @param newdriverID which is going to be added
+     * @param newDriverID which is going to be added
      * @param licenses of the truck that the driver must have
-     * @param oldDriverID which needed to be removed from the transit - need to delete its date from transitDate list
      */
 
-    public Driver SwitchDriverInTransit(LocalDate localDate, String newdriverID, Set<License> licenses, String oldDriverID) {
+    public Driver SwitchDriverInTransit(LocalDate localDate, String newDriverID, Set<License> licenses) {
         List<Driver> driversList = getAvailableDrivers(localDate,licenses);
         for (Driver driver : driversList) {
-            if (driver.getId().equalsIgnoreCase(newdriverID)) {
+            if (driver.getId().equalsIgnoreCase(newDriverID)) {
                 return driver;
             }
         }
@@ -186,4 +187,21 @@ public class TransitCoordinator {
             s.printStackTrace();
         }
     }
+
+
+    public void printArrivalDay(BranchStore branchStore,LocalDate date)
+    {
+        Set<Transit> transitSet = transitDAO.getTransitsSet(false);
+        for (Transit transit :transitSet )
+        {
+            if(date.isEqual(transit.getTransitDate())) {
+                for (BranchStore store : transit.getDestinationStores()) {
+                    if (store.getBranchID() == branchStore.getBranchID()) {
+                        transit.printTransit();
+                    }
+                }
+            }
+        }
+    }
+
 }

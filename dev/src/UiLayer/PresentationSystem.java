@@ -178,6 +178,7 @@ public class PresentationSystem {
                 break;
             case 5:
                 transitP.replaceTransitTruck(scanner);
+                break;
             case 6:
                 transitP.beginTransit(scanner);
                 break;

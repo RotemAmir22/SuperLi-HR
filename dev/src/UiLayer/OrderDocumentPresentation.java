@@ -64,7 +64,7 @@ public class OrderDocumentPresentation {
 
         OrderDocument orderDocument = orderDocumentController.findOrderDocById(orderDocId);
 
-        double weight = 0;
+        double weight = orderDocument.getTotalWeight();
         boolean flag = false;
         while (!flag) {
             System.out.println("Please choose which products you want from the supplier: ");
@@ -127,7 +127,7 @@ public class OrderDocumentPresentation {
         orderDocumentController.showAllProductsInDoc(orderDocumentId);
         System.out.println("Please enter which product you would like to remove: ");
         String productName = scanner.nextLine();
-        orderDocumentController.removeProductFromOrderDocDBD(orderDocumentId,productName);
+        orderDocumentController.removeProductFromOrderDocDBdP(orderDocumentId,productName);
         System.out.println("product: "+ productName + " has been removed");
     };
     public int orderDocChoice(Scanner scanner)

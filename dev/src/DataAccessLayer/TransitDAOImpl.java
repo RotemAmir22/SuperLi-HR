@@ -138,6 +138,7 @@ public class TransitDAOImpl implements TransitDAO {
             PreparedStatement updateTransitStmt = connection.prepareStatement(updateTransitQuery);
             updateTransitStmt.setString(1, newTruck.getPlateNumber());
             updateTransitStmt.setString(2,driver.getId());
+            updateTransitStmt.setInt(3,transit.getTransitId());
             updateTransitStmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error updating transit in the database: " + e.getMessage());
@@ -295,10 +296,11 @@ public class TransitDAOImpl implements TransitDAO {
     }
     @Override
     public void moveToCompleted(Transit completedTransit) {
-        String updateStatusQuery = "UPDATE Transits SET isCompletedStatus = true WHERE transitId = ?";
+        String updateStatusQuery = "UPDATE Transits SET isCompletedStatus = true, departureTime = ? WHERE transitId = ?";
         try {
             PreparedStatement updateStatusStmt = connection.prepareStatement(updateStatusQuery);
-            updateStatusStmt.setInt(1, completedTransit.getTransitId());
+            updateStatusStmt.setObject(1, completedTransit.getDepartureTime());
+            updateStatusStmt.setInt(2, completedTransit.getTransitId());
             updateStatusStmt.executeUpdate();
             pendingTransitsSet.remove(completedTransit);
             completedTransitsSet.add(completedTransit);
