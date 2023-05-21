@@ -135,7 +135,7 @@ public class HR_Main {
                     System.out.println("2. Update an existing branch");
                     System.out.println("3. Add employee to branch");
                     System.out.println("4. Remove employee from branch");
-                    System.out.println("5. View transits for today");
+                    System.out.println("5. View transits");
                     System.out.println("6. Print all Branches");
                     System.out.println("7. Go Back");
                     c = scanner.nextLine();

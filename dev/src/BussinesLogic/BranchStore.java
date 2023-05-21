@@ -184,8 +184,7 @@ public class BranchStore extends Site {
                 {
                     TransitCoordinator tC = new TransitCoordinator();
                     tC.printArrivalDay(this, date);
-                    //TODO: getTransit(LocalDate date, String branchStoreID) the function already prints the details
-                    // get ETA of transit - add to the print
+                    return;
                 }
 
             }
