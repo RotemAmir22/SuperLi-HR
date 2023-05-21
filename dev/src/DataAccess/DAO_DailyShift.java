@@ -276,12 +276,19 @@ public class DAO_DailyShift implements IDAO_DailyShift {
      */
     @Override
     public void delete(Object date, Object id) throws SQLException, ClassNotFoundException {
-        DailyShift dailyShift = (DailyShift) findByKey(date,id);
+        DailyShift dailyShift;
+        try {
+            dailyShift = (DailyShift) findByKey(date, id);
+        }
+        catch (Exception e )
+        {
+            dailyShift = (DailyShift) date;
+        }
         if (dailyShift != null) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM DailyShifts WHERE date = ? AND branchID = ?");
             stmt.setString(1, dailyShift.getDate().toString());
-            stmt.setString(2, (String) id);
-            stmt.executeQuery();
+            stmt.setInt(2, (Integer) id);
+            stmt.executeUpdate();
 
             // delete employees
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getMorningShift().entrySet()) {
@@ -289,7 +296,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                     stmt = conn.prepareStatement("DELETE FROM MorningShiftEmployees WHERE date = ? AND employeeID = ?");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, e.getId());
-                    stmt.executeQuery();
+                    stmt.executeUpdate();
                 }
             }
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getEveningShift().entrySet()) {
@@ -297,7 +304,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                     stmt = conn.prepareStatement("DELETE FROM EveningShiftEmployees WHERE date = ? AND employeeID = ?");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, e.getId());
-                    stmt.executeQuery();
+                    stmt.executeUpdate();
                 }
             }
             // delete shift managers
@@ -305,14 +312,14 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                 stmt = conn.prepareStatement("DELETE FROM ShiftManagers WHERE shiftDate = ? AND shiftManagerID = ?");
                 stmt.setString(1, dailyShift.getDate().toString());
                 stmt.setString(2, shiftManager.getId());
-                stmt.executeQuery();
+                stmt.executeUpdate();
 
                 // delete permissions
                 for (ShiftM_Permissions perm : shiftManager.getPermissions()) {
                     stmt = conn.prepareStatement("DELETE FROM ShiftM_Permissions WHERE shiftDate = ? AND shiftManagerID = ?");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, shiftManager.getId());
-                    stmt.executeQuery();
+                    stmt.executeUpdate();
                 }
 
             }

@@ -184,7 +184,6 @@ public class BranchStore extends Site {
                 {
                     TransitCoordinator tC = new TransitCoordinator();
                     tC.printArrivalDay(this, date);
-                    return;
                 }
 
             }
