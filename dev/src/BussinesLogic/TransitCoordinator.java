@@ -59,7 +59,6 @@ public class TransitCoordinator {
         try {
             BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
             if (branchStore != null) {
-                //BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
                 branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
                 branchStoreDAO.update(branchStore);}
             else
@@ -134,8 +133,9 @@ public class TransitCoordinator {
     // use before start transit
     public Map<LocalDate, Boolean> getTransitsInBranch(int branchID){
         try{
-            if(branchStoreDAO.getNetworkBranches().get(branchID) != null)
-                return branchStoreDAO.getNetworkBranches().get(branchID).storekeeperStatusByDate;
+            BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
+            if(branchStore!= null)
+                return branchStore.storekeeperStatusByDate;
             else
                 System.out.println("Invalid branch ID");
         }catch (SQLException | ClassNotFoundException e)
