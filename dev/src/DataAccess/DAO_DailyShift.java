@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class DAO_DailyShift implements IDAO_DailyShift {
 
-    private ArrayList<DailyShift> networkDailyShift;
+    private Map<String,DailyShift> networkDailyShift;
 
     private DAO_BranchStore daoBranchStore;
     private Connection conn;
@@ -24,7 +24,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
     // constructor
     public DAO_DailyShift(Connection connection) throws SQLException, ClassNotFoundException {
         conn = connection;
-        networkDailyShift = new ArrayList<>();
+        networkDailyShift = new HashMap<>();
         daoBranchStore = DAO_Generator.getBranchStoreDAO();
     }
 
@@ -41,7 +41,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
         String dateString;
         try
         {
-           dateString = ((LocalDate)date).toString();
+            dateString = ((LocalDate)date).toString();
         }
         catch (Exception e)
         {
@@ -95,7 +95,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                 ShiftManager manager = ShiftManagerGenerator.CreateShiftManager(e.getName(), employeeId, LocalDate.parse(dateString),shift);
                 dailyShift.addShiftManager(manager);
             }
-            networkDailyShift.add(dailyShift);
+            networkDailyShift.put(date.toString()+id,dailyShift);
         }
         return dailyShift;
     }
@@ -203,6 +203,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
     @Override
     public void update(Object o, Object id) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = (DailyShift) o;
+
         if (dailyShift != null) {
             PreparedStatement stmt = conn.prepareStatement("UPDATE DailyShifts SET endOfDayReport = ? WHERE branchID = ? AND date = ?");
             stmt.setString(1, dailyShift.getEndOfDayReport().toString());
@@ -223,7 +224,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
             }
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getEveningShift().entrySet()) {
                 for (Employee e : shift.getValue()) {
-                    stmt = conn.prepareStatement("UPDATE MorningShiftEmployees SET role = ? WHERE date = ?AND employeeID = ? AND branchID = ?");
+                    stmt = conn.prepareStatement("UPDATE EveningShiftEmployees SET role = ? WHERE date = ?AND employeeID = ? AND branchID = ?");
                     stmt.setInt(1, shift.getKey().ordinal());
                     stmt.setString(2, dailyShift.getDate().toString());
                     stmt.setString(3, e.getId());
@@ -264,7 +265,65 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                     stmt.executeUpdate();
                 }
             }
+            networkDailyShift.put(dailyShift.getDate().toString()+id, dailyShift);
         }
+    }
+
+    public void addToShift(LocalDate date, int shiftSlot, String eID, int roleNum, int bID) {
+        PreparedStatement stmt;
+        try {
+            if (shiftSlot == 0) // morning
+            {
+                stmt = conn.prepareStatement("INSERT INTO MorningShiftEmployees (date, employeeID, branchID, role) VALUES (?,?,?,?)");
+                stmt.setString(1, date.toString());
+                stmt.setString(2, eID);
+                stmt.setInt(3, bID);
+                stmt.setInt(4, roleNum);
+                stmt.executeUpdate();
+
+            }
+            else if (shiftSlot == 1) // evening
+            {
+                stmt = conn.prepareStatement("INSERT INTO EveningShiftEmployees (date, employeeID, branchID, role) VALUES (?,?,?,?)");
+                stmt.setString(1, date.toString());
+                stmt.setString(2, eID);
+                stmt.setInt(3, bID);
+                stmt.setInt(4, roleNum);
+                stmt.executeUpdate();
+            }
+        }catch (SQLException s) {
+            s.printStackTrace();
+        }
+
+
+    }
+
+    public void removefromShift(LocalDate date, int shiftSlot, String eID, int roleNum, int bID){
+        PreparedStatement stmt;
+        try {
+            if (shiftSlot == 0) // morning
+            {
+                stmt = conn.prepareStatement("DELETE FROM MorningShiftEmployees WHERE date = ? AND employeeID = ? AND branchID = ? AND role = ?");
+                stmt.setString(1, date.toString());
+                stmt.setString(2, eID);
+                stmt.setInt(3, bID);
+                stmt.setInt(4, roleNum);
+                stmt.executeUpdate();
+
+            }
+            else if (shiftSlot == 1) // evening
+            {
+                stmt = conn.prepareStatement("DELETE FROM EveningShiftEmployees WHERE date = ? AND employeeID = ? AND branchID = ? AND role = ?");
+                stmt.setString(1, date.toString());
+                stmt.setString(2, eID);
+                stmt.setInt(3, bID);
+                stmt.setInt(4, roleNum);
+                stmt.executeUpdate();
+            }
+        }catch (SQLException s) {
+            s.printStackTrace();
+        }
+
     }
 
     /**
@@ -276,19 +335,12 @@ public class DAO_DailyShift implements IDAO_DailyShift {
      */
     @Override
     public void delete(Object date, Object id) throws SQLException, ClassNotFoundException {
-        DailyShift dailyShift;
-        try {
-            dailyShift = (DailyShift) findByKey(date, id);
-        }
-        catch (Exception e )
-        {
-            dailyShift = (DailyShift) date;
-        }
+        DailyShift dailyShift = (DailyShift) findByKey(date,id);
         if (dailyShift != null) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM DailyShifts WHERE date = ? AND branchID = ?");
             stmt.setString(1, dailyShift.getDate().toString());
-            stmt.setInt(2, (Integer) id);
-            stmt.executeUpdate();
+            stmt.setString(2, (String) id);
+            stmt.executeQuery();
 
             // delete employees
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getMorningShift().entrySet()) {
@@ -296,7 +348,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                     stmt = conn.prepareStatement("DELETE FROM MorningShiftEmployees WHERE date = ? AND employeeID = ?");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, e.getId());
-                    stmt.executeUpdate();
+                    stmt.executeQuery();
                 }
             }
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getEveningShift().entrySet()) {
@@ -304,7 +356,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                     stmt = conn.prepareStatement("DELETE FROM EveningShiftEmployees WHERE date = ? AND employeeID = ?");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, e.getId());
-                    stmt.executeUpdate();
+                    stmt.executeQuery();
                 }
             }
             // delete shift managers
@@ -312,19 +364,19 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                 stmt = conn.prepareStatement("DELETE FROM ShiftManagers WHERE shiftDate = ? AND shiftManagerID = ?");
                 stmt.setString(1, dailyShift.getDate().toString());
                 stmt.setString(2, shiftManager.getId());
-                stmt.executeUpdate();
+                stmt.executeQuery();
 
                 // delete permissions
                 for (ShiftM_Permissions perm : shiftManager.getPermissions()) {
                     stmt = conn.prepareStatement("DELETE FROM ShiftM_Permissions WHERE shiftDate = ? AND shiftManagerID = ?");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, shiftManager.getId());
-                    stmt.executeUpdate();
+                    stmt.executeQuery();
                 }
 
             }
         }
-        networkDailyShift.remove(dailyShift);
+        networkDailyShift.remove(date.toString() + id);
     }
 }
 

@@ -23,6 +23,8 @@ public class TransitCoordinatorTest {
     private static DAO_BranchStore branchStoreDAO;
     private static TransitCoordinator t;
 
+    private static Transit transit;
+
     @BeforeClass
     public static void setup() {
         e = new Driver("Yossi", "Cohen", "1111", "098762", 500, "Salary: 500 per shift", "2022-11-12");
@@ -31,8 +33,11 @@ public class TransitCoordinatorTest {
         {
             b = new BranchStore("Super", Area.East, "Hayarkon-17", "08-689534", "24/7", 11111117);
             t = new TransitCoordinator();
-            branchStoreDAO = DAO_Generator.getBranchStoreDAO();
-
+            //branchStoreDAO = DAO_Generator.getBranchStoreDAO();
+            Truck truck = new Truck("IT54432AI", TruckModel.LARGETRUCK ,9000, 30000);
+            LocalDate date = LocalDate.ofEpochDay(2022-11-12);
+            transit = new Transit(date,truck,e1);
+            b.storekeeperStatusByDate.put(date,true);
         }catch (SQLException| ClassNotFoundException s)
         {
             s.printStackTrace();
@@ -54,7 +59,7 @@ public class TransitCoordinatorTest {
 
         // Verify the result
         assertNotNull(availableDrivers);
-        assertEquals(5, availableDrivers.size());
+        assertEquals(3, availableDrivers.size());
     }
 
     @Test
@@ -71,12 +76,12 @@ public class TransitCoordinatorTest {
         e1.addLicense(License.C);
         e1.addLicense(License.COOLER);
         // Create a Transit instance
-        Transit transit = new Transit(transitDate,truck, e1);
+        Transit transit1 = new Transit(transitDate,truck, e1);
 
 
         // Verify the result
-        assertEquals("2222", transit.getDriver().getId());
-        assertEquals("Shula Cohen", transit.getDriver().getName());
+        assertEquals("2222", transit1.getDriver().getId());
+        assertEquals("Shula Cohen", transit1.getDriver().getName());
     }
 
     @Test
@@ -122,5 +127,11 @@ public class TransitCoordinatorTest {
         boolean result2 = t.StorageWorkersExist(stores2,date);
         assertTrue(result);
         //assertFalse(result2);;
+    }
+
+    @Test
+    public void findBranch(){
+        BranchStore tmpBranch = t.findStoreById(1);
+        assertNotNull(tmpBranch);
     }
 }
