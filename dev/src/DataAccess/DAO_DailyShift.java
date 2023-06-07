@@ -224,7 +224,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
             }
             for (Map.Entry<Role, ArrayList<Employee>> shift : dailyShift.getEveningShift().entrySet()) {
                 for (Employee e : shift.getValue()) {
-                    stmt = conn.prepareStatement("UPDATE MorningShiftEmployees SET role = ? WHERE date = ?AND employeeID = ? AND branchID = ?");
+                    stmt = conn.prepareStatement("UPDATE EveningShiftEmployees SET role = ? WHERE date = ?AND employeeID = ? AND branchID = ?");
                     stmt.setInt(1, shift.getKey().ordinal());
                     stmt.setString(2, dailyShift.getDate().toString());
                     stmt.setString(3, e.getId());
