@@ -4,6 +4,7 @@
     <root id="archive" name="ADSS_Group_H.jar">
       <element id="module-output" name="ADSS_Group_H" />
       <element id="extracted-dir" path="$PROJECT_DIR$/SqliteJdbcDriver/sqlite-jdbc-3.40.0.0.jar" path-in-jar="/" />
+      <element id="library" level="project" name="sqlite-jdbc-3.40.0.0" />
     </root>
   </artifact>
 </component>

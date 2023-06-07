@@ -156,6 +156,11 @@ public class HR_SchedulingManagement {
                 int qualification = scanner.nextInt();
                 ShiftOrganizer.changeShift(branch,date , shift, choice, employee, roles[qualification]);
                 //update DB
+                if(choice == 0)
+                    dailyShiftDAO.addToShift(date, shift, employeeID, roles[qualification].ordinal(), branchID);
+                else if(choice == 1)
+                    dailyShiftDAO.removefromShift(date, shift, employeeID, roles[qualification].ordinal(), branchID);
+
                 dailyShiftDAO.update(branch.getShiftByDate(String.valueOf(date)),branchID);
                 branchStoreDAO.update(branch);
                 answer = scanner.nextLine();
