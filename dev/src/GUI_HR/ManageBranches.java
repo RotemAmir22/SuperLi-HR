@@ -9,6 +9,7 @@ public class ManageBranches extends JFrame {
     private JButton updateButton;
     private JButton viewTransitButton;
     private JButton showAllButton;
+    private JButton backButton;
 
     public ManageBranches (){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -20,6 +21,20 @@ public class ManageBranches extends JFrame {
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
         setContentPane(backgroundPanel);
+
+        backgroundPanel.add(newButton);
+        backgroundPanel.add(updateButton);
+        backgroundPanel.add(associateEmployeeButton);
+        backgroundPanel.add(viewTransitButton);
+        backgroundPanel.add(showAllButton);
+        backgroundPanel.add(backButton);
+
+        ButtonStyle.set(newButton);
+        ButtonStyle.set(updateButton);
+        ButtonStyle.set(associateEmployeeButton);
+        ButtonStyle.set(viewTransitButton);
+        ButtonStyle.set(showAllButton);
+        ButtonStyle.setExit(backButton);
     }
 
 }
