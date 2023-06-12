@@ -38,4 +38,3 @@ public class ManageBranches extends JFrame {
     }
 
 }
-Add

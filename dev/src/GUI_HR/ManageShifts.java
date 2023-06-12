@@ -6,6 +6,7 @@ public class ManageShifts extends JFrame{
     private JButton planShiftsButton;
     private JButton addPermissionsButton;
     private JButton updateShiftButton;
+    private JButton backButton;
 
     public ManageShifts(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -17,5 +18,15 @@ public class ManageShifts extends JFrame{
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
         setContentPane(backgroundPanel);
+
+        backgroundPanel.add(planShiftsButton);
+        backgroundPanel.add(addPermissionsButton);
+        backgroundPanel.add(updateShiftButton);
+        backgroundPanel.add(backButton);
+
+        ButtonStyle.set(planShiftsButton);
+        ButtonStyle.set(addPermissionsButton);
+        ButtonStyle.set(updateShiftButton);
+        ButtonStyle.setExit(backButton);
     }
 }
