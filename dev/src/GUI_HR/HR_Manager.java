@@ -72,6 +72,13 @@ public class HR_Manager extends JFrame {
                 setVisible(false);
             }
         });
+
+        exitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
     }
 
     public static void main(String[] args) {
