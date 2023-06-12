@@ -10,7 +10,7 @@ public class ManageBranches extends JFrame {
     private JButton viewTransitButton;
     private JButton showAllButton;
 
-    public ManageBranches(){
+    public ManageBranches (){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1054, 592);
 
@@ -23,3 +23,4 @@ public class ManageBranches extends JFrame {
     }
 
 }
+Add

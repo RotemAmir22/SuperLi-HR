@@ -12,5 +12,6 @@ public class ButtonStyle {
     public static void setExit(JButton b){
         b.setBackground(new Color(139, 0, 0));
         b.setForeground(Color.WHITE);
+
     }
 }

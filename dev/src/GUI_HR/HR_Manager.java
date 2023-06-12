@@ -36,12 +36,37 @@ public class HR_Manager extends JFrame {
         ButtonStyle.set(manageShiftsButton);
         ButtonStyle.setExit(exitButton);
 
+
         manageEmloyeesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here
                 // Create and show the ManageEmployees frame
-                ManageEmployees manageEmployeesFrame = new ManageEmployees();
-                manageEmployeesFrame.setVisible(true);
+                ManageEmployees MEF = new ManageEmployees();
+                MEF.setVisible(true);
+
+                // Hide the HR_Manager frame
+                setVisible(false);
+            }
+        });
+
+        manageBranchesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open new form here
+                // Create and show the ManageEmployees frame
+                ManageBranches MBF = new ManageBranches();
+                MBF.setVisible(true);
+
+                // Hide the HR_Manager frame
+                setVisible(false);
+            }
+        });
+
+        manageShiftsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open new form here
+                // Create and show the ManageEmployees frame
+                ManageShifts MSF = new ManageShifts();
+                MSF.setVisible(true);
 
                 // Hide the HR_Manager frame
                 setVisible(false);

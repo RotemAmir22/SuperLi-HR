@@ -1,7 +1,6 @@
 package GUI_HR;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class ManageEmployees extends JFrame {
 
@@ -11,6 +10,7 @@ public class ManageEmployees extends JFrame {
     private JButton calculateSalaryButton;
     private JButton showAllButton;
     private JButton backButton;
+    private JButton resetWeeklyLimitButton;
 
     public ManageEmployees(){
 
@@ -23,13 +23,13 @@ public class ManageEmployees extends JFrame {
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
         setContentPane(backgroundPanel);
-        setLayout(new BorderLayout());
 
         backgroundPanel.add(newButton);
         backgroundPanel.add(updateButton);
         backgroundPanel.add(getInfoButton);
         backgroundPanel.add(calculateSalaryButton);
         backgroundPanel.add(showAllButton);
+        backgroundPanel.add(resetWeeklyLimitButton);
         backgroundPanel.add(backButton);
 
         ButtonStyle.set(newButton);
@@ -37,7 +37,9 @@ public class ManageEmployees extends JFrame {
         ButtonStyle.set(getInfoButton);
         ButtonStyle.set(calculateSalaryButton);
         ButtonStyle.set(showAllButton);
+        ButtonStyle.set(resetWeeklyLimitButton);
         ButtonStyle.setExit(backButton);
+
 
     }
 
