@@ -1,6 +1,8 @@
 package GUI_HR;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ManageEmployees extends JFrame {
 
@@ -39,6 +41,19 @@ public class ManageEmployees extends JFrame {
         ButtonStyle.set(showAllButton);
         ButtonStyle.set(resetWeeklyLimitButton);
         ButtonStyle.setExit(backButton);
+
+        newButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open new form here
+                // Create and show the ManageEmployees frame
+                NewEmployee NEF = new NewEmployee();
+                NEF.setVisible(true);
+                NEF.setup();
+
+
+                // Hide the HR_Manager frame
+            }
+        });
 
 
     }
