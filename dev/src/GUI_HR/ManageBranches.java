@@ -1,6 +1,8 @@
 package GUI_HR;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class ManageBranches extends JFrame {
     private JButton newButton;
@@ -35,6 +37,18 @@ public class ManageBranches extends JFrame {
         ButtonStyle.set(viewTransitButton);
         ButtonStyle.set(showAllButton);
         ButtonStyle.setExit(backButton);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open new form here
+                // Create and show the ManageEmployees frame
+                HR_Manager HR = new HR_Manager();
+                HR.setVisible(true);
+
+                // Hide the HR_Manager frame
+                setVisible(false);
+            }
+        });
     }
 
 }
