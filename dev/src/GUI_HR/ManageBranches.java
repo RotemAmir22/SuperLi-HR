@@ -11,7 +11,7 @@ public class ManageBranches extends JFrame {
     private JButton showAllButton;
     private JButton backButton;
 
-    public ManageBranches(){
+    public ManageBranches (){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1054, 592);
 
@@ -38,3 +38,4 @@ public class ManageBranches extends JFrame {
     }
 
 }
+Add
