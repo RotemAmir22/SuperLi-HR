@@ -1,11 +1,9 @@
 package GUI_HR;
 
-import Service_HR.ManageEmployees;
+import Service_HR.SManageEmployees;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class NewEmployee extends JFrame {
     private JTextField startDate;
@@ -28,8 +26,8 @@ public class NewEmployee extends JFrame {
         // Check user's choice
         if (option == JOptionPane.OK_OPTION) {
             // User clicked "OK"
-            ManageEmployees manageEmployees = new ManageEmployees();
-            boolean res = manageEmployees.insertNewEmployee(firstName.getText(), lastName.getText(), id.getText(), bankAccount.getText(), salary.getText(), terms.getText(), startDate.getText(), driver.isSelected());
+            SManageEmployees SManageEmployees = new SManageEmployees();
+            boolean res = SManageEmployees.insertNewEmployee(firstName.getText(), lastName.getText(), id.getText(), bankAccount.getText(), salary.getText(), terms.getText(), startDate.getText(), driver.isSelected());
             if (!res) {
                 JOptionPane.showMessageDialog(null, "Invalid input!\nDate's format (YYY-MM-DD)\nSalary should be a number", "Error", JOptionPane.ERROR_MESSAGE);
                 this.setup();

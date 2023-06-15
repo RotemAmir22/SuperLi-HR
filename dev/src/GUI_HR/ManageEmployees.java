@@ -55,6 +55,32 @@ public class ManageEmployees extends JFrame {
             }
         });
 
+        updateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+//                String input = JOptionPane.showInputDialog(panel1, "Enter employee ID:");
+//                if (input != null) {
+
+                UpdateEmployee UPF = new UpdateEmployee();
+
+                UPF.setVisible(true);
+
+
+                // Hide the HR_Manager frame
+            }
+        });
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open new form here
+                // Create and show the ManageEmployees frame
+                HR_Manager HR = new HR_Manager();
+                HR.setVisible(true);
+
+                // Hide the HR_Manager frame
+                setVisible(false);
+            }
+        });
+
 
     }
 

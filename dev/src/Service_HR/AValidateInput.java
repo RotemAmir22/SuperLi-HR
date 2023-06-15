@@ -14,6 +14,15 @@ public abstract class AValidateInput {
         }
     }
 
+    public  boolean isIdType(String input) {
+        // Check if the string contains only numbers and has a length up to 10 characters
+        if (input.matches("\\d{6,10}")) {
+            return true; // String is valid
+        } else {
+            return false; // String is invalid
+        }
+    }
+
     public boolean isDouble(Object o){
         try{
             Double.parseDouble(o.toString());
