@@ -5,6 +5,9 @@ import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 import static BussinesLogic.Role.DRIVER;
 
@@ -98,6 +101,14 @@ public class SManageEmployees extends AValidateInput{
                             e = d;
                             break;
                         }
+                    break;
+                case 9:
+                    if(input.equals("reset"))
+                        e.setCumulativeSalary(0);
+                    break;
+                case 10:
+                    if(input.equals("reset"))
+                        e.setShiftsLimit(6);
                     break;
                 default:
                     break;
@@ -208,5 +219,38 @@ public class SManageEmployees extends AValidateInput{
         return false;
     }
 
+    /**
+     * Get all employees, include drivers
+     * @return List of all employees
+     */
+    public List<Employee> getAllEmployees()
+    {
+        try {
+            List<Employee> all = employeesDAO.getNetworkEmployees();
+            all.addAll(employeesDAO.getNetworkDrivers());
+            return all;
+        }
+        catch (SQLException e){
+            return null;
+        }
+    }
+
+    /**
+     * Get a driver
+     * @param ID of the driver employee
+     * @return the driver
+     */
+    public Driver getDriver(String ID) {
+        try {
+            if (isDriver(ID)) {
+                for(Driver d : employeesDAO.getNetworkDrivers())
+                    if(d.getId().equals(ID))
+                        return d;
+            }
+            return null;
+        }catch (SQLException e){
+            return null;
+        }
+    }
 
 }
