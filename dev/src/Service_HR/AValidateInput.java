@@ -33,7 +33,7 @@ public abstract class AValidateInput {
     }
     public boolean isInteger(Object o){
         try{
-            Integer tmp = (Integer) o;
+            Integer.parseInt(o.toString());
             return true;
         }catch (Exception e){
             return false;

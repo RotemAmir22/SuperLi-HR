@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 public class WeeklyShiftTable extends JFrame {
 
     private JCheckBox[][] checkBoxes; // Store the checkbox references for later use
-
+    boolean ans;
     public WeeklyShiftTable(int id) {
         // Create the table model with shifts for the week
         String[] columnNames = {"Day", "Morning", "Evening"};
@@ -26,19 +26,19 @@ public class WeeklyShiftTable extends JFrame {
 
         JPanel panel = new JPanel(new GridLayout(0, columnNames.length));
         panel.setBorder(BorderFactory.createTitledBorder("--- Mark when Branch " + id + " is open ---"));
-        checkBoxes = new JCheckBox[rowData.length][columnNames.length - 1];
+        checkBoxes = new JCheckBox[7][2];
 
         for (String columnName : columnNames) {
             panel.add(new JLabel(columnName));
         }
 
-        for (int row = 0; row < rowData.length; row++) {
+        for (int row = 0; row < 7; row++) {
             panel.add(new JLabel(rowData[row][0].toString())); // Add the day label
 
-            for (int col = 1; col < columnNames.length; col++) {
-                checkBoxes[row][col - 1] = (JCheckBox) rowData[row][col]; // Store the checkbox reference
-                panel.add(checkBoxes[row][col - 1]); // Add the checkboxes for Morning and Evening shifts
-            }
+            checkBoxes[row][0] = (JCheckBox) rowData[row][1]; // Store the checkbox reference
+            checkBoxes[row][1] = (JCheckBox) rowData[row][2]; // Store the checkbox reference
+            panel.add(checkBoxes[row][0]); // Add the checkboxes for Morning and Evening shifts
+            panel.add(checkBoxes[row][1]); // Add the checkboxes for Morning and Evening shifts
         }
 
         JButton submitButton = new JButton("Submit");
@@ -47,9 +47,15 @@ public class WeeklyShiftTable extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 SManageBranches SMB = new SManageBranches();
                 boolean[][] result = collectData();
+                setVisible(false);
+                int option = JOptionPane.showConfirmDialog(panel, "Do you want to update comments?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    String input = JOptionPane.showInputDialog(panel, "Enter summary for new open hours:");
+                    SMB.update(3, String.valueOf(id), input);
+                }
                 SMB.updateOpenHours(id, result);
                 JOptionPane.showMessageDialog(null, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                setVisible(false);
+
 
             }
         });
@@ -65,15 +71,14 @@ public class WeeklyShiftTable extends JFrame {
     }
 
     private boolean[][] collectData() {
-        boolean[][] selectedData = new boolean[checkBoxes.length][checkBoxes[0].length - 1];
-        for (int row = 0; row < checkBoxes.length; row++) {
-            for (int col = 1; col < checkBoxes[row].length; col++) {
-                boolean isSelected  = checkBoxes[row][col - 1].isSelected();
-                selectedData[row][col - 1] = isSelected;
-            }
+        boolean[][] selectedData = new boolean[7][2];
+        for (int row = 0; row < 7; row++) {
+            selectedData[row][0] = checkBoxes[row][0].isSelected();
+            selectedData[row][1] = checkBoxes[row][1].isSelected();
         }
-
         return selectedData;
     }
+
+    public boolean notifyAns(){ return ans;}
 }
 

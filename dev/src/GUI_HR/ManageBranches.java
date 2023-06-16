@@ -46,8 +46,15 @@ public class ManageBranches extends JFrame {
                 NB.setVisible(true);
                 NB.setup();
 
-                // Hide the HR_Manager frame
-                setVisible(false);
+            }
+        });
+
+        updateButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open new form here
+                // Create and show the ManageEmployees frame
+                UpdateBranch UPB = new UpdateBranch();
+                UPB.setVisible(true);
             }
         });
         backButton.addActionListener(new ActionListener() {
@@ -57,7 +64,6 @@ public class ManageBranches extends JFrame {
                 HR_Manager HR = new HR_Manager();
                 HR.setVisible(true);
 
-                // Hide the HR_Manager frame
                 setVisible(false);
             }
         });

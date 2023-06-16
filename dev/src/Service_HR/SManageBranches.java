@@ -1,7 +1,6 @@
 package Service_HR;
 
-import BussinesLogic.BranchStore;
-import BussinesLogic.BranchStoreGenerator;
+import BussinesLogic.*;
 import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
@@ -42,23 +41,50 @@ public class SManageBranches extends AValidateInput {
             return -1;
         }
     }
+    public boolean update(int type, String ID, String input){
+        try {
+            BranchStore toUpdate = (BranchStore) branchStoreDAO.findByID(ID);
+            switch (type) {
+                case 1 -> toUpdate.setName(input);
+                case 2 -> toUpdate.setPhoneNum(input);
+                case 3 -> toUpdate.setOpeningTime(input);
+                default -> {
+                }
+            }
+            branchStoreDAO.update(toUpdate);
+            return true;
+        }catch (SQLException | ClassNotFoundException e){
+            return false;
+        }
+    }
 
     public boolean updateOpenHours(int ID, boolean[][]data){
         try{
             BranchStore toUpdate = (BranchStore) branchStoreDAO.findByID(ID);
-            for (int day = 0; day < data.length; day++) {
-                for (int shift = 0; shift < data[day].length; shift++) {
-                    boolean isOpen = data[day][shift];
-                    if(!isOpen)
-                        toUpdate.setOpenHours(day, shift, 1);
-                }
+            for(int i=0; i<7; i++) {
+                boolean isOpenM = data[i][0];
+                if(!isOpenM)
+                    toUpdate.setOpenHours(i, 0, 1);
+                boolean isOpenE = data[i][1];
+                if(!isOpenE)
+                    toUpdate.setOpenHours(i, 1, 1);
             }
             branchStoreDAO.update(toUpdate);
             return true;
         } catch (SQLException | ClassNotFoundException e) {
             return false;
         }
+    }
 
+    public boolean searchBranch(String input){
+        try{
+            BranchStore b = (BranchStore) branchStoreDAO.findByID(input);
+            if(b != null)
+                return true;
+        }catch (SQLException | ClassNotFoundException e){
+            return false;
+        }
+        return false;
 
     }
 }
