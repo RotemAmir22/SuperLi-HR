@@ -38,6 +38,18 @@ public class ManageBranches extends JFrame {
         ButtonStyle.set(showAllButton);
         ButtonStyle.setExit(backButton);
 
+        newButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Open new form here
+                // Create and show the ManageEmployees frame
+                NewBranch NB = new NewBranch();
+                NB.setVisible(true);
+                NB.setup();
+
+                // Hide the HR_Manager frame
+                setVisible(false);
+            }
+        });
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here

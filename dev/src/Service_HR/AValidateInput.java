@@ -48,4 +48,12 @@ public abstract class AValidateInput {
         }
     }
 
+    public boolean isPhone(String input){
+        if (input.matches("\\d{3,10}")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
