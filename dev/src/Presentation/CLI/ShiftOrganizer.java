@@ -110,6 +110,46 @@ public class ShiftOrganizer {
     }
 
     /**
+     * Assigns employees to daily shift
+     * @param rolesAmount roles to assign to
+     * @param Employees employees to assign
+     * @param dailyShift what daily shift to assign to
+     * @param shift morning or evening shift
+     */
+    public static  void assignEmployeesToShift(Map<String, Integer> rolesAmount, List<Employee> Employees, DailyShift dailyShift, int shift)
+    {
+        int key;
+        boolean[][] constraints;
+        Role roleName;
+        int amount;
+        LocalDate shiftDate = dailyShift.getDate();
+        /*
+        This loop will put the employees at positions by role
+         */
+        for (Map.Entry<String, Integer> entry : rolesAmount.entrySet()) {
+            roleName = Role.valueOf(entry.getKey());
+            amount = entry.getValue();
+            /* Check if there is need for this role:
+               If the employee can do it, and if he doesn't pass his weekly limitation. */
+            if (amount <= 0)
+                continue;
+            for (Employee employee : Employees) {
+                /* get the employees constraints */
+                constraints = employee.getConstraints();
+                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift]) {
+                    /* check where the employee can be and update */
+                    boolean addToShift = dailyShift.addEmployeeToShift(employee, roleName, shift);
+                    if (addToShift) {
+                        key = rolesAmount.get(String.valueOf(roleName));
+                        key--;
+                        rolesAmount.put(String.valueOf(roleName), key);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * The main function in this class. Made the scheduling itself
      * @param listEmployees: the branches employees
      * @param openHours: the branches open hours (in this part - day and shift (morning or evening))
@@ -194,41 +234,8 @@ public class ShiftOrganizer {
          * In this part we go over the employees and check who can fill which position
          * We will insert those maps to the new DailyShift
          */
-        int key;
-        boolean[][] constraints;
+        assignEmployeesToShift(rolesAmount,listEmployees,dailyShift,shift);
 
-        Role roleName;
-        int amount;
-        /*
-        This loop will put the employees at positions by role
-         */
-        for (Map.Entry<String, Integer> entry : rolesAmount.entrySet())
-        {
-            roleName = Role.valueOf(entry.getKey());
-            amount = entry.getValue();
-            /* Check if there is need for this role:
-               If the employee can do it, and if he doesn't pass his weekly limitation. */
-            if(amount <=0)
-                continue;
-            for (Employee employee : listEmployees) {
-                /* get the employees constraints */
-                constraints = employee.getConstraints();
-                if (entry.getValue() > 0 && employee.canDoRole(roleName) && employee.getShiftsLimit() > 0 && constraints[shiftDate.getDayOfWeek().ordinal()][shift])
-                {
-                    /* check where the employee can be and update */
-                    boolean addToShift = dailyShift.addEmployeeToShift(employee, roleName, shift);
-                    if(addToShift)
-                    {
-                        key = rolesAmount.get(String.valueOf(roleName));
-                        key--;
-                        rolesAmount.put(String.valueOf(roleName), key);
-                    }
-
-
-                }
-            }
-
-        }
         /* Create and set a new shift */
         checkShiftValidation(rolesAmount, storekeeperStatusByDate,currentDate); // check if there is a problem
         return dailyShift; //return a new daily shift
