@@ -79,7 +79,7 @@ public class UpdateBranch extends JFrame {
         OP.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                WeeklyShiftTable op = new WeeklyShiftTable(Integer.parseInt(ID), "--- Update branches' open hours ---", SMB.getOpenhours(Integer.parseInt(ID)));
+                WeeklyShiftTable op = new WeeklyShiftTable(ID, "--- Update branches' open hours ---", SMB.getOpenhours(Integer.parseInt(ID)), "B");
             }
         });
 

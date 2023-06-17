@@ -1,17 +1,19 @@
 package Presentation.GUI_HR;
 
 import Service_HR.SManageBranches;
+import Service_HR.SManageEmployees;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class WeeklyShiftTable extends JFrame {
 
     private JCheckBox[][] checkBoxes; // Store the checkbox references for later use
     boolean ans;
-    public WeeklyShiftTable(int id, String message, int[][] avaliablity) {
+    public WeeklyShiftTable(String id, String message, int[][] avaliablity, String type) {
         // Create the table model with shifts for the week
         String[] columnNames = {"Day", "Morning", "Evening"};
         Object[][] rowData = {
@@ -48,17 +50,31 @@ public class WeeklyShiftTable extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SManageBranches SMB = new SManageBranches();
-                boolean[][] result = collectData();
-                setVisible(false);
-                int option = JOptionPane.showConfirmDialog(panel, "Do you want to update comments?", "Confirmation", JOptionPane.YES_NO_OPTION);
-                if (option == JOptionPane.YES_OPTION) {
-                    String input = JOptionPane.showInputDialog(panel, "Enter summary for new open hours:");
-                    SMB.update(3, String.valueOf(id), input);
+                if(Objects.equals(type, "B")) {
+                    SManageBranches SMB = new SManageBranches();
+                    boolean[][] result = collectData();
+                    setVisible(false);
+                    int option = JOptionPane.showConfirmDialog(panel, "Do you want to update comments?", "Confirmation", JOptionPane.YES_NO_OPTION);
+                    if (option == JOptionPane.YES_OPTION) {
+                        String input = JOptionPane.showInputDialog(panel, "Enter summary for new open hours:");
+                        SMB.update(3, String.valueOf(id), input);
+                    }
+                    boolean res = SMB.updateOpenHours(Integer.parseInt(id), result);
+                    if(res)
+                        JOptionPane.showMessageDialog(null, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    else
+                        JOptionPane.showMessageDialog(null, "Failed to update open hours.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                SMB.updateOpenHours(id, result);
-                JOptionPane.showMessageDialog(null, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
+                else{
+                    SManageEmployees SME = new SManageEmployees();
+                    boolean[][] result = collectData();
+                    setVisible(false);
+                    boolean res = SME.setConstraints(id, result);
+                    if(res)
+                        JOptionPane.showMessageDialog(null, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    else
+                        JOptionPane.showMessageDialog(null, "Failed to update constraints.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
 
             }
         });
@@ -70,7 +86,7 @@ public class WeeklyShiftTable extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        //setVisible(true);
     }
 
     private boolean[][] collectData() {

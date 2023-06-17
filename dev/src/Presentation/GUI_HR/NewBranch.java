@@ -36,7 +36,7 @@ public class NewBranch extends JFrame {
             else {
                 JOptionPane.showMessageDialog(this, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
-                new WeeklyShiftTable(res, "--- Select branches' open hours ---", SMB.getOpenhours(res));
+                new WeeklyShiftTable(((Integer)res).toString(), "--- Select branches' open hours ---", SMB.getOpenhours(res),"B");
             }
         }
         else{

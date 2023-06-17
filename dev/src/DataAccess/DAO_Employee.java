@@ -187,8 +187,8 @@ public class DAO_Employee implements IDAO_Entity {
             for (Days day : Days.values())
             {
                 stmt = conn.prepareStatement("UPDATE EmployeeConstraints SET morningShift = ?, eveningShift = ? WHERE employeeID = ? AND dayOfWeek = ?");
-                stmt.setInt(1, e.getConstraints()[day.ordinal()][0]? 1:0);
-                stmt.setInt(2, e.getConstraints()[day.ordinal()][1]? 1:0);
+                stmt.setInt(1, e.getConstraints()[day.ordinal()][0]? 0:1);
+                stmt.setInt(2, e.getConstraints()[day.ordinal()][1]? 0:1);
                 stmt.setString(3, e.getId());
                 stmt.setInt(4,day.ordinal());
                 stmt.executeUpdate();

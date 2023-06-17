@@ -150,6 +150,29 @@ public class SManageEmployees extends AValidateInput{
 
     }
 
+    public boolean setConstraints(String id, boolean[][] constraints){
+        try{
+            Employee e = ((Employee)employeesDAO.findByID(id));
+            e.setConstrains(constraints);
+            employeesDAO.update(e);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+    public int[][] getConstraints(String ID){
+        try{
+            boolean[][] res = ((Employee)employeesDAO.findByID(ID)).getConstraints();
+            int[][] toReturn = new int[7][2];
+            for(int i=0; i<7; i++) {
+                toReturn[i][0] = res[i][0] ? 0 : 1;
+                toReturn[i][1] = res[i][1] ? 0 : 1;
+            }
+            return toReturn;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
     /**
      * Check if the employee by this ID is a driver
      * @param ID of the employee
