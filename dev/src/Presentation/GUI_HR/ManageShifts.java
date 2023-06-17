@@ -9,8 +9,9 @@ public class ManageShifts extends JFrame{
     private JButton addPermissionsButton;
     private JButton updateShiftButton;
     private JButton backButton;
-
-    public ManageShifts(){
+    private HR_Manager HRM;
+    public ManageShifts(HR_Manager HR){
+        this.HRM = HR;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1054, 592);
 
@@ -35,9 +36,7 @@ public class ManageShifts extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 // Open new form here
                 // Create and show the ManageEmployees frame
-                HR_Manager HR = new HR_Manager();
-                HR.setVisible(true);
-
+                HRM.setVisible(true);
                 // Hide the HR_Manager frame
                 setVisible(false);
             }

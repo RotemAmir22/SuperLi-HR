@@ -13,6 +13,7 @@ public class HR_Module extends JFrame {
     private JButton employeeButton;
     private JButton exitButton;
     private String ID;
+    private boolean isMaster = false;
 
     public HR_Module(){
         setVisible(true);
@@ -33,11 +34,13 @@ public class HR_Module extends JFrame {
         backgroundPanel.add(HR_ManagerButton);
         backgroundPanel.add(employeeButton);
         backgroundPanel.add(exitButton);
+
+        HR_Module HR = this;
         HR_ManagerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (ID.equals("masterHR")){
+                if (ID.equals("masterHR") || isMaster){
                     setVisible(false);
-                    new HR_Manager();
+                    new HR_Manager(HR);
                 }
                 else
                     JOptionPane.showMessageDialog(null, "You don't have permission of HR-manager", "Error", JOptionPane.ERROR_MESSAGE);
@@ -45,10 +48,18 @@ public class HR_Module extends JFrame {
         });
         employeeButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if(ID == null || ID.equals("masterHR"))
+                SManageEmployees SME = new SManageEmployees();
+                if(ID == null || ID.equals("masterHR") || isMaster) {
                     ID = JOptionPane.showInputDialog(null, "Enter an employee ID:");
-                new EmployeePage(ID);
-                setVisible(false);
+                    if(ID != null && !SME.isIdType(ID))
+                        JOptionPane.showMessageDialog(null, "Invalid input!\nId should be include 6-10 digits", "Error", JOptionPane.ERROR_MESSAGE);
+                    else if (!SME.searchEmployee(ID))
+                        JOptionPane.showMessageDialog(null, "Invalid input!\nEmployee not exist", "Error", JOptionPane.ERROR_MESSAGE);
+                    else
+                        new EmployeePage(ID, HR);
+                }
+                else
+                    new EmployeePage(ID, HR);
             }
         });
 
@@ -63,7 +74,7 @@ public class HR_Module extends JFrame {
         SManageEmployees SME = new SManageEmployees();
         do {
             ID = JOptionPane.showInputDialog(this, "Enter your ID:");
-            if (!ID.equals("masterHR")){
+            if (ID != null && !ID.equals("masterHR")){
                 if(!SME.isIdType(ID))
                     JOptionPane.showMessageDialog(null, "Invalid input!\nId should be include 6-10 digits", "Error", JOptionPane.ERROR_MESSAGE);
                 else if (!SME.searchEmployee(ID))
@@ -72,6 +83,7 @@ public class HR_Module extends JFrame {
                     break;
             }
             else{
+                isMaster = true;
                 break;
             }
         } while(true);

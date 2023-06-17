@@ -18,9 +18,9 @@ public class ManageEmployees extends JFrame {
     private JButton calculateSalaryButton;
     private JButton backButton;
     private JButton resetWeeklyLimitButton;
-
-    public ManageEmployees(){
-
+    private HR_Manager HRM;
+    public ManageEmployees(HR_Manager HRM){
+        this.HRM = HRM;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1054, 592);
 
@@ -149,9 +149,7 @@ public class ManageEmployees extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here
                 // Create and show the ManageEmployees frame
-                HR_Manager HR = new HR_Manager();
-                HR.setVisible(true);
-
+                HRM.setVisible(true);
                 // Hide the HR_Manager frame
                 setVisible(false);
             }

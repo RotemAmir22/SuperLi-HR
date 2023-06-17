@@ -12,8 +12,10 @@ public class HR_Manager extends JFrame {
     private JButton manageShiftsButton;
     private JButton manageBranchesButton;
     private JButton exitButton;
+    private HR_Module HR;
 
-    public HR_Manager(){
+    public HR_Manager(HR_Module HR){
+        this.HR = HR;
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 630);
@@ -36,12 +38,12 @@ public class HR_Manager extends JFrame {
         ButtonStyle.set(manageShiftsButton);
         ButtonStyle.setExit(exitButton);
 
-
+        HR_Manager HRM = this;
         manageEmloyeesButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here
                 // Create and show the ManageEmployees frame
-                ManageEmployees MEF = new ManageEmployees();
+                ManageEmployees MEF = new ManageEmployees(HRM);
                 MEF.setVisible(true);
 
                 // Hide the HR_Manager frame
@@ -53,7 +55,7 @@ public class HR_Manager extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here
                 // Create and show the ManageEmployees frame
-                ManageBranches MBF = new ManageBranches();
+                ManageBranches MBF = new ManageBranches(HRM);
                 MBF.setVisible(true);
 
                 // Hide the HR_Manager frame
@@ -65,7 +67,7 @@ public class HR_Manager extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here
                 // Create and show the ManageEmployees frame
-                ManageShifts MSF = new ManageShifts();
+                ManageShifts MSF = new ManageShifts(HRM);
                 MSF.setVisible(true);
 
                 // Hide the HR_Manager frame
@@ -75,7 +77,7 @@ public class HR_Manager extends JFrame {
 
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                new HR_Module();
+                HR.setVisible(true);
                 setVisible(false);
             }
         });
