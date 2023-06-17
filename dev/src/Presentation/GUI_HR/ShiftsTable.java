@@ -18,31 +18,39 @@ public class ShiftsTable extends JFrame {
     private JButton submitButton;
     private int ID;
     private LocalDate shiftDate;
+    private ManageShifts ms;
+    String[] rowNames;
 
     public List<List<CellValues>> getCellData() {
         return cellData;
     }
-    public ShiftsTable(LocalDate startWeek, int id) {
+
+    public String getRowsName(int i){
+        return rowNames[i];
+    }
+    public ShiftsTable(ManageShifts object, LocalDate startWeek, int id) {
+        ms = object;
+        setVisible(true);
         ID = id;
         shiftDate = startWeek;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Shifts weekly table for:  " + startWeek.toString() + " until " + startWeek.plusDays(6));
+        setTitle("Shifts weekly table for:  " + startWeek.toString() + " until " + startWeek.plusDays(6) + " for branch " + id);
 
         // Define the column names (weekdays)
         String[] columnNames = {"", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         // Define the row names (roles)
         Role[] rows = Role.values();
-        String[] rowNames = new String[rows.length];
+        rowNames = new String[rows.length - 1];
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        for (int i = 0; i < rows.length; i++) {
+        for (int i = 0; i < rows.length - 1; i++) {
             String lowercaseString = rows[i].toString().toLowerCase();
             String modifiedString = lowercaseString.substring(0, 1).toUpperCase() + lowercaseString.substring(1);
             rowNames[i] = modifiedString;
         }
 
         cellData = new ArrayList<>();
-        for (int i = 0; i < rows.length; i++) {
+        for (int i = 0; i < rows.length - 1; i++) {
             List<CellValues> rowData = new ArrayList<>();
             for (int j = 0; j < columnNames.length; j++) {
                 rowData.add(new CellValues());
@@ -64,18 +72,29 @@ public class ShiftsTable extends JFrame {
             public void setValueAt(Object aValue, int row, int column) {
                 if (column > 0) {
                     String[] values = aValue.toString().split("\\s+");
+
                     String mValue = values[0];
                     String eValue = values[1];
 
-                    // Save the input values to cellData
-                    CellValues cellValues = cellData.get(row).get(column);
+                    // Retrieve the existing cell values from cellData
+                    List<CellValues> rowData = cellData.get(row);
+                    CellValues cellValues = rowData.get(column);
+
+                    // Update the cell values
                     cellValues.setValueM(mValue);
                     cellValues.setValueE(eValue);
+
+                    // Update the modified cell values back in the rowData list
+                    rowData.set(column, cellValues);
+
+                    // Update the modified rowData back in the cellData list
+                    cellData.set(row, rowData);
 
                     // Call super to set the value in the table model
                     super.setValueAt(aValue, row, column);
                 }
             }
+
 
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -153,28 +172,21 @@ public class ShiftsTable extends JFrame {
 
         submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                ShiftScheduling shiftScheduling;
-                for(int i=0; i<7; i++){
-                    shiftScheduling = new ShiftScheduling(ID, shiftDate.plusDays(i));
-
-                }
+                ms.submit();
+                setVisible(false);
             }
         });
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ShiftsTable frame = new ShiftsTable(LocalDate.now(), 1);
-            frame.setVisible(true);
-        });
-    }
+
 
     static class CellValues {
         private String valueM = "0";
         private String valueE = "0";
 
         public String getValueM() {
-            return valueM;
+            String val = valueM.substring(0,1);
+            return val;
         }
 
         public void setValueM(String valueM) {

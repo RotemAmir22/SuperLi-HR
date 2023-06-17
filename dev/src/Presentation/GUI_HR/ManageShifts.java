@@ -1,8 +1,11 @@
 package Presentation.GUI_HR;
 
+import Service_HR.SManageBranches;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 public class ManageShifts extends JFrame{
     private JButton planShiftsButton;
@@ -10,8 +13,13 @@ public class ManageShifts extends JFrame{
     private JButton updateShiftButton;
     private JButton backButton;
     private HR_Manager HRM;
+    private ManageShifts MS;
+
+    int index;
+    ShiftScheduling shiftScheduling;
     public ManageShifts(HR_Manager HR){
         this.HRM = HR;
+        this.MS = this;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1054, 592);
 
@@ -32,6 +40,16 @@ public class ManageShifts extends JFrame{
         ButtonStyle.set(updateShiftButton);
         ButtonStyle.setExit(backButton);
 
+        planShiftsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SManageBranches manageBranches = new SManageBranches();
+                LocalDate date = LocalDate.now().plusDays(1);
+                index=0;
+                int id = manageBranches.getAllBranches().get(index).getBranchID();
+                shiftScheduling = new ShiftScheduling(id, date, new ShiftsTable(MS, date, id));
+                setVisible(false);
+            }
+        });
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here
@@ -42,4 +60,16 @@ public class ManageShifts extends JFrame{
             }
         });
     }
+    public void submit(){
+        SManageBranches manageBranches = new SManageBranches();
+        if(shiftScheduling!=null) {
+            shiftScheduling.submit();
+            if(index + 1 < manageBranches.getAllBranches().size()) {
+                int id = manageBranches.getAllBranches().get(++index).getBranchID();
+                shiftScheduling = new ShiftScheduling(id, shiftScheduling.date, new ShiftsTable(MS, shiftScheduling.date, id));
+            }
+        }
+    }
+
+
 }

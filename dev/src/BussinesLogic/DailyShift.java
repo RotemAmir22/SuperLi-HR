@@ -191,11 +191,11 @@ public class DailyShift {
         int count=0;
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
         System.out.println("Daily shift - "+ dayOfWeek + " " + this.date+"\nMORNING:");
-        out.append("Daily shift - ").append(dayOfWeek).append(" ").append(this.date).append("\nMORNING:");
+        out.append("Daily shift - ").append(dayOfWeek).append(" ").append(this.date).append("\nMORNING:\n");
         Map<Role, ArrayList<Employee>> sortedMap = new TreeMap<>(morningShift);
         out.append(print(sortedMap,count));
         System.out.println("\nEVENING:");
-        out.append("\nEVENING:");
+        out.append("\nEVENING:\n");
         sortedMap = eveningShift;
         out.append(print(sortedMap,count));
         return out;
@@ -207,11 +207,11 @@ public class DailyShift {
             Role key = entry.getKey();
             count = 1;
             System.out.println(key.name()+":");
-            out.append(key.name()).append(":");
+            out.append(key.name()).append(":\n");
             for (Employee employee : sortedMap.get(key))
             {
+                out.append("\n").append(count).append(". ").append(employee.getName());
                 System.out.println(count+++". "+employee.getName());
-                out.append(count++).append(". ").append(employee.getName());
             }
         }
         return out;

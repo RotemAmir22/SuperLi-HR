@@ -122,7 +122,7 @@ public class ShiftOrganizer {
      * @param dailyShift what daily shift to assign to
      * @param shift morning or evening shift
      */
-    public static void assignEmployeesToShift(Map<String, Integer> rolesAmount, List<Employee> Employees, DailyShift dailyShift, int shift)
+    public static DailyShift assignEmployeesToShift(Map<String, Integer> rolesAmount, List<Employee> Employees, DailyShift dailyShift, int shift)
     {
         int key;
         boolean[][] constraints;
@@ -153,6 +153,7 @@ public class ShiftOrganizer {
                 }
             }
         }
+        return dailyShift;
     }
 
     /**
