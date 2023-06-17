@@ -10,6 +10,7 @@ import java.awt.*;
 public class EmployeePage extends JFrame {
 
     public EmployeePage(String ID){
+        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(640, 360);
         SManageEmployees SME = new SManageEmployees();
@@ -19,6 +20,7 @@ public class EmployeePage extends JFrame {
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
         setContentPane(backgroundPanel);
+
         this.setTitle("Logged in as - "+ID);
 
         JPanel panel = new JPanel();

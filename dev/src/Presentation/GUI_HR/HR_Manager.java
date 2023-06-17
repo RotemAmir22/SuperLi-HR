@@ -14,6 +14,7 @@ public class HR_Manager extends JFrame {
     private JButton exitButton;
 
     public HR_Manager(){
+        setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 630);
 
@@ -74,18 +75,13 @@ public class HR_Manager extends JFrame {
 
         exitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                System.exit(0);
+                new HR_Module();
+                setVisible(false);
             }
         });
 
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            HR_Manager frame = new HR_Manager();
-            frame.setVisible(true);
-        });
 
-    }
 
 }
