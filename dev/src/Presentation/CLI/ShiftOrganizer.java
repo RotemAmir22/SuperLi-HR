@@ -73,10 +73,14 @@ public class ShiftOrganizer {
     /**
      * check if the shift is valid
      * if invalid, sends an alert
+     *
      * @param rolesAmount: to check if all are update to 0
+     * @return status : 1 - problem with transit
+     * 2 -
      */
-    public static void checkShiftValidation(Map<String, Integer> rolesAmount, Map<LocalDate, Boolean> storekeeperStatusByDate, LocalDate currentDate)
+    public static StringBuilder checkShiftValidation(Map<String, Integer> rolesAmount, Map<LocalDate, Boolean> storekeeperStatusByDate, LocalDate currentDate)
     {
+        int status = 0;
         Scanner scanner = new Scanner(System.in);
         //go over the roles and check if all of them are fulfilled
         StringBuilder output = new StringBuilder();
@@ -87,6 +91,7 @@ public class ShiftOrganizer {
                 if(role.equals(Role.STORAGE) && storekeeperStatusByDate.containsKey(currentDate))
                 {
                     TransitCoordinator.Alert("TRANSIT CANNOT BE COMPLETE!");
+                    status=1;
                     //update transit status
                     storekeeperStatusByDate.put(currentDate,false);
                 }
@@ -107,6 +112,7 @@ public class ShiftOrganizer {
                 System.out.println("ALL BRANCHES: please contact HR manager");
             }
         }
+        return  output;
     }
 
     /**
