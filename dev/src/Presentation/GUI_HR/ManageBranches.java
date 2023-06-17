@@ -25,8 +25,10 @@ public class ManageBranches extends JFrame {
     private JButton viewTransitButton;
     private JButton showAllButton;
     private JButton backButton;
+    private HR_Manager HRM;
 
-    public ManageBranches (){
+    public ManageBranches (HR_Manager HRM){
+        this.HRM = HRM;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 500);
 
@@ -231,9 +233,7 @@ public class ManageBranches extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here
                 // Create and show the ManageEmployees frame
-                HR_Manager HR = new HR_Manager();
-                HR.setVisible(true);
-
+                HRM.setVisible(true);
                 setVisible(false);
             }
         });

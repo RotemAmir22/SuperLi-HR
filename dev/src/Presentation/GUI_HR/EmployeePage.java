@@ -4,12 +4,17 @@ import Service_HR.SManageEmployees;
 
 import javax.swing.*;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class EmployeePage extends JFrame {
 
-    public EmployeePage(String ID){
+    private HR_Module HR;
+    private JButton backButton;
+
+    public EmployeePage(String ID, HR_Module HR){
+        this.HR = HR;
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(640, 360);
@@ -20,6 +25,9 @@ public class EmployeePage extends JFrame {
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
         setContentPane(backgroundPanel);
+        
+        backgroundPanel.add(backButton);
+        ButtonStyle.setExit(backButton);
 
         this.setTitle("Logged in as - "+ID);
 
@@ -36,6 +44,13 @@ public class EmployeePage extends JFrame {
 
         // Add the panel to the second JFrame
         add(panel);
+
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                HR.setVisible(true);
+                setVisible(false);
+            }
+        });
 
     }
 
