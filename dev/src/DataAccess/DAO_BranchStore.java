@@ -165,10 +165,10 @@ public class DAO_BranchStore implements IDAO_Entity {
             // set opening hours
             for(int i=0; i<7; i++) {
                 stmt = conn.prepareStatement("UPDATE BranchOpeningHours SET morningOpen=?, eveningOpen=? WHERE branchID=? AND dayOfWeek=?");
-                stmt.setInt(1, i);
-                stmt.setInt(2, branch.getOpenHours()[i][0]);
-                stmt.setInt(3, branch.getOpenHours()[i][1]);
-                stmt.setInt(4,branch.getBranchID());
+                stmt.setInt(1, branch.getOpenHours()[i][0]);
+                stmt.setInt(2, branch.getOpenHours()[i][1]);
+                stmt.setInt(3,branch.getBranchID());
+                stmt.setInt(4, i);
                 stmt.executeUpdate();
             }
 

@@ -11,7 +11,7 @@ public class WeeklyShiftTable extends JFrame {
 
     private JCheckBox[][] checkBoxes; // Store the checkbox references for later use
     boolean ans;
-    public WeeklyShiftTable(int id) {
+    public WeeklyShiftTable(int id, String message, int[][] avaliablity) {
         // Create the table model with shifts for the week
         String[] columnNames = {"Day", "Morning", "Evening"};
         Object[][] rowData = {
@@ -25,7 +25,7 @@ public class WeeklyShiftTable extends JFrame {
         };
 
         JPanel panel = new JPanel(new GridLayout(0, columnNames.length));
-        panel.setBorder(BorderFactory.createTitledBorder("--- Mark when Branch " + id + " is open ---"));
+        panel.setBorder(BorderFactory.createTitledBorder(message));
         checkBoxes = new JCheckBox[7][2];
 
         for (String columnName : columnNames) {
@@ -34,7 +34,10 @@ public class WeeklyShiftTable extends JFrame {
 
         for (int row = 0; row < 7; row++) {
             panel.add(new JLabel(rowData[row][0].toString())); // Add the day label
-
+            if(avaliablity[row][0] == 0)
+                ((JCheckBox) rowData[row][1]).setSelected(true);
+            if(avaliablity[row][1] == 0)
+                ((JCheckBox) rowData[row][2]).setSelected(true);
             checkBoxes[row][0] = (JCheckBox) rowData[row][1]; // Store the checkbox reference
             checkBoxes[row][1] = (JCheckBox) rowData[row][2]; // Store the checkbox reference
             panel.add(checkBoxes[row][0]); // Add the checkboxes for Morning and Evening shifts

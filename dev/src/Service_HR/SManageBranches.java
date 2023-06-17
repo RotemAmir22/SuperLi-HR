@@ -63,16 +63,20 @@ public class SManageBranches extends AValidateInput {
         }
     }
 
+    /**
+     * Update open hours
+     * @param ID of the branch
+     * @param data to update
+     * @return status
+     */
     public boolean updateOpenHours(int ID, boolean[][]data){
         try{
             BranchStore toUpdate = (BranchStore) branchStoreDAO.findByID(ID);
             for(int i=0; i<7; i++) {
                 boolean isOpenM = data[i][0];
-                if(!isOpenM)
-                    toUpdate.setOpenHours(i, 0, 1);
+                toUpdate.setOpenHours(i, 0, !isOpenM?1:0);
                 boolean isOpenE = data[i][1];
-                if(!isOpenE)
-                    toUpdate.setOpenHours(i, 1, 1);
+                toUpdate.setOpenHours(i, 1, !isOpenE?1:0);
             }
             branchStoreDAO.update(toUpdate);
             return true;
@@ -81,6 +85,13 @@ public class SManageBranches extends AValidateInput {
         }
     }
 
+    public int[][] getOpenhours(int ID){
+        try{
+            return ((BranchStore)branchStoreDAO.findByID(ID)).getOpenHours();
+        } catch (SQLException | ClassNotFoundException e) {
+           return null;
+        }
+    }
     /**
      * Alert if the input is not a suitable id
      * @param input branch id

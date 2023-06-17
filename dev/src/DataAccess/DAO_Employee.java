@@ -282,7 +282,6 @@ public class DAO_Employee implements IDAO_Entity {
                             stmt.setString(1, e.getId());
                             stmt.setInt(2,license.ordinal());
                             stmt.executeUpdate();
-                            break;
                         }
                     }
                 }

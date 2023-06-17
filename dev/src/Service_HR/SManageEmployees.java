@@ -36,7 +36,7 @@ public class SManageEmployees extends AValidateInput{
      * @param driver boolean variable
      * @return if the process success or not
      */
-    public boolean insertNewEmployee(String FN, String LN, String ID, String BA, String SA, String TE, String SD, boolean driver){
+    public boolean insertNewEmployee(String FN, String LN, String ID, String BA, String SA, String TE, String SD, boolean driver, List<License> licenses){
         try{
             EmployeeGenerator employeeGenerator = new EmployeeGenerator();
             Employee employee;
@@ -45,6 +45,8 @@ public class SManageEmployees extends AValidateInput{
                 employee = employeeGenerator.CreateEmployee(FN, LN, ID, BA, Double.parseDouble(SA), TE,SD);
                 //add employee to list of all employees in network and update the DB
                 employeesDAO.insert(employee);
+                if(driver)
+                    insertDriver(employee, licenses);
             }
             else
                 return false;
@@ -55,23 +57,16 @@ public class SManageEmployees extends AValidateInput{
         return true;
     }
 
-    public boolean insertDriver(String id, License l)
+    private void insertDriver(Employee e, List<License> l)
     {
         try{
-            Driver d;
             EmployeeGenerator employeeGenerator = new EmployeeGenerator();
-            Employee e = (Employee) employeesDAO.findByID(id);
-            if(!employeesDAO.getNetworkDrivers().contains(e)){
-                d = employeeGenerator.CreateDriver(e);
-            }
-            else{
-                d = (Driver) e;
-            }
-            d.addLicense(l);
+            Driver d = employeeGenerator.CreateDriver(e);
+            for(License license : l)
+                d.addLicense(license);
             employeesDAO.update(d);
-            return true;
-        } catch (SQLException e) {
-            return false;
+        } catch (SQLException s) {
+            s.printStackTrace();
         }
     }
 

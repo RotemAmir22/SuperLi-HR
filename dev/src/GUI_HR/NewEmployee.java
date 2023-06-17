@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewEmployee extends JFrame {
@@ -32,18 +33,21 @@ public class NewEmployee extends JFrame {
         if (option == JOptionPane.OK_OPTION) {
             // User clicked "OK"
             SManageEmployees SManageEmployees = new SManageEmployees();
-            boolean res = SManageEmployees.insertNewEmployee(firstName.getText(), lastName.getText(), id.getText(), bankAccount.getText(), salary.getText(), terms.getText(), startDate.getText(), driver.isSelected());
+            List<License> licenses = new ArrayList<>();
+            boolean res;
+            if(driver.isSelected()) {
+                licenses = chooseLicenses(id.getText());
+            }
+            res = SManageEmployees.insertNewEmployee(firstName.getText(), lastName.getText(), id.getText(), bankAccount.getText(), salary.getText(), terms.getText(), startDate.getText(), driver.isSelected(), licenses);
             if (!res) {
                 JOptionPane.showMessageDialog(null, "Invalid input!\nDate's format (YYYY-MM-DD)\nSalary should be a number", "Error", JOptionPane.ERROR_MESSAGE);
                 this.setup();
             }
             else {
-                if(driver.isSelected())
-                    chooseLicenses(id.getText());
+
                 JOptionPane.showMessageDialog(this, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
             }
-
         }
         else{
             this.setVisible(false);
@@ -99,8 +103,8 @@ public class NewEmployee extends JFrame {
         getData();
     }
 
-    private void chooseLicenses(String ID){
-        SManageEmployees manageEmployees = new SManageEmployees();
+    private List<License> chooseLicenses(String ID){
+        List<License> toReturn = new ArrayList<>();
         // Create an array of employee names
         License[] licenses = License.values();
         String[] licenseNames = new String[licenses.length];
@@ -118,14 +122,12 @@ public class NewEmployee extends JFrame {
                 if (e.getClickCount() == 2) {
                     // Get the selected employee index
                     int selectedIndex = LicenseList.locationToIndex(e.getPoint());
-                    manageEmployees.insertDriver(ID, licenses[selectedIndex]);
-
+                    toReturn.add(licenses[selectedIndex]);
                     // Notify the user
                     String message = "License " + licenses[selectedIndex] + " inserted successfully.";
                     JOptionPane.showMessageDialog(panel1, message, "Driver Insertion", JOptionPane.INFORMATION_MESSAGE);
                 }
             }
-
         });
 
         // Create a scroll pane for the employee list
@@ -134,6 +136,7 @@ public class NewEmployee extends JFrame {
         // Show the employee list in a dialog box
         JPanel panel1 = new JPanel();
         JOptionPane.showOptionDialog(panel1, scrollPane, "Licenses List", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+        return toReturn;
     }
 
 }
