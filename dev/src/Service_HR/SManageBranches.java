@@ -174,6 +174,14 @@ public class SManageBranches extends AValidateInput {
         }
     }
 
+    public List<Employee> getAllEmployees(int id){
+        try{
+           return ((BranchStore) branchStoreDAO.findByID(id)).getEmployees();
+        } catch (SQLException | ClassNotFoundException e) {
+            return null;
+        }
+    }
+
     public List<Transit> getAllTransits(int ID){
         try{
             TransitDAO transitDAO = DAO_Generator.getTransitDAO();
