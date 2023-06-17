@@ -1,9 +1,14 @@
 package GUI_HR;
 
+import BussinesLogic.Employee;
+import BussinesLogic.License;
 import Service_HR.SManageEmployees;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class NewEmployee extends JFrame {
     private JTextField startDate;
@@ -29,10 +34,12 @@ public class NewEmployee extends JFrame {
             SManageEmployees SManageEmployees = new SManageEmployees();
             boolean res = SManageEmployees.insertNewEmployee(firstName.getText(), lastName.getText(), id.getText(), bankAccount.getText(), salary.getText(), terms.getText(), startDate.getText(), driver.isSelected());
             if (!res) {
-                JOptionPane.showMessageDialog(null, "Invalid input!\nDate's format (YYY-MM-DD)\nSalary should be a number", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Invalid input!\nDate's format (YYYY-MM-DD)\nSalary should be a number", "Error", JOptionPane.ERROR_MESSAGE);
                 this.setup();
             }
             else {
+                if(driver.isSelected())
+                    chooseLicenses(id.getText());
                 JOptionPane.showMessageDialog(this, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.setVisible(false);
             }
@@ -90,6 +97,43 @@ public class NewEmployee extends JFrame {
         pack();
         setLocationRelativeTo(null);
         getData();
+    }
+
+    private void chooseLicenses(String ID){
+        SManageEmployees manageEmployees = new SManageEmployees();
+        // Create an array of employee names
+        License[] licenses = License.values();
+        String[] licenseNames = new String[licenses.length];
+        for (int i = 0; i < licenses.length; i++)
+            licenseNames[i] = String.valueOf(licenses[i]);
+        // Create a JList with the employee names
+        JList<String> LicenseList = new JList<>(licenseNames);
+
+        // Attach a MouseAdapter to the JList to handle mouse events
+        LicenseList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                JPanel panel1 = new JPanel();
+
+                // Check if it's a double-click event
+                if (e.getClickCount() == 2) {
+                    // Get the selected employee index
+                    int selectedIndex = LicenseList.locationToIndex(e.getPoint());
+                    manageEmployees.insertDriver(ID, licenses[selectedIndex]);
+
+                    // Notify the user
+                    String message = "License " + licenses[selectedIndex] + " inserted successfully.";
+                    JOptionPane.showMessageDialog(panel1, message, "Driver Insertion", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+
+        });
+
+        // Create a scroll pane for the employee list
+        JScrollPane scrollPane = new JScrollPane(LicenseList);
+
+        // Show the employee list in a dialog box
+        JPanel panel1 = new JPanel();
+        JOptionPane.showOptionDialog(panel1, scrollPane, "Licenses List", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
     }
 
 }

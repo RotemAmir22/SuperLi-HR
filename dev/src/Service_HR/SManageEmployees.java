@@ -48,13 +48,31 @@ public class SManageEmployees extends AValidateInput{
             }
             else
                 return false;
-            if(driver)
-                employeeGenerator.CreateDriver(employee);
         }
         catch (SQLException e){
             return false;
         }
         return true;
+    }
+
+    public boolean insertDriver(String id, License l)
+    {
+        try{
+            Driver d;
+            EmployeeGenerator employeeGenerator = new EmployeeGenerator();
+            Employee e = (Employee) employeesDAO.findByID(id);
+            if(!employeesDAO.getNetworkDrivers().contains(e)){
+                d = employeeGenerator.CreateDriver(e);
+            }
+            else{
+                d = (Driver) e;
+            }
+            d.addLicense(l);
+            employeesDAO.update(d);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     /**
