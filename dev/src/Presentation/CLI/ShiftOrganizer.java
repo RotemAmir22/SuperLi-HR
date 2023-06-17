@@ -106,11 +106,11 @@ public class ShiftOrganizer {
         }
         if(!output.toString().equals("")){
             System.out.println("Daily shift is INVALID!!! " + output);
-            System.out.println("Ask backup from another branch? (y/n)");
-            String replay = scanner.nextLine();
-            if(Objects.equals(replay, "y")) {
-                System.out.println("ALL BRANCHES: please contact HR manager");
-            }
+//            System.out.println("Ask backup from another branch? (y/n)");
+//            String replay = scanner.nextLine();
+//            if(Objects.equals(replay, "y")) {
+//                System.out.println("ALL BRANCHES: please contact HR manager");
+//            }
         }
         return  output;
     }
@@ -122,7 +122,7 @@ public class ShiftOrganizer {
      * @param dailyShift what daily shift to assign to
      * @param shift morning or evening shift
      */
-    public static  void assignEmployeesToShift(Map<String, Integer> rolesAmount, List<Employee> Employees, DailyShift dailyShift, int shift)
+    public static void assignEmployeesToShift(Map<String, Integer> rolesAmount, List<Employee> Employees, DailyShift dailyShift, int shift)
     {
         int key;
         boolean[][] constraints;
