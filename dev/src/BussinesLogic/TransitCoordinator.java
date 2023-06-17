@@ -5,7 +5,7 @@ import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 import DataAccessLayer.TransitDAO;
 import DomainLayer.Transit;
-import Presentation.EmployeeConstraints;
+import Presentation.CLI.EmployeeConstraints;
 
 import java.sql.SQLException;
 import java.time.LocalDate;

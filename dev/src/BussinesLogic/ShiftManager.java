@@ -14,6 +14,8 @@ public class ShiftManager {
     private String fullName;
     private String id;
     private List<ShiftM_Permissions> permissions;
+    private static ShiftM_Permissions cancellation = new ShiftM_Permissions("cancellations", "shift manager can cancel items");
+    private static ShiftM_Permissions manageStaff = new ShiftM_Permissions("manage staff", "shift manager can manage shift staff");
     private LocalDate shiftDate; //date of shift
     private int shiftSlot; //morning - 0  or evening shift - 1
     private List<Cancellation> cancelations;
@@ -28,9 +30,7 @@ public class ShiftManager {
         this.permissions = new ArrayList<ShiftM_Permissions>();
 
         //add permissions to shift manager - these are the basic permission that evey shift manager has
-        ShiftM_Permissions cancellation = new ShiftM_Permissions("cancellations", "shift manager can cancel items");
         this.permissions.add(cancellation);
-        ShiftM_Permissions manageStaff = new ShiftM_Permissions("manage staff", "shift manager can manage shift staff");
         this.permissions.add(manageStaff);
 
         this.cancelations=new ArrayList<Cancellation>();

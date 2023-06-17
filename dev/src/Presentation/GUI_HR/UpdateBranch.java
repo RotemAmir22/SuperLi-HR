@@ -1,4 +1,4 @@
-package GUI_HR;
+package Presentation.GUI_HR;
 
 import Service_HR.SManageBranches;
 

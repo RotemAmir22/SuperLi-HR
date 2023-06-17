@@ -1,7 +1,6 @@
-package GUI_HR;
+package Presentation.GUI_HR;
 
 import Service_HR.SManageBranches;
-import Service_HR.SManageEmployees;
 
 import javax.swing.*;
 import java.awt.*;

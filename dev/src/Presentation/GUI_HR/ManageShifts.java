@@ -1,4 +1,4 @@
-package GUI_HR;
+package Presentation.GUI_HR;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -1,4 +1,4 @@
-package Presentation;
+package Presentation.CLI;
 
 import BussinesLogic.*;
 

@@ -1,11 +1,9 @@
-package GUI_HR;
+package Presentation.GUI_HR;
 
-import BussinesLogic.Driver;
 import BussinesLogic.Employee;
 import Service_HR.SManageEmployees;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;

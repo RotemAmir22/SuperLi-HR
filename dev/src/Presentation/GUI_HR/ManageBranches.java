@@ -1,4 +1,4 @@
-package GUI_HR;
+package Presentation.GUI_HR;
 
 import BussinesLogic.BranchStore;
 import BussinesLogic.Employee;
@@ -7,7 +7,6 @@ import DomainLayer.OrderDocument;
 import DomainLayer.Product;
 import DomainLayer.Transit;
 import Service_HR.SManageBranches;
-import Service_HR.SManageEmployees;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.beancontext.BeanContext;
 import java.util.List;
 import java.util.Map;
 

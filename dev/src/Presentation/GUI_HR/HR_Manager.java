@@ -1,9 +1,8 @@
-package GUI_HR;
+package Presentation.GUI_HR;
 
 import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

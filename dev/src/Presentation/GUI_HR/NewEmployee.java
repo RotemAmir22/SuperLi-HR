@@ -1,4 +1,4 @@
-package GUI_HR;
+package Presentation.GUI_HR;
 
 import BussinesLogic.Employee;
 import BussinesLogic.License;
