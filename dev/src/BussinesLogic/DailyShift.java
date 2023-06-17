@@ -210,7 +210,7 @@ public class DailyShift {
             out.append(key.name()).append(":\n");
             for (Employee employee : sortedMap.get(key))
             {
-                out.append("\n").append(count).append(". ").append(employee.getName());
+                out.append(count).append(". ").append(employee.getName()).append("\n");
                 System.out.println(count+++". "+employee.getName());
             }
         }
