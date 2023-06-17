@@ -7,17 +7,24 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShiftsTable extends JFrame {
     private List<List<CellValues>> cellData;
+    private JButton submitButton;
+    private int ID;
+    private LocalDate shiftDate;
 
     public List<List<CellValues>> getCellData() {
         return cellData;
     }
-    public ShiftsTable(LocalDate startWeek) {
+    public ShiftsTable(LocalDate startWeek, int id) {
+        ID = id;
+        shiftDate = startWeek;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Shifts weekly table for:  " + startWeek.toString() + " until " + startWeek.plusDays(6));
 
@@ -135,21 +142,36 @@ public class ShiftsTable extends JFrame {
         scrollPane.setPreferredSize(new Dimension(700, 160)); // Set the preferred size
 
         getContentPane().add(scrollPane);
+        JPanel panel = new JPanel();
+        panel.add(getContentPane());
+        panel.add(submitButton);
+        setContentPane(panel);
+
         // Add the table to the JFrame
         pack();
         setLocationRelativeTo(null); // Center the frame on the screen
+
+        submitButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ShiftScheduling shiftScheduling;
+                for(int i=0; i<7; i++){
+                    shiftScheduling = new ShiftScheduling(ID, shiftDate.plusDays(i));
+
+                }
+            }
+        });
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ShiftsTable frame = new ShiftsTable(LocalDate.now());
+            ShiftsTable frame = new ShiftsTable(LocalDate.now(), 1);
             frame.setVisible(true);
         });
     }
 
-    private static class CellValues {
-        private String valueM = "1";
-        private String valueE = "1";
+    static class CellValues {
+        private String valueM = "0";
+        private String valueE = "0";
 
         public String getValueM() {
             return valueM;

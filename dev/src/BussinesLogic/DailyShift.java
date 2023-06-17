@@ -185,28 +185,36 @@ public class DailyShift {
     /**
      * Print the shift by slots (morning/evening) and roles with employees
      */
-    public void showMeSchedualing()
+    public StringBuilder showMeSchedualing()
     {
+        StringBuilder out = new StringBuilder();
         int count=0;
         DayOfWeek dayOfWeek=this.date.getDayOfWeek();
         System.out.println("Daily shift - "+ dayOfWeek + " " + this.date+"\nMORNING:");
+        out.append("Daily shift - ").append(dayOfWeek).append(" ").append(this.date).append("\nMORNING:");
         Map<Role, ArrayList<Employee>> sortedMap = new TreeMap<>(morningShift);
-        print(sortedMap,count);
+        out.append(print(sortedMap,count));
         System.out.println("\nEVENING:");
+        out.append("\nEVENING:");
         sortedMap = eveningShift;
-        print(sortedMap,count);
+        out.append(print(sortedMap,count));
+        return out;
     }
-    private void print(Map<Role, ArrayList<Employee>> sortedMap, int count)
+    private StringBuilder print(Map<Role, ArrayList<Employee>> sortedMap, int count)
     {
+        StringBuilder out = new StringBuilder();
         for (Map.Entry<Role, ArrayList<Employee>> entry : sortedMap.entrySet()) {
             Role key = entry.getKey();
             count = 1;
             System.out.println(key.name()+":");
+            out.append(key.name()).append(":");
             for (Employee employee : sortedMap.get(key))
             {
                 System.out.println(count+++". "+employee.getName());
+                out.append(count++).append(". ").append(employee.getName());
             }
         }
+        return out;
     }
 
     /**

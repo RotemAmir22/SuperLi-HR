@@ -108,6 +108,14 @@ public class SManageBranches extends AValidateInput {
         return false;
     }
 
+    public Map<LocalDate, Boolean> getStoreKeeper(int id){
+        try{
+            return ((BranchStore) branchStoreDAO.findByID(id)).storekeeperStatusByDate;
+        } catch (SQLException | ClassNotFoundException e) {
+            return null;
+        }
+    }
+
     /**
      * Insert an employee to branch
      * @param BID the branch id
