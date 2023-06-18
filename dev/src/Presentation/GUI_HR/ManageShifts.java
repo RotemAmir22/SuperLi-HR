@@ -1,6 +1,9 @@
 package Presentation.GUI_HR;
 
+import BussinesLogic.BranchStore;
+import BussinesLogic.DailyShift;
 import Service_HR.SManageBranches;
+import Service_HR.SManageShifts;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -50,6 +53,44 @@ public class ManageShifts extends JFrame{
                 setVisible(false);
             }
         });
+        updateShiftButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SManageShifts SMS = new SManageShifts();
+                SManageBranches SMB = new SManageBranches();
+                boolean loop = true;
+                do {
+                    String input = JOptionPane.showInputDialog(null, "Enter branch id: ");
+                    if (SMS.isInteger(input))
+                    {
+                        if(SMB.searchBranch(input)) {
+                            do {
+                                String date = JOptionPane.showInputDialog(null, "Enter the shift's date: ");
+                                if (SMS.isDate(date)) {
+                                    if(SMS.isShift(Integer.parseInt(input), LocalDate.parse(date))){
+                                        DailyShift currentShift = SMS.get(Integer.parseInt(input), LocalDate.parse(date));
+                                        BranchStore branchStore = SMB.get(Integer.parseInt(input));
+                                        UpdateShift updateShift = new UpdateShift(currentShift, branchStore);
+                                        updateShift.setVisible(true);
+                                        loop = false;
+                                    }
+                                    else
+                                        JOptionPane.showMessageDialog(null, "Shift: " + date + " in Branch: " + input + " is not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                                }
+                                else
+                                    JOptionPane.showMessageDialog(null, "Invalid date!\nPlease enter a valid format (YYYY-MM-DD).", "Error", JOptionPane.ERROR_MESSAGE);
+                            } while (loop);
+                        }
+                        else
+                            JOptionPane.showMessageDialog(null, "Branch: " + input + " is not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    else
+                        JOptionPane.showMessageDialog(null, "Invalid type of id!\nOnly integer please.", "Error", JOptionPane.ERROR_MESSAGE);
+                }while(loop);
+            }
+        });
+
+
+
         backButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // Open new form here

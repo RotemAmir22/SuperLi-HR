@@ -84,6 +84,13 @@ public class SManageBranches extends AValidateInput {
             return false;
         }
     }
+    public BranchStore get(int id){
+        try{
+            return (BranchStore) branchStoreDAO.findByID(id);
+        } catch (SQLException | ClassNotFoundException e) {
+            return null;
+        }
+    }
 
     public int[][] getOpenhours(int ID){
         try{

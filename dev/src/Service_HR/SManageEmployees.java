@@ -149,6 +149,13 @@ public class SManageEmployees extends AValidateInput{
         return false;
 
     }
+    public Employee get(String ID){
+        try{
+            return (Employee) employeesDAO.findByID(ID);
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 
     public boolean setConstraints(String id, boolean[][] constraints){
         try{
