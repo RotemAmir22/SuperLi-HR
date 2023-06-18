@@ -160,7 +160,6 @@ public class HR_SchedulingManagement {
                     dailyShiftDAO.addToShift(date, shift, employeeID, roles[qualification].ordinal(), branchID);
                 else if(choice == 1)
                     dailyShiftDAO.removefromShift(date, shift, employeeID, roles[qualification].ordinal(), branchID);
-
                 dailyShiftDAO.update(branch.getShiftByDate(String.valueOf(date)),branchID);
                 branchStoreDAO.update(branch);
                 answer = scanner.nextLine();
