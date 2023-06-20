@@ -11,6 +11,11 @@ public class ControllerGen {
     private static TransitController transitController;
     private static TransitRecordController transitRecordController;
     private static TransitCoordinator transitCoordinator;
+    // --- Gui section ---
+    private static TruckController truckControllerGui;
+    private static TransitController transitControllerGui;
+    private static OrderDocumentController orderDocumentControllerGui;
+    private static TransitRecordController transitRecordControllerGui;
 
 
     public static TransitCoordinator getTransitCoordinator() throws SQLException, ClassNotFoundException {
@@ -24,7 +29,7 @@ public class ControllerGen {
     public static TruckController getTruckController() throws SQLException, ClassNotFoundException {
         if (truckController == null)
         {
-            truckController = new TruckControllermpl(DAO_Generator.getTruckDAO());
+            truckController = new TruckControllerImpl(DAO_Generator.getTruckDAO());
         }
         return truckController;
     }
@@ -54,6 +59,8 @@ public class ControllerGen {
         return orderDocumentController;
     }
 
+
+
     public static TransitRecordController getTransitRecordController() throws SQLException, ClassNotFoundException {
         if (transitRecordController == null)
         {
@@ -69,5 +76,39 @@ public class ControllerGen {
                     getTransitCoordinator(), getOrderDocumentController(), getTransitRecordController());
         }
         return transitController;
+    }
+
+    // ----- GUI - Controllers -----
+    public static TruckController getTruckControllerGUI() throws SQLException, ClassNotFoundException {
+        if (truckControllerGui == null)
+        {
+            truckControllerGui = new TruckControllerImplGui(DAO_Generator.getTruckDAO());
+        }
+        return truckControllerGui;
+    }
+
+    public static TransitController getTransitControllerGUI() throws SQLException, ClassNotFoundException {
+        if (transitControllerGui == null)
+        {
+            transitControllerGui = new TransitControllerImplGui(DAO_Generator.getTransitDAO(), getTruckController(),
+                    getTransitCoordinator(), getOrderDocumentController(), getTransitRecordController());
+        }
+        return transitControllerGui;
+    }
+
+    public static OrderDocumentController getOrderDocumentControllerGui() throws SQLException, ClassNotFoundException {
+        if (orderDocumentControllerGui == null)
+        {
+            orderDocumentControllerGui = new OrderDocumentControllerImplGui(DAO_Generator.getOrderDocumentDAO(),
+                    getSupplierController(),getTransitCoordinator(),getProductController());
+        }
+        return orderDocumentControllerGui;
+    }
+    public static TransitRecordController getTransitRecordControllerGui() throws SQLException, ClassNotFoundException {
+        if (transitRecordControllerGui == null)
+        {
+            transitRecordControllerGui = new TransitRecordControllerImplGui(DAO_Generator.getTransitRecordDAO());
+        }
+        return transitRecordControllerGui;
     }
 }

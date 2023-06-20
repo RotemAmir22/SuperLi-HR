@@ -1,7 +1,7 @@
 package Presentation;
 
+import CLI_Layer.PresentationCli;
 import Presentation.CLI.HR_Main;
-import UiLayer.PresentationSystem;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -21,7 +21,7 @@ public class Main {
                     HR_Main.system();
                     break;
                 case "2":
-                    PresentationSystem.transitSystem();
+                    PresentationCli.transitSystemCli();
                     break;
                 case "3":
                     return;
