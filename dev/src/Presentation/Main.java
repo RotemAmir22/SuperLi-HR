@@ -53,8 +53,10 @@ public class Main {//GUIMAIN
             }
             if(Objects.equals(args[1], "HRManager"))
             {
-                HR_Module frame = new HR_Module();
-                frame.start();
+                SwingUtilities.invokeLater(() -> {
+                    HR_Module frame = new HR_Module();
+                    frame.start();
+                });
             }
 
             if(Objects.equals(args[1], "LogisticManager"))
