@@ -47,7 +47,9 @@ public class ManageShifts extends JFrame{
                 LocalDate date = LocalDate.now().plusDays(1);
                 index=0;
                 int id = manageBranches.getAllBranches().get(index).getBranchID();
-                shiftScheduling = new ShiftScheduling(id, date, new ShiftsTable(MS, date, id));
+                ShiftsTable frame = new ShiftsTable(MS, date, id);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                shiftScheduling = new ShiftScheduling(id, date,frame );
                 //setVisible(false);
             }
         });
@@ -106,7 +108,9 @@ public class ManageShifts extends JFrame{
             shiftScheduling.submit();
             if(index + 1 < manageBranches.getAllBranches().size()) {
                 int id = manageBranches.getAllBranches().get(++index).getBranchID();
-                shiftScheduling = new ShiftScheduling(id, shiftScheduling.date, new ShiftsTable(MS, shiftScheduling.date, id));
+                ShiftsTable frame = new ShiftsTable(MS, shiftScheduling.date, id);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                shiftScheduling = new ShiftScheduling(id, shiftScheduling.date,frame );
             }
         }
     }

@@ -33,7 +33,7 @@ public class ShiftsTable extends JFrame {
         setVisible(true);
         ID = id;
         shiftDate = startWeek;
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setTitle("Shifts weekly table for:  " + startWeek.toString() + " until " + startWeek.plusDays(6) + " for branch " + id);
 
         // Define the column names (weekdays)
