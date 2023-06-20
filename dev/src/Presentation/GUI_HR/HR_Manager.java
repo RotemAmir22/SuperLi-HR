@@ -21,7 +21,7 @@ public class HR_Manager extends JFrame {
         setSize(1200, 630);
 
         // Specify the path to your image file
-        String imagePath = "C:\\Users\\PC\\Documents\\GitHub\\ADSS_Group_H\\docs\\koopa2.jpeg";
+        String imagePath = "docs/koopa2.jpeg";
 
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);

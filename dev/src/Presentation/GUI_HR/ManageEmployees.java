@@ -25,7 +25,7 @@ public class ManageEmployees extends JFrame {
         setSize(1054, 592);
 
         // Specify the path to your image file
-        String imagePath = "C:\\Users\\PC\\Documents\\GitHub\\ADSS_Group_H\\docs\\managee.jpg";
+        String imagePath = "docs/managee.jpg";
 
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
