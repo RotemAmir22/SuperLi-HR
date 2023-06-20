@@ -3,7 +3,6 @@ package Service_HR;
 import BussinesLogic.*;
 import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_DailyShift;
-import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 
 import java.io.File;
@@ -14,7 +13,6 @@ public class SManageShifts extends AValidateInput {
 
     private DAO_DailyShift daoDailyShift;
     private DAO_BranchStore branchStoreDAO;
-    private DAO_Employee employeeDAO;
     public SManageShifts() {
         try {
             daoDailyShift = DAO_Generator.getDailyShiftDAO();
@@ -69,17 +67,7 @@ public class SManageShifts extends AValidateInput {
         }
     }
 
-    public boolean manageShift(ShiftManager shiftManager, DailyShift currentShift, LocalDate date, int branchID){
-        try{
-            DailyShift shift = (DailyShift) daoDailyShift.findByKey(date, branchID);
-
-        }catch (SQLException | ClassNotFoundException e) {
-            return false;
-        }
-        return false;
-    }
-
-    public boolean updateShift(BranchStore branch, int choice, LocalDate date, int shift, String employeeID, int role){
+    public boolean update(BranchStore branch, int choice, LocalDate date, int shift, String employeeID, int role){
         try{
             if(choice == 0)
                 daoDailyShift.addToShift(date, shift, employeeID, role, branch.getBranchID());
@@ -94,7 +82,7 @@ public class SManageShifts extends AValidateInput {
     }
 
 
-    public int cancleItem(LocalDate date, int id, String name, int amount, String shiftMId) {
+    public int cancelItem(LocalDate date, int id, String name, int amount, String shiftMId) {
         try{
             DailyShift shift = (DailyShift) daoDailyShift.findByKey(date, id);
             Cancellation cancellation = new Cancellation(name,amount); // get an id

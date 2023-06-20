@@ -134,7 +134,7 @@ public class EmployeePage extends JFrame {
                         String amount = JOptionPane.showInputDialog(null, "Enter item amount: ");
                         int res;
                         if (SM.isString(name) && SM.isInteger(amount)) {
-                            res = SM.cancleItem(date, bid, name, Integer.parseInt(amount), ID);
+                            res = SM.cancelItem(date, bid, name, Integer.parseInt(amount), ID);
                             if (res > 0) {
                                 JOptionPane.showMessageDialog(null, "Cancellation id: " + res);
                                 break;
