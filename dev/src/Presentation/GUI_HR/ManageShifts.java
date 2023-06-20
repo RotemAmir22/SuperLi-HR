@@ -48,7 +48,7 @@ public class ManageShifts extends JFrame{
                 index=0;
                 int id = manageBranches.getAllBranches().get(index).getBranchID();
                 shiftScheduling = new ShiftScheduling(id, date, new ShiftsTable(MS, date, id));
-                setVisible(false);
+                //setVisible(false);
             }
         });
 

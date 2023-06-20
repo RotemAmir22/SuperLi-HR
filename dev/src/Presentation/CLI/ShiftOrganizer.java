@@ -91,6 +91,7 @@ public class ShiftOrganizer {
                 if(role.equals(Role.STORAGE) && storekeeperStatusByDate.containsKey(currentDate))
                 {
                     TransitCoordinator.Alert("TRANSIT CANNOT BE COMPLETE!");
+                    output.append("TRANSIT CANNOT BE COMPLETE!");
                     status=1;
                     //update transit status
                     storekeeperStatusByDate.put(currentDate,false);
@@ -100,6 +101,7 @@ public class ShiftOrganizer {
             if(rolesAmount.containsKey(role.toString()) && rolesAmount.get(role.toString())==0 && role.equals(Role.STORAGE)&& storekeeperStatusByDate.containsKey(currentDate))
             {
                 TransitCoordinator.Alert("Transit can be EXECUTED");
+                output.append("Transit can be EXECUTED");
                 storekeeperStatusByDate.put(currentDate,true);
             }
 

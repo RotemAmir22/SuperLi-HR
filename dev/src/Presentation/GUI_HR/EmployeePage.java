@@ -26,10 +26,10 @@ public class EmployeePage extends JFrame {
         this.ID = ID;
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(640, 360);
+        setSize(500, 300);
         SManageEmployees SME = new SManageEmployees();
         // Specify the path to your image file
-        String imagePath = "C:\\Users\\PC\\Documents\\GitHub\\ADSS_Group_H\\docs\\employeePage.jpg";
+        String imagePath = "docs/employeePage.jpg";
 
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
@@ -63,29 +63,32 @@ public class EmployeePage extends JFrame {
                 LocalDate date = null;
                 do {
                     String input = JOptionPane.showInputDialog(null, "Enter a shift's date: ");
-                    if (SMS.isDate(input)) {
-                        date = LocalDate.parse(input);
-                        String id = JOptionPane.showInputDialog(null, "Enter a branch's id: ");
-                        if (manageBranches.isInteger(id))
-                            if (manageBranches.searchBranch(id)) {
-                                try {
-                                    if(manageBranches.get(Integer.parseInt(id)).getShiftByDate(input).findEmployeeInShiftManager(ID) != null)
-                                        createAndShowGUI(date, Integer.parseInt(id), SMS, ID);
-                                    else
-                                        JOptionPane.showMessageDialog(null, "Error\nYou aren't a shift manager in this shift.", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (input != null) {
+                        if (SMS.isDate(input)) {
+                            date = LocalDate.parse(input);
+                            String id = JOptionPane.showInputDialog(null, "Enter a branch's id: ");
+                            if (manageBranches.isInteger(id))
+                                if (manageBranches.searchBranch(id)) {
+                                    try {
+                                        if (manageBranches.get(Integer.parseInt(id)).getShiftByDate(input).findEmployeeInShiftManager(ID) != null)
+                                            createAndShowGUI(date, Integer.parseInt(id), SMS, ID);
+                                        else
+                                            JOptionPane.showMessageDialog(null, "Error\nYou aren't a shift manager in this shift.", "Error", JOptionPane.ERROR_MESSAGE);
 
-                                } catch (SQLException | ClassNotFoundException ex) {
-                                    throw new RuntimeException(ex);
-                                }
-                                break;
-                            }else
-                                JOptionPane.showMessageDialog(null, "Branch " + id + " is not exist.", "Error", JOptionPane.ERROR_MESSAGE);
-                        else
-                            JOptionPane.showMessageDialog(null, "Invalid input!\nPlease enter a valid id (only number).", "Error", JOptionPane.ERROR_MESSAGE);
-                    } else
-                        JOptionPane.showMessageDialog(null, "Invalid date!\nPlease enter a valid format (YYYY-MM-DD).", "Error", JOptionPane.ERROR_MESSAGE);
-                }while(true);
-
+                                    } catch (SQLException | ClassNotFoundException ex) {
+                                        throw new RuntimeException(ex);
+                                    }
+                                    break;
+                                } else
+                                    JOptionPane.showMessageDialog(null, "Branch " + id + " is not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                            else
+                                JOptionPane.showMessageDialog(null, "Invalid input!\nPlease enter a valid id (only number).", "Error", JOptionPane.ERROR_MESSAGE);
+                        } else
+                            JOptionPane.showMessageDialog(null, "Invalid date!\nPlease enter a valid format (YYYY-MM-DD).", "Error", JOptionPane.ERROR_MESSAGE);
+                    }else
+                        break;
+                }
+                    while (true);
             }
         });
         backButton.addActionListener(new ActionListener() {
