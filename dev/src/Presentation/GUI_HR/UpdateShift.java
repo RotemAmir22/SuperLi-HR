@@ -81,7 +81,7 @@ public class UpdateShift extends JFrame{
                     Role role = Role.valueOf(selectedRole);
                     try {
                         StringBuilder res = ShiftOrganizer.changeShift(branchStore, shift.getDate(), c, 0, employee, role);
-                        SMS.updateShift(branchStore, 0, shift.getDate(), c, employee.getId(), role.ordinal());
+                        SMS.update(branchStore, 0, shift.getDate(), c, employee.getId(), role.ordinal());
                         JOptionPane.showMessageDialog(null, "Employee: " + employee.getId() + " added to shift: " + shift.getDate()+"\n" +res, "Success", JOptionPane.INFORMATION_MESSAGE);
                     } catch (SQLException | ClassNotFoundException ex) {
                         JOptionPane.showMessageDialog(null, "Failed to update shift.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -128,7 +128,7 @@ public class UpdateShift extends JFrame{
                     Role role = Role.valueOf(selectedRole);
                     try {
                         StringBuilder res = ShiftOrganizer.changeShift(branchStore, shift.getDate(), c, 1, employee, role);
-                        SMS.updateShift(branchStore, 1, shift.getDate(), c, employee.getId(), role.ordinal());
+                        SMS.update(branchStore, 1, shift.getDate(), c, employee.getId(), role.ordinal());
                         JOptionPane.showMessageDialog(null, "Employee: " + employee.getId() + " removed from shift " + shift.getDate() + "\n" + res, "Success", JOptionPane.INFORMATION_MESSAGE);
                     } catch (SQLException | ClassNotFoundException ex) {
                         JOptionPane.showMessageDialog(null, "Failed to update shift.", "Error", JOptionPane.ERROR_MESSAGE);

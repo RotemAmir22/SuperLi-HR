@@ -3,19 +3,19 @@ package Presentation.GUI_HR;
 import BussinesLogic.BranchStore;
 import BussinesLogic.DailyShift;
 import Service_HR.SManageBranches;
-import Service_HR.SManageEmployees;
 import Service_HR.SManageShifts;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class ManageShifts extends JFrame{
     private JButton planShiftsButton;
     private JButton updateShiftButton;
     private JButton backButton;
+    private JButton showShiftButton;
     private HR_Manager HRM;
     private ManageShifts MS;
 
@@ -35,19 +35,44 @@ public class ManageShifts extends JFrame{
 
         backgroundPanel.add(planShiftsButton);
         backgroundPanel.add(updateShiftButton);
+        backgroundPanel.add(showShiftButton);
         backgroundPanel.add(backButton);
 
+
+        ButtonStyle.set(showShiftButton);
         ButtonStyle.set(planShiftsButton);
         ButtonStyle.set(updateShiftButton);
         ButtonStyle.setExit(backButton);
 
+        showShiftButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                SManageBranches manageBranches = new SManageBranches();
+                String input = JOptionPane.showInputDialog(null, "Enter shift's date: ");
+                if(manageBranches.isDate(input)){
+                    String branchID = JOptionPane.showInputDialog(null, "Enter branch id: ");
+                    if(manageBranches.isInteger(branchID)){
+                        if(manageBranches.searchBranch(branchID)) {
+                            try {
+                                JOptionPane.showMessageDialog(null,manageBranches.get(Integer.parseInt(branchID)).getShiftByDate(input).showMeSchedualing());
+                            } catch (SQLException | ClassNotFoundException ex) {
+                                JOptionPane.showMessageDialog(null, "Invalid id!\nThis branch is not exist.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }else
+                        JOptionPane.showMessageDialog(null, "Invalid id!\nPlease enter a valid number.", "Error", JOptionPane.ERROR_MESSAGE);
+                }else
+                    JOptionPane.showMessageDialog(null, "Invalid date!\nPlease enter a valid format (YYYY-MM-DD).", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         planShiftsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SManageBranches manageBranches = new SManageBranches();
                 LocalDate date = LocalDate.now().plusDays(1);
                 index=0;
                 int id = manageBranches.getAllBranches().get(index).getBranchID();
-                shiftScheduling = new ShiftScheduling(id, date, new ShiftsTable(MS, date, id));
+                ShiftsTable frame = new ShiftsTable(MS, date, id);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                shiftScheduling = new ShiftScheduling(id, date,frame );
                 //setVisible(false);
             }
         });
@@ -106,7 +131,9 @@ public class ManageShifts extends JFrame{
             shiftScheduling.submit();
             if(index + 1 < manageBranches.getAllBranches().size()) {
                 int id = manageBranches.getAllBranches().get(++index).getBranchID();
-                shiftScheduling = new ShiftScheduling(id, shiftScheduling.date, new ShiftsTable(MS, shiftScheduling.date, id));
+                ShiftsTable frame = new ShiftsTable(MS, shiftScheduling.date, id);
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                shiftScheduling = new ShiftScheduling(id, shiftScheduling.date,frame );
             }
         }
     }
