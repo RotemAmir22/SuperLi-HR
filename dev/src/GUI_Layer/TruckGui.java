@@ -102,8 +102,8 @@ class TruckGui extends JFrame {
             createTruckFrame.add(coolerCheckBox);
             createTruckFrame.add(new JLabel()); // Empty label for alignment
             createTruckFrame.add(new JLabel()); // Empty label for alignment
-            createTruckFrame.add(escapeButton);
             createTruckFrame.add(addButton);
+            createTruckFrame.add(escapeButton);
             createTruckFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             createTruckFrame.setLocationRelativeTo(null);
             createTruckFrame.setVisible(true);
@@ -111,6 +111,8 @@ class TruckGui extends JFrame {
 
 
         removeTruckButton.addActionListener(e -> {
+            UIManager.put("OptionPane.okButtonText", "OK");
+            UIManager.put("OptionPane.cancelButtonText", "<html><font color='red'>Cancel</font></html>");
             String plateNumberInput = JOptionPane.showInputDialog(null, "Enter the plate number of the truck to remove:", "Remove Truck", JOptionPane.PLAIN_MESSAGE);
             if (plateNumberInput != null && !plateNumberInput.isEmpty()) {
                 try {

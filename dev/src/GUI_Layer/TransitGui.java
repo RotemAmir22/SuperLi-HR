@@ -159,8 +159,8 @@ class TransitGui extends JFrame {
                 addOrderFrame.add(new JLabel()); // Empty label for alignment
                 addOrderFrame.add(new JLabel()); // Empty label for alignment
                 addOrderFrame.add(new JLabel()); // Empty label for alignment
-                addOrderFrame.add(cancelButton);
                 addOrderFrame.add(addButton);
+                addOrderFrame.add(cancelButton);
                 addOrderFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 addOrderFrame.setLocationRelativeTo(null);
                 addOrderFrame.setVisible(true);
@@ -233,8 +233,8 @@ class TransitGui extends JFrame {
                 removeOrderFrame.add(new JLabel()); // Empty label for alignment
                 removeOrderFrame.add(new JLabel()); // Empty label for alignment
                 removeOrderFrame.add(new JLabel()); // Empty label for alignment
-                removeOrderFrame.add(cancelButton);
                 removeOrderFrame.add(removeButton);
+                removeOrderFrame.add(cancelButton);
                 removeOrderFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 removeOrderFrame.setLocationRelativeTo(null);
                 removeOrderFrame.setVisible(true);
@@ -246,6 +246,8 @@ class TransitGui extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Prompt the user for transit ID
+                UIManager.put("OptionPane.okButtonText", "OK");
+                UIManager.put("OptionPane.cancelButtonText", "<html><font color='red'>Cancel</font></html>");
                 String transitIdInput = JOptionPane.showInputDialog(null, "Enter transit ID:");
                 if (transitIdInput == null) {
                     return; // User clicked cancel or closed the window
@@ -467,8 +469,8 @@ class TransitGui extends JFrame {
         createTransitFrame.add(new JLabel()); // Empty label for alignment
         createTransitFrame.add(new JLabel()); // Empty label for alignment
         createTransitFrame.add(new JLabel()); // Empty label for alignment
-        createTransitFrame.add(cancelButton);
         createTransitFrame.add(createButton);
+        createTransitFrame.add(cancelButton);
         createTransitFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         createTransitFrame.setLocationRelativeTo(null);
         createTransitFrame.setVisible(true);
