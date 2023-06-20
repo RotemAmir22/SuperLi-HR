@@ -24,7 +24,7 @@ public class ShiftOrganizer {
      * @param employee: employee to update
      * @param role: what role he is doing
      */
-    public static void changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role) throws SQLException, ClassNotFoundException {
+    public static StringBuilder changeShift(BranchStore branchStore, LocalDate date, int shift, int choice, Employee employee, Role role) throws SQLException, ClassNotFoundException {
         DailyShift dailyShift = branchStore.getShiftsHistory().get(date);
         if(choice == 0)// add employee
         {
@@ -67,7 +67,7 @@ public class ShiftOrganizer {
                 }
             }
         }
-        dailyShift.showMeSchedualing();
+        return dailyShift.showMeSchedualing();
     }
 
     /**
