@@ -192,7 +192,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
 
                 // add cancellations
                 for (Cancellation cancel : shiftManager.getCancelations()) {
-                    stmt = conn.prepareStatement("INSERT INTO Cancellations (shiftDate, shiftManagerID, cancelID, item, amount)" + "VALUES(?,?,?,?,?)");
+                    stmt = conn.prepareStatement("INSERT OR REPLACE INTO Cancellations (shiftDate, shiftManagerID, cancelID, item, amount)" + "VALUES(?,?,?,?,?)");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, shiftManager.getId());
                     stmt.setInt(3, cancel.getCancelID());
@@ -267,7 +267,7 @@ public class DAO_DailyShift implements IDAO_DailyShift {
 
                 // update cancellations
                 for (Cancellation cancel : shiftManager.getCancelations()) {
-                    stmt = conn.prepareStatement("INSERT INTO Cancellations (shiftDate, shiftManagerId, cancelID, item, amount) VALUES (?,?,?,?,?)");
+                    stmt = conn.prepareStatement("INSERT OR REPLACE INTO Cancellations (shiftDate, shiftManagerId, cancelID, item, amount) VALUES (?,?,?,?,?)");
                     stmt.setString(1, dailyShift.getDate().toString());
                     stmt.setString(2, shiftManager.getId());
                     stmt.setInt(3, cancel.getCancelID());
