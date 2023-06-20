@@ -128,13 +128,13 @@ public class PresentationGui extends JFrame {
     }
 
 
-    public static void main(String[] args) {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                PresentationGui presentationGui = new PresentationGui();
-            }
-        });
-    }
+//    public static void main(String[] args) {
+//            SwingUtilities.invokeLater(new Runnable() {
+//                public void run() {
+//                PresentationGui presentationGui = new PresentationGui();
+//            }
+//        });
+//    }
 
 
 

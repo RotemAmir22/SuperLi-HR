@@ -18,7 +18,14 @@ public class MainGui extends JFrame {
 
     public MainGui(String managerName) {
         this.managerName = managerName;
-        initializeComponents();
+
+    }
+
+    public void run() {
+        SwingUtilities.invokeLater(() -> {
+            initializeComponents();
+            setVisible(true);
+        });
     }
 
     public void initializeComponents() {
