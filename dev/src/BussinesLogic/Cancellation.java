@@ -22,6 +22,12 @@ public class Cancellation {
         this.cancelID = serialNumCounter;
     }
 
+    public Cancellation(int cid, int amount, String input) {
+        this.item = input;
+        this.amount = amount;
+        this.cancelID = cid;
+    }
+
     //getters
     public int getCancelID() {return cancelID;}
     public String getItem() {return item;}

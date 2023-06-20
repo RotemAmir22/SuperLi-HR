@@ -3,16 +3,17 @@ package Presentation.GUI_HR;
 import BussinesLogic.BranchStore;
 import BussinesLogic.DailyShift;
 import Service_HR.SManageBranches;
+import Service_HR.SManageEmployees;
 import Service_HR.SManageShifts;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
 public class ManageShifts extends JFrame{
     private JButton planShiftsButton;
-    private JButton addPermissionsButton;
     private JButton updateShiftButton;
     private JButton backButton;
     private HR_Manager HRM;
@@ -23,7 +24,6 @@ public class ManageShifts extends JFrame{
     public ManageShifts(HR_Manager HR){
         this.HRM = HR;
         this.MS = this;
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1054, 592);
 
         // Specify the path to your image file
@@ -34,12 +34,10 @@ public class ManageShifts extends JFrame{
         setContentPane(backgroundPanel);
 
         backgroundPanel.add(planShiftsButton);
-        backgroundPanel.add(addPermissionsButton);
         backgroundPanel.add(updateShiftButton);
         backgroundPanel.add(backButton);
 
         ButtonStyle.set(planShiftsButton);
-        ButtonStyle.set(addPermissionsButton);
         ButtonStyle.set(updateShiftButton);
         ButtonStyle.setExit(backButton);
 
@@ -53,6 +51,7 @@ public class ManageShifts extends JFrame{
                 setVisible(false);
             }
         });
+
         updateShiftButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 SManageShifts SMS = new SManageShifts();
@@ -111,6 +110,5 @@ public class ManageShifts extends JFrame{
             }
         }
     }
-
 
 }

@@ -38,7 +38,7 @@ public class HR_Module extends JFrame {
         HR_Module HR = this;
         HR_ManagerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (ID.equals("masterHR") || isMaster){
+                if (isMaster || ID.equals("masterHR")){
                     setVisible(false);
                     new HR_Manager(HR);
                 }
@@ -82,7 +82,8 @@ public class HR_Module extends JFrame {
                 else
                     break;
             }
-            else{
+            else {
+                assert ID != null;
                 isMaster = true;
                 break;
             }

@@ -172,5 +172,7 @@ public class ManageEmployees extends JFrame {
         JOptionPane.showMessageDialog(panel1, details.toString(), "Employee Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
+
+
 }
 

@@ -93,8 +93,19 @@ public class DAO_DailyShift implements IDAO_DailyShift {
                 Employee e = (Employee) employeesDAO.findByID(employeeId);
                 int shift = rs.getInt("shiftSlot");
                 ShiftManager manager = ShiftManagerGenerator.CreateShiftManager(e.getName(), employeeId, LocalDate.parse(dateString),shift);
+                stmt = conn.prepareStatement("SELECT * FROM Cancellations WHERE shiftManagerId = ?");
+                stmt.setString(1, manager.getId());
+                ResultSet res = stmt.executeQuery();
+                while(res.next()){
+                    int Cid = res.getInt("cancelID");
+                    int amount = res.getInt("amount");
+                    String input = res.getString("item");
+                    Cancellation cancellation = new Cancellation(Cid, amount, input);
+                    manager.addToCancelations(cancellation);
+                }
                 dailyShift.addShiftManager(manager);
             }
+
             networkDailyShift.put(date.toString()+id,dailyShift);
         }
         return dailyShift;
@@ -378,5 +389,17 @@ public class DAO_DailyShift implements IDAO_DailyShift {
         }
         networkDailyShift.remove(date.toString() + id);
     }
+
+//    public Cancellation getC(int id){
+//        try{
+//            PreparedStatement stmt = conn.prepareStatement("SELECT FROM Cancellations WHERE " +
+//                    "VALUES (?, ?, ?)");
+//            stmt.setString(1, dailyShift.getDate().toString());
+//            stmt.setInt(2, (Integer) id);
+//            stmt.setString(3, dailyShift.getEndOfDayReport().toString());
+//            stmt.executeUpdate();
+//
+//        }
+//    }
 }
 
