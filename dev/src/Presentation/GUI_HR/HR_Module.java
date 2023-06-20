@@ -70,7 +70,7 @@ public class HR_Module extends JFrame {
         });
     }
 
-    private void start(){
+    public void start(){
         SManageEmployees SME = new SManageEmployees();
         do {
             ID = JOptionPane.showInputDialog(this, "Enter your ID:");
