@@ -39,15 +39,15 @@ public class ShiftScheduling extends JFrame {
         int day = 0;
         int valM = 0;
         int valE = 0;
-        for (int role = 0; role < cellsData.get(0).size(); role++) {
-            for (int row = 1; row < cellsData.size(); row++) {
+        for (int role = 1; role < cellsData.get(0).size(); role++) {
+            for (int row = 0; row < cellsData.size(); row++) {
                 ShiftsTable.CellValues cellVal = cellsData.get(row).get(role);
                 valM = Integer.parseInt(cellVal.getValueM());
                 valE = Integer.parseInt(cellVal.getValueE());
                 if(table.getRowsName(row).equalsIgnoreCase("SHIFTMANAGER")){
                     if(valM == 0) {
                         while (valM <= 0) {
-                            valM = Integer.parseInt(JOptionPane.showInputDialog(null, "Morning Shift - " + date.plusDays(row -1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
+                            valM = Integer.parseInt(JOptionPane.showInputDialog(null, "Morning Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
                             if (!manageBranches.isInteger(valM))
                                 JOptionPane.showMessageDialog(null, "Invalid input!\nEnter a number", "Error", JOptionPane.ERROR_MESSAGE);
                         }
@@ -55,7 +55,7 @@ public class ShiftScheduling extends JFrame {
                     }
                     if(valE == 0) {
                         while (valE <= 0) {
-                            valE = Integer.parseInt(JOptionPane.showInputDialog(null, "Evening Shift - " + date.plusDays(row - 1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
+                            valE = Integer.parseInt(JOptionPane.showInputDialog(null, "Evening Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
                             if (!manageBranches.isInteger(valE))
                                 JOptionPane.showMessageDialog(null, "Invalid input!\nEnter a number", "Error", JOptionPane.ERROR_MESSAGE);
                         }
