@@ -6,6 +6,7 @@ import BussinesLogic.Employee;
 import BussinesLogic.Role;
 import Presentation.CLI.ShiftOrganizer;
 import Service_HR.SManageBranches;
+import Service_HR.SManageEmployees;
 import Service_HR.SManageShifts;
 
 import javax.swing.*;
@@ -73,6 +74,7 @@ public class ShiftScheduling extends JFrame {
 
     private void buildShift(int i)
     {
+        SManageEmployees SME = new SManageEmployees();
         LocalDate currentDate = date.plusDays(i);
         DailyShift newShift = new DailyShift(currentDate);
 
@@ -85,7 +87,8 @@ public class ShiftScheduling extends JFrame {
         StringBuilder outE = ShiftOrganizer.checkShiftValidation(eValues, manageBranches.getStoreKeeper(id), currentDate);
         if (!outE.isEmpty())
             JOptionPane.showMessageDialog(this, outE, "Error - shift " + currentDate + " evening", JOptionPane.ERROR_MESSAGE);
-
+        for(Employee e: employeeList)
+            SME.update(-1,e.getId(),"updateOnly");
         SManageShifts SMS = new SManageShifts();
         SMS.insert(newShift, id);
         JOptionPane.showMessageDialog(this, "Shifts for " + currentDate + " added successfully!\n" + newShift.showMeSchedualing(), "Success", JOptionPane.INFORMATION_MESSAGE);

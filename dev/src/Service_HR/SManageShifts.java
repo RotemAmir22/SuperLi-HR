@@ -3,6 +3,7 @@ package Service_HR;
 import BussinesLogic.*;
 import DataAccess.DAO_BranchStore;
 import DataAccess.DAO_DailyShift;
+import DataAccess.DAO_Employee;
 import DataAccess.DAO_Generator;
 
 import java.io.File;
@@ -13,6 +14,7 @@ public class SManageShifts extends AValidateInput {
 
     private DAO_DailyShift daoDailyShift;
     private DAO_BranchStore branchStoreDAO;
+
     public SManageShifts() {
         try {
             daoDailyShift = DAO_Generator.getDailyShiftDAO();
