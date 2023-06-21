@@ -69,7 +69,14 @@ public class Main {//GUIMAIN
             {
                 SwingUtilities.invokeLater(() -> {
                     HR_Module frame = new HR_Module();
-                    frame.start();
+                    frame.start("HRManager");
+                });
+            }
+            else if(Objects.equals(args[1], "Employee"))
+            {
+                SwingUtilities.invokeLater(() -> {
+                    HR_Module frame = new HR_Module();
+                    frame.start("Employee");
                 });
             }
 

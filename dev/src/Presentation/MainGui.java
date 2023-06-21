@@ -56,7 +56,7 @@ public class MainGui extends JFrame {
                         || managerName.equalsIgnoreCase("StoreManager")) {
                     SwingUtilities.invokeLater(() -> {
                         HR_Module frame = new HR_Module();
-                        frame.start();
+                        frame.start(managerName);
                     });
                 }
                 else {

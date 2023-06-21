@@ -70,30 +70,44 @@ public class HR_Module extends JFrame {
         });
     }
 
-    public void start(){
+    public void start(String input){
         SManageEmployees SME = new SManageEmployees();
-        do {
-            ID = JOptionPane.showInputDialog(this, "Enter your ID:");
-            if (ID != null && !ID.equals("masterHR")){
-                if(!SME.isIdType(ID))
+
+        if(input.equalsIgnoreCase("Employee")) {
+            do {
+                ID = JOptionPane.showInputDialog(this, "Enter your ID:");
+                if (!SME.isIdType(ID))
                     JOptionPane.showMessageDialog(null, "Invalid input!\nId should be include 6-10 digits", "Error", JOptionPane.ERROR_MESSAGE);
                 else if (!SME.searchEmployee(ID))
                     JOptionPane.showMessageDialog(null, "Invalid input!\nEmployee not exist", "Error", JOptionPane.ERROR_MESSAGE);
                 else
                     break;
-            }
-            else {
-                assert ID != null;
-                isMaster = true;
-                break;
-            }
-        } while(true);
+            }while(true);
+        }
+        else{
+            do {
+                ID = JOptionPane.showInputDialog(this, "Enter your ID:");
+                if (ID != null && !ID.equals("masterHR")){
+                    if(!SME.isIdType(ID))
+                        JOptionPane.showMessageDialog(null, "Invalid input!\nId should be include 6-10 digits", "Error", JOptionPane.ERROR_MESSAGE);
+                    else if (!SME.searchEmployee(ID))
+                        JOptionPane.showMessageDialog(null, "Invalid input!\nEmployee not exist", "Error", JOptionPane.ERROR_MESSAGE);
+                    else
+                        break;
+                }
+                else {
+                    assert ID != null;
+                    isMaster = true;
+                    break;
+                }
+            } while(true);
+        }
     }
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            HR_Module frame = new HR_Module();
-            frame.start();
-        });
-
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            HR_Module frame = new HR_Module();
+//            frame.start();
+//        });
+//
+//    }
 }
