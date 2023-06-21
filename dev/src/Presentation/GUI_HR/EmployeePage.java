@@ -29,7 +29,7 @@ public class EmployeePage extends JFrame {
         setSize(500, 300);
         SManageEmployees SME = new SManageEmployees();
         // Specify the path to your image file
-        String imagePath = "dev/src/Presentation/GUI_HR/employeePage.jpg";
+        String imagePath = "employeePage.jpg";
 
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
@@ -107,7 +107,7 @@ public class EmployeePage extends JFrame {
 
         // Create a panel for the image
         JPanel imagePanel = new JPanel();
-        ImageIcon imageIcon = new ImageIcon("docs/manageShift.jpg"); // Replace with the actual image path
+        ImageIcon imageIcon = new ImageIcon("manageShift.jpg"); // Replace with the actual image path
         JLabel imageLabel = new JLabel(imageIcon);
         imagePanel.add(imageLabel);
         frame.add(imagePanel, BorderLayout.CENTER);
