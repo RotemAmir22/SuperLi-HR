@@ -44,6 +44,32 @@ public class ShiftScheduling extends JFrame {
                 ShiftsTable.CellValues cellVal = cellsData.get(row).get(role);
                 valM = Integer.parseInt(cellVal.getValueM());
                 valE = Integer.parseInt(cellVal.getValueE());
+
+                // Validate stock employee on Monday and Thursday
+
+                if(date.plusDays(role-1).getDayOfWeek().toString().equals("Monday") || date.plusDays(role-1).getDayOfWeek().toString().equals("Thursday")){
+                    if(table.getRowsName(row).equalsIgnoreCase("STOCK")){
+                        if(valM == 0) {
+                            while (valM <= 0) {
+                                valM = Integer.parseInt(JOptionPane.showInputDialog(null, "Morning Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Stock employee, enter new number:"));
+                                if (!manageBranches.isInteger(valM))
+                                    JOptionPane.showMessageDialog(null, "Invalid input!\nEnter a number", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                            cellVal.setValueM(String.valueOf(valM));
+                        }
+                        if(valE == 0) {
+                            while (valE <= 0) {
+                                valE = Integer.parseInt(JOptionPane.showInputDialog(null, "Evening Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Stock employee, enter new number:"));
+                                if (!manageBranches.isInteger(valE))
+                                    JOptionPane.showMessageDialog(null, "Invalid input!\nEnter a number", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                            cellVal.setValueE(String.valueOf(valE));
+                        }
+                    }
+                }
+
+                // Validate at least one shift manager
+
                 if(table.getRowsName(row).equalsIgnoreCase("SHIFTMANAGER")){
                     if(valM == 0) {
                         while (valM <= 0) {
