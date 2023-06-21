@@ -38,12 +38,12 @@ public class ShiftScheduling extends JFrame {
         int day = 0;
         int valM = 0;
         int valE = 0;
-        for (int row = 1; row < cellsData.size(); row++) {
-            for (int role = 0; role < cellsData.get(row).size() - 1; role++) {
-                ShiftsTable.CellValues cellVal = cellsData.get(role).get(row);
+        for (int role = 0; role < cellsData.get(0).size(); role++) {
+            for (int row = 1; row < cellsData.size(); row++) {
+                ShiftsTable.CellValues cellVal = cellsData.get(row).get(role);
                 valM = Integer.parseInt(cellVal.getValueM());
                 valE = Integer.parseInt(cellVal.getValueE());
-                if(table.getRowsName(role).equalsIgnoreCase("SHIFTMANAGER")){
+                if(table.getRowsName(row).equalsIgnoreCase("SHIFTMANAGER")){
                     if(valM == 0) {
                         while (valM <= 0) {
                             valM = Integer.parseInt(JOptionPane.showInputDialog(null, "Morning Shift - " + date.plusDays(row -1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
@@ -61,11 +61,11 @@ public class ShiftScheduling extends JFrame {
                         cellVal.setValueE(String.valueOf(valE));
                     }
                 }
-                mValues.put(table.getRowsName(role).toUpperCase(), valM);
-                eValues.put(table.getRowsName(role).toUpperCase(), valE);
+                mValues.put(table.getRowsName(row).toUpperCase(), valM);
+                eValues.put(table.getRowsName(row).toUpperCase(), valE);
             }
             buildShift(day++);
-            if (day == 7)
+            if (day >= 7)
                 break;
         }
     }

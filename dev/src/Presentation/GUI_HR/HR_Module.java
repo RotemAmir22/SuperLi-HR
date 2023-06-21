@@ -1,10 +1,7 @@
 package Presentation.GUI_HR;
 
-import Service_HR.AValidateInput;
 import Service_HR.SManageEmployees;
-
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
