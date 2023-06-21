@@ -33,7 +33,7 @@ public class ManageBranches extends JFrame {
         setSize(800, 500);
 
         // Specify the path to your image file
-        String imagePath = "docs/branches.jpg";
+        String imagePath = "dev/src/Presentation/GUI_HR/branches.jpg";
 
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);

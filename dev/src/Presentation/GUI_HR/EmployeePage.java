@@ -29,7 +29,7 @@ public class EmployeePage extends JFrame {
         setSize(500, 300);
         SManageEmployees SME = new SManageEmployees();
         // Specify the path to your image file
-        String imagePath = "docs/employeePage.jpg";
+        String imagePath = "dev/src/Presentation/GUI_HR/employeePage.jpg";
 
         // Create and set the custom panel as the content pane
         BackgroundImage backgroundPanel = new BackgroundImage(imagePath);
