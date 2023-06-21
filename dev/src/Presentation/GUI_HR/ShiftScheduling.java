@@ -47,7 +47,7 @@ public class ShiftScheduling extends JFrame {
 
                 // Validate stock employee on Monday and Thursday
 
-                if(date.plusDays(role-1).getDayOfWeek().toString().equals("Monday") || date.plusDays(role-1).getDayOfWeek().toString().equals("Thursday")){
+                if(date.plusDays(role-1).getDayOfWeek().toString().equals("MONDAY") || date.plusDays(role-1).getDayOfWeek().toString().equals("THURSDAY")){
                     if(table.getRowsName(row).equalsIgnoreCase("STOCK")){
                         if(valM == 0) {
                             while (valM <= 0) {

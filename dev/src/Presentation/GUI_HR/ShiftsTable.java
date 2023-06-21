@@ -37,7 +37,7 @@ public class ShiftsTable extends JFrame {
         setTitle("Shifts weekly table for:  " + startWeek.toString() + " until " + startWeek.plusDays(6) + " for branch " + id);
 
         // Define the column names (weekdays)
-        String[] columnNames = {"", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        String[] columnNames = {"", startWeek.getDayOfWeek().toString(),startWeek.getDayOfWeek().plus(1).toString() , startWeek.getDayOfWeek().plus(2).toString(), startWeek.getDayOfWeek().plus(3).toString(), startWeek.getDayOfWeek().plus(4).toString(), startWeek.getDayOfWeek().plus(5).toString(),startWeek.getDayOfWeek().plus(6).toString()};
         // Define the row names (roles)
         Role[] rows = Role.values();
         rowNames = new String[rows.length - 1];
