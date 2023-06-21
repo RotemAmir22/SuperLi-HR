@@ -86,7 +86,7 @@ public class WeeklyShiftTable extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+        //setVisible(true);
     }
 
     private boolean[][] collectData() {

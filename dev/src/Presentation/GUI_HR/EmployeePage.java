@@ -25,7 +25,7 @@ public class EmployeePage extends JFrame {
         this.HR = HR;
         this.ID = ID;
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 300);
         SManageEmployees SME = new SManageEmployees();
         // Specify the path to your image file

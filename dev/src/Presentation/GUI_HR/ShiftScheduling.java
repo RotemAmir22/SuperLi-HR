@@ -51,7 +51,14 @@ public class ShiftScheduling extends JFrame {
                     if(table.getRowsName(row).equalsIgnoreCase("STOCK")){
                         if(valM == 0) {
                             while (valM <= 0) {
-                                valM = Integer.parseInt(JOptionPane.showInputDialog(null, "Morning Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Stock employee, enter new number:"));
+                                try {
+                                    valM = Integer.parseInt(JOptionPane.showInputDialog(null, "Morning Shift - " + date.plusDays(role - 1) + "\nMust have at least 1 Stock employee, enter new number:"));
+                                }
+                                catch (Exception e)
+                                {
+                                    valM = 1;
+                                    JOptionPane.showMessageDialog(null, "Ok. Default value is 1.", "Empty input", JOptionPane.INFORMATION_MESSAGE);
+                                }
                                 if (!manageBranches.isInteger(valM))
                                     JOptionPane.showMessageDialog(null, "Invalid input!\nEnter a number", "Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -59,7 +66,14 @@ public class ShiftScheduling extends JFrame {
                         }
                         if(valE == 0) {
                             while (valE <= 0) {
-                                valE = Integer.parseInt(JOptionPane.showInputDialog(null, "Evening Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Stock employee, enter new number:"));
+                                try {
+                                    valE = Integer.parseInt(JOptionPane.showInputDialog(null, "Evening Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Stock employee, enter new number:"));
+                                }
+                                catch (Exception e)
+                                {
+                                    valE = 1;
+                                    JOptionPane.showMessageDialog(null, "Ok. Default value is 1.", "Empty input", JOptionPane.INFORMATION_MESSAGE);
+                                }
                                 if (!manageBranches.isInteger(valE))
                                     JOptionPane.showMessageDialog(null, "Invalid input!\nEnter a number", "Error", JOptionPane.ERROR_MESSAGE);
                             }
@@ -73,7 +87,14 @@ public class ShiftScheduling extends JFrame {
                 if(table.getRowsName(row).equalsIgnoreCase("SHIFTMANAGER")){
                     if(valM == 0) {
                         while (valM <= 0) {
-                            valM = Integer.parseInt(JOptionPane.showInputDialog(null, "Morning Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
+                            try {
+                                valM = Integer.parseInt(JOptionPane.showInputDialog(null, "Morning Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
+                            }
+                            catch (Exception e)
+                            {
+                                valM = 1;
+                                JOptionPane.showMessageDialog(null, "Ok. Default value is 1.", "Empty input", JOptionPane.INFORMATION_MESSAGE);
+                            }
                             if (!manageBranches.isInteger(valM))
                                 JOptionPane.showMessageDialog(null, "Invalid input!\nEnter a number", "Error", JOptionPane.ERROR_MESSAGE);
                         }
@@ -81,7 +102,14 @@ public class ShiftScheduling extends JFrame {
                     }
                     if(valE == 0) {
                         while (valE <= 0) {
-                            valE = Integer.parseInt(JOptionPane.showInputDialog(null, "Evening Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
+                            try {
+                                valE = Integer.parseInt(JOptionPane.showInputDialog(null, "Evening Shift - " + date.plusDays(role-1) + "\nMust have at least 1 Shift-Manager, enter new number:"));
+                            }
+                            catch (Exception e)
+                            {
+                                valE = 1;
+                                JOptionPane.showMessageDialog(null, "Ok. Default value is 1.", "Empty input", JOptionPane.INFORMATION_MESSAGE);
+                            }
                             if (!manageBranches.isInteger(valE))
                                 JOptionPane.showMessageDialog(null, "Invalid input!\nEnter a number", "Error", JOptionPane.ERROR_MESSAGE);
                         }
