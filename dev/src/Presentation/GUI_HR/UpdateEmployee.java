@@ -152,15 +152,24 @@ public class UpdateEmployee extends JFrame {
                 String[] options = {"Add", "Remove"};
 
                 int choice = JOptionPane.showOptionDialog(panel1, "Select an option:", "Qualification", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                Role[] availableRoles = Role.values();
+                int totalRoles = availableRoles.length - 1;
+                String[] roleOptions = new String[totalRoles - 1];
+                for (int i = 0; i < totalRoles - 1; i++) {
+                    roleOptions[i] = availableRoles[i].toString();
+                }
+                JComboBox<String> roleComboBox = new JComboBox<>(roleOptions);
+                int result;
                 if (choice == 0) {
                     do {
-                        String newRole = JOptionPane.showInputDialog(panel1, "Enter the new role:");
-                        if (newRole != null) {
-                            if (SManageEmployees.validateRole(newRole)) {
-                                if (SManageEmployees.existRole(ID, Role.valueOf(newRole)))
+                        result = JOptionPane.showConfirmDialog(null, roleComboBox, "Select a role:", JOptionPane.OK_CANCEL_OPTION);
+                        if (result == JOptionPane.OK_OPTION) {
+                            String selectedRole = (String) roleComboBox.getSelectedItem();
+                            if (SManageEmployees.validateRole(selectedRole)) {
+                                if (SManageEmployees.existRole(ID, Role.valueOf(selectedRole)))
                                     JOptionPane.showMessageDialog(panel1, "Invalid input! This employee already has this role.", "Error", JOptionPane.ERROR_MESSAGE);
                                 else {
-                                    boolean res = SManageEmployees.update(5, ID, newRole);
+                                    boolean res = SManageEmployees.update(5, ID, selectedRole);
                                     if (res)
                                         JOptionPane.showMessageDialog(panel1, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                                     else
@@ -169,39 +178,41 @@ public class UpdateEmployee extends JFrame {
                                 }
                             }
                             else
-                                JOptionPane.showMessageDialog(panel1, "Invalid input! Please enter a valid role.", "Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "This employee isn't a " + selectedRole + " in this shift", "Error", JOptionPane.ERROR_MESSAGE);
                         }
-                        else{
+                        else
+                        {
                             JOptionPane.showMessageDialog(panel1, "Operation canceled.", "Canceled", JOptionPane.INFORMATION_MESSAGE);
                             break;
                         }
-                    } while (true);
+
+                    }while (true);
 
                 } else if (choice == 1) {
                     do {
-                        String newRole = JOptionPane.showInputDialog(panel1, "Enter the exist role:");
-                        if (newRole != null) {
-                            if(SManageEmployees.validateRole(newRole)) {
-                                if(SManageEmployees.existRole(ID, Role.valueOf(newRole)))
-                                {
-                                    boolean res = SManageEmployees.update(6, ID, newRole);
-                                    if(res)
+                        result = JOptionPane.showConfirmDialog(null, roleComboBox, "Select a role:", JOptionPane.OK_CANCEL_OPTION);
+                        if (result == JOptionPane.OK_OPTION) {
+                            String selectedRole = (String) roleComboBox.getSelectedItem();
+                            if (SManageEmployees.validateRole(selectedRole)) {
+                                if (!SManageEmployees.existRole(ID, Role.valueOf(selectedRole)))
+                                    JOptionPane.showMessageDialog(panel1, "Invalid input! This employee hasn't this role.", "Error", JOptionPane.ERROR_MESSAGE);
+                                else {
+                                    boolean res = SManageEmployees.update(6, ID, selectedRole);
+                                    if (res)
                                         JOptionPane.showMessageDialog(panel1, "Process completed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                                     else
-                                        JOptionPane.showMessageDialog(panel1, "Failed to remove this role.", "Error", JOptionPane.ERROR_MESSAGE);
+                                        JOptionPane.showMessageDialog(panel1, "Failed to add this role.", "Error", JOptionPane.ERROR_MESSAGE);
                                     break;
                                 }
-                                else
-                                    JOptionPane.showMessageDialog(panel1, "Invalid input! This employee hasn't this role.", "Error", JOptionPane.ERROR_MESSAGE);
                             }
                             else
-                                JOptionPane.showMessageDialog(panel1, "Invalid input! Please enter a valid role.", "Error", JOptionPane.ERROR_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "This employee isn't a " + selectedRole + " in this shift", "Error", JOptionPane.ERROR_MESSAGE);
                         }
                         else{
                             JOptionPane.showMessageDialog(panel1, "Operation canceled.", "Canceled", JOptionPane.INFORMATION_MESSAGE);
                             break;
                         }
-                    } while (true);
+                    }while (true);
                 }
             }
         });
