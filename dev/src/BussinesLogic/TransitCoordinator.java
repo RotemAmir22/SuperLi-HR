@@ -59,14 +59,16 @@ public class TransitCoordinator {
         try {
             BranchStore branchStore = (BranchStore) branchStoreDAO.findByID(branchID);
             if (branchStore != null) {
-                branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
+                if(branchStore.getShiftByDate(String.valueOf(date)) != null)
+                    branchStore.storekeeperStatusByDate.put(date, branchStore.getShiftByDate(String.valueOf(date)).storeKeepersInDailyShift());
+                else
+                    branchStore.storekeeperStatusByDate.put(date, false); // default value until validate there is a storekeeper
                 branchStoreDAO.update(branchStore);}
             else
                 System.out.println("Invalid branch ID");
-            } catch (SQLException | ClassNotFoundException e){
+        } catch (SQLException | ClassNotFoundException e){
             e.printStackTrace();
         }
-
     }
 
     /**

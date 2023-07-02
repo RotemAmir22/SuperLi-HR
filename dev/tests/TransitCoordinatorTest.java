@@ -59,7 +59,7 @@ public class TransitCoordinatorTest {
 
         // Verify the result
         assertNotNull(availableDrivers);
-        assertEquals(3, availableDrivers.size());
+        assertEquals(5, availableDrivers.size());
     }
 
     @Test

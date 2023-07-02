@@ -85,12 +85,7 @@ public class HR_Module extends JFrame {
             do {
                 ID = JOptionPane.showInputDialog(this, "Enter your ID:");
                 if (ID != null && !ID.equals("masterHR")){
-                    if(!SME.isIdType(ID))
-                        JOptionPane.showMessageDialog(null, "Invalid input!\nId should be include 6-10 digits", "Error", JOptionPane.ERROR_MESSAGE);
-                    else if (!SME.searchEmployee(ID))
-                        JOptionPane.showMessageDialog(null, "Invalid input!\nEmployee not exist", "Error", JOptionPane.ERROR_MESSAGE);
-                    else
-                        break;
+                    JOptionPane.showMessageDialog(null, "Invalid manager password!\n", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 else {
                     assert ID != null;
@@ -100,11 +95,4 @@ public class HR_Module extends JFrame {
             } while(true);
         }
     }
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            HR_Module frame = new HR_Module();
-//            frame.start();
-//        });
-//
-//    }
 }

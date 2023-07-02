@@ -11,7 +11,7 @@ import java.sql.SQLOutput;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Main {//GUIMAIN
+public class Main {
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         if (args.length<2)// no user entered
         {
@@ -57,6 +57,9 @@ public class Main {//GUIMAIN
 
             else if(Objects.equals(args[1], "LogisticManager"))
                 PresentationCli.transitSystemCli();
+            else {
+                System.out.println("not a valid argument, please re-enter");
+            }
         }
         else if (Objects.equals(args[0], "GUI"))
         {
@@ -87,6 +90,9 @@ public class Main {//GUIMAIN
                         PresentationGui presentationGui = new PresentationGui();
                     }
                 });
+            }
+            else {
+                System.out.println("not a valid argument, please re-enter");
             }
         }
         else {

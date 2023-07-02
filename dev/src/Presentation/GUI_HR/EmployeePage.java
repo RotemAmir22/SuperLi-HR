@@ -107,7 +107,7 @@ public class EmployeePage extends JFrame {
 
         // Create a panel for the image
         JPanel imagePanel = new JPanel();
-        ImageIcon imageIcon = new ImageIcon("manageShift.jpg"); // Replace with the actual image path
+        ImageIcon imageIcon = new ImageIcon("dev/src/Presentation/GUI_HR/manageShift.jpg");
         JLabel imageLabel = new JLabel(imageIcon);
         imagePanel.add(imageLabel);
         frame.add(imagePanel, BorderLayout.CENTER);
